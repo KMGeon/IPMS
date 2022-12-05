@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC 
+"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<!-- tiles 설정 -->
+<tiles-definitions>
+	<!-- main layout -->
+	<definition name="main-layout" template="/WEB-INF/views/mainTiles/mainIndex.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/mainTiles/mainHeader.jsp" />
+		<put-attribute name="aside" value="/WEB-INF/views/mainTiles/mainAside.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/mainTiles/mainFooter.jsp" />
+	</definition>
+	
+	<!-- proj layout -->
+	<definition name="proj-layout" template="/WEB-INF/views/projTiles/projIndex.jsp">
+		<put-attribute name="projHeader" value="/WEB-INF/views/projTiles/projHeader.jsp" />
+		<put-attribute name="projAside" value="/WEB-INF/views/projTiles/projAside.jsp" />
+		<put-attribute name="projBody" value="" />
+		<put-attribute name="projFooter" value="/WEB-INF/views/projTiles/projFooter.jsp" />
+	</definition>
+	
+	<!-- name의 */*은 body의 value에서 1과 2에 해당
+		controller에서 forwarding 시 return "1/2";
+	 -->
+	<definition name="main/*" extends="main-layout">
+		<put-attribute name="body" value="/WEB-INF/views/main/{1}.jsp" />
+	</definition>
+	
+	<definition name="main/*/*" extends="main-layout">
+		<put-attribute name="body" value="/WEB-INF/views/main/{1}/{2}.jsp" />
+	</definition>
+	
+	<definition name="proj/*" extends="proj-layout">
+		<put-attribute name="projBody" value="/WEB-INF/views/proj/{1}.jsp" />
+	</definition>
+	
+	<definition name="proj/*/*" extends="proj-layout">
+		<put-attribute name="projBody" value="/WEB-INF/views/proj/{1}/{2}.jsp" />
+	</definition>
+	
+</tiles-definitions>
+
+
+
+
+
+
+
+
