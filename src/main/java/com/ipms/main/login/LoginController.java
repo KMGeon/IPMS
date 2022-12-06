@@ -16,15 +16,16 @@ public class LoginController {
 	public String loginForm() {
 		return "main/login/loginForm";
 	}
-
-	@GetMapping("/signUpForm")
-	public String signUpForm() {
-		return "main/login/signUpForm";
-	}
-
+	
 	// 비밀번호 찾기
 	@RequestMapping(value = "fgtPwd", method = RequestMethod.GET)
 	public String ForgotPwd() {
 		return "main/ForgotPassword/fgtPwd";
+	}
+
+	//로그인 메인페이지
+	@RequestMapping(value = "/main" ,method = RequestMethod.GET)
+	public String loginPage(){
+		return "main";
 	}
 }

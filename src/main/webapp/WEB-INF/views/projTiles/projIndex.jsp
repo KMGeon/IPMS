@@ -67,6 +67,10 @@
 	href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
 <!-- END: Custom CSS-->
 
+<!-- BEGIN: font CSS-->
+<link rel="stylesheet" type="text/css" href="/resources/css/commonFont.css">
+<!-- END: font CSS-->
+
 </head>
 <!-- END: Head-->
 

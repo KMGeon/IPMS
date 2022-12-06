@@ -12,10 +12,10 @@
 					class="nav-link nav-menu-main menu-toggle hidden-xs is-active"
 					href="#"><i class="feather icon-menu font-large-1"></i></a></li>
 				<li class="nav-item"><a class="navbar-brand"
-					href="/resources/stack-admin-v4.0/stack-admin/html/ltr/vertical-menu-template/index.html"><img
+					href="/proj/dashboard"><img
 						class="brand-logo" alt="stack admin logo"
-						src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/logo/stack-logo.png">
-						<h2 class="brand-text">Stack</h2> </a></li>
+						src="/resources/logoImage/logo.jpg" alt="branding logo" style="width: 100px; height: auto;">
+						<h2 class="brand-text"></h2> </a></li>
 				<li class="nav-item d-md-none"><a
 					class="nav-link open-navbar-container" data-toggle="collapse"
 					data-target="#navbar-mobile"><i class="fa fa-ellipsis-v"></i></a></li>

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
 
 <!-- BEGIN: Page CSS-->
 <link rel="stylesheet" type="text/css"
@@ -17,8 +19,8 @@
 <script>
 
     $(document).ready(function () {
-        $("#emailId").change(function () {
-            var to = $("#emailId").val();
+        $("#email").change(function () {
+            var to = $("#email").val();
             $("#to").attr("value", to);
             console.log(to);
         })
@@ -30,7 +32,7 @@
         const randomNumber = Math.floor(Math.random() * 8888) + 1;
         $('input[name=text]').attr('value', randomNumber);
         let text1 = $("#text").val();
-        let emailId;
+        let email;
         let text2;
         $("#btn").on("click", function () {
 
@@ -74,8 +76,8 @@
     });
 
     function passwordCheck() {
-        var password = $("#memPasswd").val();
-        var password2 = $("#memPasswd2").val();
+        var password = $("#paswd").val();
+        var password2 = $("#paswd2").val();
         if (password != password2) {
             $("#passMessage").html("비밀번호가 서로 일치하지 않습니다.");
             $("#passMessage").css("color", "red");
@@ -123,12 +125,12 @@
                             </div>
                             <div class="card-content">
                                 <div class="card-body">
-                                    <form class="form-horizontal form-simple" action="index.html"
+                                    <form class="form-horizontal form-simple" action="/main/signUpForm" method="post"
                                           novalidate>
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
                                             <input type="text" class="form-control form-control-lg"
-                                                   id="user-name" placeholder="이름" required="required">
+                                                   id="name" name="name" placeholder="이름" required="required">
                                             <div class="form-control-position">
                                                 <i class="feather icon-user"></i>
                                             </div>
@@ -136,16 +138,11 @@
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
 
-                                            <div style="display: inline-block;">
-                                                <input type="text" class="form-control form-control-lg"
-                                                       style="float: left; width: 60%"
-                                                       id="emailId" placeholder="이메일" required="required">
+                                            <div >
+                                                <input type="text" class="form-control form-control-lg"  id="email" placeholder="이메일" required="required">
 
 
-                                                <button type="button" id="btn"
-                                                        class="btn btn-success btn-min-width mr-1 mb-1"
-                                                        style="float: right;width: 30px;">인증번호 전송
-                                                </button>
+                                                <<button type="button" id="btn"  class="btn btn-success btn-min-width mr-1 mb-1"  style="float: right;width: 30px;">인증번호 전송</button>
 
                                             </div>
                                             <div class="form-control-position">
@@ -156,7 +153,7 @@
                                                   style="display: none">
 
                                             <input type="password" class="form-control form-control-lg"
-                                                   style="float: left; width: 60%" id="emailNum1" name="emailId"
+                                                   style="float: left; width: 60%" id="emailNum1" name="email"
                                                    placeholder="이메일 인증번호" required="required">
                                             <button type="button" id="btn2"
                                                     class="btn btn-success btn-min-width mr-1 mb-1"
@@ -169,8 +166,8 @@
                                         </fieldset>
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
-                                            <input type="text" class="form-control form-control-lg" id="memPasswd"
-                                                   name="memPasswd" placeholder="비밀번호" onkeyup="passwordCheck()"
+                                            <input type="text" class="form-control form-control-lg" id="paswd"
+                                                   name="paswd" placeholder="비밀번호" onkeyup="passwordCheck()"
                                                    required="required">
                                             <div class="form-control-position">
                                                 <i class="fa fa-key"></i>
@@ -178,8 +175,8 @@
                                         </fieldset>
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
-                                            <input type="password" class="form-control form-control-lg" id="memPasswd2"
-                                                   name="memPasswd2" placeholder="비밀번호 확인" onkeyup="passwordCheck()"
+                                            <input type="password" class="form-control form-control-lg" id="paswd2"
+                                                   name="paswd2" placeholder="비밀번호 확인" onkeyup="passwordCheck()"
                                                    required="required">
                                             <div class="form-control-position">
                                                 <i class="fa fa-key"></i>
@@ -192,6 +189,17 @@
                                             </div>
                                         </fieldset>
                                         <fieldset>
+                                            <div style="margin-left:10px;">
+                                                <!-- 속성에 multiple를 추가합시다. -->
+                                                <select class="form-control" multiple="multiple">
+                                                    <option>option1</option>
+                                                    <option>option2</option>
+                                                    <option>option3</option>
+                                                    <option>option4</option>
+                                                    <option>option5</option>
+
+                                                </select>
+                                            </div>
 
                                         </fieldset>
                                         <div>
@@ -253,6 +261,10 @@
 
 
 <!-- BEGIN: Page JS-->
+<script>
+    $('select').select2();
+
+</script>
 <script
         src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
 <script
@@ -263,13 +275,13 @@
 <script
         src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
 <!-- END: Page Vendor JS-->
-<script src="../../../app-assets/vendors/js/vendors.min.js"></script>
-<script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
-<script src="../../../app-assets/vendors/js/charts/jquery.sparkline.min.js"></script>
-<script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
-<script src="../../../app-assets/js/core/app-menu.min.js"></script>
-<script src="../../../app-assets/js/core/app.min.js"></script>
-<script src="../../../app-assets/js/scripts/customizer.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/ui/jquery.sticky.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/charts/jquery.sparkline.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app.min.js"></script>
+<script src="/resources/stack-admin-v4.0/app-assets/js/scripts/customizer.min.js"></script>
 <script src="/resources/stack-admin-v4.0/app-assets/js/scripts/ui/breadcrumbs-with-stats.min.js"></script>
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/forms/select/form-select2.min.js"></script>
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/ui/jquery.sticky.js"></script>

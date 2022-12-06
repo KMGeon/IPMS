@@ -7,7 +7,6 @@
 	<!-- main layout -->
 	<definition name="main-layout" template="/WEB-INF/views/mainTiles/mainIndex.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/mainTiles/mainHeader.jsp" />
-		<put-attribute name="aside" value="/WEB-INF/views/mainTiles/mainAside.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/views/mainTiles/mainFooter.jsp" />
 	</definition>

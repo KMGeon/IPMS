@@ -11,9 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class ProjController {
 
-	@GetMapping("/dashboard")
-	public String projMain() {
-		return "proj/dashboard";
-	}
+
+	
+	
 	
 }

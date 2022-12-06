@@ -23,14 +23,14 @@
 	dataSource.setDriverClassName() = "oracle.jdbc.driver.OracleDriver";
 	 -->
 	 <!-- dataSource : 데이터베이스와 관련된 정보를 설정 -->
-	<bean id="dataSource" 
-		class="org.apache.commons.dbcp2.BasicDataSource" 
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource"
 		destroy-method="close">
-		<property name="driverClassName" 
+		<property name="driverClassName"
 		value="oracle.jdbc.driver.OracleDriver" />
-		<property name="url" 
+		<property name="url"
 		value="jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="username" value="jspexam" />
+		<property name="username" value="project" />
 		<property name="password" value="java" />
 	</bean>
 	<!-- 데이터베이스와 연결을 맺고 끊어질 때까지의 
@@ -41,8 +41,8 @@
 	<bean id="sqlSessionFactory"
 	class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
-<!--		<property name="mapperLocations"-->
-<!--		value="classpath:/sqlmap/**/*_SQL.xml" />-->
+		<property name="mapperLocations"
+		value="classpath:/sqlmap/**/*_SQL.xml" />
 	</bean>
 	<!-- 데이터베이스에 개별적으로 쿼리를 실행시키는 객체.
 		이 객체를 통해 query를 실행함
@@ -85,7 +85,7 @@
 	자동으로 Mapper 인터페이스를 활용하는 객체를 생성하게 됨
 	-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.imps.mapper" />
+		<property name="basePackage" value="com.ipms.mapper" />
 	</bean>
 	
 	<!-- 스프링 AOP 활성화 -->
