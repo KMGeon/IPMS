@@ -6,7 +6,7 @@
     <style>
         body { padding: 0px; margin: 0px; }
         .jb-box { width: 100%; height: 100%; overflow: hidden;margin: 100px auto; position: relative; }
-        video { width: 100%; height: 1000px;position: relative }
+        video { width: 100%; height: auto;position: relative }
         .jb-text { position: absolute; top: 50%; width: 100%; }
         .jb-text p { margin-top: -24px; text-align: center; font-size: 48px; color: #ffffff; }
     </style>

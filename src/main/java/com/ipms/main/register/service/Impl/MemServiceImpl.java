@@ -11,8 +11,8 @@ public class MemServiceImpl  implements MemService {
     @Autowired
     MemMapper memMapper;
     @Override
-    public int registerCheck(String memEmail) {
-        return this.memMapper.registerCheck(memEmail);
+    public int registerCheck(String email) {
+        return this.memMapper.registerCheck(email);
     }
     @Override
     public int registerMember(MemVO memVO) {

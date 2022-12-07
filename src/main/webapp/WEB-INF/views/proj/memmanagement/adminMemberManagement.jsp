@@ -7,6 +7,9 @@ td {
 	padding-right: 53px;
 	text-align: center;
 }
+.card-content{
+	overflow: auto;
+}
 </style>
 <h3 class="text-uppercase">
 	<b>프로젝트 멤버 관리</b>
@@ -28,13 +31,13 @@ td {
 					</h3>
 				</div>
 			</div>
-			<div class="row"  >
-				<div class="col-lg-5 ml-5" >
-					<div class="card text-center" style="height: 300px;  width:670px;">
-						<div class="card-content">
+			<div class="row" >
+				<div class="col-lg-5 ml-5"  >
+					<div class="card text-center" style="height: 300px;  width:670px; ">
+						<div class="card-content" >
 <!-- 							<div class="container-fluid" style="width: 100%; height: 100%"> -->
-								<div class="table-responsive">
-									<table id="recent-orders"
+								<div class="table-responsive"  >
+									<table id="recent-orders" 
 										class="table table-hover mb-0 ps-container ps-theme-default">
 										<thead>
 											<tr>
@@ -86,13 +89,53 @@ td {
 												<td class="text-truncate">$ 152.00</td>
 											</tr>
 											<tr>
-											<td class="text-truncate">PO-05521</td>
-											<td class="text-truncate"><a href="#">INV-001012</a></td>
-											<td class="text-truncate">Andrew D.</td>
-											<td class="text-truncate"><span
-												class="badge badge-success">Paid</span></td>
-											<td class="text-truncate">$ 152.00</td>
-										</tr>
+												<td class="text-truncate">PO-05521</td>
+												<td class="text-truncate"><a href="#">INV-001012</a></td>
+												<td class="text-truncate">Andrew D.</td>
+												<td class="text-truncate"><span
+													class="badge badge-success">Paid</span></td>
+												<td class="text-truncate">$ 152.00</td>
+											</tr>
+											<tr>
+												<td class="text-truncate">PO-05521</td>
+												<td class="text-truncate"><a href="#">INV-001012</a></td>
+												<td class="text-truncate">Andrew D.</td>
+												<td class="text-truncate"><span
+													class="badge badge-success">Paid</span></td>
+												<td class="text-truncate">$ 152.00</td>
+											</tr>
+											<tr>
+												<td class="text-truncate">PO-05521</td>
+												<td class="text-truncate"><a href="#">INV-001012</a></td>
+												<td class="text-truncate">Andrew D.</td>
+												<td class="text-truncate"><span
+													class="badge badge-success">Paid</span></td>
+												<td class="text-truncate">$ 152.00</td>
+											</tr>
+											<tr>
+												<td class="text-truncate">PO-05521</td>
+												<td class="text-truncate"><a href="#">INV-001012</a></td>
+												<td class="text-truncate">Andrew D.</td>
+												<td class="text-truncate"><span
+													class="badge badge-success">Paid</span></td>
+												<td class="text-truncate">$ 152.00</td>
+											</tr>
+											<tr>
+												<td class="text-truncate">PO-05521</td>
+												<td class="text-truncate"><a href="#">INV-001012</a></td>
+												<td class="text-truncate">Andrew D.</td>
+												<td class="text-truncate"><span
+													class="badge badge-success">Paid</span></td>
+												<td class="text-truncate">$ 152.00</td>
+											</tr>
+											<tr>
+												<td class="text-truncate">PO-05521</td>
+												<td class="text-truncate"><a href="#">INV-001012</a></td>
+												<td class="text-truncate">Andrew D.</td>
+												<td class="text-truncate"><span
+													class="badge badge-success">Paid</span></td>
+												<td class="text-truncate">$ 152.00</td>
+											</tr>
 
 										</tbody>
 									</table>
@@ -102,14 +145,13 @@ td {
 						</div>
 					</div>
 				</div>
-
-				<div class="col-lg-5 offset-1">
-					<div class="card" style="height: 300px; width:670px;">
-						<div class="card-content">
+				<div class="col-lg-5 offset-1" >
+					<div class="card" style="height: 300px; width:670px; ">
+						<div class="card-content"    >
 <!-- 							<div class="container-fluid"> -->
-							<div class="table-responsive">
+							<div class="table-responsive"   >
 								<table id="recent-orders"
-									class="table table-hover mb-0 ps-container ps-theme-default">
+									class="table table-hover mb-0 ps-container ps-theme-default" >
 									<thead>
 										<tr>
 											<th>SKU</th>
@@ -151,6 +193,30 @@ td {
 											<td class="text-truncate"><span
 												class="badge badge-warning">Overdue</span></td>
 											<td class="text-truncate">$ 5685.00</td>
+										</tr>
+										<tr>
+											<td class="text-truncate">PO-05521</td>
+											<td class="text-truncate"><a href="#">INV-001012</a></td>
+											<td class="text-truncate">Andrew D.</td>
+											<td class="text-truncate"><span
+												class="badge badge-success">Paid</span></td>
+											<td class="text-truncate">$ 152.00</td>
+										</tr>
+										<tr>
+											<td class="text-truncate">PO-05521</td>
+											<td class="text-truncate"><a href="#">INV-001012</a></td>
+											<td class="text-truncate">Andrew D.</td>
+											<td class="text-truncate"><span
+												class="badge badge-success">Paid</span></td>
+											<td class="text-truncate">$ 152.00</td>
+										</tr>
+										<tr>
+											<td class="text-truncate">PO-05521</td>
+											<td class="text-truncate"><a href="#">INV-001012</a></td>
+											<td class="text-truncate">Andrew D.</td>
+											<td class="text-truncate"><span
+												class="badge badge-success">Paid</span></td>
+											<td class="text-truncate">$ 152.00</td>
 										</tr>
 										<tr>
 											<td class="text-truncate">PO-05521</td>
@@ -201,7 +267,7 @@ td {
 					<div class="card text-center" style="height: 300px; width:670px;">
 						<div class="card-content">
 <!-- 								<div class="container-fluid"> -->
-									<div class="table-responsive">
+									<div class="table-responsive" >
 								<table id="recent-orders"
 									class="table table-hover mb-0 ps-container ps-theme-default">
 									<thead>
@@ -245,6 +311,30 @@ td {
 											<td class="text-truncate"><span
 												class="badge badge-warning">Overdue</span></td>
 											<td class="text-truncate">$ 5685.00</td>
+										</tr>
+										<tr>
+											<td class="text-truncate">PO-05521</td>
+											<td class="text-truncate"><a href="#">INV-001012</a></td>
+											<td class="text-truncate">Andrew D.</td>
+											<td class="text-truncate"><span
+												class="badge badge-success">Paid</span></td>
+											<td class="text-truncate">$ 152.00</td>
+										</tr>
+										<tr>
+											<td class="text-truncate">PO-05521</td>
+											<td class="text-truncate"><a href="#">INV-001012</a></td>
+											<td class="text-truncate">Andrew D.</td>
+											<td class="text-truncate"><span
+												class="badge badge-success">Paid</span></td>
+											<td class="text-truncate">$ 152.00</td>
+										</tr>
+										<tr>
+											<td class="text-truncate">PO-05521</td>
+											<td class="text-truncate"><a href="#">INV-001012</a></td>
+											<td class="text-truncate">Andrew D.</td>
+											<td class="text-truncate"><span
+												class="badge badge-success">Paid</span></td>
+											<td class="text-truncate">$ 152.00</td>
 										</tr>
 										<tr>
 											<td class="text-truncate">PO-05521</td>
@@ -273,11 +363,11 @@ td {
 
 				<div class="col-lg-5 offset-1">
 					<div class="card" style="height: 300px; width:670px;">
-						<div class="card-content">
+						<div class="card-content" >
 <!-- 								<div class="container-fluid"> -->
-									<div class="table-responsive">
+									<div class="table-responsive" >
 								<table id="recent-orders"
-									class="table table-hover mb-0 ps-container ps-theme-default">
+									class="table table-hover mb-0 ps-container ps-theme-default" >
 									<thead>
 										<tr>
 											<th>SKU</th>
@@ -327,6 +417,30 @@ td {
 											<td class="text-truncate"><span
 												class="badge badge-warning">Overdue</span></td>
 											<td class="text-truncate">$ 5685.00</td>
+										</tr>
+										<tr>
+											<td class="text-truncate">PO-05521</td>
+											<td class="text-truncate"><a href="#">INV-001012</a></td>
+											<td class="text-truncate">Andrew D.</td>
+											<td class="text-truncate"><span
+												class="badge badge-success">Paid</span></td>
+											<td class="text-truncate">$ 152.00</td>
+										</tr>
+										<tr>
+											<td class="text-truncate">PO-05521</td>
+											<td class="text-truncate"><a href="#">INV-001012</a></td>
+											<td class="text-truncate">Andrew D.</td>
+											<td class="text-truncate"><span
+												class="badge badge-success">Paid</span></td>
+											<td class="text-truncate">$ 152.00</td>
+										</tr>
+										<tr>
+											<td class="text-truncate">PO-05521</td>
+											<td class="text-truncate"><a href="#">INV-001012</a></td>
+											<td class="text-truncate">Andrew D.</td>
+											<td class="text-truncate"><span
+												class="badge badge-success">Paid</span></td>
+											<td class="text-truncate">$ 152.00</td>
 										</tr>
 										<tr>
 											<td class="text-truncate">PO-05521</td>

@@ -18,6 +18,34 @@
 <script src="/resources/js/jquery-3.6.0.js"></script>
 <script>
 
+
+    function registerCheck(){
+        var email =$("#email").val();
+        if(email==""){
+            $("#passMessage").html("이메일을 다시 입력하세요.");
+            $("#passMessage").css("color", "red");
+            return false;
+        }
+        $.ajax({
+            url:"/main/memRegisterCheck",
+            type:"get",
+            data: {"email": email},
+            success: function (result) {
+                if (result == 0) {
+                    $("#passMessage").html("이메일 사용이 가능합니다.");
+                    $("#passMessage").css("color", "blue");
+                    console.log(result)
+                    $("#btn").css('display', 'block');
+                    $("#chgBtn").css('display', 'none');
+                } else {
+                    $("#passMessage").html("이메일을 다시 입력하세요.");
+                    $("#passMessage").css("color", "red");
+                    console.log(result);
+                    $("#email").val("");
+                }
+            }
+        });
+    }
     $(document).ready(function () {
         $("#email").change(function () {
             var to = $("#email").val();
@@ -35,7 +63,6 @@
         let email;
         let text2;
         $("#btn").on("click", function () {
-
             alert("Click");
             console.log("to::" + to);
             let fData = $("#frm").serialize();
@@ -91,27 +118,23 @@
             return true;
         }
     }
-
+$(function (){
+    $("#chgBtn")
+})
 
 </script>
 <!-- END: Custom CSS-->
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+
 <!-- BEGIN: Content-->
 
 <div class="app-content container center-layout mt-2">
-    <div class="content-overlay"></div>
     <div class="content-wrapper">
         <div class="content-header row"></div>
         <div class="content-body">
             <section class="row flexbox-container">
                 <div class="col-12 d-flex align-items-center justify-content-center">
-                    <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0">
+                    <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0" style="margin-top:auto">
                         <div class="card border-grey border-lighten-3 px-2 py-2 m-0">
                             <div class="card-header border-0">
                                 <div class="card-title text-center">
@@ -123,7 +146,7 @@
                                     <span>Create Account</span>
                                 </h6>
                             </div>
-                            <div class="card-content">
+                            <div class="card-content" >
                                 <div class="card-body">
                                     <form class="form-horizontal form-simple" action="/main/signUpForm" method="post"
                                           novalidate>
@@ -139,10 +162,11 @@
                                                 class="form-group position-relative has-icon-left mb-1">
 
                                             <div >
-                                                <input type="text" class="form-control form-control-lg"  id="email" placeholder="이메일" required="required">
+                                                <input type="text" class="form-control form-control-lg"  id="email"  name="email" placeholder="이메일" required="required">
 
+                                            <button type="button" id="chgBtn"  class="btn btn-success btn-min-width mr-1 mb-1" onclick="registerCheck()"  style="float: right;width: 30px;display: block">중복체크</button>
+                                           <button type="button" id="btn"  class="btn btn-info btn-min-width mr-1 mb-1"  style="float: right;width: 30px;display: none">인증번호 전송</button>
 
-                                                <<button type="button" id="btn"  class="btn btn-success btn-min-width mr-1 mb-1"  style="float: right;width: 30px;">인증번호 전송</button>
 
                                             </div>
                                             <div class="form-control-position">
@@ -153,7 +177,7 @@
                                                   style="display: none">
 
                                             <input type="password" class="form-control form-control-lg"
-                                                   style="float: left; width: 60%" id="emailNum1" name="email"
+                                                   style="float: left; width: 60%" id="emailNum1" name="emailNum1"
                                                    placeholder="이메일 인증번호" required="required">
                                             <button type="button" id="btn2"
                                                     class="btn btn-success btn-min-width mr-1 mb-1"
@@ -189,17 +213,7 @@
                                             </div>
                                         </fieldset>
                                         <fieldset>
-                                            <div style="margin-left:10px;">
-                                                <!-- 속성에 multiple를 추가합시다. -->
-                                                <select class="form-control" multiple="multiple">
-                                                    <option>option1</option>
-                                                    <option>option2</option>
-                                                    <option>option3</option>
-                                                    <option>option4</option>
-                                                    <option>option5</option>
 
-                                                </select>
-                                            </div>
 
                                         </fieldset>
                                         <div>

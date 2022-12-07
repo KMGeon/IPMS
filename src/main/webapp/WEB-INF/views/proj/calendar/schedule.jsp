@@ -49,7 +49,7 @@
 <!--         <div class="content-wrapper"> -->
 <!--             <div class="content-body"> -->
                 <!-- Full calendar events example section start -->
-                <section id="events-examples">
+                <section id="events-examples" style="width:67%;">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">

@@ -46,17 +46,14 @@
 
 <div class="header-navbar" role="navigation" data-menu="menu-wrapper"></div>
 
-<div class="app-content container center-layout mt-2 scrollable-container">
-  <div class="content-overlay"></div>
-  <div class="content-wrapper" >
-    <div class="content-header row"></div>
-    <div class="content-body">
+<style>
+
+</style>
+
       <!-- mainBody 시작 -->
       <tiles:insertAttribute name="body"/>
       <!-- mainBody 끝 -->
-    </div>
-  </div>
-</div>
+
 
 <div class="sidenav-overlay"></div>
 <div class="drag-target"></div>

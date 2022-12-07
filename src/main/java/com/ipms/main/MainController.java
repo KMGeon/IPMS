@@ -16,7 +16,4 @@ public class MainController {
 	public String hello() {
 		return "main/page";
 	}
-	
-
-	
 }

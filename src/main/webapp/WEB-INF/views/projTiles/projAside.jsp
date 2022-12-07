@@ -20,7 +20,7 @@
 						<span class="menu-title" data-i18n="Invoice">대시보드</span>
 					</a>
 				<li class=" nav-item">
-					<a href="#">
+					<a href="/proj/work">
 					<i class="feather icon-file-plus"></i>
 						<span class="menu-title" data-i18n="Kanban Application">일감 관리</span>
 					</a>
@@ -44,7 +44,7 @@
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="#">
+					<a href="/proj/erd">
 					<i class="fa fa-database"></i>
 						<span class="menu-title" data-i18n="Kanban Application">ERD그리기</span>
 					</a>
@@ -80,7 +80,7 @@
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="#">
+					<a href="/proj/memManagement">
 					<i class="icon-users"></i>
 						<span class="menu-title" data-i18n="Kanban Application">프로젝트 멤버 관리</span>
 					</a>
