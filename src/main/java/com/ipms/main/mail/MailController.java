@@ -31,7 +31,7 @@ public class MailController {
 
     @PostMapping("/sendMailProcess")
     public  @ResponseBody  String sendMailProcess(@RequestParam Map<String, String> map  , Model model)  throws MessagingException {
-        log.info("map : " + map); // lombok을 사용한 부분
+        log.info("map : " + map);
         String subject = map.get("subject");
         String text = map.get("text");
         String from = map.get("from");

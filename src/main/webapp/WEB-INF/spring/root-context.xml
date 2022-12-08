@@ -1,97 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
-
-    <!-- Root Context: defines shared resources visible to all other web components -->
-
-    <!--
-    root-context.xml : 스프링 설정 파일
-
-    스프링 설정?
-    view와 관련되지 않은 객체를 정의
-    Service(기능), DAO(Repository : 저장소), DB등 비즈니스 로직과 관련된 설정
-    BasicDataSource dataSource = new BasicDataSource();
-    dataSource.setDriverClassName() = "oracle.jdbc.driver.OracleDriver";
-     -->
-    <!-- dataSource : 데이터베이스와 관련된 정보를 설정 -->
-    <bean id="dataSource"
-          class="org.apache.commons.dbcp2.BasicDataSource"
-          destroy-method="close">
-        <property name="driverClassName"
-                  value="oracle.jdbc.driver.OracleDriver" />
-        <property name="url"
-                  value="jdbc:oracle:thin:@localhost:1521:xe" />
-        <property name="username" value="project" />
-        <property name="password" value="java" />
-    </bean>
-    <!-- 데이터베이스와 연결을 맺고 끊어질 때까지의
-    라이프 사이클을 관리해주는 sqlSession 객체를 생성
-    1) dataSource
-    2) 매퍼 xml의 위치 지정. / : src/main/resources/
-     -->
-    <bean id="sqlSessionFactory"
-          class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"></property>
-        <property name="mapperLocations"
-                  value="classpath:/sqlmap/**/*_SQL.xml" />
-    </bean>
-    <!-- 데이터베이스에 개별적으로 쿼리를 실행시키는 객체.
-        이 객체를 통해 query를 실행함
-     -->
-    <bean id="sqlSessionTemplate"
-          class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory" />
-    </bean>
-
-    <!-- 트랜잭션 관리자의 빈을 정의 -->
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"></property>
-    </bean>
-
-    <!-- 이메일 -->
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.naver.com"/>
-        <property name="port" value="465"/>
-        <property name="username" value="charon4167@naver.com"/>
-        <property name="password" value="charon1234!"/>
-        <property name="javaMailProperties">
-            <props>
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.starttls.enable">true</prop>
-                <prop key="mail.smtps.checkserveridentity">true</prop>
-                <prop key="mail.smtps.ssl.trust">*</prop>
-                <prop key="mail.debug">true</prop>
-                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory
-                </prop>
-            </props>
-        </property>
-    </bean>
-
-    <!-- 애너테이션 기반의 트랜잭션 제어를 활성화함 -->
-    <tx:annotation-driven/>
-
-    <!-- Mapper 인터페이스 설정
-    개발자가 직접 DAO를 설정하지 않아도
-    자동으로 Mapper 인터페이스를 활용하는 객체를 생성하게 됨
-    -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.ipms.mapper" />
-    </bean>
-
-    <!-- 스프링 AOP 활성화 -->
-    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
-
-    <!-- kr.or.ddit.aop 패키지를 컴포넌트 스캔 대상으로 등록 -->
-    <context:component-scan base-package="com.ipms.aop"></context:component-scan>
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- 
+	root-context.xml : 스프링 설정 파일
+	
+	스프링 설정?
+	view와 관련되지 않은 객체를 정의
+	Service(기능), DAO(Repository : 저장소), DB등 비즈니스 로직과 관련된 설정
+	BasicDataSource dataSource = new BasicDataSource();
+	dataSource.setDriverClassName() = "oracle.jdbc.driver.OracleDriver";
+	 -->
+	 <!-- dataSource : 데이터베이스와 관련된 정보를 설정 -->
+	<bean id="dataSource" 
+		class="org.apache.commons.dbcp2.BasicDataSource" 
+		destroy-method="close">
+		<property name="driverClassName" 
+		value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" 
+		value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="project" />
+		<property name="password" value="java" />
+	</bean>
+	<!-- 데이터베이스와 연결을 맺고 끊어질 때까지의 
+	라이프 사이클을 관리해주는 sqlSession 객체를 생성
+	1) dataSource
+	2) 매퍼 xml의 위치 지정. / : src/main/resources/
+	 -->
+	<bean id="sqlSessionFactory"
+	class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations"
+		value="classpath:/sqlmap/**/*_SQL.xml" />
+	</bean>
+	<!-- 데이터베이스에 개별적으로 쿼리를 실행시키는 객체.
+		이 객체를 통해 query를 실행함
+	 -->
+	<bean id="sqlSessionTemplate"
+	class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+	<!-- 트랜잭션 관리자의 빈을 정의 -->
+	<bean id="transactionManager" 
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 이메일 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<property name="host" value="smtp.naver.com"/>
+	<property name="port" value="465"/>
+	<property name="username" value="charon4167@naver.com"/>
+	<property name="password" value="charon1234!"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtps.checkserveridentity">true</prop>
+				<prop key="mail.smtps.ssl.trust">*</prop>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory
+				</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 애너테이션 기반의 트랜잭션 제어를 활성화함 -->
+	<tx:annotation-driven/>
+	
+	<!-- Mapper 인터페이스 설정 
+	개발자가 직접 DAO를 설정하지 않아도
+	자동으로 Mapper 인터페이스를 활용하는 객체를 생성하게 됨
+	-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.ipms.mapper" />
+	</bean>
+	
+	<!-- 스프링 AOP 활성화 -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<!-- kr.or.ddit.aop 패키지를 컴포넌트 스캔 대상으로 등록 -->
+	<context:component-scan base-package="com.ipms.aop"></context:component-scan>
 </beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

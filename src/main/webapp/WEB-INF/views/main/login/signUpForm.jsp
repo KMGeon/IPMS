@@ -17,8 +17,6 @@
       href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
 <script src="/resources/js/jquery-3.6.0.js"></script>
 <script>
-
-
     function registerCheck(){
         var email =$("#email").val();
         if(email==""){
@@ -53,10 +51,7 @@
             console.log(to);
         })
     })
-
-
     $(function () {
-
         const randomNumber = Math.floor(Math.random() * 8888) + 1;
         $('input[name=text]').attr('value', randomNumber);
         let text1 = $("#text").val();
@@ -73,11 +68,8 @@
                 success: function (data) { //여기서 data는 controller에 list이다.
                     $("#hideEmail").css('display', 'block');
                 }
-
             })
         })
-
-
         $("#btn2").on("click", function () {
             text2 = $("#emailNum1").val();
             console.log("text2::" + text1);
@@ -86,7 +78,6 @@
                 alert("인증 성공");
                 $("#pwdForm1").css('display', 'block');
                 $("#pwdForm2").css('display', 'block');
-
             } else {
                 alert("인증 실패");
             }
@@ -94,14 +85,11 @@
         let pwd1 = $("#newPwd1").val();
         let pwd2 = $("#newPwd2").val();
     })
-
     $(function () {
         $("#emailBtn").on("click", function () {
             $("#hideEmail").css("display", 'block');
         });
-
     });
-
     function passwordCheck() {
         var password = $("#paswd").val();
         var password2 = $("#paswd2").val();
@@ -118,10 +106,9 @@
             return true;
         }
     }
-$(function (){
-    $("#chgBtn")
-})
-
+    $(function (){
+        $("#chgBtn")
+    })
 </script>
 <!-- END: Custom CSS-->
 
@@ -164,8 +151,8 @@ $(function (){
                                             <div >
                                                 <input type="text" class="form-control form-control-lg"  id="email"  name="email" placeholder="이메일" required="required">
 
-                                            <button type="button" id="chgBtn"  class="btn btn-success btn-min-width mr-1 mb-1" onclick="registerCheck()"  style="float: right;width: 30px;display: block">중복체크</button>
-                                           <button type="button" id="btn"  class="btn btn-info btn-min-width mr-1 mb-1"  style="float: right;width: 30px;display: none">인증번호 전송</button>
+                                                <button type="button" id="chgBtn"  class="btn btn-success btn-min-width mr-1 mb-1" onclick="registerCheck()"  style="float: right;width: 30px;display: block">중복체크</button>
+                                                <button type="button" id="btn"  class="btn btn-info btn-min-width mr-1 mb-1"  style="float: right;width: 30px;display: none">인증번호 전송</button>
 
 
                                             </div>
@@ -277,7 +264,6 @@ $(function (){
 <!-- BEGIN: Page JS-->
 <script>
     $('select').select2();
-
 </script>
 <script
         src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>

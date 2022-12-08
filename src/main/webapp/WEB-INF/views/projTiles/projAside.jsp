@@ -26,7 +26,7 @@
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="#">
+					<a href="/proj/issueboard">
 					<i class="feather icon-alert-circle"></i>
 						<span class="menu-title" data-i18n="Kanban Application">이슈</span>
 					</a>
@@ -62,13 +62,13 @@
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="#">
+					<a href="/proj/wiki">
 					<i class="fa fa-sitemap"></i>
 						<span class="menu-title" data-i18n="Kanban Application">위키</span>
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="#">
+					<a href="/proj/noticeBoard">
 					<i class="fa fa-list-ul"></i>
 						<span class="menu-title" data-i18n="Kanban Application">프로젝트 게시판</span>
 					</a>

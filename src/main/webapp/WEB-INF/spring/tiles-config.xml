@@ -7,6 +7,7 @@
 	<!-- main layout -->
 	<definition name="main-layout" template="/WEB-INF/views/mainTiles/mainIndex.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/mainTiles/mainHeader.jsp" />
+		<put-attribute name="aside" value="/WEB-INF/views/mainTiles/mainAside.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/views/mainTiles/mainFooter.jsp" />
 	</definition>
@@ -17,6 +18,14 @@
 		<put-attribute name="mypageAside" value="/WEB-INF/views/mypageTiles/mypageAside.jsp" />
 		<put-attribute name="mypageBody" value="" />
 		<put-attribute name="mypageFooter" value="/WEB-INF/views/mypageTiles/mypageFooter.jsp" />
+	</definition>
+	
+	<!-- admin layout -->
+	<definition name="admin-page-layout" template="/WEB-INF/views/adminTiles/adminIndex.jsp">
+		<put-attribute name="adminHeader" value="/WEB-INF/views/adminTiles/adminHeader.jsp" />
+		<put-attribute name="adminAside" value="/WEB-INF/views/adminTiles/adminAside.jsp" />
+		<put-attribute name="adminBody" value="" />
+		<put-attribute name="adminFooter" value="/WEB-INF/views/adminTiles/adminFooter.jsp" />
 	</definition>
 	
 	<!-- proj layout -->
@@ -36,6 +45,10 @@
 	
 	<definition name="main/mypage/*" extends="main-mypage-layout">
 		<put-attribute name="mypageBody" value="/WEB-INF/views/main/mypage/{1}.jsp" />
+	</definition>
+	
+	<definition name="main/admin/*" extends="admin-page-layout">
+		<put-attribute name="adminBody" value="/WEB-INF/views/main/admin/{1}.jsp" />
 	</definition>
 	
 	<definition name="main/*/*" extends="main-layout">

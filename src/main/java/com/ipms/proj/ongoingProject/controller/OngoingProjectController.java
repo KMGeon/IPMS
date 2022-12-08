@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/proj")
+@RequestMapping("/main")
 public class OngoingProjectController {
 
 	@GetMapping("/ongoing")
 	public String ongoing() {
-		return "proj/ongoingproject/ongoingProject";
+		return "main/mypage/ongoingProject";
 	}
 	
 }

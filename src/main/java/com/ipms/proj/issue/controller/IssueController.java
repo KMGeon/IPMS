@@ -12,6 +12,20 @@ public class IssueController {
 	public String issueboard() {
 		return "proj/issueboard/issueBoard";
 	}
-		
+	
+	@GetMapping("/issueBoardPL")
+	public String issueBoardPL() {
+		return "proj/issueboard/issueBoardPL";
+	}
+	
+	@GetMapping("/issueDetail")
+	public String issueDetail() {
+		return "proj/issueboard/issueDetail";
+	}
+	
+	@GetMapping("/issueInsert")
+	public String issueInsert() {
+		return "proj/issueboard/issueInsert";
+	}
 	
 }

@@ -8,7 +8,7 @@
     <div class="content-body"><!-- Search form-->
       <section id="search-images" class="card overflow-hidden">
         <div class="card-header">
-          <h4 class="card-title">전체 프로젝트</h4>
+          <h4 class="card-title"style="font-size: xx-large"><strong>전체 프로젝트</strong></h4>
           <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
           <div class="heading-elements">
             <ul class="list-inline mb-0">
@@ -22,36 +22,26 @@
         <div class="card-content collapse show">
           <div class="card-body pb-0">
             <fieldset class="form-group position-relative mb-0">
-              <input type="text" class="form-control form-control-xl input-xl" id="iconLeft1" placeholder="Explore Stack ...">
-              <div class="form-control-position">
-                <i class="feather icon-mic font-medium-4"></i>
+              <div class="col-sm-12 col-md-6" style="float: right">
+                <div id="app-invoice-table_filter" class="dataTables_filter"><label style="float: right">Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="app-invoice-table"></label></div>
               </div>
             </fieldset>
           </div>
           <!--Search Navbar-->
           <div id="search-nav" class="card-body">
-            <ul class="nav nav-inline">
+
+            <ul class="nav nav-inline" style="float:right;">
               <li class="nav-item">
-                <a class="nav-link" href="search-website.html"><i class="fa fa-link"></i> Website</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="search-images.html"><i class="fa fa-file-image-o"></i> Images</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="search-videos.html"><i class="fa fa-file-video-o"></i> Videos</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa fa-map-marker"></i> Maps</a>
+                <i class="fonticon-classname"></i> 정렬</a>
               </li>
               <li class="dropdown nav-item float-right">
                 <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
                   <i class="pe-li-settings"></i> <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="dropdown-item"><a href="#" class="dropdown-link">Languages</a></li>
-                  <li class="dropdown-item"><a href="#" class="dropdown-link">Search Settings</a></li>
-                  <li class="dropdown-item"><a href="#" class="dropdown-link">History</a></li>
-                  <li class="dropdown-item"><a href="#" class="dropdown-link">Search Help</a></li>
+                  <li class="dropdown-item"><a href="#" class="dropdown-link">조회순</a></li>
+                  <li class="dropdown-item"><a href="#" class="dropdown-link">최신순</a></li>
+                  <li class="dropdown-item"><a href="#" class="dropdown-link">인기순</a></li>
                 </ul>
               </li>
             </ul>
@@ -63,7 +53,7 @@
               <div class="card-deck-wrapper">
                 <div class="card-deck">
                   <figure class="card card-img-top border-grey border-lighten-2" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
-                    <a href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg" itemprop="contentUrl" data-size="480x360">
+                    <a href="/main/projlistdetail" itemprop="contentUrl" data-size="480x360">
                       <img class="gallery-thumbnail card-img-top" src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg" itemprop="thumbnail" alt="Image description">
                     </a>
                     <div class="card-body px-0">
@@ -182,7 +172,7 @@
               </div>
               <div class="text-center">
                 <nav aria-label="Page navigation">
-                  <ul class="pagination pagination-separate pagination-round pagination-flat">
+                  <ul class="pagination pagination-separate pagination-round pagination-flat" style="text-align: center;margin-left: 500px">
                     <li class="page-item">
                       <a class="page-link" href="#" aria-label="Previous">
                         <span aria-hidden="true">« Prev</span>
@@ -220,34 +210,7 @@
                   <div class="pswp__item"></div>
                 </div>
                 <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-                <div class="pswp__ui pswp__ui--hidden">
-                  <div class="pswp__top-bar">
-                    <!--  Controls are self-explanatory. Order can be changed. -->
-                    <div class="pswp__counter"></div>
-                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                    <button class="pswp__button pswp__button--share" title="Share"></button>
-                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                    <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                    <!-- element will get class pswp__preloader-active when preloader is running -->
-                    <div class="pswp__preloader">
-                      <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                          <div class="pswp__preloader__donut"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                    <div class="pswp__share-tooltip"></div>
-                  </div>
-                  <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-                  </button>
-                  <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-                  </button>
-                  <div class="pswp__caption">
-                    <div class="pswp__caption__center"></div>
-                  </div>
+
                 </div>
               </div>
             </div>

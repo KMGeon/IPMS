@@ -30,7 +30,7 @@
                     </button>
                 </a></li>
 
-                <li class="nav-item"><a class="navbar-brand" href="#"
+                <li class="nav-item"><a class="navbar-brand" href="/main/svcNotice"
                                         style="margin-left: 80px;margin-top: 10px;position: relative;">
                     <button type="button" class="btn btn-outline-light btn-min-width mr-1 mb-1"
                             style="border: none;font-weight: bold;color: black">고객센터
