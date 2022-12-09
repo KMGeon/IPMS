@@ -82,23 +82,17 @@ background-color: #448AFF;
 }
 </style>
 </head>
+
+<div class="row" style="margin-top: 10px;">
 <div class="col-md-6" style="display: flex; float: left; width: 1000px;">
 	<div class="card-content collapse show">
-		<div class="card-body">
-			<div>
+		<div class="card-body offset-2 ">
+			<div style="padding-left: 20px;">
 					<h4 class="form-section">
 						<i class="feather icon-monitor"></i> Project Detail
 					</h4>
 					<hr style="width:650px; float: left" />
 										<br/><br/><br/><br/>
-					<div class="pace  pace-inactive">
-						<div class="pace-progress" data-progress-text="100%"
-							data-progress="99"
-							style="transform: translate3d(100%, 0px, 0px);">
-							<div class="pace-progress-inner"></div>
-						</div>
-						<div class="pace-activity"></div>
-					</div>
 					<div class="content-overlay"></div>
 					<div class="content-body">
 						<div class="card-content collapse show" >
@@ -145,6 +139,7 @@ background-color: #448AFF;
 						<i class="fa fa-file-text"></i> information
 					</h4>
 					<hr />
+					<br/><br/>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -167,21 +162,21 @@ background-color: #448AFF;
 					<br />
 					<div class="form-group">
 						<label for="userinput8">Project Introduce</label>
-						<textarea id="userinput8" rows="5"
+						<textarea style="width:500px; resize: none;" id="userinput8" rows="5"
 							class="form-control border-primary"
 							placeholder="Project Introduce"></textarea>
 					</div>
 
 			
 
-					<div class="border-primary" style="border-radius: 0.2em;">
-						<div id="gdiv" >
+					<div style="width:501px;" class="border-primary" style="border-radius: 0.2em;">
+						<div  id="gdiv" >
 							<label for="userinput8">댓글 목록</label>
 							<hr/>
 						</div>
 						<div  class="form-group" style=" position: relative; top: 55px;" >
-							<textarea id="gtt" rows="5" class="form-control border-primary" placeholder="댓글작성" ></textarea>
-							<button id="rgbtn" style="text-align:center; position: relative; bottom: 65px; left: 665px;"  class="btn btn-primary"  >등록</button>
+							<textarea style="width:500px; resize: none;" id="gtt" rows="5" class="form-control border-primary" placeholder="댓글작성" ></textarea>
+							<button id="rgbtn" style="text-align:center; position: relative; bottom: 50px; left: 435px;"  class="btn btn-primary"  >등록</button>
 						</div>
 					</div>
 				</div>
@@ -189,17 +184,8 @@ background-color: #448AFF;
 		</div>
 	</div>
 </div>
-<div class="sidenav-overlay"
-	style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
-<div class="drag-target"
-	style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+</div>
 
-<!-- BEGIN: Footer-->
-
-<!-- END: Footer-->
-
-
-<!-- BEGIN: Vendor JS-->
 <script
 	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
 <!-- BEGIN Vendor JS-->

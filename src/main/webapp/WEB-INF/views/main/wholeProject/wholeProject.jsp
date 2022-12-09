@@ -10,41 +10,31 @@
         <div class="card-header">
           <h4 class="card-title"style="font-size: xx-large"><strong>전체 프로젝트</strong></h4>
           <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-          <div class="heading-elements">
-            <ul class="list-inline mb-0">
-              <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
-              <li><a data-action="reload"><i class="feather icon-rotate-cw"></i></a></li>
-              <li><a data-action="expand"><i class="feather icon-maximize"></i></a></li>
-              <li><a data-action="close"><i class="feather icon-x"></i></a></li>
-            </ul>
-          </div>
         </div>
         <div class="card-content collapse show">
           <div class="card-body pb-0">
-            <fieldset class="form-group position-relative mb-0">
-              <div class="col-sm-12 col-md-6" style="float: right">
-                <div id="app-invoice-table_filter" class="dataTables_filter"><label style="float: right">Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="app-invoice-table"></label></div>
-              </div>
-            </fieldset>
           </div>
           <!--Search Navbar-->
-          <div id="search-nav" class="card-body">
-
-            <ul class="nav nav-inline" style="float:right;">
-              <li class="nav-item">
-                <i class="fonticon-classname"></i> 정렬</a>
-              </li>
-              <li class="dropdown nav-item float-right">
-                <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                  <i class="pe-li-settings"></i> <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="dropdown-item"><a href="#" class="dropdown-link">조회순</a></li>
-                  <li class="dropdown-item"><a href="#" class="dropdown-link">최신순</a></li>
-                  <li class="dropdown-item"><a href="#" class="dropdown-link">인기순</a></li>
-                </ul>
-              </li>
-            </ul>
+          <div class="todo-fixed-search d-flex justify-content-between align-items-center">
+            <div class="sidebar-toggle d-block d-lg-none">
+              <i class="feather icon-menu"></i>
+            </div>
+            <fieldset class="form-group position-relative has-icon-left m-0 flex-grow-1 pl-2">
+              <input type="text" class="form-control todo-search" id="todo-search" placeholder="Search Task">
+              <div class="form-control-position">
+                <i class="feather icon-search"></i>
+              </div>
+            </fieldset>
+            <div class="todo-sort dropdown mr-1">
+              <button class="btn dropdown-toggle sorting" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="feather icon-filter"></i>
+                <span>Sort</span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sortDropdown" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(111px, 37px, 0px);">
+                <a class="dropdown-item ascending" href="#">최신순</a>
+                <a class="dropdown-item descending" href="#">조회순</a>
+              </div>
+            </div>
           </div>
           <!--/ Search Navbar-->
           <!--Search Result-->
@@ -179,9 +169,9 @@
                         <span class="sr-only">Previous</span>
                       </a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
                     <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item "><a class="page-link" href="#">3</a></li>
                     <li class="page-item"><a class="page-link" href="#">4</a></li>
                     <li class="page-item"><a class="page-link" href="#">5</a></li>
                     <li class="page-item">

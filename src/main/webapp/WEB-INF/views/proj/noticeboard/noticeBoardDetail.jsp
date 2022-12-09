@@ -18,16 +18,16 @@
 
 	<!-- BEGIN: Content-->
 	<div class="content-wrapper">
-		<div class="content-header row">
-			<div class="content-header-left col-md-6 col-12 mb-2">
-				<h3 class="content-header-title mb-0">NOTICE DETAIL</h3>
-			</div>
-		</div>
+		<!-- 		<div class="content-header row"> -->
+		<!-- 			<div class="content-header-left col-md-6 col-12 mb-2"> -->
+		<!-- 				<h3 class="content-header-title mb-0">NOTICE DETAIL</h3> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
 		<div class="content-body">
 			<!-- App invoice wrapper -->
 			<section class="app-invoice-wrapper">
-				<div class="row">
-					<div style="width: 2000px;">
+				<div class="row justify-content-md-center">
+					<div style="width: 1200px;">
 						<!-- using a bootstrap card -->
 						<div class="card">
 							<!-- card body -->
@@ -71,18 +71,18 @@
 									</div>
 								</div>
 								<hr>
-								<div><i class="feather icon-link"></i>첨부파일: ___________________________</div>
-								<div style="float:right;">
-									<button type="button"
-										class="btn btn-secondary">
+								<div>
+									<i class="feather icon-link"></i>첨부파일:
+									___________________________
+								</div>
+								<div style="float: right;">
+									<button type="button" class="btn btn-secondary">
 										<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
 									</button>
-									<button type="button"
-										class="btn btn-secondary">
+									<button type="button" class="btn btn-secondary">
 										<i class="feather icon-edit mr-25 common-size"></i>수정
 									</button>
-									<a href="/proj/noticeBoard"
-										class="btn btn-primary"><i
+									<a href="/proj/noticeBoard" class="btn btn-primary"><i
 										class="fa fa-reply-all mr-25 common-size"></i>목록</a>
 								</div>
 							</div>
@@ -95,7 +95,8 @@
 	<!-- END: Content-->
 
 	<!-- BEGIN: Page JS-->
-	<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-invoice.js"></script>
+	<script
+		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-invoice.js"></script>
 	<!-- END: Page JS-->
 
 </body>

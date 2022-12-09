@@ -260,18 +260,19 @@
                     </div>
                 </li>
             </ul>
-            <c:if test="${empty mvo}">
+
                 <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그인
                 </button>
                 <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입
                 </button>
-            </c:if>
-            <c:if test="${!empty mvo}">
-                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>하하하
-                </button>
-                <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입
-                </button>
-            </c:if>
+            <form action="/customLogout" method='post'>
+                <input type="hidden"name="${_csrf.parameterName}"value="${_csrf.token}"/>
+                <button  class="btn btn-outline-secondary" >로그아웃</button>
+            </form>
+
+
+
+
 
         </div>
     </div>

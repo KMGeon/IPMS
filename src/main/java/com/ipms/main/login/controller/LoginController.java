@@ -2,6 +2,7 @@ package com.ipms.main.login.controller;
 
 import com.ipms.main.login.service.LoginService;
 import com.ipms.main.vo.MemVO;
+import com.ipms.mapper.MemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,8 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
     @Autowired
     LoginService loginService;
-
+    @Autowired
+    MemMapper memMapper;
     @GetMapping("/loginForm")
     public String loginForm() {
         return "main/login/loginForm";
@@ -30,16 +32,15 @@ public class LoginController {
 
     //로그인  POST
     @RequestMapping(value = "/loginPost", method = RequestMethod.POST)
-    public String loginPost(@ModelAttribute MemVO memvo) {
+    public String loginPost(@ModelAttribute MemVO memvo , @RequestParam String email) {
 log.info("=================================");
          int result = this.loginService.loginMem( memvo);
 
         if (result==1) {
-
             return "redirect:/main/loginMain";
         } else {
            log.info("=====================");
-            return "redirect:/main/signUpForm";
+            return "redirect:/main/loginForm";
         }
     }
 
@@ -47,6 +48,11 @@ log.info("=================================");
     @GetMapping("/loginMain")
     public String asd(){
         return "main/login/loginMain";
+    }
+
+    @PostMapping(value = "")
+    public String getPwd(){
+        return "";
     }
 
 }

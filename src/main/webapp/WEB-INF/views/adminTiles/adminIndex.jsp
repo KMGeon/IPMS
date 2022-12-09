@@ -66,7 +66,7 @@
             <div class="content-overlay"></div>
             <div class="content-wrapper">
                 <div class="content-header row"></div>
-                <div class="content-body offset-2">
+                <div class="content-body offset-1">
 					<tiles:insertAttribute name="adminBody"/>
             	</div>
         </div>

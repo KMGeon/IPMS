@@ -4,6 +4,7 @@ import com.ipms.main.register.service.MemService;
 import com.ipms.main.vo.MemVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class registerMemController {
     }
 
     //회원가입post
+    @PreAuthorize("permitAll()")
     @RequestMapping(value = "/signUpForm" , method = RequestMethod.POST)
     public String signUpForm(@ModelAttribute MemVO memVO)
     {
@@ -30,7 +32,8 @@ public class registerMemController {
         int result = this.memService.registerMember(memVO);
         log.info("result::"+result);
         if(result==1){
-            return "redirect:/main/main";
+            log.info("============================="+result);
+            return "redirect:/main/page";
         }else{
             return "redirect:/main/page";
         }
@@ -41,5 +44,15 @@ public class registerMemController {
         log.info("중복체크:::"+result);
         return result;
     }
+    @PostMapping(value = "/UpdatePwd")
+    public String UpdatePwd( @ModelAttribute  MemVO memVO){
+        int result = this.memService.UpdatePwd(memVO);
+        if(result==1){
+            return "main/page";
+        }else{
+            return "redirect:/main/loginForm";
+        }
+    }
+
 
 }

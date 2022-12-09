@@ -1,15 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/icheck/icheck.css">
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/icheck/custom.css">
+<link rel="stylesheet" type="text/css"
+      href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/icheck/icheck.css">
+<link rel="stylesheet" type="text/css"
+      href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/icheck/custom.css">
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/horizontal-menu.css">
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/colors/palette-gradient.css">
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/login-register.css">
+<link rel="stylesheet" type="text/css"
+      href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/horizontal-menu.css">
+<link rel="stylesheet" type="text/css"
+      href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/colors/palette-gradient.css">
+<link rel="stylesheet" type="text/css"
+      href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/login-register.css">
 
 <!-- BEGIN: Custom CSS-->
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
@@ -26,7 +32,7 @@
             <div class="row gx-lg-5 align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <h1 class="my-5 display-3 fw-bold ls-tight">
-                        The best offer <br />
+                        The best offer <br/>
                         <span class="text-primary">for your business</span>
                     </h1>
                     <p style="color: hsl(217, 10%, 50.8%)">
@@ -41,23 +47,25 @@
                     <div class="card">
                         <div class="card-body py-5 px-md-5">
                             <div class="card-title text-center">
-                                <img src="/resources/logoImage/logo.jpg" href="" alt="branding logo" style="width: 100px; height: auto;">
+                                <img src="/resources/logoImage/logo.jpg" href="" alt="branding logo"
+                                     style="width: 100px; height: auto;">
                             </div>
                             <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2"><span>Login with
                                         IPMS</span>
                             </h6>
-                            <form action="/main/loginPost" method="post">
+                            <form action="/login" method="post">
 
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
-                                    <label class="form-label style="float: left">Email </label>
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Your Email" required/>
+                                    <label class="form-label style=" float: left">Email </label>
+                                    <input type="text" id="email" name="username" class="form-control" placeholder="Your Email" required/>
                                 </div>
 
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label" style="float: left">Password</label>
-                                    <input type="password" id="paswd" name="paswd" class="form-control" placeholder="Enter Password" required/>
+                                    <input type="password" id="paswd" name="password" class="form-control"
+                                           placeholder="Enter Password" required/>
                                 </div>
                                 <!-- Checkbox -->
                                 <div class="col-sm-6 col-12 text-center text-sm-left">
@@ -72,6 +80,7 @@
                                 </button>
                                 <a href="/main/signUpForm">회원가입</a><br><a href="/main/fgtPwd">비밀번호 찾기</a>
                                 <!-- Register buttons -->
+                                <sec:csrfInput/>
                             </form>
                         </div>
                     </div>

@@ -92,25 +92,24 @@
 
 <!-- BEGIN: Body-->
 
-<body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  menu-expanded pace-done" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
-	<div class="pace  pace-inactive">
-		<div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+<body  class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  menu-expanded pace-done" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+	<div class="pace  pace-inactive" >
+		<div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);" >
 			<div class="pace-progress-inner"></div>
 		</div>
 		<div class="pace-activity"></div>
 	</div>
 
-	<div class="content-overlay"></div>
-		<div class="content-header-left col-md-6 col-12 mb-2">
+		<div style="bottom:20px;" class="content-header-left col-md-6 col-12 mb-2">
 			<h3 class="content-header-title mb-0"><b>My BookMark Page</b></h3>
 			<div class="row breadcrumbs-top">
 				<div class="breadcrumb-wrapper col-12"></div>
 			</div>
 		</div>
 
-	<div class="content-body" >
-		<div class="grid-hover row" >
-		<div class="contatiner row">
+	<div class="content-overlay" >
+		<div class="grid-hover row" style="right:125px; width:1500px;">
+		<div class="contatiner row" >
 			<!-- 이거 포문 돌리기 ㄱㄱ 시작 -->
 			<div class="bookdiv" >
 				<figure class="effect-roxy"  >
@@ -130,7 +129,7 @@
 			</div>
 			<!-- 이거 포문 돌리기 ㄱㄱ 끗 -->
 		</div>
-		<div class="contatiner row">
+		<div class="contatiner row" >
 			<!-- 아래있는 div 틀 -->
 			<div  class="bookdiv" >
 				<figure class="effect-roxy"  >

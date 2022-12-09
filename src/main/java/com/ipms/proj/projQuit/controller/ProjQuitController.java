@@ -1,6 +1,5 @@
-package com.ipms.main;
+package com.ipms.proj.projQuit.controller;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,11 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequestMapping("/main")
+@RequestMapping("/proj")
 @Controller
-public class MainController {
-	@GetMapping("/page")
-	public String hello() {
-		return "main/page";
+public class ProjQuitController {
+	
+	@GetMapping("/projQuit")
+	public String projQuit() {
+		return "proj/projQuit/projQuit";
 	}
 }

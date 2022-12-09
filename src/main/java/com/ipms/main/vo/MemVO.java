@@ -1,10 +1,13 @@
 package com.ipms.main.vo;
 
 import lombok.Data;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
+@Repository
 public class MemVO {
     private String memNum;//회원번호
     private String email;//이메일
@@ -14,4 +17,5 @@ public class MemVO {
     private String memWhdrlWhth;//탈퇴여부
     private String memPhoneNumber;//전화번호
     private Date memSgnupDate; //가입일자
+    private List<MemAthrtyVO> memAuthList;
 }

@@ -18,8 +18,6 @@
         where mem_email =#{email} and mem_passwd= #{paswd}
     </select>
 
-
-
     <!--회원가입-->
     <insert id="registerMember" parameterType="com.ipms.main.vo.MemVO">
         <selectKey order="BEFORE" keyProperty="memNum" resultType="String">
@@ -46,5 +44,47 @@
         )
     </insert>
 
+
+    <resultMap type="com.ipms.main.vo.MemVO" id="memberMap">
+        <result property="memNum" column="mem_num" />
+        <result property="email" column="mem_email" />
+        <result property="paswd" column="mem_passwd" />
+        <result property="name" column="mem_name" />
+        <result property="memDvmntArea" column="mem_dvmnt_area" />
+        <result property="memWhdrlWhth" column="mem_whdrl_whth" />
+        <result property="memPhoneNumber" column="mem_phone_number" />
+        <result property="memSgnupDate" column="mem_sgnup_date" />
+        <collection property="memAuthList" resultMap="authMap"></collection>
+    </resultMap>
+
+    <resultMap type="com.ipms.main.vo.MemAthrtyVO" id="authMap">
+        <result property="memNum" column="mem_num" />
+        <result property="athrty" column="athrty" />
+    </resultMap>
+    <!-- 회원로그인확인 -->
+    <select id="read" parameterType="string" resultMap="memberMap">
+        SELECT A.mem_num,
+               A.mem_email,
+               A.mem_passwd,
+               A.mem_name,
+               A.mem_dvmnt_area,
+               A.mem_whdrl_whth,
+               A.mem_phone_number,
+               A.mem_sgnup_date,
+               AUTH.ATHRTY
+        FROM mem A
+                 LEFT OUTER JOIN MEM_ATHRTY AUTH
+                                 ON (A.MEM_NUM = AUTH.MEM_NUM)
+        WHERE A.mem_num = (select mem_num from mem where mem_email =#{email} )
+    </select>
+
+<!--비밀번호 업데이트 -->
+<update id="UpdatePwd"  parameterType="com.ipms.main.vo.MemVO">
+    UPDATE mem
+    SET
+        mem_passwd=#{paswd}
+    WHERE
+        mem_email = #{email}
+</update>
 </mapper>
 

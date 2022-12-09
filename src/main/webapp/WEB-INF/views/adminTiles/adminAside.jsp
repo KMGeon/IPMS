@@ -13,11 +13,11 @@
 <br>
 <br>
 <br>
-<div class="content-left offset-1" style="width: 12%">
+<div class="content-left ml-5" style="width: 12%">
 <div class="card-head">
 		<div class="form-group form-group-compose">
             <!-- compose button  -->
-            <a href="/main/pwAuth" class="btn btn btn-glow btn-block my-2 compose-btn" style="background:#3F4E89; color:white;">
+            <a href="/main/customerServiceMana" class="btn btn btn-glow btn-block my-2 compose-btn" style="background:#3F4E89; color:white;">
                 <i class="fa fa-pencil-square-o"></i>
                 	관리자 페이지
             </a>
@@ -33,17 +33,17 @@
 	<div class="sidebar-menu-list">
 		<!-- sidebar menu  -->
 		<div class="list-group" >
-			<a href="/main/inforManagement" class="list-group-item" id="inbox-menu">
+			<a href="/main/customerServiceMana" class="list-group-item" id="inbox-menu">
 				<div class="d-inline mr-25">
-					<i class="feather icon-mail"></i> &nbsp;&nbsp;고객 센터 관리
+					<i class="fa fa-paper-plane"></i> &nbsp;&nbsp;고객 센터 관리
 				</div> 
 			</a> <a href="/main/projManagement" class="list-group-item">
 				<div class="d-inline mr-25" >
-					<i class="feather icon-play"></i> &nbsp;&nbsp;전체 프로젝트 관리
+					<i class="fa fa-th"></i> &nbsp;&nbsp;전체 프로젝트 관리
 				</div> 
 			</a> <a href="/main/adminMemberManagement" class="list-group-item">
 				<div class="d-inline mr-25">
-					<i class="feather icon-edit-1"></i> &nbsp;&nbsp;전체 회원 관리
+					<i class="fa fa-users"></i> &nbsp;&nbsp;전체 회원 관리
 				</div> 
 			</a> 
 		</div>

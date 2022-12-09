@@ -8,12 +8,12 @@
 <br>
 <br>
 <br>
-<div class="content-left offset-1" style="width: 12%">
+<div class="content-left ml-5" style="width: 12%">
 <div class="card-head">
 		<div class="form-group form-group-compose">
             <!-- compose button  -->
             <a href="/main/pwAuth" class="btn btn-info btn-glow btn-block my-2 compose-btn" style="background-color: #00b5b8 !important">
-                <i class="fa fa-pencil-square-o"></i>
+                <i class="fa fa-user-circle"></i>
                 	마이페이지
             </a>
         </div>
@@ -30,33 +30,33 @@
 		<div class="list-group list-group-messages" >
 			<a href="/main/inforManagement" class="list-group-item" id="inbox-menu">
 				<div class="d-inline mr-25">
-					<i class="feather icon-mail"></i>
+					<i class="fa fa-address-book"></i>
 				</div> 개인 정보 관리 
 			</a> <a href="/main/inviteAndApply" class="list-group-item">
 				<div class="d-inline mr-25">
-					<i class="feather icon-play"></i>
+					<i class="fa fa-user-plus"></i>
 				</div> 초대/신청 현황 조회
 			</a> <a href="/main/ongoing" class="list-group-item">
 				<div class="d-inline mr-25">
-					<i class="feather icon-edit-1"></i>
+					<i class="fa fa-list-alt"></i>
 				</div> 프로젝트 현황
 			</a> <a href="/main/bookmark" class="list-group-item">
 				<div class="d-inline mr-25">
-					<i class="feather icon-star"></i>
+					<i class="fa fa-bookmark"></i>
 				</div> 북마크 한 프로젝트
 			</a> <a href="/main/portfolio" class="list-group-item">
 				<div class="d-inline mr-25">
-					<i class="feather icon-info"></i>
+					<i class="fa fa-address-card"></i>
 				</div> 포트폴리오 <span
 				class="badge badge-warning badge-pill badge-round float-right">3</span>
 			</a> <a href="#" class="list-group-item">
 				<div class="d-inline mr-25">
-					<i class="feather icon-trash-2"></i>
+					<i class="fa fa-paper-plane"></i>
 				</div> 문의내역
 			</a>
 			</a> <a href="/main/memDeleteAcc" class="list-group-item">
 				<div class="d-inline mr-25">
-					<i class="feather icon-trash-2"></i>
+					<i class="fa fa-bomb"></i>
 				</div> 회원탈퇴
 			</a>
 		</div>

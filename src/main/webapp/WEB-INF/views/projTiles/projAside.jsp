@@ -74,7 +74,7 @@
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="#">
+					<a href="/proj/projQuit">
 					<i class="feather icon-user-minus"></i>
 						<span class="menu-title" data-i18n="Kanban Application">프로젝트 하차</span>
 					</a>

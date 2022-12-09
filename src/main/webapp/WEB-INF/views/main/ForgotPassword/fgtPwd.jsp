@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <!-- BEGIN: Page CSS-->
 <link rel="stylesheet" type="text/css"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/horizontal-menu.css">
@@ -117,11 +119,10 @@ function  passwordCheck(){
 							</div>
 							<div class="card-content">
 								<div class="card-body">
-									<form class="form-horizontal form-simple" action="index.html"
-										novalidate>
+									<form class="form-horizontal form-simple" action="/main/UpdatePwd"  method="post">
 										<fieldset
 											class="form-group position-relative has-icon-left mb-1">
-											<input type="text" class="form-control form-control-lg" id="emailId" placeholder="이메일" required="required">
+											<input type="text" class="form-control form-control-lg" id="emailId" name="email" placeholder="이메일" required="required">
 											<button type="button" id="btn" class="btn btn-success btn-min-width mr-1 mb-1" style="float: right;width: 30px;">인증번호 전송</button>
 											<div class="form-control-position">
 												<i class="feather icon-user"></i>
@@ -137,7 +138,7 @@ function  passwordCheck(){
 										</fieldset>
 										
 										<fieldset class="form-group position-relative has-icon-left mb-1" id="pwdForm1" style="display: none"  >
-											<input type="text" class="form-control form-control-lg" id="memPasswd"   placeholder="비밀번호" onkeyup="passwordCheck()" style="float: left; required="required"/>
+											<input type="text" class="form-control form-control-lg" id="memPasswd"  name="paswd" placeholder="비밀번호" onkeyup="passwordCheck()" style="float: left;" required/>
 											<div class="form-control-position">
 												<i class="fa fa-key"></i>
 											</div>
@@ -153,7 +154,7 @@ function  passwordCheck(){
 										 <div>
         									<span id="passMessage" style="color: red"/>
    										</div>
-									
+										<sec:csrfInput/>
 										<button type="submit" id="sbtBtn" name="sbtBtn" class="btn btn-primary btn-lg btn-block" style="display: none">
 											<i class="feather icon-unlock"></i> Register
 										</button>
@@ -190,7 +191,7 @@ function  passwordCheck(){
 
 <form action="<%=request.getContextPath()%>/mail/sendMailProcess" id="frm" name="frm" method="post" style="display: none">
     <div>
-        <input type="text" id="from" name="from" placeholder="보내는 사람" value="charon4167@naver.com" readonly>
+        <input type="text" id="from" name="from" placeholder="보내는 사람" value="pos04167@naver.com" readonly>
     </div>
     <div>
         <input type="text" id="to" name="to"

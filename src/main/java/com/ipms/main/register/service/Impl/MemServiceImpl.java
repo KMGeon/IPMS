@@ -18,4 +18,9 @@ public class MemServiceImpl  implements MemService {
     public int registerMember(MemVO memVO) {
         return this.memMapper.registerMember(memVO);
     }
+
+    @Override
+    public int UpdatePwd(MemVO memVO) {
+        return this.memMapper.UpdatePwd(memVO);
+    }
 }

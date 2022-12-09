@@ -13,8 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import lombok.extern.log4j.Log4j;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Slf4j
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -37,19 +35,18 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		if (roleNames.contains("ROLE_ADMIN")) {
 
-			response.sendRedirect("/sample/admin");
+			response.sendRedirect("/main/newProjectForm");
 			return;
 		}
 
 		if (roleNames.contains("ROLE_MEMBER")) {
 
-			response.sendRedirect("/sample/member");
+			response.sendRedirect("/main/page");
 			return;
 		}
 
-		response.sendRedirect("/");
+		response.sendRedirect("/main/loginForm");
 	}
-
 }
 
 
