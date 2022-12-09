@@ -226,6 +226,7 @@
                                                 class="btn btn-primary btn-lg btn-block" style="display:none;">
                                             <i class="feather icon-unlock"></i> Register
                                         </button>
+                                        <input type="hidden" name="memAuthList[0].athrty" value="ROLE_MEMBER"/>
                                         <sec:csrfInput/>
                                     </form>
                                 </div>

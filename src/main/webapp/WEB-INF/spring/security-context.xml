@@ -4,24 +4,39 @@
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="customAccessDenied" class="com.ipms.security.CustomAccessDeniedHandler"></bean>
+
+    <!-- customAccessDenied 처리 -->
+    <bean id="customAccessDenied"
+          class="com.ipms.security.CustomAccessDeniedHandler"></bean>
+    <!-- 로그인 성공 처리자 -->
+    <bean id="customLoginSuccess"
+          class="com.ipms.security.CustomLoginSuccessHandler"></bean>
+    <bean id="CustomUserDetailsService"
+          class="com.ipms.security.CustomUserDetailsService"></bean>
+    <bean id="CustomNoOpPasswordEncoder"
+          class="com.ipms.security.CustomNoOpPasswordEncoder"></bean>
+    <bean id="bcryptPasswordEncoder"
+          class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
     <security:http>
-        <security:intercept-url pattern="/sample/all" access="permitAll()"/>
-        <security:intercept-url pattern="/sample/member" access="hasRole('ROLE_MEMBER')"/>
-        <security:intercept-url pattern="/sample/admin" access="hasRole('ROLE_ADMIN')"/>
-        <security:form-login login-page="/customLogin"/>
-<!--        <security:access-denied-handler error-page="/accessError"/>-->
+        <security:intercept-url pattern="/main/newProjectForm" access="hasRole('ROLE_MEMBER')"/>
+        <security:intercept-url pattern="/main/" access="permitAll()"/>
+        <security:form-login login-page="/main/loginForm" authentication-success-handler-ref="customLoginSuccess"/>
+        <security:logout logout-url="/customLogout" invalidate-session="true" />
         <security:access-denied-handler ref="customAccessDenied"/>
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider>
-            <security:user-service>
-                <security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"></security:user>
-                <security:user name="admin" password="{noop}admin" authorities="ROLE_ADMIN,ROLE_MEMBER"></security:user>
-            </security:user-service>
+        <security:authentication-provider user-service-ref="CustomUserDetailsService">
+            <security:password-encoder ref="CustomNoOpPasswordEncoder" />
         </security:authentication-provider>
     </security:authentication-manager>
+
 </beans>
+
+
+
+
+
+
 

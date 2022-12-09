@@ -1,5 +1,6 @@
 package com.ipms.mapper;
 
+import com.ipms.main.vo.MemAthrtyVO;
 import com.ipms.main.vo.MemVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,4 +11,5 @@ public interface MemMapper {
     public  int loginMem(MemVO memvo);
     public MemVO read(String email);
     public int UpdatePwd(MemVO memVO);
+    public int authInsert(MemAthrtyVO memAthrtyVO);
 }
