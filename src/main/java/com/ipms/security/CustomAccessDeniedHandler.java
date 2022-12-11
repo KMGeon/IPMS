@@ -19,8 +19,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
   public void handle(HttpServletRequest request, 
       HttpServletResponse response, AccessDeniedException accessException)
       throws IOException, ServletException {
-    log.error("해당 mem은 권한에 문제가 있습니다. 다시 확인하세요.");
-    response.sendRedirect("/main/loginMain");
+    log.info("=============================================================");
+    log.error("===========해당 mem은 권한에 문제가 있습니다. 다시 확인하세요.============");
+    log.info("=============================================================");
+    response.sendRedirect("/main/page");
   }
-
 }

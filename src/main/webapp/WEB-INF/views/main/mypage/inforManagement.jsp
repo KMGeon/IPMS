@@ -32,21 +32,19 @@
 <body>
 
 	<!-- BEGIN: Content-->
-	<div class="app-content content">
-		<div class="content-overlay"></div>
-		<div class="content-wrapper">
-			<div class="content-header row">
-				<div class="content-header-left col-md-6 col-12 mb-2">
-					<h3 class="content-header-title mb-0">개인 정보 관리</h3>
-				</div>
+    <div style="bottom:30px;" class="content-header-left col-md-6 col-12 mb-2">
+			<h3 class="content-header-title mb-0"><b>개인 정보 관리</b></h3>
+			<div class="row breadcrumbs-top">
+				<div class="breadcrumb-wrapper col-12"></div>
 			</div>
+		</div>
 			<div class="content-body">
 				<!-- account setting page start -->
 				<section id="page-account-settings">
 					<div class="row">
 						<!-- right content section -->
 						<div class="col-md-9">
-							<div class="card">
+							<div class="card" style="width:800px;">
 								<div class="card-content">
 									<div class="card-body">
 										<div class="tab-content">
@@ -168,8 +166,6 @@
 				</section>
 				<!-- account setting page end -->
 			</div>
-		</div>
-	</div>
 	<!-- END: Content-->
 
 	<!-- BEGIN: Page Vendor JS-->

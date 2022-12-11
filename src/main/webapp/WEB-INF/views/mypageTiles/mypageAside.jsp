@@ -47,9 +47,8 @@
 			</a> <a href="/main/portfolio" class="list-group-item">
 				<div class="d-inline mr-25">
 					<i class="fa fa-address-card"></i>
-				</div> 포트폴리오 <span
-				class="badge badge-warning badge-pill badge-round float-right">3</span>
-			</a> <a href="#" class="list-group-item">
+				</div> 포트폴리오 
+			</a> <a href="/main/memSvcQaA" class="list-group-item">
 				<div class="d-inline mr-25">
 					<i class="fa fa-paper-plane"></i>
 				</div> 문의내역

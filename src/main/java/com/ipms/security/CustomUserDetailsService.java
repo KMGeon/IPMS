@@ -1,6 +1,6 @@
 package com.ipms.security;
 
-import com.ipms.main.vo.MemVO;
+import com.ipms.vo.MemVO;
 import com.ipms.mapper.MemMapper;
 import com.ipms.security.domain.CustomUser;
 import lombok.Setter;

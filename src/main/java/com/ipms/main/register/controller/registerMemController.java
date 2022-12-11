@@ -1,9 +1,8 @@
 package com.ipms.main.register.controller;
 
 import com.ipms.main.register.service.MemService;
-import com.ipms.main.vo.MemAthrtyVO;
-import com.ipms.main.vo.MemVO;
-import com.ipms.mapper.MemMapper;
+import com.ipms.vo.MemAthrtyVO;
+import com.ipms.vo.MemVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,12 +38,11 @@ public class registerMemController {
         int result = this.memService.registerMember(memVO);
         log.info("result::"+result);
         if(result==1){
-            log.info("==========================================================반성공");
             List<MemAthrtyVO>list = memVO.getMemAuthList();
             for(MemAthrtyVO authVO : list){
                 if(authVO.getAthrty()!=null){
-                    log.info("=============================================================성공");
                     MemAthrtyVO memAthrtyVO = new MemAthrtyVO();
+                    memAthrtyVO.setEmail(authVO.getEmail());
                     memAthrtyVO.setAthrty(authVO.getAthrty());
                     this.memService.authInsert(memAthrtyVO);
                 }

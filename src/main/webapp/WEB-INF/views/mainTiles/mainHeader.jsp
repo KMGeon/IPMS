@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <script type="text/javascript"
         src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
@@ -260,22 +261,24 @@
                     </div>
                 </li>
             </ul>
+            <!-- 비로그인-->
+            <sec:authorize access="isAnonymous()">
+                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그인</button>
+                <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입</button>
+            </sec:authorize>
 
-                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그인
-                </button>
-                <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입
-                </button>
-            <form action="/customLogout" method='post'>
-                <input type="hidden"name="${_csrf.parameterName}"value="${_csrf.token}"/>
-                <button  class="btn btn-outline-secondary" >로그아웃</button>
-            </form>
-
-
-
+            <!--로그인 -->
+            <sec:authorize access="isAuthenticated()">
+                <p style="font-size: large"> <sec:authentication property="principal.username"/>님</p>
+                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>마이페이지</button>
+                <form action="/customLogout" method='post'>
+                    <input type="hidden"name="${_csrf.parameterName}"value="${_csrf.token}"/>
+                    <button  class="btn btn-outline-secondary" >로그아웃</button>
+                </form>
+            </sec:authorize>
 
 
         </div>
-    </div>
     </div>
 </nav>
 

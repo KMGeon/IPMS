@@ -30,7 +30,7 @@
 						<div class="card-content">
 							<div class="card-body pt-3">
 								<img
-									src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/IPMSlogo.png"
+									src="/resources/logoImage/IPMSlogo.png"
 									class="rounded mr-75" height="55" width="140"
 									style="margin-bottom: 15px;">
 								<h4 style="color: #404e67;">GET OFF PROJECT</h4>

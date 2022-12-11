@@ -3,6 +3,9 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+	    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/vertical-menu.css">
+<script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+
 <!-- BEGIN: Main Menu-->
 	<div class="main-menu menu-fixed menu-light menu-accordion menu-shadow"
 		data-scroll-to-active="true">
@@ -67,12 +70,16 @@
 						<span class="menu-title" data-i18n="Kanban Application">위키</span>
 					</a>
 				</li>
-				<li class=" nav-item">
-					<a href="/proj/noticeBoard">
-					<i class="fa fa-list-ul"></i>
-						<span class="menu-title" data-i18n="Kanban Application">프로젝트 게시판</span>
-					</a>
-				</li>
+				<li id="menuBtn" class="nav-item has-sub"><a><i class="fa fa-list-ul"></i><span class="menu-title" data-i18n="Menu levels">&nbsp;프로젝트 게시판</span></a>
+		            <ul class="menu-content" style="">
+		              <li class="is-shown" id="step1">
+		              	<a class="menu-item" href="/proj/noticeBoard" data-i18n="Second level">프로젝트 공지사항</a>
+		              </li>
+		              <li class="is-shown" id="step2">
+		              	<a class="menu-item" href="/proj/freeboard" data-i18n="Second level">자유게시판</a>
+		              </li>
+		            </ul>
+		        </li>
 				<li class=" nav-item">
 					<a href="/proj/projQuit">
 					<i class="feather icon-user-minus"></i>
@@ -103,4 +110,23 @@
 
 	<div class="sidenav-overlay"></div>
 	<div class="drag-target"></div>
+    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.js"></script>
 
+<script type="text/javascript">
+$(function() {
+	var flag = false;
+	$('#menuBtn').on('click', function() {
+		if(!flag){
+			$("#menuBtn").attr("class","nav-item has-sub open");
+			$('.menu-content').css('height', '82.3935px');
+			flag = true;
+		}else if(flag == true){
+			$("#menuBtn").attr("class","nav-item has-sub");
+			$('.menu-content').css('height', 'auto');
+			flag = false;
+		}
+		
+	});
+});
+	
+</script>

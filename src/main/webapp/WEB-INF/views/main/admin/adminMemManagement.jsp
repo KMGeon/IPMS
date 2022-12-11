@@ -33,7 +33,7 @@
 	<!-- BEGIN: Content-->
 	<section class="row all-contacts">
 		<div class="col-12">
-			<div class="card" style="width:1200px;">
+			<div class="card" style="width: 1300px;">
 				<div class="card-content">
 					<div class="card-body">
 						<!-- Task List table -->
@@ -61,6 +61,10 @@
 								class="table table-white-space table-bordered row-grouping display no-wrap icheck table-middle text-center">
 								<thead style="background: #3F4E89; color: white;">
 									<tr>
+										<th class="sorting" tabindex="0"
+											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+											aria-label="Name: activate to sort column ascending"
+											style="width: 5px;">선택</th>
 										<th>No.</th>
 										<th>회원명</th>
 										<th>아이디</th>
@@ -72,6 +76,8 @@
 								</thead>
 								<tbody>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>1</td>
 										<td>
 											<div class="media">
@@ -90,10 +96,11 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-info">백엔드</span></td>
 										<td>2022-12-01</td>
-										<td class="text-center">1회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">1회</td>
 									</tr>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>2</td>
 										<td>
 											<div class="media">
@@ -112,10 +119,11 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-warning">프론트엔드</span></td>
 										<td>2022-12-02</td>
-										<td class="text-center">1회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">1회</td>
 									</tr>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>3</td>
 										<td>
 											<div class="media">
@@ -134,10 +142,11 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-primary">퍼블리셔</span></td>
 										<td>2022-12-03</td>
-										<td class="text-center">2회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">2회</td>
 									</tr>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>1</td>
 										<td>
 											<div class="media">
@@ -156,10 +165,11 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-info">백엔드</span></td>
 										<td>2022-12-01</td>
-										<td class="text-center">1회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">1회</td>
 									</tr>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>2</td>
 										<td>
 											<div class="media">
@@ -178,10 +188,11 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-warning">프론트엔드</span></td>
 										<td>2022-12-02</td>
-										<td class="text-center">1회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">1회</td>
 									</tr>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>3</td>
 										<td>
 											<div class="media">
@@ -200,10 +211,11 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-primary">퍼블리셔</span></td>
 										<td>2022-12-03</td>
-										<td class="text-center">2회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">2회</td>
 									</tr>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>1</td>
 										<td>
 											<div class="media">
@@ -222,10 +234,11 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-info">백엔드</span></td>
 										<td>2022-12-01</td>
-										<td class="text-center">1회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">1회</td>
 									</tr>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>2</td>
 										<td>
 											<div class="media">
@@ -244,10 +257,11 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-warning">프론트엔드</span></td>
 										<td>2022-12-02</td>
-										<td class="text-center">1회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">1회</td>
 									</tr>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>3</td>
 										<td>
 											<div class="media">
@@ -266,10 +280,11 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-primary">퍼블리셔</span></td>
 										<td>2022-12-03</td>
-										<td class="text-center">2회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">2회</td>
 									</tr>
 									<tr>
+										<td><input type='checkbox' id="ckbox" name="ckbox"
+											value=""></td>
 										<td>1</td>
 										<td>
 											<div class="media">
@@ -288,15 +303,19 @@
 										<td class="phone">010-1234-5678</td>
 										<td class="text-center"><span class="badge badge-info">백엔드</span></td>
 										<td>2022-12-01</td>
-										<td class="text-center">1회 <a class="danger delete mr-1"><i
-												class="fa fa-trash-o"></i></a></td>
+										<td class="text-center">100회</td>
 									</tr>
 								</tbody>
 							</table>
-							<div class="row" style="padding-top: 20px; margin: auto;">
+							<div class="row" style="margin: auto; padding-top:5px;">
 								<div class="col-sm-12 col-md-7">
+									<div style="float: left;">
+										<button type="button" class="btn"
+											style="background-color: #546E7A; color: white;">삭제
+										</button>
+									</div>
 									<div class="dataTables_paginate paging_simple_numbers"
-										id="DataTables_Table_0_paginate" style="padding-left: 400px;">
+										id="DataTables_Table_0_paginate" style="padding-left: 455px;">
 										<ul class="pagination">
 											<li class="paginate_button page-item previous disabled"
 												id="DataTables_Table_0_previous"><a href="#"

@@ -24,13 +24,13 @@
 			<div class="row">
 				<div class="col-12 mt-3 mb-1"></div>
 			</div>
-			<div class="row match-height">
-				<div class="col-md-6 col-sm-8" style="margin: auto;">
+			<div class="row match-height" style="padding-left:380px;">
+				<div class="col-md-6 col-sm-8">
 					<div class="card border-danger text-center bg-transparent">
-						<div class="card-content">
+						<div class="card-content" style="margin: auto;">
 							<div class="card-body pt-3">
 								<img
-									src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/IPMSlogo.png"
+									src="/resources/logoImage/IPMSlogo.png"
 									class="rounded mr-75" height="55" width="140"
 									style="margin-bottom: 15px;">
 								<h4 style="color: #FF586B;">Delete account</h4>

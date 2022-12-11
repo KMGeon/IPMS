@@ -12,7 +12,7 @@
                 </li>
                 <li class="breadcrumb-item"><a href="/main/svcFaq">자주묻는질문</a>
                 </li>
-                <li class="breadcrumb-item active"><a href="#">Q&A</a>
+                <li class="breadcrumb-item active"><a href="/main/svcQaA">Q&A</a>
                 </li>
             </ol>
         </div>
@@ -81,7 +81,7 @@
                                     <td class="dt-checkboxes-cell sorting_1"><input type="checkbox"
                                                                                     class="dt-checkboxes"></td>
                                     <td>
-                                        <a href="invoice-view.html">INV-00956</a>
+                                        <a href="/main/adminSvcNoticeDetail">INV-00956</a>
                                     </td>
                                     <td><span class="invoice-amount">$459.30</span></td>
                                     <td><span class="invoice-date">12-08-19</span></td>

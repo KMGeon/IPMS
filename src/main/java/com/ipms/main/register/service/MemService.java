@@ -1,7 +1,7 @@
 package com.ipms.main.register.service;
 
-import com.ipms.main.vo.MemAthrtyVO;
-import com.ipms.main.vo.MemVO;
+import com.ipms.vo.MemAthrtyVO;
+import com.ipms.vo.MemVO;
 
 public interface MemService {
     public int registerCheck(String email);

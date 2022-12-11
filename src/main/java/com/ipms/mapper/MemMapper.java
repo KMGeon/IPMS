@@ -1,7 +1,7 @@
 package com.ipms.mapper;
 
-import com.ipms.main.vo.MemAthrtyVO;
-import com.ipms.main.vo.MemVO;
+import com.ipms.vo.MemAthrtyVO;
+import com.ipms.vo.MemVO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

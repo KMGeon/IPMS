@@ -87,19 +87,23 @@
 							</div>
 						</div>
 					</div>
-					<div class="card mb-2" style="width: 1200px; height: 85px;">
+					<div class="card mb-2" style="width: 1200px; height: auto;">
 						<div class="card-body">
 							<div>
 								<form class="form-horizontal">
 									<div class="row">
 										<div class='col-sm-10'>
-											<input type="text" class="form-control" id="repInsert"
+											<input type="text" class="form-control" id="repContent"
 												placeholder="댓글을 입력하세요." />
 										</div>
 										<div class='col-sm-2'>
 											<button type="button" class="btn btn-secondary"
-												style="width: 150px;">댓글 등록</button>
+												style="width: 150px;" id="repAdd" onclick="repAdd()">댓글
+												등록</button>
 										</div>
+									</div>
+									<div>
+										<input type="file" name="repfile" style="padding-top: 8px;">
 									</div>
 								</form>
 							</div>
@@ -112,33 +116,31 @@
 							style="padding: 13px; color: #455A64; font-size: 15px;">
 							Comments&nbsp;<i class="fa fa-comment fa"></i>
 						</div>
-						<div class="card-body">
-							<form class="form-horizontal">
-								<div class="user-block">
-									<div>
-										<div style="padding-bottom: 5px;">
-											<img class="img-circle img-bordered-sm"
-												src="/resources/images/repTest.png" alt="user image"
-												style="width: 30px;"> <span class="username"> <a
-												href="#">&nbsp;김효정</a> <a href="#"
-												class="float-right btn-box-tool replyDelBtn"
-												data-toggle="modal" data-target="#delModal"><i
-													class="fa fa-times" style="color: #D32F2F;">삭제</i> </a><a
-												href="#" class="float-right btn-box-tool replyModBtn"
-												data-toggle="modal" data-target="#modModal"> <i
-													class="fa fa-edit" style="color: #00838F;">수정</i>
-											</a>
-											</span> <span class="description"></span>
-										</div>
-										<div id="repContent">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div>
-										<div style="padding-top: 10px;">
-											<button type="button"
-												class="btn mr-1 mb-1 btn-secondary btn-sm">ㄴ 댓글</button>
-										</div>
-										<hr>
-									</div>
-								</div>
-							</form>
+						<div class="card-body" id="repListAdd">
+							<!-- 							<form class="form-horizontal"> -->
+							<!-- 								<div class="user-block"> -->
+							<!-- 									<div> -->
+							<!-- 										<div style="padding-bottom: 5px;"> -->
+							<!-- 											<span class="username"> <a href="#" style="font-size:15px;">김효정</a>&nbsp;&nbsp;<span -->
+							<!-- 												style="font-size: 8px; color: grey;">2022-12-09 17:20</span><a -->
+							<!-- 												href="#" class="float-right btn-box-tool replyDelBtn" -->
+							<!-- 												data-toggle="modal" data-target="#delModal"><i -->
+							<!-- 													class="fa fa-times" style="color: #D32F2F;">삭제</i> </a><a -->
+							<!-- 												href="#" class="float-right btn-box-tool replyModBtn" -->
+							<!-- 												data-toggle="modal" data-target="#modModal"> <i -->
+							<!-- 													class="fa fa-edit" style="color: #00838F;">수정</i> -->
+							<!-- 											</a> -->
+							<!-- 											</span> <span class="description"></span> -->
+							<!-- 										</div> -->
+							<!-- 										<div id="repContent">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div> -->
+							<!-- 										<div style="padding-top: 10px;"> -->
+							<!-- 											<button type="button" -->
+							<!-- 												class="btn mr-1 mb-1 btn-secondary btn-sm">ㄴ 댓글</button> -->
+							<!-- 										</div> -->
+							<!-- 										<hr> -->
+							<!-- 									</div> -->
+							<!-- 								</div> -->
+							<!-- 							</form> -->
 						</div>
 					</div>
 
@@ -157,3 +159,20 @@
 <!-- END: Body-->
 
 </html>
+
+<script type="text/javascript">
+
+$(function(){
+	
+	// 댓글 등록
+	$("#repAdd").on("click", function(){
+//  		alert("댓글 등록 떠라");
+ 		let repCon = $("#repContent").val();
+ 		$("#repListAdd").append(
+ 		"<form class='form-horizontal'><div class='user-block'><div><div style='padding-bottom: 5px;'><span class='username'> <a href='#' style='font-size:15px;'>김효정</a>&nbsp;&nbsp;<span style='font-size: 8px; color: grey;'>2022-12-09 17:20</span><a href='#' class='float-right btn-box-tool replyDelBtn' data-toggle='modal' data-target='#delModal'><i class='fa fa-times' style='color: #D32F2F;'>삭제</i></a><a href='#' class='float-right btn-box-tool replyModBtn' data-toggle='modal' data-target='#modModal'><i class='fa fa-edit' style='color: #00838F;'>수정</i></a></span><span class='description'></span></div><div id='repContent'>"+repCon+"</div><div style='padding-top: 10px;'><button type='button' class='btn mr-1 mb-1 btn-secondary btn-sm'>ㄴ 댓글</button></div><hr></div></div></form>"		
+ 		);
+ 		$("#repContent").val("");
+	});
+	
+});
+</script>

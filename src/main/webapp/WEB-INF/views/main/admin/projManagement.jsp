@@ -33,51 +33,47 @@
 	<!-- BEGIN: Content-->
 	<section class="row all-contacts">
 		<div class="col-12">
-			<div class="card" style="width: 1200px;">
+			<div class="card" style="width: 1300px;">
 				<div class="card-content">
 					<div class="card-body">
 						<!-- Task List table -->
 						<div class="table-responsive">
-							<div>
-								<div class="col">
-									<h3>프로젝트 관리</h3>
-								</div>
-								<br>
-								<div style="float: right;">
-									<div class="btn-group mr-1 mb-1" style="padding-right: 32px;">
-										<button type="button"
-											class="btn btn-outline-secondary dropdown-toggle"
-											data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false">진행 여부 선택</button>
-										<div class="dropdown-menu" x-placement="bottom-start"
-											style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
-											<a class="dropdown-item" href="#">취소</a> <a
-												class="dropdown-item" href="#">진행중</a> <a
-												class="dropdown-item" href="#">완료</a>
-										</div>
-									</div>
-								</div>
-								<div class="bug-list-search" style="padding-bottom: 15px; width:950px;">
-									<div class="bug-list-search-content">
-										<div class="sidebar-toggle d-block d-lg-none">
-											<i class="feather icon-menu font-large-1"></i>
-										</div>
-										<form action="#">
-											<div class="position-relative">
-												<input type="search" id="search-contacts"
-													class="form-control" placeholder="Search">
-												<div class="form-control-position">
-													<i
-														class="fa fa-search text-size-base text-muted la-rotate-270"></i>
-												</div>
-											</div>
-										</form>
+							<h3>프로젝트 관리</h3>
+							<br>
+							<div style="float: right;">
+								<div class="btn-group mr-1 mb-1">
+									<button type="button"
+										class="btn btn-outline-secondary dropdown-toggle"
+										data-toggle="dropdown" aria-haspopup="true"
+										aria-expanded="false">진행 여부 선택</button>
+									<div class="dropdown-menu" x-placement="bottom-start"
+										style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+										<a class="dropdown-item" href="#">취소</a> <a
+											class="dropdown-item" href="#">진행중</a> <a
+											class="dropdown-item" href="#">완료</a>
 									</div>
 								</div>
 							</div>
+							<div class="bug-list-search"
+								style="padding-bottom: 15px; width: 1080px;">
+								<div class="bug-list-search-content">
+									<div class="sidebar-toggle d-block d-lg-none">
+										<i class="feather icon-menu font-large-1"></i>
+									</div>
+									<form action="#">
+										<div class="position-relative">
+											<input type="search" id="search-contacts"
+												class="form-control" placeholder="Search">
+											<div class="form-control-position">
+												<i
+													class="fa fa-search text-size-base text-muted la-rotate-270"></i>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
 							<table id="users-contacts"
-								class="table table-white-space table-borderless row-grouping display no-wrap icheck table-middle text-center"
-								style="width: 950px;">
+								class="table table-white-space table-borderless row-grouping display no-wrap icheck table-middle text-center">
 								<thead style="background: #3F4E89; color: white;">
 									<tr>
 										<th>선택</th>
@@ -260,7 +256,7 @@
 											style="background-color: #546E7A; color: white;">삭제</button>
 									</div>
 									<div class="dataTables_paginate paging_simple_numbers"
-										id="DataTables_Table_0_paginate" style="padding-left: 400px;">
+										id="DataTables_Table_0_paginate" style="padding-left: 470px;">
 										<ul class="pagination">
 											<li class="paginate_button page-item previous disabled"
 												id="DataTables_Table_0_previous"><a href="#"
@@ -296,7 +292,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 	</section>
 	<!-- END: Content-->

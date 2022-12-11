@@ -30,7 +30,12 @@
 <body>
 	<!-- BEGIN: Content-->
 	<!-- users edit start -->
-	<h3>초대/신청 현황 프로젝트</h3><br>
+	    <div style="bottom:30px;" class="content-header-left col-md-6 col-12 mb-2">
+			<h3 class="content-header-title mb-0"><b>초대/신청 현황 조회</b></h3>
+			<div class="row breadcrumbs-top">
+				<div class="breadcrumb-wrapper col-12"></div>
+			</div>
+		</div>
 	<section class="users-edit">
 		<div class="card" style="width: 65%;">
 			<div class="card-content">

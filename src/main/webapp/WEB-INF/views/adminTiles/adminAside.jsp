@@ -33,7 +33,7 @@
 	<div class="sidebar-menu-list">
 		<!-- sidebar menu  -->
 		<div class="list-group" >
-			<a href="/main/customerServiceMana" class="list-group-item" id="inbox-menu">
+			<a href="/main/adminSvcNotice" class="list-group-item" id="inbox-menu">
 				<div class="d-inline mr-25">
 					<i class="fa fa-paper-plane"></i> &nbsp;&nbsp;고객 센터 관리
 				</div> 

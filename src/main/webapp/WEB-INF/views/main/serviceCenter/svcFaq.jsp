@@ -14,7 +14,7 @@
                 </li>
                 <li class="breadcrumb-item"><a href="/main/svcFaq">자주묻는질문</a>
                 </li>
-                <li class="breadcrumb-item active"><a href="#">Q&A</a>
+                <li class="breadcrumb-item active"><a href="/main/svcQaA">Q&A</a>
                 </li>
             </ol>
         </div>
