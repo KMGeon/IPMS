@@ -4,10 +4,13 @@ import com.ipms.main.login.service.LoginService;
 import com.ipms.vo.MemVO;
 import com.ipms.mapper.MemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
+
+import javax.inject.Inject;
 
 @Slf4j
 @RequestMapping("/main")
@@ -17,21 +20,24 @@ public class LoginController {
     LoginService loginService;
     @Autowired
     MemMapper memMapper;
+    @Inject
+    BCryptPasswordEncoder passEncoder;
     @GetMapping("/loginForm")
     public String loginForm() {
         return "main/login/loginForm";
     }
 
     // 비밀번호 찾기
-    @RequestMapping(value = "fgtPwd", method = RequestMethod.GET)
+    @RequestMapping(value = "/fgtPwd", method = RequestMethod.GET)
     public String ForgotPwd() {
         return "main/ForgotPassword/fgtPwd";
     }
 
     //로그인  POST
     @RequestMapping(value = "/loginPost", method = RequestMethod.POST)
-    public String loginPost(@ModelAttribute MemVO memvo , @RequestParam String email) {
+    public String loginPost(@ModelAttribute MemVO memvo , @RequestParam String memEmail , @RequestParam String memPasswd) {
 log.info("=================================");
+
          int result = this.loginService.loginMem( memvo);
 
         if (result==1) {
@@ -48,9 +54,5 @@ log.info("=================================");
         return "main/login/loginMain";
     }
 
-    @PostMapping(value = "")
-    public String getPwd(){
-        return "";
-    }
 
 }

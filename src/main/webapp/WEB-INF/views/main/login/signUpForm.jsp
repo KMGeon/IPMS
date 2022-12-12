@@ -20,8 +20,20 @@
 <script src="/resources/js/jquery-3.6.0.js"></script>
 <script>
     function registerCheck(){
-        var email =$("#email").val();
-        if(email==""){
+
+        var memEmail =$("#memEmail").val();
+
+        var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+        if (memEmail.match(regExp) != null) {
+            alert('Good!');
+        }
+        else {
+            alert('이메일 형식으로 입력하세요.');
+            return false;
+        }
+
+        if(memEmail==""){
             $("#passMessage").html("이메일을 다시 입력하세요.");
             $("#passMessage").css("color", "red");
             return false;
@@ -29,7 +41,7 @@
         $.ajax({
             url:"/main/memRegisterCheck",
             type:"get",
-            data: {"email": email},
+            data: {"memEmail": memEmail},
             success: function (result) {
                 if (result == 0) {
                     $("#passMessage").html("이메일 사용이 가능합니다.");
@@ -41,16 +53,27 @@
                     $("#passMessage").html("이메일을 다시 입력하세요.");
                     $("#passMessage").css("color", "red");
                     console.log(result);
-                    $("#email").val("");
+                    $("#memEmail").val("");
                 }
             }
         });
     }
+
+
+    $("select[name=location]").change(function(){
+        console.log($(this).val()); //value값 가져오기
+        console.log($("select[name=location] option:selected").text()); //text값 가져오기
+    });
+
     $(document).ready(function () {
-        $("#email").change(function () {
-            var to = $("#email").val();
+        $("#memEmail").change(function () {
+            var to = $("#memEmail").val();
             $("#to").attr("value", to);
             console.log(to);
+        })
+
+        $("#selectBoxChange").change(function(){
+            console.log("변경"+$(this).val());
         })
     })
 
@@ -58,13 +81,13 @@
         const randomNumber = Math.floor(Math.random() * 8888)+1;
         $('input[name=text]').attr('value',randomNumber);
         let text1 = $("#text").val();
-        let email ;
+        let memEmail ;
         let to = $("#to").val();
-        to= $("#email").val();
+        to= $("#memEmail").val();
         // let text1 = randomNumber;
         let text2;
         $("#btn").on("click", function () {
-            to= $("#email").val();
+            to= $("#memEmail").val();
             alert("Click");
             console.log("to::"+to);
             let fData = $("#frm").serialize();
@@ -106,8 +129,11 @@
             $("#hideEmail").css("display", 'block');
         });
     });
+
+
+
     function passwordCheck() {
-        var password = $("#paswd").val();
+        var password = $("#memPasswd").val();
         var password2 = $("#paswd2").val();
         if (password != password2) {
             $("#passMessage").html("비밀번호가 서로 일치하지 않습니다.");
@@ -125,6 +151,26 @@
     $(function (){
         $("#chgBtn")
     })
+
+    function handleOnChange(e) {
+        var arr = [6];
+        // 선택된 데이터 가져오기
+        const value = e.value;
+        for(i=0;i<arr.length;i++) {
+            arr[i] = value;
+        }
+        for(i=0;i<arr.length;i++) {
+        console.log(arr[i]);
+        }
+    }
+
+    function checkReg(){
+        var reg = /^[가-힣]{2,4}$/; //한글 2~3
+        var reg = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";//최소 8 자, 하나 이상의 문자와 하나의 숫자 정규식
+        var regExp = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
+    }
+
+
 </script>
 <!-- END: Custom CSS-->
 
@@ -155,7 +201,7 @@
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
                                             <input type="text" class="form-control form-control-lg"
-                                                   id="name" name="name" placeholder="이름" required="required">
+                                                   id="name" name="memName" placeholder="이름" required="required">
                                             <div class="form-control-position">
                                                 <i class="feather icon-user"></i>
                                             </div>
@@ -164,12 +210,10 @@
                                                 class="form-group position-relative has-icon-left mb-1">
 
                                             <div >
-                                                <input type="text" class="form-control form-control-lg"  id="email"  name="email" placeholder="이메일" required="required">
+                                                <input type="text" class="form-control form-control-lg"  id="memEmail"  name="memEmail" placeholder="이메일" required="required">
 
                                                 <button type="button" id="chgBtn"  class="btn btn-success btn-min-width mr-1 mb-1" onclick="registerCheck()"  style="float: right;width: 30px;display: block">중복체크</button>
                                                 <button type="button" id="btn"  class="btn btn-info btn-min-width mr-1 mb-1"  style="float: right;width: 30px;display: none">인증번호 전송</button>
-
-
                                             </div>
                                             <div class="form-control-position">
                                                 <i class="feather icon-user"></i>
@@ -190,10 +234,15 @@
                                                 <i class="feather icon-user"></i>
                                             </div>
                                         </fieldset>
+                                        <fieldset class="form-group position-relative has-icon-left mb-1">
+                                            <input type="text" class="form-control form-control-lg" id="memPhoneNumber" name="memPhoneNumber" placeholder="010xxxxyyyy" maxlength="11" required="required"><div class="form-control-position">
+                                                <i class="feather icon-user"></i>
+                                            </div>
+                                        </fieldset>
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
-                                            <input type="text" class="form-control form-control-lg" id="paswd"
-                                                   name="paswd" placeholder="비밀번호" onkeyup="passwordCheck()"
+                                            <input type="text" class="form-control form-control-lg" id="memPasswd"
+                                                   name="memPasswd" placeholder="비밀번호" onkeyup="passwordCheck()"
                                                    required="required">
                                             <div class="form-control-position">
                                                 <i class="fa fa-key"></i>
@@ -216,17 +265,26 @@
                                         </fieldset>
                                         <fieldset>
 
-
+                                                        <label>기술 스택</label>
+                                                        <select class="select2 form-control select2-hidden-accessible" onchange="handleOnChange(this)" multiple data-select2-id="12" tabindex="-1" aria-hidden="true" aria-invalid="false">
+                                                        <optgroup label="보유한 기술 스택을 선택하세요." data-select2-id="25">
+                                                            <option value="spring" data-select2-id="26">SPRING</option>
+                                                            <option value="vue" data-select2-id="27">Vue</option>
+                                                            <option value="js" data-select2-id="28">JS</option>
+                                                            <option value="mysql" data-select2-id="29">MYSQL</option>
+                                                        </optgroup>
+                                                    </select>
                                         </fieldset>
+
                                         <div>
                                             <span id="passMessage" style="color: red"/>
                                         </div>
 <%--                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">--%>
-                                        <button type="submit" id="sbtBtn" name="sbtBtn"
-                                                class="btn btn-primary btn-lg btn-block" style="display:none;">
+                                        <button type="button" id="sbtBtn" name="sbtBtn"
+                                                class="btn btn-primary btn-lg btn-block" onclick="checkReg()" style="display:none;">
                                             <i class="feather icon-unlock"></i> Register
                                         </button>
-                                        <input type="hidden" name="memAuthList[0].athrty" value="ROLE_MEMBER"/>
+                                        <input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
                                         <sec:csrfInput/>
                                     </form>
                                 </div>

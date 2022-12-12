@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
+
 <script type="text/javascript"
         src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+
 <!-- Topbar -->
 <nav
         class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-static-top navbar-light navbar-border navbar-brand-center fixed-top"
@@ -269,11 +272,12 @@
 
             <!--로그인 -->
             <sec:authorize access="isAuthenticated()">
-                <p style="font-size: large"> <sec:authentication property="principal.username"/>님</p>
-                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>마이페이지</button>
+                <p style="font-size: large">${mvo.member.memName}님</p>
+<%--                <sec:authentication property="principal.username"/>님--%>
+                <button type="button" id="myPage"  class="btn btn-outline-secondary" ><i class="fa fa-plug"></i>마이페이지</button>
                 <form action="/customLogout" method='post'>
-                    <input type="hidden"name="${_csrf.parameterName}"value="${_csrf.token}"/>
                     <button  class="btn btn-outline-secondary" >로그아웃</button>
+                    <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
                 </form>
             </sec:authorize>
 
@@ -288,6 +292,11 @@
     $("#loginBtn").on("click", function () {
         location.href = "/main/loginForm";
     });
+
+    $("#myPage").on("click", function () {
+        location.href = "/main/inforManagement";
+    });
+
 
     $("#signUpBtn").on("click", function () {
         location.href = "/main/signUpForm";

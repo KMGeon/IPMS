@@ -5,10 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- customAccessDenied 처리 -->
     <bean id="customAccessDenied"
           class="com.ipms.security.CustomAccessDeniedHandler"></bean>
-    <!-- 로그인 성공 처리자 -->
     <bean id="customLoginSuccess"
           class="com.ipms.security.CustomLoginSuccessHandler"></bean>
     <bean id="CustomUserDetailsService"
@@ -20,10 +18,16 @@
 
     <security:http>
         <security:intercept-url pattern="/main/newProjectForm" access="hasRole('ROLE_MEMBER')"/>
-        <security:intercept-url pattern="/main/" access="permitAll()"/>
-        <security:form-login login-page="/main/loginForm" authentication-success-handler-ref="customLoginSuccess"/>
-        <security:logout logout-url="/customLogout" invalidate-session="true" />
+        <security:intercept-url pattern="/main/**" access="permitAll()"/>
+        <security:form-login login-page="/main/loginForm"
+                             username-parameter="memEmail"
+                             password-parameter="memPasswd"
+                             login-processing-url="/main/loginPost"
+                             authentication-success-handler-ref="customLoginSuccess"/>
+
+        <security:logout logout-url="/customLogout" invalidate-session="true" delete-cookies="remember-me,JSESSION_ID"/>
         <security:access-denied-handler ref="customAccessDenied"/>
+        <security:remember-me data-source-ref="dataSource" token-validity-seconds="604800"/>
     </security:http>
 
     <security:authentication-manager>
@@ -31,7 +35,6 @@
             <security:password-encoder ref="CustomNoOpPasswordEncoder" />
         </security:authentication-provider>
     </security:authentication-manager>
-
 </beans>
 
 

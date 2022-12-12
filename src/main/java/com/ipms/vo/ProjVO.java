@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 public class ProjVO {
     private  String projId;//프로젝트 아이디
-    private String memNum;//회원번호
+    private String memCode;//회원번호
     private  String projName;//프로젝트 이름
     private Date projStrtDate;//프로젝트 시작일자
     private Date projEndDate;//프로젝트 종료일자

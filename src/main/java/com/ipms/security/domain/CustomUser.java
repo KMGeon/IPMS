@@ -23,9 +23,8 @@ public class CustomUser extends User {
 
 	public CustomUser(MemVO vo) {
 
-		super(vo.getEmail(), vo.getPaswd(), vo.getMemAuthList().stream()
-				.map(auth -> new SimpleGrantedAuthority(auth.getAthrty())).collect(Collectors.toList()));
-
+		super(vo.getMemEmail(), vo.getMemPasswd(), vo.getMemAuthList().stream()
+				.map(auth -> new SimpleGrantedAuthority(auth.getMemAuth())).collect(Collectors.toList()));
 		this.member = vo;
 	}
 }

@@ -1,7 +1,7 @@
 package com.ipms.main.register.service.Impl;
 
 import com.ipms.main.register.service.MemService;
-import com.ipms.vo.MemAthrtyVO;
+import com.ipms.vo.MemberAuth;
 import com.ipms.vo.MemVO;
 import com.ipms.mapper.MemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,8 @@ public class MemServiceImpl  implements MemService {
     @Autowired
     MemMapper memMapper;
     @Override
-    public int registerCheck(String email) {
-        return this.memMapper.registerCheck(email);
+    public int registerCheck(String memEmail) {
+        return this.memMapper.registerCheck(memEmail);
     }
     @Override
     public int registerMember(MemVO memVO) {
@@ -25,7 +25,7 @@ public class MemServiceImpl  implements MemService {
         return this.memMapper.UpdatePwd(memVO);
     }
     @Override
-    public int authInsert(MemAthrtyVO memAthrtyVO){
-        return this.memMapper.authInsert(memAthrtyVO);
+    public int authInsert(MemberAuth memberAuth){
+        return this.memMapper.authInsert(memberAuth);
     }
 }

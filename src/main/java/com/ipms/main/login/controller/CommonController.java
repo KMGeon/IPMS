@@ -16,30 +16,29 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class CommonController {
 
-	@GetMapping("/accessError")
-	public void accessDenied(Authentication auth, Model model) {
+    @GetMapping("/accessError")
+    public void accessDenied(Authentication auth, Model model) {
 
-		log.info("access Denied : " + auth);
+        log.info("access Denied : " + auth);
 
-		model.addAttribute("msg", "Access Denied");
-	}
+        model.addAttribute("msg", "Access Denied");
+    }
 
-	@GetMapping("/customLogin")
-	public void loginInput(HttpServletRequest request) {
+    @GetMapping("/customLogin")
+    public String loginInput(HttpServletRequest request) {
+        return "main/page";
+    }
 
-	}
+    @GetMapping("/customLogout")
+    public String logoutGET() {
+        return "main/page";
+    }
 
-	@GetMapping("/customLogout")
-	public void logoutGET() {
+    @PostMapping("/customLogout")
+    public String logoutPost() {
 
-		log.info("custom logout");
-	}
-
-	@PostMapping("/customLogout")
-	public String logoutPost() {
-
-		log.info("post custom logout");
-		return "main/login/loginForm";
-	}
+        log.info("post custom logout");
+        return "main/login/loginForm";
+    }
 
 }

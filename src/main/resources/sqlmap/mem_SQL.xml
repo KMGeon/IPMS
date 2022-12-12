@@ -5,86 +5,110 @@
 이를 구별하기 위한 식별 용도로 사용 -->
 <mapper namespace="com.ipms.mapper.MemMapper">
     <!-- 로그인-->
-    <select id="loginMem" parameterType="com.ipms.main.vo.MemVO" resultType="int">
-        select count(*)
-        from mem
-        where mem_email =  #{email} and mem_passwd=  #{paswd}
+    <select id="loginMem" parameterType="com.ipms.vo.MemVO" resultType="int">
+        SELECT count(*)
+        FROM mem
+        WHERE mem_email =  #{memEmail} AND mem_passwd=  #{memPasswd}
     </select>
 
 <!--이메일 중복체크 -->
-    <select id="registerCheck" resultType="int" parameterType="com.ipms.main.vo.MemVO">
-        select count(*)
-        from mem
-        where mem_email =#{email} and mem_passwd= #{paswd}
+    <select id="registerCheck" resultType="int" parameterType="com.ipms.vo.MemVO">
+        SELECT count(*)
+        FROM mem
+        WHERE mem_email =#{memEmail} AND mem_passwd= #{memPasswd}
     </select>
 
     <!--회원가입-->
-    <insert id="registerMember" parameterType="com.ipms.main.vo.MemVO">
-        <selectKey order="BEFORE" keyProperty="memNum" resultType="String">
-            SELECT  To_char(NVL(MAX(mem_num),0)+1) FROM mem
+    <insert id="registerMember" parameterType="com.ipms.vo.MemVO">
+        <selectKey order="BEFORE" keyProperty="memCode" resultType="String">
+            SELECT  To_char(NVL(MAX(mem_code),0)+1) FROM mem
         </selectKey>
         INSERT INTO mem (
-        mem_num,
+        mem_code,
         mem_email,
         mem_passwd,
         mem_name,
-        mem_dvmnt_area,
-        mem_whdrl_whth,
         mem_phone_number,
-        mem_sgnup_date
+        mem_sgnup_date,
+        proj_img_route,
+        mem_whdrl_yn
         ) VALUES (
-        #{memNum},
-        #{email},
-        #{paswd},
-        #{name},
-        'spring',
-                  '0',
-        'phone',
-        sysdate
-        )
+        #{memCode}
+        ,#{memEmail}
+        ,#{memPasswd}
+        ,#{memName}
+        ,#{memPhoneNumber}
+        ,sysdate
+        ,'0'
+        ,'0'
+        );
+
     </insert>
 
 
-    <resultMap type="com.ipms.main.vo.MemVO" id="memberMap">
-        <result property="memNum" column="mem_num" />
-        <result property="email" column="mem_email" />
-        <result property="paswd" column="mem_passwd" />
-        <result property="name" column="mem_name" />
-        <result property="memDvmntArea" column="mem_dvmnt_area" />
-        <result property="memWhdrlWhth" column="mem_whdrl_whth" />
-        <result property="memPhoneNumber" column="mem_phone_number" />
-        <result property="memSgnupDate" column="mem_sgnup_date" />
+    <!--
+memCode
+ memEmail
+memPasswd
+memName
+memPhoneNumber
+memSgnupDate
+memWhdrlWhth
+projImgRoute
+     -->
+
+
+    <resultMap type="com.ipms.vo.MemVO" id="memberMap">
+        <result property="memCode" column="MEM_CODE" />
+        <result property="memEmail" column="MEM_EMAIL" />
+        <result property="memPasswd" column="MEM_PASSWD" />
+        <result property="memName" column="MEM_NAME" />
+        <result property="memPhoneNumber" column="MEM_PHONE_NUMBER" />
+        <result property="memWhdrlWhth" column="MEM_WHDRL_YN" />
+        <result property="projImgRoute" column="PROJ_IMG_ROUTE" />
+        <result property="memSgnupDate" column="MEM_SGNUP_DATE" />
         <collection property="memAuthList" resultMap="authMap"></collection>
     </resultMap>
-
-    <resultMap type="com.ipms.main.vo.MemAthrtyVO" id="authMap">
-        <result property="memNum" column="mem_num" />
-        <result property="athrty" column="athrty" />
+    <resultMap type="com.ipms.vo.MemberAuth" id="authMap">
+        <result property="memCode" column="MEM_CODE" />
+        <result property="projId" column="PROJ_ID" />
+        <result property="memAuth" column="MEM_AUTH" />
     </resultMap>
     <!-- 회원로그인확인 -->
     <select id="read" parameterType="string" resultMap="memberMap">
-        SELECT A.mem_num,
-               A.mem_email,
-               A.mem_passwd,
-               A.mem_name,
-               A.mem_dvmnt_area,
-               A.mem_whdrl_whth,
-               A.mem_phone_number,
-               A.mem_sgnup_date,
-               AUTH.ATHRTY
+        SELECT
+        A.mem_code
+        ,A.mem_email
+        ,A. mem_passwd
+        ,A.mem_name
+        ,A.mem_phone_number
+        ,A.mem_sgnup_date
+        ,A.proj_img_route
+        ,A.mem_whdrl_yn
+        ,B.mem_auth
         FROM mem A
-                 LEFT OUTER JOIN MEM_ATHRTY AUTH
-                                 ON (A.MEM_NUM = AUTH.MEM_NUM)
-        WHERE A.mem_num = (select mem_num from mem where mem_email =#{email} )
+        LEFT OUTER JOIN MEMBER_AUTH B
+        ON (A.mem_code = B.mem_code)
+        WHERE A.mem_code = (select mem_code from mem where mem_email =#{memEmail} )
     </select>
 
 <!--비밀번호 업데이트 -->
-<update id="UpdatePwd"  parameterType="com.ipms.main.vo.MemVO">
+<update id="UpdatePwd"  parameterType="com.ipms.vo.MemVO">
     UPDATE mem
     SET
-        mem_passwd=#{paswd}
+        mem_passwd=#{memPasswd}
     WHERE
-        mem_email = #{email}
+        mem_email = #{memEmail}
 </update>
+
+
+
+
+    <!--권한 추가 -->
+    <insert id="authInsert" parameterType="com.ipms.vo.MemberAuth" >
+        INSERT INTO mem_athrty(mem_code,PROJ_ID,mem_auth)
+        values
+            (#{memCode},'1',#{memAuth})
+    </insert>
 </mapper>
 

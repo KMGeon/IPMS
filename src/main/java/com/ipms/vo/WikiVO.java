@@ -8,7 +8,7 @@ import lombok.Data;
 public class WikiVO {
 	private String projId;
 	private String wikiId;
-	private String memNum;
+	private String memCode;
 	private String wikiTitle;
 	private String wikiCts;
 	private String highWikiId;
@@ -43,12 +43,12 @@ public class WikiVO {
 		this.wikiId = wikiId;
 	}
 
-	public String getMemNum() {
-		return memNum;
+	public String getmemCode() {
+		return memCode;
 	}
 
-	public void setMemNum(String memNum) {
-		this.memNum = memNum;
+	public void setmemCode(String memCode) {
+		this.memCode = memCode;
 	}
 
 	public String getWikiTitle() {
@@ -101,7 +101,7 @@ public class WikiVO {
 
 	@Override
 	public String toString() {
-		return "WikiVO [projId=" + projId + ", wikiId=" + wikiId + ", memNum=" + memNum + ", wikiTitle=" + wikiTitle
+		return "WikiVO [projId=" + projId + ", wikiId=" + wikiId + ", memCode=" + memCode + ", wikiTitle=" + wikiTitle
 				+ ", wikiCts=" + wikiCts + ", highWikiId=" + highWikiId + ", lowRgstSeq=" + lowRgstSeq
 				+ ", wikiWriteDate=" + wikiWriteDate + ", deleteWhth=" + deleteWhth + ", level=" + levell + "]";
 	}
