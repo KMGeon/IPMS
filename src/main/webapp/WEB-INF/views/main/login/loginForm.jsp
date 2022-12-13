@@ -58,8 +58,7 @@
                                 <img src="/resources/logoImage/logo.jpg" href="" alt="branding logo"
                                      style="width: 100px; height: auto;">
                             </div>
-                            <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2"><span>Login with
-                                        IPMS</span>
+                            <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2"><span>Login with IPMS</span>
                             </h6>
                             <form action="/main/loginPost" method="post">
 

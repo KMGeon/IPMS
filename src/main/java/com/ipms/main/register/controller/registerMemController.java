@@ -26,7 +26,12 @@ public class registerMemController {
         return "main/login/signUpForm";
     }
 
-    //회원가입post
+    /**
+     * 회원가입 POST
+     * @author KMG
+     * @param memVO
+     * @return
+     */
     @PreAuthorize("permitAll()")
     @RequestMapping(value = "/signUpForm" , method = RequestMethod.POST)
     public String signUpForm(@ModelAttribute MemVO memVO )
@@ -61,6 +66,12 @@ public class registerMemController {
         log.info("중복체크:::"+result);
         return result;
     }
+
+    /**
+     * @author KMG
+     * @param memVO
+     * @return
+     */
     @PostMapping(value = "/UpdatePwd")
     public String UpdatePwd( @ModelAttribute  MemVO memVO){
         int result = this.memService.UpdatePwd(memVO);

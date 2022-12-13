@@ -1,22 +1,29 @@
 package com.ipms.vo;
 
 import lombok.Data;
-import oracle.sql.CLOB;
-import org.springframework.stereotype.Repository;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
-@Repository
+/**
+ * @author KMG
+ */
 @Data
 public class ProjVO {
     private  String projId;//프로젝트 아이디
     private String memCode;//회원번호
     private  String projName;//프로젝트 이름
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date projStrtDate;//프로젝트 시작일자
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date projEndDate;//프로젝트 종료일자
-    private CLOB projSmry;//개요
+    private String projSmry;//개요
     private  String projOpnWhth;//공개여부
     private  Date projCreatnDate;//프로젝트 생성일자
-    private String itgrnAttachFileNum;//통합첨부파일번호
+    private String projImgRoute;//파일 위치
     private String deleteWhth;//삭제여부
+    private String memEmail;
+    List<ProjMemVO> projMemVOList;
 }

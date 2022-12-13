@@ -15,7 +15,7 @@
     <select id="registerCheck" resultType="int" parameterType="com.ipms.vo.MemVO">
         SELECT count(*)
         FROM mem
-        WHERE mem_email =#{memEmail} AND mem_passwd= #{memPasswd}
+        WHERE mem_email =#{memEmail}
     </select>
 
     <!--회원가입-->
@@ -44,19 +44,6 @@
         );
 
     </insert>
-
-
-    <!--
-memCode
- memEmail
-memPasswd
-memName
-memPhoneNumber
-memSgnupDate
-memWhdrlWhth
-projImgRoute
-     -->
-
 
     <resultMap type="com.ipms.vo.MemVO" id="memberMap">
         <result property="memCode" column="MEM_CODE" />
@@ -100,9 +87,6 @@ projImgRoute
     WHERE
         mem_email = #{memEmail}
 </update>
-
-
-
 
     <!--권한 추가 -->
     <insert id="authInsert" parameterType="com.ipms.vo.MemberAuth" >

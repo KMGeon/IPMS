@@ -6,8 +6,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author KMG
+ */
 @Data
-@Repository
 public class MemVO {
     private String memCode;//회원번호
     private String memEmail;//이메일
