@@ -2,7 +2,7 @@ package com.ipms.proj.wiki.service;
 
 import java.util.List;
 
-import com.ipms.vo.WikiVO;
+import com.ipms.proj.wiki.vo.WikiVO;
 
 public interface WikiService {
 

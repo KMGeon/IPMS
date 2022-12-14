@@ -1,8 +1,8 @@
 package com.ipms.main.register.controller;
 
 import com.ipms.main.register.service.MemService;
-import com.ipms.vo.MemberAuth;
-import com.ipms.vo.MemVO;
+import com.ipms.main.login.vo.MemberAuth;
+import com.ipms.main.login.vo.MemVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

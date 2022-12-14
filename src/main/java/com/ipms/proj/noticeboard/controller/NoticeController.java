@@ -28,4 +28,9 @@ public class NoticeController {
 		return "proj/noticeboard/noticeBoardDetail";
 	}
 	
+	@GetMapping("/noticeUpdate")
+	public String noticeUpdate() {
+		return "proj/noticeboard/noticeUpdate";
+	}
+	
 }

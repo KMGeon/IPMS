@@ -1,7 +1,7 @@
 package com.ipms.main.register.service;
 
-import com.ipms.vo.MemberAuth;
-import com.ipms.vo.MemVO;
+import com.ipms.main.login.vo.MemberAuth;
+import com.ipms.main.login.vo.MemVO;
 
 public interface MemService {
     public int registerCheck(String memEmail);

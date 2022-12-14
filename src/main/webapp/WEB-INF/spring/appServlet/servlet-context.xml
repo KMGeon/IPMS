@@ -61,11 +61,9 @@ http://www.springframework.org/schema/security/spring-security-4.2.xsd">
     -->
    <security:global-method-security pre-post-annotations="enabled"
     secured-annotations="enabled" />
-   
+
    <beans:bean id="multipartResolver"
       class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-      
-      
    </beans:bean>
    
 </beans:beans>

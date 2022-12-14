@@ -28,4 +28,9 @@ public class IssueController {
 		return "proj/issueboard/issueInsert";
 	}
 	
+	@GetMapping("/issueUpdate")
+	public String issueUpdate() {
+		return "proj/issueboard/issueUpdate";
+	}
+	
 }

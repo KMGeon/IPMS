@@ -1,96 +1,400 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
-<!-- BEGIN: Head-->
-
+<html>
+<link href="/resources/fullcalendar/lib/main.css" rel="stylesheet" />
+<script type="text/javascript"
+	src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+<script src="/resources/fullcalendar/lib/main.js"></script>
+<script src="/resources/fullcalendar/lib/locales/ko.js"></script>
 <head>
+<style>
+input[type="text"]:disabled {
+	background-color: #E6F7FF;
+}
 
-    <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/vendors.min.css">
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/calendars/fullcalendar.min.css">
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/calendars/daygrid.min.css">
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/calendars/timegrid.min.css">
-    <!-- END: Vendor CSS-->
+textarea:disabled {
+	background-color: E6F7FF;
+}
 
-    <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/components.css">
-    <!-- END: Theme CSS-->
+/*month/week/day*/
+  .fc-button-active{
+	border-color: #AADBFF 		!important;
+	background-color: #AADBFF 	!important;
+	color: #000 				!important;
+	font-weight: bold 			!important;
+}
 
-    <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/vertical-menu.css">
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/colors/palette-gradient.css">
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/plugins/calendars/fullcalendar.css">
-    <!-- END: Page CSS-->
+.fc-day-today {
+    background: #FFF0F5 !important;
+    border: none !important;
+} 
+</style>
 
-    <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
-    <!-- END: Custom CSS-->
+<script>
+var today = new Date();
+var month = today.getMonth()+1;	//getMonth()는 9월이 8으로 나옴
+var date = today.getDate();
+var g_arg;	//이벤트 글로벌 변수(모달창에서 호출하는 함수에서 참조하기 위함)
+var calendar;	//달력 변수
+var todayStr = today.getFullYear() + '-' + stringFormat(month) + '-' + stringFormat(date);
 
+function stringFormat(p_val){
+	if(p_val < 10)
+		return p_val = '0'+p_val;
+	else
+		return p_val;
+}
+
+	document.addEventListener("DOMContentLoaded", function() {
+		var calendarEl = document.querySelector("#calendar");
+
+		calendar = new FullCalendar.Calendar(calendarEl, {
+			headerToolbar : {
+				left : 'prev,next today',
+				center : 'title',
+				right : 'dayGridMonth,timeGridWeek,timeGridDay'
+			},
+			locale : 'ko',
+			slotMinTime : '09:00',
+			slotMaxTime : '21:00',
+			initialDate : todayStr,
+			navLinks : true, // can click day/week names to navigate views
+			selectable : true,
+			selectMirror : true,
+			select : function(arg) {
+				modalOpen(arg); //일자 클릭 시 모달 호출
+			},
+			eventClick : function(arg) {
+				modalOpen(arg); //이벤트 클릭 시 모달 호출
+			},
+			eventChange : function(arg) {
+				//allDay true로 바꾸면 end가 없어서 만듦
+				if (arg.event.end == null) {
+					var end = new Date();
+					end.setDate(arg.event.start.getDate()+1);
+					arg.event.setEnd(end);
+				}
+			},
+			eventDrop : function(arg) {
+				modalOpen(arg); //이벤트 드래그드랍 시 모달 호출
+			},
+			eventResize : function(arg) {
+				modalOpen(arg); //이벤트 사이즈 변경시(일정변경) 모달 호출
+			},
+			
+			editable : true,
+			dayMaxEvents : true, // allow "more" link when too many events
+			
+			events : loadEvent() // 데이터 형식을 맞추짜앙!!!!
+
+		});
+		calendar.render();
+	});
+	
+	// 띄우기 
+	function loadEvent(){
+		
+		console.log("왔다");
+		
+		  let arr = [];
+		  
+	   	  $.ajax({
+	   		  type:"post",
+	   		  url :"/proj/calList",
+	   		  data:"{}",
+	   		  dataType: "json",
+	   		  contentType: "application/json; charset=utf-8",
+	   		  async: false,
+	   		  beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+	                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+			  },
+	   		  success:function(list){
+	   			  
+	   			  for(var i=0;i<list.length;i++){
+	   				  arr.push({
+	   					writer:list[i]['writer'],				// 작성자(회원코드)
+	   					indvSchdNum:list[i]['indvSchdNum'],		// 일정 번호
+	   					title:list[i]['indvSchdTitle'],			// 제목
+	   					start:list[i]['indvSchdStrtDate'],		// 시작일
+	   					end:list[i]['indvSchdEndDate'],			// 종료일
+	   					indvSchdCts:list[i]['indvSchdCts']		// 내용
+	   				  
+		   			  	});//end arr
+		   			  	
+	   			  }//end for
+	   			console.log("arr : " ,JSON.stringify(arr));
+	   		  }
+	   	  })
+	   	return arr;
+	}
+</script>
 </head>
-<!-- END: Head-->
-
-<!-- BEGIN: Body-->
-
 <body>
+	<div id="calendar"
+		style="width: 1000px; margin: auto; background-color: white;"></div>
 
-    <!-- BEGIN: Header-->
+	<!-- 일정 등록 모달 창 시작 -->
+	<!-- insertModal -->
+	<div class="modal fade insertModal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
 
-    <!-- END: Header-->
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">일정 등록</h4>
+					<button type="button" class="close"
+						onclick="initModal('insertModal', g_arg)">&times;</button>
+				</div>
 
-    <!-- BEGIN: Main Menu-->
- 
-    <!-- END: Main Menu-->
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="indvSchdTitle">일정 제목</label> <input type="text"
+							class="form-control" placeholder="제목을 입력하세요." id="indvSchdTitle" name="indvSchdTitle">
+					</div>
+					<div class="form-group">
+						<label for="indvSchdCts">내용</label>
+						<div>
+							<textarea class="form-control" rows="5" placeholder="일정 내용을 입력하세요."
+								id="indvSchdCts" name="indvSchdCts" style="resize:none;"></textarea>
+						</div>
+					</div>
+				</div>
+				<!-- Modal footer. 버튼 -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary float-right insertBtn"
+						onclick="insertSchd('insertModal', g_arg)">등록</button>
+					<button type="button" class="btn btn-info  float-right updateBtn"
+						onclick="updateSchd('updateModal', g_arg)">수정</button>
+					<button type="button" class="btn btn-secondary  float-right deleteBtn"
+						onclick="deleteSchd('insertModal', g_arg)">삭제</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 일정 등록 모달 창 끝 -->
 
-    <!-- BEGIN: Content-->
-<!--     <div class="app-content content"> -->
-<!--         <div class="content-overlay"></div> -->
-<!--         <div class="content-wrapper"> -->
-<!--             <div class="content-body"> -->
-                <!-- Full calendar events example section start -->
-                <section id="events-examples" style="width:67%;">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-content collapse show">
-                                    <div class="card-body">
-                                        <div id='fc-event-colors'></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- // Full calendar events example section end -->
-<!--             </div> -->
-<!--         </div> -->
-<!--     </div> -->
-    <!-- END: Content-->
+	<script type="text/javascript">
 
+// 	// 시작일자 변경
+// 	function startChange(){
+// 		  var start = $('#start').val();
+// 		  var end  = $('#end').val();
+// 		  if(start.substring(3, 5) == '00')
+// 			  end = start.substring(0, 2) + ':30';
+// 		  else
+// 			  end = (parseInt(start.substring(0, 2))+1) + ':00';
+		  
+// 		  $('#end').val(end);
+// 	  }
+	
+	// 모달 내용 초기화
+	function initModal(modal, arg){
+		$('.'+modal+' #indvSchdTitle').val('');
+//		$('.'+modal+' #regid').val('');
+		$('.'+modal+' #indvSchdNum').val('');
+		$('.'+modal+' #indvSchdCts').val('');
+		$('.'+modal).modal('hide');
+		g_arg = null;
+	  }
 
-    <!-- BEGIN: Vendor JS-->
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
-    <!-- BEGIN Vendor JS-->
+	// 일정 insert
+	function modalOpen(arg) {
+		//console.log("혹시 필요한값이:",arg.event.extendedProps.indvSchdNum);
+		g_arg = arg;
+		
+		// 이미 등록된 일정을 클릭할 경우 - 조회 및 수정,삭제 가능
+		if(g_arg.event != undefined) {
+			$('.insertModal .insertBtn').css('display', 'none');
+			$('.insertModal .deleteBtn').css('display', 'inline');
+			$('.insertModal .updateBtn').css('display', 'inline');
+			$('.insertModal #indvSchdTitle').attr("disabled", true);
+			$('.insertModal #indvSchdCts').attr("disabled", true);
+			$('.insertModal #indvSchdNum').val(g_arg.event.extendedProps.indvSchdNum);
+			$('.insertModal #indvSchdTitle').val(g_arg.event.title);
+			$('.insertModal #indvSchdCts').val(g_arg.event.extendedProps.indvSchdCts);
+//			$('.insertModal #writer').val(g_arg.event.writer);
+			$('#modalTitle').html("<h4 class='modal-title' id='modalTitle'>일정 조회</h4>");
+			
+		} else {	// 새 일정(빈 곳 클릭)을 추가하는 경우 - 일정 추가 가능
+			$('#modalTitle').html("<h4 class='modal-title' id='modalTitle'>일정 등록</h4>");
+			$('.insertModal #indvSchdTitle').attr("disabled", false);
+			$('.insertModal #indvSchdCts').attr("disabled", false);	
+			
+		// 등록 버튼 외 숨김
+		$('.insertModal .insertBtn').css('display', 'inline');
+		$('.insertModal .deleteBtn').css('display', 'none');
+		$('.insertModal .updateBtn').css('display', 'none');
+	}
+	
+	// 모달창 show
+	$('.insertModal').modal({backdrop: 'static'});	// 모달 밖 영역 눌렀을 때 창 꺼짐 방지. esc 방지
+	console.log(arg);
+	
+	$('.insertModal #indvSchdTitle').focus();
+	
+}
+	
+	
+	/* 일정 삭제 */
+	function deleteSchd(modal, arg) {
+		
+		console.log("요건뭐얌:",arg);
+		
+		if(confirm('일정을 삭제하시겠습니까?')){
+			
+			var data = {
+<%-- 			writer: '<%=sessionId%>', --%>
+	//			indvSchdNum: $('.'+modal+' #indvSchdNum').val()		// 내가 따로 추가한 항목이니까 extendedProps어쩌구로 써야 먹히나봄
+			    indvSchdNum: arg.event.extendedProps.indvSchdNum	// 이거 때문에 삭제가 안 된 거였음!!!
+			}
+			
+			console.log("확인 메롱: ",data)
+			
+			$.ajax({
+				url: "/proj/deleteSchd",
+				type: "POST",
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify(data),
+				dataType: "JSON",
+				traditional: true,
+			//	async: false,
+				beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+	                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+			  },
+				success: function(data, status, xhr){
+					//alert(xhr.status);
+					console.log(data);
+					
+					arg.event.remove();
+					initModal(modal, arg);
+					alert('일정을 삭제하였습니다.');
+					location.href='/proj/schedule';
+				},
+				error: function(xhr, status, error) {
+					alert('일정 삭제 실패<br> 새로고침 후 재시도 해주세요.');
+				}
+					
+			}); // ajax end
+		}
+	}
+	
+	
+	/* 일정 등록 */
+	function insertSchd(modal, arg) {
+		// modal - 값을 받는 변수명
 
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/moment.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/fullcalendar.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/daygrid.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/timegrid.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/interactions.min.js"></script>
-    <!-- END: Page Vendor JS-->
+		if($('.'+modal+' #indvSchdTitle').val() == '') {
+			alert("일정 제목을 입력해주세요.");
+			
+			return;
+		}
+		
+		if($('.'+modal+' #indvSchdTitle').val().length > 30) {
+			alert("제목은 30자 미만으로 입력해주세요.");
+			
+			return;
+		}
+		
+		/* 등록 및 수정 */
+		if(arg.event != undefined) {	// 수정
+			
+			console.log("이 if 안에는 수정 코드를");
+		
+		// 등록
+		} else {
+			
+			var data;
+			var m_start = new Date(arg.startStr.substr(0, 4), arg.startStr.substr(5, 2)-1, arg.startStr.substr(8, 2));
+			var m_end = new Date(arg.endStr.substr(0, 4), arg.endStr.substr(5, 2)-1, arg.endStr.substr(8, 2));
+			var m_month = m_end.getMonth()+1;
+			
+			//week나 day에서 추가할때(시간 존재)
+			if(arg.endStr.length > 10){
+				m_end.setDate(m_end.getDate());
+				//month에선 2021.09.30 클릭 시 endstr이 2021.10.01로 잡히기 떄문에 일-1
+			}else{
+				m_end.setDate(m_end.getDate()-1);	
+			}
+			
+			// 말일에 대한 로직
+			var m_end_com = new Date(arg.endStr.substr(0,4), arg.endStr.substr(5,2)-1, arg.endStr.substr(8,2));
+			var m_first = new Date(m_end.getFullYear(), m_end.getMonth()+1, 1);
+			
+			if(m_end_com.getFullYear() + '' + stringFormat(m_end_com.getMonth()) + '' + stringFormat(m_end_com.getDate())
+					== m_first.getFullYear() + '' + stringFormat(m_first.getMonth()) + '' + stringFormat(m_first.getDate())) {
+				
+				m_month = m_end.getMonth()+1;
+			}
+			
+			var m_date = m_end.getDate();
+			arg.endStr = m_end.getFullYear() + '-' + stringFormat(m_month) + '-' + stringFormat(m_date);
+			
+			if(arg.startStr.length > 10) {
+				// 일자만 추출
+				arg.startStr = arg.startStr.substr(0, 10);
+			}
+			
+			data = {
+					indvSchdTitle: $('.'+modal+' #indvSchdTitle').val(),
+					indvSchdStrtDate: arg.startStr,
+					indvSchdEndDate: arg.endStr,
+					indvSchdCts: $("#indvSchdCts").val()
+			}
+		
+// 		if(data.startdt > data.enddt) {
+// 			console.log(data.startdt+" 시작");
+// 			console.log(data.enddt+" 종료");
+// 			console.log(data);
+			
+// 			alert('종료 시간을 시작 시간보다 크게 선택해주세요.');
+// 			return;
+// 	}
+		console.log(data);
+		
+		$.ajax({
+			url: "/proj/insertSchd",
+			type: "POST",
+			data: JSON.stringify(data),
+			dataType: "JSON",
+			contentType : "application/json; charset=utf-8",
+			traditional: true,
+			beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+		  },
+			success: function(data, status, xhr) {
+				
+				var writer;
+				
+				calendar.addEvent({
+					writer: writer,
+					title: $('.'+modal+' #indvSchdTitle').val(),
+					indvSchdCts: $("#indvSchdCts").val(),
+					start: arg.startStr,
+					end: arg.endStr
+				});
+		
+		initModal(modal, arg);
+		alert('일정을 등록하였습니다!');
+		location.href='/proj/schedule';
+		
+		},
+		
+		error: function(xhr, status, error) {
+			alert('일정 등록 실패 \n새로고침 후 재시도 해주세요.');
+			}
+		});
+	}
+}
 
-    <!-- BEGIN: Theme JS-->
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app.js"></script>
-    <!-- END: Theme JS-->
+</script>
 
-    <!-- BEGIN: Page JS-->
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/extensions/fullcalendar-events.js"></script>
-    <!-- END: Page JS-->
-
+	<!-- BEGIN: Page JS-->
+	<script
+		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/modal/components-modal.js"></script>
+	<!-- END: Page JS-->
 </body>
-<!-- END: Body-->
 
 </html>

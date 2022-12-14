@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ipms.mapper.WikiMapper;
+import com.ipms.proj.wiki.mapper.WikiMapper;
 import com.ipms.proj.wiki.service.WikiService;
-import com.ipms.vo.WikiVO;
+import com.ipms.proj.wiki.vo.WikiVO;
 
 import lombok.extern.slf4j.Slf4j;
 

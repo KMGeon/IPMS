@@ -27,4 +27,9 @@ public class FreeboardController {
 	public String freeDetail() {
 		return "proj/freeboard/freeBoardDetail";
 	}
+	
+	@GetMapping("/freeBoardUpdate")
+	public String freeUpdate() {
+		return "proj/freeboard/freeBoardUpdate";
+	}
 }

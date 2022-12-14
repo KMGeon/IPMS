@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.calendar.mapper.CalendarMapper">
+
+	<select id="selectSchd" resultType="com.ipms.proj.calendar.vo.CalendarVO">
+		SELECT INDV_SCHD_NUM
+			, WRITER
+			, PROJ_ID
+			, INDV_SCHD_TITLE
+			, INDV_SCHD_CTS
+			, INDV_SCHD_STRT_DATE
+			, INDV_SCHD_END_DATE
+			, INDV_SCHD_WRITE_DATE
+			, DELETE_YN
+		FROM INDV_SCHD
+	</select>
+	
+	<insert id="insertSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">
+		<!-- 번호 자동 증가 처리) 데이터가 없으면 0, 있으면 최대값 +1 -->
+		<!-- where절 writer, projId가 일치해야 관리하도록...? 나중에 처리!! -->
+		<selectKey order="BEFORE" resultType="integer" keyProperty="indvSchdNum">
+			SELECT NVL(MAX(INDV_SCHD_NUM),0)+1 FROM INDV_SCHD
+		</selectKey>
+	
+		INSERT INTO INDV_SCHD(INDV_SCHD_NUM,WRITER,PROJ_ID,INDV_SCHD_TITLE,INDV_SCHD_CTS,INDV_SCHD_STRT_DATE,INDV_SCHD_END_DATE,INDV_SCHD_WRITE_DATE,DELETE_YN)
+				VALUES(#{indvSchdNum},'A001','100',#{indvSchdTitle},#{indvSchdCts},#{indvSchdStrtDate},#{indvSchdEndDate},sysdate,'n')
+		
+	</insert>
+	
+	<delete id="deleteSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">
+		DELETE
+		FROM INDV_SCHD
+		WHERE INDV_SCHD_NUM = #{indvSchdNum}
+	</delete>
+</mapper>

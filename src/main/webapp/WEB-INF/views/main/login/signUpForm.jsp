@@ -197,7 +197,7 @@
                             </div>
                             <div class="card-content" >
                                 <div class="card-body">
-                                    <form class="form-horizontal form-simple" action="/main/signUpForm" method="post" novalidate>
+                                    <form class="form-horizontal form-simple" action="/main/signUpForm" method="post">
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
                                             <input type="text" class="form-control form-control-lg"
@@ -280,10 +280,10 @@
                                             <span id="passMessage" style="color: red"/>
                                         </div>
 <%--                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">--%>
-                                        <button type="button" id="sbtBtn" name="sbtBtn"
+                                        <input type="submit" id="sbtBtn" name="sbtBtn"
                                                 class="btn btn-primary btn-lg btn-block" onclick="checkReg()" style="display:none;">
                                             <i class="feather icon-unlock"></i> Register
-                                        </button>
+                                        </input>
                                         <input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
                                         <sec:csrfInput/>
                                     </form>

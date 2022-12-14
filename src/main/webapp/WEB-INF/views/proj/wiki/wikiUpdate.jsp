@@ -41,18 +41,6 @@ $(document).ready(function() {
 		<div class="form-body">
 			<div class="form-group">
 				<input type="hidden" name="wikiId" value="${list.wikiId}">
-				<select class="form-control" name="highWikiId">
-					
-						<c:forEach items="${highWikiId}" var="id">
-						<c:if test="${id.wikiId == list.wikiId}">
-							<c:if test="${id.highWikiId == 0}">
-								<option value="" selected>${id.wikiTitle}</option>	
-								
-							</c:if>
-						</c:if>
-						<option value="${id.wikiId}">${id.wikiTitle}</option>
-						</c:forEach>
-				</select>
 			</div>
 			<div class="form-group">
 				<label for="donationinput1">위키 제목</label> <input type="text"
@@ -77,6 +65,3 @@ $(document).ready(function() {
 	</form>
 
 </div>
-<script type="text/javascript">
-		$('select').select2();
-</script>

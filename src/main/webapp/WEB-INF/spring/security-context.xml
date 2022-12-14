@@ -16,6 +16,7 @@
     <bean id="bcryptPasswordEncoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
+
     <security:http>
         <security:intercept-url pattern="/main/newProjectForm" access="hasRole('ROLE_MEMBER')"/>
         <security:intercept-url pattern="/main/**" access="permitAll()"/>
@@ -36,10 +37,6 @@
         </security:authentication-provider>
     </security:authentication-manager>
 </beans>
-
-
-
-
 
 
 

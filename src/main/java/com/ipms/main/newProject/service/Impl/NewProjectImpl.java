@@ -1,11 +1,9 @@
 package com.ipms.main.newProject.service.Impl;
 
-import com.ipms.main.login.service.LoginService;
 import com.ipms.main.newProject.service.NewProjectService;
-import com.ipms.mapper.MemMapper;
-import com.ipms.mapper.ProjMapper;
-import com.ipms.vo.MemVO;
-import com.ipms.vo.ProjVO;
+import com.ipms.main.newProject.mapper.ProjMapper;
+import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.main.newProject.vo.ProjVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +17,7 @@ public class NewProjectImpl implements NewProjectService {
     }
 
     @Override
-    public int insertProjMem(ProjVO projVO) {
-        return this.projMapper.insertProjMem(projVO);
+    public int insertProjMem(ProjMemVO projMemVO) {
+        return this.projMapper.insertProjMem(projMemVO);
     }
-
-
 }

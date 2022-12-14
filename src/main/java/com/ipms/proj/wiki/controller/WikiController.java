@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ipms.proj.wiki.service.WikiService;
-import com.ipms.vo.WikiVO;
+import com.ipms.proj.wiki.vo.WikiVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,10 +36,12 @@ public class WikiController {
 			model.addAttribute("highWikiId",highWikiId);
 		}
 		
+		//wikiId가 null 이라면 모든 위키를 찾아온다
 		if(wikiId == null) {
 			wikiList = wikiService.selectWiki(null); 
 		}else {
 			wikiList = wikiService.selectWiki(wikiId);
+			//현재 위키 아이디의 정보도 가져오므로 자기자신은 제거한다
 			wikiList.remove(0);
 			wikiDetail = wikiService.selectWikiDetail(wikiId);
 			model.addAttribute("wikiDetail",wikiDetail);
@@ -52,6 +54,7 @@ public class WikiController {
 	@GetMapping("/wikiInsert")
 	public String wikiInsertGet(Model model) {
 		List<WikiVO> highWikiId = this.wikiService.selectHighWikiId();
+		//high 위키 아이디가 없다면 데이터를 넘기지 않는다
 		if(highWikiId == null) {
 		}else {
 			model.addAttribute("highWikiId",highWikiId);
@@ -67,6 +70,7 @@ public class WikiController {
 	
 	@PostMapping("/wikiInsert")
 	public String wikiInsertPost(WikiVO wikiVO) {
+		//wikiVO에 highWikiId가 빈 문자열로 들어온다면 null을 세팅해준다.
 		if(wikiVO.getHighWikiId() == "") {
 			wikiVO.setHighWikiId(null);
 		}
@@ -81,6 +85,10 @@ public class WikiController {
 		
 	}
 	
+	/**
+	 * 위키의 트리구조를 그려주기위한 서비스
+	 * @return List<WikiVO>
+	 */
 	@ResponseBody
 	@PostMapping("/wikiTree")
 	public List<WikiVO> wikiTree(){

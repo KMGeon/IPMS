@@ -76,7 +76,11 @@
 </div>
 
 <script>
-
+	$(window).scroll(function(){
+	    var position = $(document).scrollTop();
+	    $("#treeContent").css('top',  position+45 );     
+	});
+	
 	var treeArray = new Array();
 	$('select').select2();
 	 $.ajax({

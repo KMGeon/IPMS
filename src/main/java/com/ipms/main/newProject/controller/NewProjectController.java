@@ -2,9 +2,8 @@ package com.ipms.main.newProject.controller;
 
 import com.ipms.main.newProject.service.NewProjectService;
 
-import com.ipms.vo.MemberAuth;
-import com.ipms.vo.ProjMemVO;
-import com.ipms.vo.ProjVO;
+import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.main.newProject.vo.ProjVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,11 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @RequestMapping(value = "/main")
@@ -27,6 +23,7 @@ public class NewProjectController {
     NewProjectService newProjectService;
 
     //프로젝트 생성
+    @PreAuthorize("hasRole('ROLE_MEMBER')")
     @RequestMapping(value = "/newProjectForm" , method = RequestMethod.GET)
     public String newProject(){
         return "main/newProject/newProjectForm";
@@ -34,31 +31,28 @@ public class NewProjectController {
 
 
     /**
-     * 프로젝트 생성POST
      * @param projVO
+     * @param projMemVO
+     * @param memEmail
+     * @param memCode
      * @return
      */
     @RequestMapping(value = "/newProjectPost", method = RequestMethod.POST)
-    public String newProjectPost(@ModelAttribute  ProjVO projVO , @RequestParam String memEmail){
-        log.info("memEmail=="+memEmail);
+    public String newProjectPost(@ModelAttribute ProjVO projVO,
+                                 @ModelAttribute ProjMemVO projMemVO ,
+                                 @RequestParam String memEmail,
+                                 @RequestParam String memCode)
+    {
         int result = this.newProjectService.projInsert(projVO);
+        log.info("==================RESULT================"+result);
         if(result==1){
-            List<ProjMemVO> projMemVOList = projVO.getProjMemVOList();
-            List<ProjMemVO> projMemVOList2 = new ArrayList<ProjMemVO>();
-            for(ProjMemVO proj : projMemVOList){
-                if(proj.getMemCode()!=null){
-                    log.info("projmemCode===="+proj.getMemCode());
-                    log.info("projID===="+proj.getProjId());
-                    //ProjMemVO projMemVO = new ProjMemVO();
-                    proj.setMemCode(projVO.getMemCode());
-                    proj.setProjId(proj.getProjId());
-                    projMemVOList2.add(proj);
-
-                }
-            }
-
-            this.newProjectService.insertProjMem(projMemVOList2);
-
+            ProjMemVO vo = new ProjMemVO();
+            vo.setProjId(projVO.getProjId());
+            vo.setMemCode(memCode);
+            log.info("projectId:"+vo.getProjId());
+            log.info("memCode:"+vo.getMemCode());
+            int result2 = this.newProjectService.insertProjMem(vo);
+            log.info("result2:"+result2);
             return "main/page";
         }else{
             return "main/page";

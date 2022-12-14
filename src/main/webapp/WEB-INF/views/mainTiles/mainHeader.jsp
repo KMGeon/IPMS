@@ -272,7 +272,13 @@
 
             <!--로그인 -->
             <sec:authorize access="isAuthenticated()">
+                <p>mvo : ${mvo}<br /></p>
                 <p style="font-size: large">${mvo.member.memName}님</p>
+<%--                <sec:authentication property="principal" var="prc"/>--%>
+<%--                ${prc.username }--%>
+<%--                <c:forEach items="${prc.authorities  }" var="auth">--%>
+<%--                    ${auth }--%>
+<%--                </c:forEach>--%>
 <%--                <sec:authentication property="principal.username"/>님--%>
                 <button type="button" id="myPage"  class="btn btn-outline-secondary" ><i class="fa fa-plug"></i>마이페이지</button>
                 <form action="/customLogout" method='post'>

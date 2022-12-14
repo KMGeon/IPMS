@@ -1,9 +1,9 @@
 package com.ipms.main.register.service.Impl;
 
 import com.ipms.main.register.service.MemService;
-import com.ipms.vo.MemberAuth;
-import com.ipms.vo.MemVO;
-import com.ipms.mapper.MemMapper;
+import com.ipms.main.login.vo.MemberAuth;
+import com.ipms.main.login.vo.MemVO;
+import com.ipms.main.login.mapper.MemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

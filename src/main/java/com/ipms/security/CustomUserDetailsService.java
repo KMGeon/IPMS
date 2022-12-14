@@ -1,7 +1,7 @@
 package com.ipms.security;
 
-import com.ipms.vo.MemVO;
-import com.ipms.mapper.MemMapper;
+import com.ipms.main.login.vo.MemVO;
+import com.ipms.main.login.mapper.MemMapper;
 import com.ipms.security.domain.CustomUser;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

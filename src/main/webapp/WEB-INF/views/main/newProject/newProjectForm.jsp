@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-<%@ taglib  uri="http://www.springframework.org/security/tags"  prefix="sec" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
@@ -88,6 +87,18 @@ background-color: #448AFF;
 	text-align: left;
 }
 </style>
+
+<script>
+	$(document).ready(function () {
+		$("#projName").change(function () {
+			var to = $("#projName").val();
+			$("#to").attr("value", to);
+			console.log(to);
+			$("#teamId").val(to);
+		})
+
+	})
+</script>
 </head>
 <div class="row">
 <div class="col-md-6" style="display: flex; float: left; width: 1000px;">
@@ -129,8 +140,8 @@ background-color: #448AFF;
 									</div>
 									<form action="/main/uploadFormAction" method="post" enctype="multipart/form-data">
 <%--										?${_csrf.parameterName}=${_csrf.token}--%>
-										<input type='file' name='uploadFile' multiple />
-										<input type='submit' value="전송" />
+										<input type='hidden' name='uploadFile' multiple />
+										<input type='hidden' value="전송" />
 										<sec:csrfInput />
 									</form>
 								</div>
@@ -152,12 +163,14 @@ background-color: #448AFF;
 					<h4 class="form-section" style="padding-bottom: 5px;">
 						<i class="fa fa-file-text"></i> information
 					</h4>
-					<hr />
+
 					<br/><br/><br/>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="projName">Project Name</label> <input type="text" id="projName"   class="form-control border-primary" placeholder="Project Name" name="projName" />
+								<label for="projName">Project Name</label>
+								<input type="text" id="projName"   class="form-control border-primary" placeholder="Project Name" name="projName" />
+								<input type="hidden" id="teamId"  name="teamId" />
 							</div>
 						</div>
 					</div>
@@ -187,14 +200,14 @@ background-color: #448AFF;
 			</div>
 		</div>
 	</div>
-
-		<input type="hidden" name="projMemVOList[0].memCode" value="2"/>
-		<input type="hidden" name="projMemVOList[0].projId" value="3"/>
-		<sec:csrfInput/>
-
+		<input type="hidden" name="memAuthList[0].memAuth" value="ROLE_PROJPL"/>
 		<sec:authorize access="isAuthenticated()">
-		<input type="text" name="memEmail" value="<sec:authentication property="principal.username"/>"/>
+		<input type="hidden" name="memEmail" value="<sec:authentication property="principal.username"/>"/>
+		<input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
+		<input type="text" name="memCode" value="${mvo.member}"/>
+
 		</sec:authorize>
+		<sec:csrfInput/>
 	</form>
 </div>
 </div>

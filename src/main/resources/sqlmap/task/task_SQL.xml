@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.work.mapper.TaskMapper">
+	<select id="HighWorkList" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT TASK_ID
+		    TASK_ID, 
+		    PROJ_ID, 
+		    MEM_CODE, 
+		    TASK_TITLE, 
+		    TASK_CTS, 
+		    TASK_STRT_DATE, 
+		    TASK_END_DATE, 
+		    TASK_STUS_CODE, 
+		    TASK_PGRES, 
+		    HIGH_TASK_ID, 
+		    LOW_RGST_SEQ,
+			APROV_WHTH, 
+			TASK_REPRE, 
+			DELETE_YN, 
+			REFER_CTS
+		FROM TASK
+		WHERE APROV_WHTH = 'N'
+		 START WITH HIGH_TASK_ID IS NULL
+		CONNECT BY PRIOR TASK_ID = HIGH_TASK_ID
+		ORDER SIBLINGS BY TASK_ID ASC
+    </select>
+    
+	<select id="HighNum" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskVO" >
+		SELECT  MAX(LOW_RGST_SEQ) as LOW_RGST_SEQ , MAX(TASK_ID) as TASK_ID
+	    FROM    TASK
+	    WHERE HIGH_TASK_ID = #{highTaskId}
+	</select>
+	
+	<insert id="lowWorkInsert" parameterType="com.ipms.proj.task.vo.TaskVO">
+		INSERT INTO TASK(
+			      TASK_ID
+			    , PROJ_ID
+			    , MEM_CODE
+			    , TASK_TITLE
+			    , TASK_CTS
+			    , TASK_STRT_DATE
+			    , TASK_END_DATE
+			    , TASK_STUS_CODE
+			    , TASK_PGRES
+			    , HIGH_TASK_ID
+			    , LOW_RGST_SEQ
+			    , APROV_WHTH
+			    , TASK_REPRE
+			    , DELETE_YN
+		    	)
+	    VALUES(
+		    	 #{taskId}
+			    ,'pj001'
+			    ,'M001'
+			    ,#{taskTitle}
+			    ,#{taskCts}
+			    ,#{taskStrtDate}
+			    ,#{taskEndDate}
+			    ,#{taskStusCode}
+			    ,#{taskPgres}
+			    ,#{highTaskId}
+			    ,#{lowRgstSeq}
+			    ,'N'
+			    ,'이문주'
+			    ,'N'
+		 	   )
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

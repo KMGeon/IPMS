@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.chat.mapper.ChatMapper">
+
+	<resultMap type="com.ipms.proj.chat.vo.ChatVO" id="chatVO">
+		<result property="chatNum" column="CHAT_NUM" />
+		<result property="chatRoomId" column="CHAT_ROOM_ID" />
+		<result property="chatCts" column="CHAT_CTS" />
+		<result property="chatDate" column="CHAT_DATE" />
+		<result property="writer" column="WRITER" />
+		<result property="deleteYn" column="DELETE_YN" />
+	</resultMap>
+
+
+	<insert id="insertChat" parameterType="com.ipms.proj.chat.vo.ChatVO">
+		<selectKey keyProperty="chatNum" order="BEFORE" resultType="int">
+			SELECT NVL(MAX(CHAT_NUM),0)+1 FROM CHAT 
+		</selectKey>
+	
+		INSERT INTO CHAT(		
+			CHAT_NUM,
+			CHAT_ROOM_ID,
+			CHAT_CTS,
+			CHAT_DATE,
+			WRITER)
+			VALUES(
+			#{chatNum},
+			#{chatRoomId},
+			#{chatCts},
+			SYSDATE,
+			#{writer}
+			)
+	</insert>
+		
+		
+	<select id="selectChat" parameterType="com.ipms.proj.chat.vo.ChatVO" resultMap="chatVO">
+		SELECT 
+			CHAT_NUM,
+			CHAT_ROOM_ID,
+			CHAT_CTS,
+			CHAT_DATE,
+			WRITER
+		FROM
+			CHAT
+		WHERE 
+			CHAT_ROOM_ID = #{chatRoomId}
+		ORDER BY CHAT_DATE ASC
+	</select>
+		
+</mapper>
