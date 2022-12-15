@@ -65,13 +65,13 @@
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label style=" float: left">Email </label>
-                                    <input type="text" id="email" name="username" class="form-control" placeholder="Your Email" required/>
+                                    <input type="text" id="email" name="memEmail" class="form-control" placeholder="Your Email" required/>
                                 </div>
 
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label" style="float: left">Password</label>
-                                    <input type="password" id="paswd" name="password" class="form-control"
+                                    <input type="password" id="paswd" name="memPasswd" class="form-control"
                                            placeholder="Enter Password" required/>
                                 </div>
                                 <!-- Checkbox -->
@@ -106,6 +106,7 @@
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Page JS-->
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/forms/form-login-register.js"></script>
 <!-- END: Page JS-->

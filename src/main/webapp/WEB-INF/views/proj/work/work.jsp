@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
    <link rel="apple-touch-icon"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/apple-icon-120.png">
 <link rel="shortcut icon" type="image/x-icon"
@@ -52,8 +52,13 @@
 <link rel="stylesheet" type="text/css"
 	href="/resources/css/commonFont.css">
 <!-- END: font CSS-->
-<script
-   src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<script>
+	var header = '${_csrf.headerName}';
+	var token =  '${_csrf.token}';
+</script>
+
+<script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <div class="app-content content">
    <div class="content-overlay"></div>
    <div class="content-wrapper">
@@ -76,7 +81,7 @@
                <div class="card shadow-none quill-wrapper">
                   <div
                      class="card-header d-flex justify-content-between align-items-center border-bottom px-2 py-1">
-                     <h3 class="card-title">UI Design</h3>
+                     <h3 id="classification" class="card-title">UI Design</h3>
                      <button type="button" class="close close-icon">
                         <i class="feather icon-x"></i>
                      </button>
@@ -85,13 +90,6 @@
 <!--                   <form action="/kanban/workval" method="post" class="edit-kanban-item"> -->
                      <div class="card-content position-relative ps">
                         <div class="card-body">
-                        <div class="form-group">
-                              <label>classification</label> 
-                              <select id="classification" name="classification">
-                              	<option value="상위 일감" >상위일감</option>
-                              	<option value="하위 일감">하위일감</option>
-                              </select>
-                           </div>
                            <div class="form-group">
                               <label>Card Title</label> 
                               <input type="text" id="taskTitle" name="taskTitle" class="form-control edit-kanban-item-title" placeholder="kanban Title">

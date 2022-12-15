@@ -30,7 +30,6 @@ public class MailController {
         return "main/login/sendMail";
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/sendMailProcess")
     public  @ResponseBody  String sendMailProcess(@RequestParam Map<String, String> map  , Model model)  throws MessagingException {
         log.info("map : " + map);

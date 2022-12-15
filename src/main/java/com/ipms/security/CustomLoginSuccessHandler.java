@@ -19,7 +19,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth)
-			throws IOException, ServletException {
+			throws IOException {
 
 		log.warn("Login Success");
 

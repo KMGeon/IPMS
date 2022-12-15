@@ -23,7 +23,7 @@ public class TaskServiceImpl implements TaskService {
 		
 		List<TaskVO> vo = this.taskMapper.HighWorkList();
 		
-		log.info("서비스 vo : "  + vo.toString());
+		log.info("receive TaskServiceImpl => vo : "  + vo.toString());
 		
 		return vo;
 	}

@@ -1,8 +1,11 @@
 package com.ipms.main.newProject.controller;
 
+import com.ipms.main.login.vo.MemVO;
+import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.newProject.service.NewProjectService;
 
 import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.main.newProject.vo.ProjTeamVO;
 import com.ipms.main.newProject.vo.ProjVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 
 @Slf4j
 @RequestMapping(value = "/main")
@@ -23,36 +27,55 @@ public class NewProjectController {
     NewProjectService newProjectService;
 
     //프로젝트 생성
-    @PreAuthorize("hasRole('ROLE_MEMBER')")
     @RequestMapping(value = "/newProjectForm" , method = RequestMethod.GET)
     public String newProject(){
         return "main/newProject/newProjectForm";
     }
 
 
-    /**
+     /**
+      프로젝트 생성 -> 프로젝트 팀 구성 -> 프로젝트 멤버 생성
      * @param projVO
-     * @param projMemVO
-     * @param memEmail
+     * @param memVO
+     * @param projTeamVO
+     * @param teamId
      * @param memCode
      * @return
      */
     @RequestMapping(value = "/newProjectPost", method = RequestMethod.POST)
     public String newProjectPost(@ModelAttribute ProjVO projVO,
-                                 @ModelAttribute ProjMemVO projMemVO ,
-                                 @RequestParam String memEmail,
+                                 @ModelAttribute MemVO memVO,
+                                 @ModelAttribute ProjTeamVO projTeamVO,
+                                 @RequestParam String teamId,
                                  @RequestParam String memCode)
     {
+        //프로젝트 생성
         int result = this.newProjectService.projInsert(projVO);
-        log.info("==================RESULT================"+result);
         if(result==1){
+            // 프로젝트 생성 -> 프로젝트 팀 생성
+            projTeamVO.setProjId(projVO.getProjId());
+           this.newProjectService.insertProTeam(projTeamVO);
+
+            //프로젝트 생성 -> 프로젝트 팀 생성 -> 프로젝트 멤버 생성
             ProjMemVO vo = new ProjMemVO();
-            vo.setProjId(projVO.getProjId());
+            vo.setProjId(projTeamVO.getProjId());
             vo.setMemCode(memCode);
-            log.info("projectId:"+vo.getProjId());
-            log.info("memCode:"+vo.getMemCode());
-            int result2 = this.newProjectService.insertProjMem(vo);
-            log.info("result2:"+result2);
+            vo.setTeamId(teamId);
+            this.newProjectService.insertProjMem(vo);
+            log.info("memCode"+memCode);
+            this.newProjectService.authDelete(memCode);
+
+            //권한부여 ROLE_MEMBER , ROLE_PROJECT_LEADER
+            List<MemberAuth> list = memVO.getMemAuthList();
+            for(MemberAuth authVO : list){
+                if(authVO.getMemAuth()!=null){
+                    MemberAuth memberAuth = new MemberAuth();
+                    memberAuth.setMemCode(memCode);
+                    memberAuth.setProjId(projTeamVO.getProjId());
+                    memberAuth.setMemAuth(authVO.getMemAuth());
+                    this.newProjectService.projAuthInsert(memberAuth);
+                }
+            }
             return "main/page";
         }else{
             return "main/page";
@@ -67,7 +90,7 @@ public class NewProjectController {
     @RequestMapping(value = "/uploadFormAction", method = RequestMethod.POST)
     public String uploadFormPost(@RequestParam("uploadFile") MultipartFile[] uploadFile, Model model) {
 
-        String uploadFolder = "E:\\testUpload";
+        String uploadFolder = "C:\\upload";
 
         for (MultipartFile multipartFile : uploadFile) {
             log.info("-------------------------------------");

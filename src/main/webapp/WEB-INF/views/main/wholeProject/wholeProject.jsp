@@ -47,67 +47,23 @@
                              data-pswp-uid="1">
                             <div class="card-deck-wrapper">
                                 <div class="card-deck">
-                                    <figure class="card card-img-top border-grey border-lighten-2"
-                                            itemprop="associatedMedia" itemscope=""
-                                            itemtype="http://schema.org/ImageObject">
-                                        <a href="/main/projlistdetail" itemprop="contentUrl" data-size="480x360">
-                                            <img class="gallery-thumbnail card-img-top"
-                                                 src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg"
-                                                 itemprop="thumbnail" alt="Image description">
+                                    <c:forEach var="item" items="${list}" varStatus="idx">
+                                    <div class="grid-item" style="width:300px;margin-left:10px;">
+                                    <figure class="card card-img-top border-grey border-lighten" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+
+                                        <a href="/main/projlistdetail/${item.projId}" itemprop="contentUrl" data-size="480x360">
+                                            <img class="gallery-thumbnail card-img-top" src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg" itemprop="thumbnail" alt="Image description">
                                         </a>
                                         <div class="card-body px-0">
-                                            <p><span class="text-bold-600"></span> sollicitudin <span
-                                                    class="font-small-2 text-muted float-right">720 x 600</span></p>
-                                            <p class="card-text">Nulla ac vulputate mauris. Nam tincidunt odio
-                                                purus.</p>
+                                            <p><span class="text-bold-600"></span> ${item.projName} <span class="font-small-2 text-muted float-right">720 x 600</span></p>
+                                            <p class="card-text">${item.projSmry}</p>
+
                                         </div>
                                     </figure>
-                                    <figure class="card card-img-top border-grey border-lighten-2"
-                                            itemprop="associatedMedia" itemscope=""
-                                            itemtype="http://schema.org/ImageObject">
-                                        <a href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/2.jpg"
-                                           itemprop="contentUrl" data-size="480x360">
-                                            <img class="gallery-thumbnail card-img-top"
-                                                 src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/2.jpg"
-                                                 itemprop="thumbnail" alt="Image description">
-                                        </a>
-                                        <div class="card-body px-0">
-                                            <p><span class="text-bold-600">Aliquam </span> vel nib <span
-                                                    class="font-small-2 text-muted float-right">480 x 360</span></p>
-                                            <p class="card-text">Phasellus vitae aliquam felis, et bibendum orci.</p>
-                                        </div>
-                                    </figure>
-                                    <figure class="card card-img-top border-grey border-lighten-2"
-                                            itemprop="associatedMedia" itemscope=""
-                                            itemtype="http://schema.org/ImageObject">
-                                        <a href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/3.jpg"
-                                           itemprop="contentUrl" data-size="480x360">
-                                            <img class="gallery-thumbnail card-img-top"
-                                                 src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/3.jpg"
-                                                 itemprop="thumbnail" alt="Image description">
-                                        </a>
-                                        <div class="card-body px-0">
-                                            <p><span class="text-bold-600">Molestie </span> accumsan <span
-                                                    class="font-small-2 text-muted float-right">480 x 360</span></p>
-                                            <p class="card-text">Maecenas commodo odio sed nibh viverra vestibulum.</p>
-                                        </div>
-                                    </figure>
-                                    <figure class="card card-img-top border-grey border-lighten-2"
-                                            itemprop="associatedMedia" itemscope=""
-                                            itemtype="http://schema.org/ImageObject">
-                                        <a href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/4.jpg"
-                                           itemprop="contentUrl" data-size="480x360">
-                                            <img class="gallery-thumbnail card-img-top"
-                                                 src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/4.jpg"
-                                                 itemprop="thumbnail" alt="Image description">
-                                        </a>
-                                        <div class="card-body px-0">
-                                            <p><span class="text-bold-600">Nam eu </span> efficitur <span
-                                                    class="font-small-2 text-muted float-right">500 x 360</span></p>
-                                            <p class="card-text">Donec porttitor massa vitae leo rutrum viverra.</p>
-                                        </div>
-                                    </figure>
-                                </div>
+                                    </div>
+                                    </c:forEach>
+
+
                             </div>
                         </div>
                     </div>

@@ -8,14 +8,20 @@ public interface WikiService {
 
 	public int insertWiki(WikiVO wikiVO);
 
-	public List<WikiVO> selectHighWikiId();
+	
 
-	public List<WikiVO> selectWiki(String wikiId);
+	
 
 	public WikiVO selectWikiDetail(String wikiId);
 
 	public int updateWiki(WikiVO wikiVO);
 
 	public int deleteWiki(String wikiVO);
+
+	public List<WikiVO> selectHighWikiId(String projId);
+
+
+
+	public List<WikiVO> selectWiki(WikiVO wikiVO);
 
 }

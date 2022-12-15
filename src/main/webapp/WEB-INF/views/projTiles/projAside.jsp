@@ -53,7 +53,7 @@
 					</a>
 				</li>
 				<li class=" nav-item">	
-					<a href="#">
+					<a href="/proj/docs">
 					<i class="fa fa-download"></i>
 						<span class="menu-title" data-i18n="Kanban Application">문서함</span>
 					</a>

@@ -10,9 +10,9 @@ public interface WikiMapper {
 	
 	public int insertWiki(WikiVO wikiVO);
 	
-	public List<WikiVO> selectHighWikiId();
+	public List<WikiVO> selectHighWikiId(String projId);
 	
-	public List<WikiVO> selectWiki(String wikiId);
+	public List<WikiVO> selectWiki(WikiVO wikiVO);
 	
 	public WikiVO selectWikiDetail(String wikiId);
 	

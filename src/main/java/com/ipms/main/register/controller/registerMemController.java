@@ -32,7 +32,6 @@ public class registerMemController {
      * @param memVO
      * @return
      */
-    @PreAuthorize("permitAll()")
     @RequestMapping(value = "/signUpForm" , method = RequestMethod.POST)
     public String signUpForm(@ModelAttribute MemVO memVO )
     {

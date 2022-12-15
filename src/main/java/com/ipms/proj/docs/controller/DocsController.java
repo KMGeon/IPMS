@@ -37,7 +37,7 @@ public class DocsController {
 	@GetMapping("/docs")
 	public String docs(@ModelAttribute DocsVO docsVO, Model model) {
 		
-		docsVO.setProjId("P001");
+		docsVO.setProjId("5");
 		
 		List<DocsVO> docsList = docsService.selectDocs(docsVO);
 		

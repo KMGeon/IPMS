@@ -140,8 +140,8 @@ background-color: #448AFF;
 									</div>
 									<form action="/main/uploadFormAction" method="post" enctype="multipart/form-data">
 <%--										?${_csrf.parameterName}=${_csrf.token}--%>
-										<input type='hidden' name='uploadFile' multiple />
-										<input type='hidden' value="전송" />
+										<input type='file' name='uploadFile' multiple />
+										<input type='submit' value="전송" />
 										<sec:csrfInput />
 									</form>
 								</div>
@@ -200,11 +200,12 @@ background-color: #448AFF;
 			</div>
 		</div>
 	</div>
-		<input type="hidden" name="memAuthList[0].memAuth" value="ROLE_PROJPL"/>
+		<input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
+		<input type="hidden" name="memAuthList[1].memAuth" value="ROLE_PROJECT_LEADER"/>
 		<sec:authorize access="isAuthenticated()">
 		<input type="hidden" name="memEmail" value="<sec:authentication property="principal.username"/>"/>
 		<input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
-		<input type="text" name="memCode" value="${mvo.member}"/>
+		<input type="hidden" name="" value="${mvo.member}"/>
 
 		</sec:authorize>
 		<sec:csrfInput/>

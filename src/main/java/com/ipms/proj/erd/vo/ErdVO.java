@@ -6,8 +6,8 @@ import lombok.Data;
 public class ErdVO {
 		
 	private String projId;
-	private String memNum;
-	private int erdVer;
+	private String writer;
+	private int erdNum;
 	private String erdTitle;
 	private String erdProjData;
 	private String deleteWhth;

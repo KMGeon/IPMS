@@ -265,25 +265,19 @@
                 </li>
             </ul>
             <!-- 비로그인-->
-            <sec:authorize access="isAnonymous()">
+            <sec:authorize access="not hasRole('ROLE_MEMBER')">
                 <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그인</button>
                 <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입</button>
             </sec:authorize>
 
             <!--로그인 -->
-            <sec:authorize access="isAuthenticated()">
-                <p>mvo : ${mvo}<br /></p>
-                <p style="font-size: large">${mvo.member.memName}님</p>
-<%--                <sec:authentication property="principal" var="prc"/>--%>
-<%--                ${prc.username }--%>
-<%--                <c:forEach items="${prc.authorities  }" var="auth">--%>
-<%--                    ${auth }--%>
-<%--                </c:forEach>--%>
-<%--                <sec:authentication property="principal.username"/>님--%>
+            <sec:authorize access="hasRole('ROLE_MEMBER')">
+<%--                ${mvo.member.memName}님--%>
+                <p style="font-size: large"> <sec:authentication property="principal.member.memName"/></p>
                 <button type="button" id="myPage"  class="btn btn-outline-secondary" ><i class="fa fa-plug"></i>마이페이지</button>
                 <form action="/customLogout" method='post'>
                     <button  class="btn btn-outline-secondary" >로그아웃</button>
-                    <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+                    <sec:csrfInput/>
                 </form>
             </sec:authorize>
 

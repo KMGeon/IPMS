@@ -25,13 +25,13 @@ public class WikiServiceImpl implements WikiService{
 	}
 	
 	@Override
-	public List<WikiVO> selectHighWikiId(){
-		return wikiMapper.selectHighWikiId();
+	public List<WikiVO> selectHighWikiId(String projId){
+		return wikiMapper.selectHighWikiId(projId);
 	}
 	
 	@Override
-	public List<WikiVO> selectWiki(String wikiId){
-		return wikiMapper.selectWiki(wikiId);
+	public List<WikiVO> selectWiki(WikiVO wikiVO){
+		return wikiMapper.selectWiki(wikiVO);
 	}
 	
 	@Override

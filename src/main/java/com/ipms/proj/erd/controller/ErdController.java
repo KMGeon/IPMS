@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,19 +26,24 @@ public class ErdController {
 	@Autowired
 	ErdService erdService;
 	
-	@GetMapping("/erd")
-	public String erdGet(@RequestParam(required = false) Integer erdVer,Model model) {
+	@GetMapping("/{projId}/erd")
+	public String erdGet(@RequestParam(required = false) Integer erdNum,Model model,@PathVariable String projId) {
 		ErdVO erdVO = new ErdVO();
-		if(erdVer == null) {
-			erdVO = null;
+		ErdVO num = new ErdVO();
+		if(erdNum == null) {
+			erdVO = new ErdVO();
 		}else {
-			erdVO.setErdVer((int)erdVer);
+			erdVO.setErdNum((int)erdNum);
 		}
+		num.setProjId(projId);
+		erdVO.setProjId(projId);
 		ErdVO erdData = erdService.selectErd(erdVO);
-		List<ErdVO> listErdVer = erdService.selectVer(erdVO);
+		List<ErdVO> listErdVer = erdService.selectVer(num);
+		log.info("===============:"+listErdVer.toString());
+		model.addAttribute("projId",projId);
 		model.addAttribute("erdData",erdData);
 		model.addAttribute("listErdVer",listErdVer);
-		return "proj/erd05";
+		return "proj/erd/erd";
 	}
 	
 	@ResponseBody
@@ -56,8 +62,9 @@ public class ErdController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/erdVer")
-	public List<ErdVO> erdVer(@RequestBody(required = false) ErdVO erdVO){
+	@PostMapping("/{projId}/erdVer")
+	public List<ErdVO> erdVer(@RequestBody(required = false) ErdVO erdVO,@PathVariable String projId){
+		erdVO.setProjId(projId);
 		List<ErdVO> result = erdService.selectVer(erdVO);
 		return result;
 	}

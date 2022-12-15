@@ -34,6 +34,6 @@ public class ChatController {
 		model.addAttribute("chatList",chatList);
 		model.addAttribute("memId",memId);
 		model.addAttribute("projId",projId);
-		return "proj/chat";
+		return "proj/chat/chat";
 	}
 }
