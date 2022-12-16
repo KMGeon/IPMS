@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
 			 MemVO mvo = this.memberMapper.read(userName);
-
+			
 			 if(mvo != null){
 				 return new CustomUser(mvo);
 			 }else{

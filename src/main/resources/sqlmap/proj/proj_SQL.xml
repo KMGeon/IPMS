@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- namespace : xml파일은 여러개일 수 있음.
-이를 구별하기 위한 식별 용도로 사용 -->
 <mapper namespace="com.ipms.main.newProject.mapper.ProjMapper">
 
 
+    <!--전체 프로젝트  com.ipms.main.newProject.mapper.ProjMapper.listProj-->
     <select id="listProj"  resultType="com.ipms.main.newProject.vo.ProjVO">
-        SELECT PROJ_NAME
-             , PROJ_SMRY
-        FROM PROJ
+        SELECT
+            proj_id,
+            mem_code,
+            proj_name,
+            proj_strt_date,
+            proj_end_date,
+            proj_smry,
+            proj_opn_whth,
+            proj_creatn_date,
+            proj_img_route,
+            delete_whth
+        FROM
+            proj
+        order by proj_creatn_date
     </select>
-
-
 
 
     <!--프로젝트 생성 com.ipms.main.newProject.mapper.ProjMapper.projInsert-->
@@ -46,40 +54,48 @@
     </insert>
 
 
+    <!--프로젝트 팀 생성 com.ipms.main.newProject.mapper.ProjMapper.insertProTeam-->
+    <insert id="insertProTeam" parameterType="com.ipms.main.newProject.vo.ProjTeamVO">
+        INSERT INTO proj_team (proj_id,
+                               team_id,
+                               team_name,
+                               team_smry)
+        VALUES (#{projId},
+                #{teamId},
+                '1',
+                '2')
+    </insert>
+
+
+    <!--프로젝트 멤버 생성 com.ipms.main.newProject.mapper.ProjMapper.insertProjMem-->
     <insert id="insertProjMem" parameterType="com.ipms.main.newProject.vo.ProjMemVO">
         insert into proj_mem(
-        MEM_CODE
+          mem_code
         , proj_id
-
+        , team_id
         , PRTPT_APROV_CODE
         , REFER_CTS
         )
         values (
         #{memCode}
         ,#{projId}
-       <!--teamId-->
+        ,#{teamId}
         , 'Y'
         , '0'
         )
     </insert>
 
 
-
-
-    <!--기존 권한 삭제 -->
-    <insert id="authInsert" parameterType="com.ipms.main.login.vo.MemberAuth">
-        INSERT INTO member_auth(memID, auth) values(#{memID}, #{auth})
+    <!--프로젝트 수정 com.ipms.main.newProject.mapper.ProjMapper.projAuthInsert-->
+    <insert id="projAuthInsert" parameterType="com.ipms.main.login.vo.MemberAuth" >
+        INSERT INTO member_auth(mem_code,PROJ_ID,mem_auth)
+        values
+            (#{memCode},#{projId},#{memAuth})
     </insert>
 
     <delete id="authDelete" parameterType="string">
-        delete from member_auth where mem_code=#{memCode}
+        delete from member_auth where mem_code = #{memCode}
     </delete>
-
-    <insert id="authInsert" parameterType="com.ipms.main.login.vo.MemberAuth" >
-        INSERT INTO member_auth(mem_code,PROJ_ID,mem_auth)
-        values
-            (#{memCode},'0',#{memAuth})
-    </insert>
 
 </mapper>
 
@@ -89,19 +105,3 @@
 
 
 
-
-        <!--    <update id="insertProjMem" parameterType="java.util.List">-->
-        <!--        <foreach collection="list" item="mem" open="INSERT ALL "-->
-        <!--                 close="SELECT * FROM SYS.DUAL" separator=" ">-->
-        <!--            INTO proj_mem VALUES-->
-        <!--            (-->
-        <!--&lt;!&ndash;            (select mem_code from mem where mem_email =#{memEmail}) &lt;!&ndash;memCode &ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;            ,(select proj_id from proj where proj_id='2' and mem_code =  (select mem_code from mem where mem_email =#{memEmail}))&lt;!&ndash;projId &ndash;&gt;&ndash;&gt;-->
-        <!--            #{mem.memCode}-->
-        <!--            ,#{mem.projId}-->
-        <!--            ,'3'-->
-        <!--            ,'N'-->
-        <!--            ,'0'-->
-        <!--            )-->
-        <!--        </foreach>-->
-        <!--    </update>-->

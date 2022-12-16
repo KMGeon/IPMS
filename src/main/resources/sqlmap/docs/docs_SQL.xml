@@ -25,8 +25,8 @@
 			, MEM_CODE
 			, FOLD_NAME) 
 		VALUES(OUTPUT_FOLD_SEQ.NEXTVAL
-			, 'P001'
-			, 'M001'
+			, '5'
+			, '3'
 			,#{foldName})
 	
 	</insert>

@@ -6,7 +6,7 @@
 	
 		<result property="projId" column="PROJ_ID" />
 		<result property="wikiId" column="WIKI_ID" />
-		<result property="memNum" column="MEM_NUM" />
+		<result property="memCode" column="MEM_NUM" />
 		<result property="wikiTitle" column="WIKI_TITLE" />
 		<result property="wikiCts" column="WIKI_CTS" javaType="java.lang.String" jdbcType="CLOB"/>
 		<result property="highWikiId" column="HIGH_WIKI_ID" />
@@ -16,7 +16,6 @@
 
 	</resultMap>
 	
-	
 	<insert id="insertWiki" parameterType="com.ipms.proj.wiki.vo.WikiVO">
 	
 		<selectKey keyProperty="wikiId" order="BEFORE" resultType="string"> 
@@ -24,34 +23,34 @@
 		</selectKey>
 		
 		INSERT INTO wiki (
-		   
+		   proj_id,
 		    wiki_id,
-		   
+		   mem_code,
 		    wiki_title,
 		    wiki_cts,
 		    <if test="highWikiId != null">
 		    high_wiki_id,
 		    </if>
-		    low_rgst_seq,
+		   
 		    wiki_write_date
 		
 		) VALUES (
-		  
+		  #{projId},
 		    #{wikiId},
-		    
+		    #{memCode},
 		    #{wikiTitle},
 		    #{wikiCts},
 		    <if test="highWikiId != null">
 		    #{highWikiId},
 		    </if>
-		    #{lowRgstSeq},
+		   
 		    sysdate
 		    
 		)
 	</insert>
 	
-	<select id="selectHighWikiId" resultMap="wikiVO">
-		select WIKI_ID,WIKI_TITLE from wiki
+	<select id="selectHighWikiId" resultMap="wikiVO" parameterType="string">
+		select WIKI_ID,WIKI_TITLE from wiki where proj_id = #{projId}
 	</select>
 	
 	<select id="selectWiki" resultMap="wikiVO" parameterType="string">
@@ -62,7 +61,7 @@
         WIKI_ID, 
         HIGH_WIKI_ID
 		FROM wiki
-		WHERE DELETE_WHTH = 'n'
+		WHERE DELETE_YN = 'n'
 		
 		<if test="wikiId == null">
 		START WITH HIGH_WIKI_ID IS NULL
@@ -80,13 +79,13 @@
 		SELECT
 		    proj_id,
 		    wiki_id,
-		    mem_num,
+		    mem_code,
 		    wiki_title,
 		    wiki_cts,
 		    high_wiki_id,
-		    low_rgst_seq,
+		    
 		    wiki_write_date,
-		    delete_whth
+		    DELETE_YN
 		FROM
 		    wiki 
 		where
@@ -107,7 +106,7 @@
 	<update id="deleteWiki" parameterType="string">
 	
 		update wiki set
-            DELETE_WHTH = 'y'
+            DELETE_YN = 'y'
 		  WHERE WIKI_ID IN(
 	  SELECT
 	    WIKI_ID
