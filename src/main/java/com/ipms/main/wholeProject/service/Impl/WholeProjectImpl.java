@@ -17,4 +17,9 @@ public class WholeProjectImpl implements WholeProjectService {
     public List<ProjVO> listProj() {
         return this.projMapper.listProj();
     }
+
+    @Override
+    public List<ProjVO> detailPage(String projId) {
+        return this.projMapper.detailPage(projId);
+    }
 }

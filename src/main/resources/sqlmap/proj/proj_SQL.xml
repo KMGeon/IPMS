@@ -22,11 +22,29 @@
         order by proj_creatn_date
     </select>
 
+    <!-- 프로젝트  com.ipms.main.newProject.mapper.ProjMapper.listProj-->
+    <select id="detailPage"  resultType="com.ipms.main.newProject.vo.ProjVO">
+        SELECT
+            proj_id,
+            mem_code,
+            proj_name,
+            proj_strt_date,
+            proj_end_date,
+            proj_smry,
+            proj_opn_whth,
+            proj_creatn_date,
+            proj_img_route,
+            delete_whth
+        FROM
+            proj
+       where proj_id=#{projId}
+    </select>
+
 
     <!--프로젝트 생성 com.ipms.main.newProject.mapper.ProjMapper.projInsert-->
     <insert id="projInsert" parameterType="com.ipms.main.newProject.vo.ProjVO">
         <selectKey order="BEFORE" keyProperty="projId" resultType="String">
-            SELECT To_char(NVL(MAX(proj_id),0)+1) FROM proj
+            SELECT To_char( NVL(MAX(TO_NUMBER(proj_id)), 0) +1) FROM proj
         </selectKey>
         INSERT INTO proj (
         proj_id,
@@ -96,6 +114,8 @@
     <delete id="authDelete" parameterType="string">
         delete from member_auth where mem_code = #{memCode}
     </delete>
+
+
 
 </mapper>
 

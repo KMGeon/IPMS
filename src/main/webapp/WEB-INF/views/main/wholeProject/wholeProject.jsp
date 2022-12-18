@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <div class="app-content container center-layout mt-2" style="overflow: auto">
     <div class="content-overlay"></div>
     <div class="content-wrapper">
@@ -43,17 +46,21 @@
                     <!--/ Search Navbar-->
                     <!--Search Result-->
                     <div id="search-results" class="card-body">
-                        <div class="my-gallery" itemscope="" itemtype="http://schema.org/ImageGallery"
+                        <div class="my-gallery" itemscope="" itemtype="http://schema.org/ImageGalle
+                        ry"
                              data-pswp-uid="1">
                             <div class="card-deck-wrapper">
                                 <div class="card-deck">
                                     <c:forEach var="item" items="${list}" varStatus="idx">
                                     <div class="grid-item" style="width:300px;margin-left:10px;">
-                                    <figure class="card card-img-top border-grey border-lighten" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
 
-                                        <a href="/main/projlistdetail/${item.projId}" itemprop="contentUrl" data-size="480x360">
+                                    <figure class="card card-img-top border-grey border-lighten" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                                        <a href="/main/projectDetail/${item.projId}"  itemprop="contentUrl" data-size="480x360">
                                             <img class="gallery-thumbnail card-img-top" src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg" itemprop="thumbnail" alt="Image description">
                                         </a>
+                                        <input type="hidden" name="projId" value="${item.projId}">
+                                        <input type="hidden" name="projName" value="${item.projName}">
+                                        <input type="hidden" name="projSmry" value="${item.projSmry}">
                                         <div class="card-body px-0">
                                             <p><span class="text-bold-600"></span> ${item.projName} <span class="font-small-2 text-muted float-right">720 x 600</span></p>
                                             <p class="card-text">${item.projSmry}</p>

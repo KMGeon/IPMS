@@ -1,11 +1,14 @@
 package com.ipms.main.newProject.vo;
 
-import lombok.Data;
+import lombok.*;
 
 /**
  * @author KMG
  */
-@Data
+//@Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@ToString
 public class ProjMemVO {
     private String memCode;//회원코드
     private String projId;//프로젝트 아이디

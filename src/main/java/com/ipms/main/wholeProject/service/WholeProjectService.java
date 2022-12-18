@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface WholeProjectService {
     public List<ProjVO> listProj();
+    public List<ProjVO> detailPage(String projId);
 }

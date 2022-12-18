@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -82,7 +83,7 @@ background-color: #448AFF;
 }
 </style>
 </head>
-
+<c:forEach var="item" items="${detailList}" varStatus="idx">
 <div class="row" style="margin-top: 10px;">
 <div class="col-md-6" style="display: flex; float: left; width: 1000px;">
 	<div class="card-content collapse show">
@@ -102,6 +103,7 @@ background-color: #448AFF;
 										<img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/18.jpg"alt="img18">
 										<figcaption>
 											<h2>
+
 												Wild <span>Romeo</span>
 											</h2>
 											<p>Romeo never knows what he wants. He seemed to be very
@@ -112,13 +114,10 @@ background-color: #448AFF;
 									<div style=" text-align: center;  ">
 										<button  type="button" class="btn btn-secondary" style=" padding:11px 60px; background-color: #448AFF; color: white;"><i class="fa fa-handshake-o fa-lg">&nbsp;&nbsp;</i>가입신청</button><br/><br/>
 									</div><br/><br/>
-									
+
 									<div style="text-align: center;" class="fonticon-wrap"><i class="icon-users"> Mmeber List</i><br/><br/>
-										<div style="text-decoration: underline; margin-bottom: 5px;" class="badge badge-secondary">박종환</div>
-										<div style="text-decoration: underline; margin-bottom: 5px;" class="badge badge-secondary">이준혁</div>
-										<div style="text-decoration: underline; margin-bottom: 5px;" class="badge badge-secondary">김효정</div>
-										<div style="text-decoration: underline; margin-bottom: 5px;" class="badge badge-secondary">김무건</div>
-										<div style="text-decoration: underline; margin-bottom: 5px;" class="badge badge-secondary">*이문주*</div>
+
+										<div style="text-decoration: underline; margin-bottom: 5px;" class="badge badge-secondary">${item.projName}</div>
 									</div>
 								</div>
 							</div>
@@ -145,7 +144,8 @@ background-color: #448AFF;
 							<div class="form-group">
 								<label for="userinput1">Project Name</label> <input type="text"
 									id="userinput1" class="form-control border-primary"
-									placeholder="Project Name" name="name" />
+									placeholder="" name="name" value="${item.projName}" readonly/>
+
 							</div>
 						</div>
 					</div>
@@ -155,7 +155,7 @@ background-color: #448AFF;
 							<div class="form-group">
 								<label for="userinput3">Project Period</label> <input
 									type="text" id="userinput3" class="form-control border-primary"
-									placeholder="Project period" name="username" />
+									placeholder="Project period"  readonly name="username" value="${item.projStrtDate}~${item.projEndDate}" />
 							</div>
 						</div>
 					</div>
@@ -164,10 +164,10 @@ background-color: #448AFF;
 						<label for="userinput8">Project Introduce</label>
 						<textarea style="width:500px; resize: none;" id="userinput8" rows="5"
 							class="form-control border-primary"
-							placeholder="Project Introduce"></textarea>
+							placeholder="Project Introduce"  readonly>${item.projSmry}</textarea>
 					</div>
 
-			
+
 
 					<div style="width:501px;" class="border-primary" style="border-radius: 0.2em;">
 						<div  id="gdiv" >
@@ -185,6 +185,7 @@ background-color: #448AFF;
 	</div>
 </div>
 </div>
+</c:forEach>
 
 <script
 	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
@@ -219,7 +220,7 @@ $(function(){
 		let gtt = $("#gtt").val();
 		$("#gdiv").append("<br/>"+gtt+"<br/><button id='dgbtn'>[답글]</button><div id='dgsdiv'></div>");
 	});
-	
+
 	$(document).on("click","#dgbtn",function(){
 		$("#dgsdiv").append("<div id='ddgscbtn' class='form-group'><textarea id='dgtext' rows='5' class='form-control border-primary' placeholder='댓글작성'></textarea></div><button id='ddgbtn' style='text-align:center; position: relative; bottom: 65px; left: 665px;'  class='btn btn-primary'  >등록</button>");
 		$("#dgbtn").remove();
@@ -229,10 +230,10 @@ $(function(){
 		alert(dgtext);
 		$("#rgbtn").append(dgtext);
 		alert("ff");
-		
-		
+
+
 	});
-	
+
 })
 
 </script>

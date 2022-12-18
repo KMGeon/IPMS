@@ -13,6 +13,8 @@ public interface ProjMapper {
 
     public List<ProjVO> listProj();
 
+    public List<ProjVO> detailPage(String projId);
+
     public int projInsert(ProjVO projVO);
 
     public int insertProjMem(ProjMemVO projMemVO);
@@ -22,4 +24,6 @@ public interface ProjMapper {
     public int authDelete(String memCoed);
 
     public int insertProTeam(ProjTeamVO projTeamVO);
+
+
 }

@@ -4,6 +4,7 @@ import com.ipms.main.login.service.LoginService;
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.login.mapper.MemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class LoginController {
 
     // 비밀번호 찾기
     @RequestMapping(value = "/fgtPwd", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public String ForgotPwd() {
         return "main/ForgotPassword/fgtPwd";
     }
@@ -45,12 +47,12 @@ public class LoginController {
      */
     //로그인  POST
     @RequestMapping(value = "/loginPost", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public String loginPost(@ModelAttribute MemVO memvo, @RequestParam String memEmail, @RequestParam String memPasswd) {
         int result = this.loginService.loginMem(memvo);
         if (result == 1) {
             return "redirect:/main/loginMain";
         } else {
-            log.info("=====================");
             return "redirect:/main/loginForm";
         }
     }
