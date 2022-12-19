@@ -3,6 +3,7 @@ package com.ipms.proj.erd.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +27,10 @@ public class ErdController {
 	@Autowired
 	ErdService erdService;
 	
+	
 	@GetMapping("/{projId}/erd")
 	public String erdGet(@RequestParam(required = false) Integer erdNum,Model model,@PathVariable String projId) {
+		
 		ErdVO erdVO = new ErdVO();
 		ErdVO num = new ErdVO();
 		if(erdNum == null) {
@@ -37,6 +40,7 @@ public class ErdController {
 		}
 		num.setProjId(projId);
 		erdVO.setProjId(projId);
+		
 		ErdVO erdData = erdService.selectErd(erdVO);
 		List<ErdVO> listErdVer = erdService.selectVer(num);
 		log.info("===============:"+listErdVer.toString());

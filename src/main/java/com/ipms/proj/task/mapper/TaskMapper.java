@@ -11,4 +11,10 @@ public interface TaskMapper {
 	public TaskVO HighNum(TaskVO vo);
 	
 	public int lowWorkInsert(TaskVO vo);
+	
+	public TaskVO HighWorkNum(TaskVO vo);
+	
+	public int HighWorkInsert(TaskVO vo);
+	
+	public TaskVO WorkDetail(TaskVO vo);
 }

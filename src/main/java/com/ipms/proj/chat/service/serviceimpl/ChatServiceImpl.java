@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ipms.commons.ftp.vo.IntgAttachFileVO;
 import com.ipms.proj.chat.mapper.ChatMapper;
 import com.ipms.proj.chat.service.ChatService;
 import com.ipms.proj.chat.vo.ChatVO;
@@ -23,5 +24,15 @@ public class ChatServiceImpl implements ChatService{
 	@Override
 	public List<ChatVO> selectChat(ChatVO chatVO){
 		return chatMapper.selectChat(chatVO);
+	}
+	
+	@Override
+	public int insertAttach(IntgAttachFileVO intgAttachFileVO) {
+		return chatMapper.insertAttach(intgAttachFileVO);
+	}
+	
+	@Override
+	public int selectChatNum() {
+		return chatMapper.selectChatNum();
 	}
 }

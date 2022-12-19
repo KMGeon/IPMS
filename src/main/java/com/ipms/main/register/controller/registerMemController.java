@@ -20,63 +20,63 @@ public class registerMemController {
     MemService memService;
     @Autowired
     private BCryptPasswordEncoder bcryptPasswordEncoder;
+
     //회원가입
-    @RequestMapping(value = "/signUpForm" , method = RequestMethod.GET)
-    public String signUpFormGet(MemVO m){
+    @RequestMapping(value = "/signUpForm", method = RequestMethod.GET)
+    public String signUpFormGet(MemVO m) {
         return "main/login/signUpForm";
     }
 
     /**
      * 회원가입 POST
-     * @author KMG
      * @param memVO
      * @return
+     * @author KMG
      */
-    @RequestMapping(value = "/signUpForm" , method = RequestMethod.POST)
-    public String signUpForm(@ModelAttribute MemVO memVO )
-    {
-        String rawPw="";
-        String encodePw="";
+    @RequestMapping(value = "/signUpForm", method = RequestMethod.POST)
+    public String signUpForm(@ModelAttribute MemVO memVO) {
+        String rawPw = "";
+        String encodePw = "";
 
 //        rawPw=memVO.getMemPasswd();
 //        encodePw = bcryptPasswordEncoder.encode(rawPw);
 //        memVO.setMemPasswd(encodePw);
         int result = this.memService.registerMember(memVO);
-        log.info("result::"+result);
-        if(result==1){
-            List<MemberAuth>list = memVO.getMemAuthList();
-            for(MemberAuth authVO : list){
-                if(authVO.getMemAuth()!=null){
+        log.info("result::" + result);
+        if (result == 1) {
+            log.info("memCode"+memVO.getMemCode());
+            List<MemberAuth> list = memVO.getMemAuthList();
+            for (MemberAuth authVO : list) {
+                if (authVO.getMemAuth() != null) {
                     MemberAuth memberAuth = new MemberAuth();
                     memberAuth.setMemCode(memVO.getMemCode());
                     memberAuth.setMemAuth(authVO.getMemAuth());
                     this.memService.authInsert(memberAuth);
                 }
             }
-            log.info("============================="+result);
-            return "redirect:/main/page";
-        }else{
             return "redirect:/main/page";
         }
+        return "redirect:/main/page";
     }
+
     @GetMapping("/memRegisterCheck")
-    public @ResponseBody int registerCheck(@RequestParam String memEmail){
+    public @ResponseBody int registerCheck(@RequestParam String memEmail) {
         int result = this.memService.registerCheck(memEmail);
-        log.info("중복체크:::"+result);
+        log.info("중복체크:::" + result);
         return result;
     }
 
     /**
-     * @author KMG
      * @param memVO
      * @return
+     * @author KMG
      */
     @PostMapping(value = "/UpdatePwd")
-    public String UpdatePwd( @ModelAttribute  MemVO memVO){
+    public String UpdatePwd(@ModelAttribute MemVO memVO) {
         int result = this.memService.UpdatePwd(memVO);
-        if(result==1){
+        if (result == 1) {
             return "main/page";
-        }else{
+        } else {
             return "redirect:/main/loginForm";
         }
     }

@@ -14,8 +14,14 @@ public class ChatVO {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date chatDate;
-	
+	private int itgrnAttachFileNum;
 	private String writer;
 	private String deleteYn;
-
+	
+	//조인해온 값들
+	private String saveFileName;
+	private String fileName;
+	
+	//writerName
+	private String writerName;
 }

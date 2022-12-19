@@ -1,5 +1,6 @@
 package com.ipms.main.newProject.service.Impl;
 
+import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.newProject.service.NewProjectService;
 import com.ipms.main.newProject.mapper.ProjMapper;
@@ -13,10 +14,41 @@ import java.util.List;
 
 @Service
 public class NewProjectImpl implements NewProjectService {
-@Autowired
+    @Autowired
     ProjMapper projMapper;
+    @Autowired
+    NewProjectService newProjectService;
 
- 
+    public String projectCreate(ProjVO projVO, MemVO memVO, ProjTeamVO projTeamVO, String teamId, String memCode) {
+        //프로젝트 생성
+        int sortation = this.newProjectService.projInsert(projVO);
+        if (sortation == 1) {
+            // 프로젝트 생성 -> 프로젝트 팀 생성
+            projTeamVO.setProjId(projVO.getProjId());
+            insertProTeam(projTeamVO);
+
+            //프로젝트 생성 -> 프로젝트 팀 생성 -> 프로젝트 멤버 생성
+            ProjMemVO vo = ProjMemVO.builder()
+                    .projId(projTeamVO.getProjId())
+                    .memCode(memCode)
+                    .teamId(teamId).build();
+            insertProjMem(vo);
+
+            //권한부여 ROLE_MEMBER , ROLE_PROJECT_LEADER
+            List<MemberAuth> list = memVO.getMemAuthList();
+            for (MemberAuth authVO : list) {
+                if (authVO.getMemAuth() != null) {
+                    MemberAuth memberAuth = new MemberAuth();
+                    memberAuth.setMemCode(memCode);
+                    memberAuth.setProjId(projTeamVO.getProjId());
+                    memberAuth.setMemAuth(authVO.getMemAuth());
+                    projAuthInsert(memberAuth);
+                }
+            }
+            return "main/page";
+        }
+        return "main/loginFrom";
+    }
 
     @Override
     public int projInsert(ProjVO projVO) {
@@ -25,6 +57,7 @@ public class NewProjectImpl implements NewProjectService {
 
     @Override
     public int insertProjMem(ProjMemVO projMemVO) {
+
         return this.projMapper.insertProjMem(projMemVO);
     }
 

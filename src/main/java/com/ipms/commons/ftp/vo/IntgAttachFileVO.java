@@ -18,4 +18,5 @@ public class IntgAttachFileVO {
 	private String rgstId; // 등록자 ID
 	private String fileDeleteWhth; // 파일 삭제 여부
 	
+	private String fileType;	//파일타입
 }

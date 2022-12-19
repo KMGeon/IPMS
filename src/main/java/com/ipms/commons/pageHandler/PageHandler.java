@@ -12,12 +12,12 @@ import lombok.ToString;
 public class PageHandler {
     private int totalCnt;//총 게시물 수
     private int pageSize;// 한 페이지의 크기
-    private int navSize = 10;//페이지 네비의 크기private
+    private int navSize = 10;//페이지 네비의 크기
     private int totalPage;//전체 페이지 수
     private int page;//현재 페이지
     private int beginPage;//네비 시작
     private int endPage;//네이 마지막
-    private boolean showPrev;//이전
+    private boolean showPrev=true;//이전
     private boolean showNext;//다음
 
     public PageHandler(int totalCnt, int page) {
@@ -30,7 +30,7 @@ public class PageHandler {
         this.pageSize = pageSize;
 
         totalPage = (int) Math.ceil(totalCnt / (double) pageSize);//전체 페이지의 수
-        beginPage = page / navSize * navSize + 1;
+        beginPage = (page-1) / navSize * navSize + 1;
         endPage = Math.min(beginPage + navSize - 1, totalPage);
         showPrev = beginPage != 1;
         showNext = endPage != totalPage;

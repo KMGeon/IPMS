@@ -1,4 +1,5 @@
 package com.ipms.proj.calendar.service.serviceImpl;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class CalendarServiceImpl implements CalendarService {
 	public int deleteSchd(CalendarVO calendarVO) {
 		
 		return this.calendarMapper.deleteSchd(calendarVO);
+	}
+
+	@Override
+	public int updateSchd(CalendarVO calendarVO) {
+		
+		return this.calendarMapper.updateSchd(calendarVO);
 	}
 
 }

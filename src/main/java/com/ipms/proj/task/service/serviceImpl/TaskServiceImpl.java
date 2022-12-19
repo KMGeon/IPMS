@@ -40,4 +40,26 @@ public class TaskServiceImpl implements TaskService {
 		return this.taskMapper.lowWorkInsert(vo);
 	}
 
+	@Override
+	public TaskVO HighWorkNum(TaskVO vo) {
+		vo = this.taskMapper.HighWorkNum(vo);
+		
+		log.info("TaskServiceImpl -> HighWrokNum -> highTaskId" + vo.toString());
+		
+		return vo ;
+	}
+
+	@Override
+	public int HighWorkInsert(TaskVO vo) {
+		return this.taskMapper.HighWorkInsert(vo);
+	}
+
+	
+	@Override
+	public TaskVO WorkDetail(TaskVO vo) {
+		TaskVO rcvo = this.taskMapper.WorkDetail(vo);
+		log.info("★ receive ==> TaskServiceImpl ==> WorkDetaildata"+rcvo.toString());
+		return rcvo;
+	}
+
 }

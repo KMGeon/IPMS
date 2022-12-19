@@ -1,5 +1,6 @@
 package com.ipms.main.newProject.service;
 
+import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjTeamVO;
@@ -19,4 +20,5 @@ public interface NewProjectService {
     public int authDelete(String memCoed);
 
     public int insertProTeam(ProjTeamVO projTeamVO);
+    public String projectCreate(ProjVO projVO, MemVO memVO, ProjTeamVO projTeamVO, String teamId, String memCode);
 }

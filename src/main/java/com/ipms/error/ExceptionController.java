@@ -91,9 +91,9 @@ public class ExceptionController {
         logger.error("RuntimeException : ", e);
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void handleException(Exception e) {
-        logger.error("Exception : ", e);
-    }
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public void handleException(Exception e) {
+//        logger.error("Exception : ", e);
+//    }
 }

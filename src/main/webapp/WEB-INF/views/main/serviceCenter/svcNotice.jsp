@@ -5,7 +5,7 @@
             <h3 class="content-header-title mb-2" style="">고객센터</h3>
         </div>
     </div>
-    <div class="row breadcrumbs-top" style="margin-left: 720px;font-weight: bold; ">
+    <div class="row breadcrumbs-top" style="margin-left: 800px;font-weight: bold; ">
         <div class="breadcrumb-wrapper col-12">
             <ol class="breadcrumb" style="position: relative;margin-right: 15px">
                 <li class="breadcrumb-item bold "><a href="/main/svcNotice">공지사항</a>

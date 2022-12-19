@@ -44,37 +44,7 @@ public class NewProjectController {
                                  @ModelAttribute ProjTeamVO projTeamVO,
                                  @RequestParam String teamId,
                                  @RequestParam String memCode) {
-        //프로젝트 생성
-        int sortation = this.newProjectService.projInsert(projVO);
-        if (sortation == 1) {
-            // 프로젝트 생성 -> 프로젝트 팀 생성
-            projTeamVO.setProjId(projVO.getProjId());
-            this.newProjectService.insertProTeam(projTeamVO);
-            log.info(projTeamVO.toString());
-
-            //프로젝트 생성 -> 프로젝트 팀 생성 -> 프로젝트 멤버 생성
-            ProjMemVO vo = ProjMemVO.builder()
-                    .projId(projTeamVO.getProjId())
-                    .memCode(memCode)
-                    .teamId(teamId).build();
-            this.newProjectService.insertProjMem(vo);
-
-            //권한부여 ROLE_MEMBER , ROLE_PROJECT_LEADER
-            this.newProjectService.authDelete(memCode);
-            List<MemberAuth> list = memVO.getMemAuthList();
-            for(MemberAuth authVO : list){
-                if(authVO.getMemAuth()!=null){
-                    MemberAuth memberAuth = new MemberAuth();
-                    memberAuth.setMemCode(memCode);
-                    memberAuth.setProjId(projTeamVO.getProjId());
-                    memberAuth.setMemAuth(authVO.getMemAuth());
-                    this.newProjectService.projAuthInsert(memberAuth);
-                }
-            }
-            return "main/page";
-        }
-        return "main/loginFrom";
-
+        return this.newProjectService.projectCreate(projVO, memVO, projTeamVO, teamId, memCode);
     }
 
     /**
@@ -84,9 +54,7 @@ public class NewProjectController {
      */
     @RequestMapping(value = "/uploadFormAction", method = RequestMethod.POST)
     public String uploadFormPost(@RequestParam("uploadFile") MultipartFile[] uploadFile, Model model) {
-
         String uploadFolder = "C:\\upload";
-
         for (MultipartFile multipartFile : uploadFile) {
             log.info("-------------------------------------");
             log.info("Upload File Name: " + multipartFile.getOriginalFilename());

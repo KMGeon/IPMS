@@ -7,11 +7,15 @@ import com.ipms.main.newProject.vo.ProjVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ProjMapper {
 
     public List<ProjVO> listProj();
+    public List<ProjVO> selectPage(Map map);
+    public int count();
+    public List<ProjVO>getProjId(String memEmail);
 
     public List<ProjVO> detailPage(String projId);
 
