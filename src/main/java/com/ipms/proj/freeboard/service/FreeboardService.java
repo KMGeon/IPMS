@@ -3,6 +3,7 @@ package com.ipms.proj.freeboard.service;
 import java.util.List;
 
 import com.ipms.commons.ftp.vo.IntgAttachFileVO;
+import com.ipms.commons.vo.Criteria;
 import com.ipms.proj.freeboard.vo.FreeboardVO;
 
 public interface FreeboardService {
@@ -17,7 +18,10 @@ public interface FreeboardService {
 	
 	public int deleteFree(FreeboardVO freeboardVO);
 	
-	public int insertFile(IntgAttachFileVO intgAttachFileVO);
+	public int ckDelFree(FreeboardVO freeboardVO);
 	
-	public int selectFreeNum();
+	public List<FreeboardVO> getFreePage(Criteria cri);
+	
+	public int getTotal(String projId);
+
 }

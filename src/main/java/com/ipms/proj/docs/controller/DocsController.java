@@ -2,6 +2,7 @@ package com.ipms.proj.docs.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ipms.commons.ftp.FtpUtil;
+import com.ipms.commons.vo.FtpVO;
 import com.ipms.proj.docs.service.DocsService;
 import com.ipms.proj.docs.vo.DocsVO;
 
@@ -25,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class DocsController {
 	
-	@Autowired
-	private DocsService docsService;
+//	@Autowired
+//	private DocsService docsService;
 	
 	/**
 	 * 문서함의 폴더 조회 
@@ -34,47 +36,83 @@ public class DocsController {
 	 * @param model
 	 * @return 문서함 최상위
 	 */
+//	@GetMapping("/docs")
+//	public String docs(@ModelAttribute DocsVO docsVO, Model model) {
+//		
+//		docsVO.setProjId("5");
+//		
+//		List<DocsVO> docsList = docsService.selectDocs(docsVO);
+//		
+//		if( !docsList.isEmpty() && docsList != null ) {
+//			log.info("DocsController - docs() : st -> {}", docsList.get(0).getFoldName());
+//		}
+//		
+//		model.addAttribute("docsList", docsList);
+//		
+//		return "proj/docs/docsList";
+//	}
+	
 	@GetMapping("/docs")
-	public String docs(@ModelAttribute DocsVO docsVO, Model model) {
-		
-		docsVO.setProjId("5");
-		
-		List<DocsVO> docsList = docsService.selectDocs(docsVO);
-		
-		if( !docsList.isEmpty() && docsList != null ) {
-			log.info("DocsController - docs() : st -> {}", docsList.get(0).getFoldName());
-		}
-		
-		model.addAttribute("docsList", docsList);
-		
+	public String view() {
 		return "proj/docs/docsList";
 	}
-	
 	
 	/**
 	 * 문서함 폴더 생성
 	 * @param foldName : 추후 VO로 받을 것
 	 * @return 문서함 최상위로 리턴 추후, 폴더를 생성한 폴더로 바꿔주기
 	 */
-	@PostMapping("/docsMkdir")
-	public String insertFolder(@ModelAttribute DocsVO docsVO) {
+//	@PostMapping("/docsMkdir")
+//	public String insertFolder(@ModelAttribute DocsVO docsVO) {
+//		
+//		if( docsVO != null ) {
+//			log.info("DocsController - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
+//		}
+//		
+//		int result = docsService.insertFolder(docsVO);
+//		
+//		if(result > 0) {
+//			log.info("DocsController - insertFolder() : 폴더 생성 완료");
+//		}else {
+//			log.info("DocsController - insertFolder() : 폴더 생성 실패!!!");
+//		}
+//		
+//		return "redirect:/proj/docs";
+//		
+//	}
+	
+	
+	@ResponseBody
+	@GetMapping("/docTest")
+	public List<FtpVO> docsTests(@RequestParam String path) {
 		
-		if( docsVO != null ) {
-			log.info("DocsController - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
-		}
+		List<FtpVO> docsList = null;
+		docsList = FtpUtil.getList(path);
 		
-		int result = docsService.insertFolder(docsVO);
-		
-		if(result > 0) {
-			log.info("DocsController - insertFolder() : 폴더 생성 완료");
-		}else {
-			log.info("DocsController - insertFolder() : 폴더 생성 실패!!!");
-		}
-		
-		return "redirect:/proj/docs";
-		
+		return docsList;
 	}
 	
+	@ResponseBody
+	@PostMapping("/dirDocTest")
+	public boolean makeDirTests(String path, String dirName) {
+		
+		String nowPath = "";
+		
+		if(StringUtils.isNotBlank(path)) {
+			nowPath += "/" + path;
+		}
+		
+		boolean check = FtpUtil.isDirectoryExist(nowPath, dirName);
+		boolean result = false;
+		// 같은 이름의 폴더가 없다면
+		if(!check) {
+			// 폴더를 생성합니다.
+			result = FtpUtil.createDirectory(nowPath, dirName);
+		}
+		
+		// 성공적으로 마치면 true 반환
+		return result;
+	}
 	
 	
 }

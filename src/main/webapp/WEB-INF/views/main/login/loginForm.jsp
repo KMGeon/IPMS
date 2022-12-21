@@ -1,26 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css"
-      href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/icheck/icheck.css">
-<link rel="stylesheet" type="text/css"
-      href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/icheck/custom.css">
-<!-- END: Vendor CSS-->
-
-<!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css"
-      href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/horizontal-menu.css">
-<link rel="stylesheet" type="text/css"
-      href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/colors/palette-gradient.css">
-<link rel="stylesheet" type="text/css"
-      href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/login-register.css">
-
-<!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
-<!-- END: Custom CSS-->
-
+<link rel="stylesheet" type="text/css" href="/resources/GatherCss.css">
+<script src="/resources/GatherJs.js"></script>
 
 <script>
     $(document).ready(function(){
@@ -28,14 +10,10 @@
            alert("다시 입력하세요");
         }
     });
-
 </script>
+
 <section class="">
-    <!-- Jumbotron -->
-    <div
-            class="px-4 py-5 px-md-5 text-center text-lg-start"
-            style="background-color: hsl(0, 0%, 96%)"
-    >
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
         <div class="container" style="margin-top: 100px;">
             <div class="row gx-lg-5 align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0">
@@ -50,6 +28,7 @@
                         aliquid ipsum atque?
                     </p>
                 </div>
+
 
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="card">
@@ -74,7 +53,7 @@
                                     <input type="password" id="paswd" name="memPasswd" class="form-control"
                                            placeholder="Enter Password" required/>
                                 </div>
-                                <!-- Checkbox -->
+                                <!-- Remember-Me -->
                                 <div class="col-sm-6 col-12 text-center text-sm-left">
                                     <fieldset>
                                         <input type="checkbox" name="remember-me">로그인 유지<br>
@@ -90,6 +69,13 @@
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }" />
                                 <sec:csrfInput/>
                             </form>
+
+                            <form action="/login" method="post">
+                            <input type="hidden" name="memEmail" value="java">
+                            <input type="hidden" name="memPasswd" value="1234">
+                            <input type="submit" value="로그인 버튼(프로젝트 리더)">
+                                <sec:csrfInput/>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -98,15 +84,3 @@
     </div>
     <!-- Jumbotron -->
 </section>
-<!-- Section: Design Block -->
-
-<!-- BEGIN: Page Vendor JS-->
-<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/icheck/icheck.min.js"></script>
-<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
-<!-- END: Page Vendor JS-->
-
-<!-- BEGIN: Page JS-->
-<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
-<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
-<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/forms/form-login-register.js"></script>
-<!-- END: Page JS-->

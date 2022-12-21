@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ipms.proj.calendar.mapper.CalendarMapper;
 import com.ipms.proj.calendar.service.CalendarService;
 import com.ipms.proj.calendar.vo.CalendarVO;
+import com.ipms.proj.task.vo.TaskVO;
 
 @Service
 public class CalendarServiceImpl implements CalendarService {
@@ -40,6 +41,12 @@ public class CalendarServiceImpl implements CalendarService {
 	public int updateSchd(CalendarVO calendarVO) {
 		
 		return this.calendarMapper.updateSchd(calendarVO);
+	}
+
+	@Override
+	public List<TaskVO> selectT() {
+		
+		return this.calendarMapper.selectT();
 	}
 
 }

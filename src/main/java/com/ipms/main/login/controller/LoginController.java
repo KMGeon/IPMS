@@ -19,8 +19,6 @@ import javax.inject.Inject;
 public class LoginController {
     @Autowired
     LoginService loginService;
-    @Autowired
-    MemMapper memMapper;
     @Inject
     BCryptPasswordEncoder passEncoder;
 
@@ -38,19 +36,13 @@ public class LoginController {
         return "main/ForgotPassword/fgtPwd";
     }
 
-    /**
-     *
-     * @param memvo
-     * @param memEmail
-     * @param memPasswd
-     * @return
-     */
+
     //로그인  POST
     @RequestMapping(value = "/loginPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public String loginPost(@ModelAttribute MemVO memvo, @RequestParam String memEmail, @RequestParam String memPasswd) {
-        int result = this.loginService.loginMem(memvo);
-        if (result == 1) {
+        int success = this.loginService.loginMem(memvo);
+        if (success == 1) {
             return "redirect:/main/loginMain";
         } else {
             return "redirect:/main/loginForm";

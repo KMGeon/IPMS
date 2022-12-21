@@ -2,6 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
+
 <link rel="stylesheet"
 	href="/resources/css/chat.css">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
@@ -13,7 +18,7 @@
             chat App
         </span>
         <span id="logoutBtn">로그아웃</span>
-        <input type="text" id="userId" value="${memId}">
+        <input type="text" id="userId" value="${mvo.member.memCode}">
     </nav>
     <div id="contentCover">
                 <div id="chatWrap">
@@ -52,12 +57,6 @@
                 <input type="text" autocomplete="off" size="30" id="message" placeholder="메시지를 입력하세요">
                 <input type="button" id="sendBtn" value="보내기">
             </form>
-        </div>
-        <div id="memberWrap">
-            <div id="memberList">
-                <div id="memberHeader">사람</div>
-                <div id="memberSelect"></div>
-            </div>
         </div>
     </div>
 </div>
@@ -103,7 +102,7 @@
 		var data = JSON.parse(msg.data);
 		
 		if(data.id == $("#userId").val()){
-			str=`
+			str= `
 				<div class="myMsg">
                 \${data.date}<span class="msg">\${data.message}</span>
             	</div>

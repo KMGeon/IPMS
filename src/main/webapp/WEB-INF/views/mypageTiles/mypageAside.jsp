@@ -1,5 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <br>
 <br>
 <br>
@@ -15,6 +19,7 @@
             <a href="/main/pwAuth" class="btn btn-info btn-glow btn-block my-2 compose-btn" style="background-color: #00b5b8 !important">
                 <i class="fa fa-user-circle"></i>
                 	마이페이지
+				<input type="hidden" name="memCode" value="${mvo.member.memCode}">
             </a>
         </div>
 	<div class="media p-1">
@@ -25,6 +30,7 @@
 	    </div>
 	</div>
 </div>
+
 	<div class="sidebar-menu-list">
 		<!-- sidebar menu  -->
 		<div class="list-group list-group-messages" >

@@ -41,19 +41,25 @@ public class DocsServiceImpl implements DocsService{
 		
 		return docsList;
 	}
-	
-	// 폴더 생성
+
 	@Override
 	public int insertFolder(DocsVO docsVO) {
-		
-		log.info("DocsServiceImpl - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
-		
-		FtpUtil.docsMkdir(docsVO.getFoldName());
-		
-		int result = docsMapper.insertFolder(docsVO);
-		
-		return result;
+		// TODO Auto-generated method stub
+		return 0;
 	}
+	
+	// 폴더 생성
+//	@Override
+//	public int insertFolder(DocsVO docsVO) {
+//		
+//		log.info("DocsServiceImpl - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
+//		
+//		FtpUtil.docsMkdir(docsVO.getFoldName());
+//		
+//		int result = docsMapper.insertFolder(docsVO);
+//		
+//		return result;
+//	}
 	
 
 }

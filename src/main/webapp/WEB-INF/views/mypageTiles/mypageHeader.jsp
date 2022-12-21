@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <script type="text/javascript"
         src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 <!-- Topbar -->
@@ -260,18 +262,22 @@
                     </div>
                 </li>
             </ul>
-            <c:if test="${empty mvo}">
-                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그인
-                </button>
-                <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입
-                </button>
-            </c:if>
-            <c:if test="${!empty mvo}">
-                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>하하하
-                </button>
-                <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입
-                </button>
-            </c:if>
+            <!-- 비로그인-->
+            <sec:authorize access="not hasRole('ROLE_MEMBER')">
+                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그인</button>
+                <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입</button>
+            </sec:authorize>
+
+            <!--로그인 -->
+            <sec:authorize access="hasRole('ROLE_MEMBER')">
+                                ${mvo.member.memName}님
+<%--                <p style="font-size: large"> <sec:authentication property="principal.member.memName"/></p>--%>
+                <button type="button" id="myPage"  class="btn btn-outline-secondary" ><i class="fa fa-plug"></i>마이페이지</button>
+                <form action="/customLogout" method='post'>
+                    <button  class="btn btn-outline-secondary" >로그아웃</button>
+                    <sec:csrfInput/>
+                </form>
+            </sec:authorize>
 
         </div>
     </div>

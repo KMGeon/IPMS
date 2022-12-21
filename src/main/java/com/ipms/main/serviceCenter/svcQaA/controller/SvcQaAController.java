@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.ipms.commons.vo.Criteria;
 import com.ipms.commons.vo.PageVO;
 import com.ipms.main.serviceCenter.svcQaA.service.SvcQaAService;
@@ -69,16 +69,45 @@ public class SvcQaAController {
 	}
 	
 	@GetMapping("/svcQaADetail")
-	public String svcQaADetail() {
+	public String svcQaADetail(String qnaNum, Model model) {
+		
+		if(qnaNum != null) {
+			log.info("SvcQaAController - svcQaADetail -> qnaNum : {}", qnaNum);
+		}
+		
+		SvcQaAVO svcQaAVO = svcQaAService.svcQaADetail(qnaNum);
+		
+		model.addAttribute("svcQaAVO", svcQaAVO);
+		
 		return "main/serviceCenter/svcQaADetail";
 	}
 	
-	@GetMapping("svcQaAInsert")
-	public String svcQaAInsert() {
+	@GetMapping("svcQaAInsertForm")
+	public String svcQaAInsertForm() {
 		
-		log.info("SvcQaAController - svcQaAInsert");
+		log.info("SvcQaAController - svcQaAInsertForm");
 		
-		return "main/serviceCenter/svcQaAInsert";
+		return "main/serviceCenter/svcQaAInsertForm";
+	}
+	
+	@PostMapping("/svcInsert")
+	public String svcInsert(SvcQaAVO svcQaAVO) {
+		
+		if(svcQaAVO != null) {
+			log.info("SvcQaAController - svcInsert -> svcQaAVO : {}", svcQaAVO.toString());
+			// 작성자 하드 코딩 바꾸기
+			svcQaAVO.setWriter("M001");
+		}
+		
+		int result = svcQaAService.svcQaAInsert(svcQaAVO);
+		
+		if(result > 0) {
+			log.info("Q&A 등록 성공");
+		}else {
+			log.info("Q&A 등록 실패!!!");
+		}
+		
+		return "redirect:/main/svcQaA";
 	}
 	
 }

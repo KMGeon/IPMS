@@ -3,6 +3,7 @@ package com.ipms.proj.freeboard.mapper;
 import java.util.List;
 
 import com.ipms.commons.ftp.vo.IntgAttachFileVO;
+import com.ipms.commons.vo.Criteria;
 import com.ipms.proj.freeboard.vo.FreeboardVO;
 
 public interface FreeboardMapper {
@@ -17,7 +18,10 @@ public interface FreeboardMapper {
 
 	public int deleteFree(FreeboardVO freeboardVO);	// 삭제
 	
-	public int insertFile(IntgAttachFileVO intgAttachFileVO); // 파일 첨부
+	public int ckDelFree(FreeboardVO freeboardVO);	// 굴 선택 삭제(PL)
+
+	public List<FreeboardVO> getFreePage(Criteria cri); // 리스트(페이징ver.)
 	
-	public int selectFreeNum();
+	public int getTotal(String projId);
+	
 }

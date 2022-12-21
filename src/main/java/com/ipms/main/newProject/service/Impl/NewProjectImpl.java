@@ -7,8 +7,10 @@ import com.ipms.main.newProject.mapper.ProjMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjTeamVO;
 import com.ipms.main.newProject.vo.ProjVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class NewProjectImpl implements NewProjectService {
     @Autowired
     NewProjectService newProjectService;
 
+    @Transactional
     public String projectCreate(ProjVO projVO, MemVO memVO, ProjTeamVO projTeamVO, String teamId, String memCode) {
         //프로젝트 생성
         int sortation = this.newProjectService.projInsert(projVO);
@@ -28,10 +31,10 @@ public class NewProjectImpl implements NewProjectService {
             insertProTeam(projTeamVO);
 
             //프로젝트 생성 -> 프로젝트 팀 생성 -> 프로젝트 멤버 생성
-            ProjMemVO vo = ProjMemVO.builder()
-                    .projId(projTeamVO.getProjId())
-                    .memCode(memCode)
-                    .teamId(teamId).build();
+            ProjMemVO vo = new ProjMemVO();
+            vo.setProjId(projTeamVO.getProjId());
+            vo.setMemCode(memCode);
+            vo.setTeamId(teamId);
             insertProjMem(vo);
 
             //권한부여 ROLE_MEMBER , ROLE_PROJECT_LEADER

@@ -19,6 +19,9 @@
 	select {
 		max-width: 30%%;
 	}
+	a{
+		color: black;
+	}
 </style>
 <div class="container">
 	<div class="row">
@@ -26,7 +29,6 @@
 		<select class="form-control" name="highWikiId" id="searchWikiId">
 			<option value="" selected>검색</option>
 				<c:forEach items="${highWikiId}" var="id">
-				
 						<option value="${id.wikiId}">${id.wikiTitle}</option>				
 				</c:forEach>
 		</select>
@@ -41,18 +43,19 @@
 		<div class="form-group">
 			</div>
 			<c:if test="${wikiDetail eq null}">
-		
 			<h1>wiki등록된 태그들 입니다</h1>
+			<hr>
 			<c:forEach items="${list}" var="wiki" varStatus="stat">	
 					<h4><a href="?wikiId=${wiki.wikiId}">${wiki.wikiTitle}</a></h4>
 					<br>
 			</c:forEach>
 			</c:if>
 			<c:if test="${wikiDetail ne null}">
-			<h1>${wikiDetail.wikiTitle}</h1><br>
+			<h1>${wikiDetail.wikiTitle}</h1>
+			<hr>
 			<div style="font-size: x-large;">${wikiDetail.wikiCts}</div>
-			<a class="btn btn-icon btn-secondary mr-1 mb-1" href="/proj/updateWiki?wikiId=${wikiDetail.wikiId}">수정</a>
-			<a class="btn btn-icon btn-secondary mr-1 mb-1" href="/proj/wikiDelete?wikiId=${wikiDetail.wikiId}">삭제</a>
+			<a class="btn btn-icon btn-secondary mr-1 mb-1" href="/proj/${projId}/updateWiki?wikiId=${wikiDetail.wikiId}">수정</a>
+			<a class="btn btn-icon btn-secondary mr-1 mb-1" href="/proj/${projId}/wikiDelete?wikiId=${wikiDetail.wikiId}">삭제</a>
 			<hr>
 				<c:if test="${list ne null}">
 					<c:forEach items="${list}" var="wiki" varStatus="stat">			
@@ -65,11 +68,11 @@
 		</div>
 
 		<div class="col-2 float-right">
-			<a href="/proj/wikiInsert" class="btn btn-secondary square btn-min-width mr-1 mb-1"
+			<a href="/proj/${projId}/wikiInsert" class="btn btn-secondary square btn-min-width mr-1 mb-1"
 				 >위키 등록</a>
 				
 <!-- 			<div id="tree"></div> -->
-<ul id="tree" class="ztree"></ul>
+			<ul id="tree" class="ztree"></ul>
 		</div>
 		
 	</div>
@@ -80,16 +83,19 @@
 	    var position = $(document).scrollTop();
 	    $("#treeContent").css('top',  position+45 );     
 	});
-	
 	var treeArray = new Array();
 	$('select').select2();
 	 $.ajax({
 		type: "post",
-        url: "/proj/wikiTree",
+        url: "/proj/${projId}/wikiTree",
         dataType: "json",
         async: false,
+        beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	  },
         success: function(data) {
           console.log("통신데이터 값 : " + JSON.stringify(data));
+          treeArray.push({id:"-1",name:"위키홈",web:"/proj/${projId}/wiki"});
 		  for(var i=0; i<data.length ;i++){
 			if(data[i].highWikiId == null){
 				treeArray.push({id:data[i].wikiId,name:data[i].wikiTitle,web:"?wikiId="+data[i].wikiId});

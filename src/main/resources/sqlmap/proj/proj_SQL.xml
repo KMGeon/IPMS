@@ -2,49 +2,84 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.main.newProject.mapper.ProjMapper">
-
-
     <!--전체 프로젝트  com.ipms.main.newProject.mapper.ProjMapper.listProj-->
-    <select id="listProj"  resultType="com.ipms.main.newProject.vo.ProjVO">
-        SELECT
-            proj_id,
-            mem_code,
-            proj_name,
-            proj_strt_date,
-            proj_end_date,
-            proj_smry,
-            proj_opn_whth,
-            proj_creatn_date,
-            proj_img_route,
-            delete_whth
-        FROM
-            proj
-        order by proj_creatn_date
+    <select id="listProj" resultType="com.ipms.main.newProject.vo.ProjVO">
+        SELECT proj_id,
+               mem_code,
+               proj_name,
+               proj_strt_date,
+               proj_end_date,
+               proj_smry,
+               proj_opn_whth,
+               proj_creatn_date,
+               proj_img_route,
+               delete_whth
+        FROM proj
+        order by proj_creatn_date desc
     </select>
 
-    <!-- 프로젝트  com.ipms.main.newProject.mapper.ProjMapper.listProj-->
-    <select id="detailPage"  resultType="com.ipms.main.newProject.vo.ProjVO">
-        SELECT
-            proj_id,
-            mem_code,
-            proj_name,
-            proj_strt_date,
-            proj_end_date,
-            proj_smry,
-            proj_opn_whth,
-            proj_creatn_date,
-            proj_img_route,
-            delete_whth
-        FROM
-            proj
-       where proj_id=#{projId}
+    <select id="getProjId" parameterType="string" resultType="com.ipms.main.newProject.vo.ProjVO">
+        select proj_id
+        from proj
+        where mem_code = (select mem_code from mem where mem_email = #{memEmail})
+    </select>
+
+
+    <!-- 페이지 SELECT-->
+    <select id="getListPage" resultType="com.ipms.main.newProject.vo.ProjVO">
+        <![CDATA[
+        select proj_id,
+               mem_code,
+               proj_name,
+               proj_strt_date,
+               proj_end_date,
+               proj_smry,
+               proj_opn_whth,
+               proj_creatn_date,
+               proj_img_route,
+               delete_whth
+        from (select rownum rn,
+                     proj_id,
+                     mem_code,
+                     proj_name,
+                     proj_strt_date,
+                     proj_end_date,
+                     proj_smry,
+                     proj_opn_whth,
+                     proj_creatn_date,
+                     proj_img_route,
+                     delete_whth
+              from proj
+              where rownum <= #{pageNum} * #{amount})
+        where rn > (#{pageNum} - 1) * #{amount}
+        ]]>
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT count(*)
+        FROM proj
+    </select>
+
+    <select id="detailPage" resultType="com.ipms.main.newProject.vo.ProjVO">
+        SELECT proj_id,
+               mem_code,
+               proj_name,
+               proj_strt_date,
+               proj_end_date,
+               proj_smry,
+               proj_opn_whth,
+               proj_creatn_date,
+               proj_img_route,
+               delete_whth
+        FROM proj
+        where proj_id = #{projId}
     </select>
 
 
     <!--프로젝트 생성 com.ipms.main.newProject.mapper.ProjMapper.projInsert-->
     <insert id="projInsert" parameterType="com.ipms.main.newProject.vo.ProjVO">
         <selectKey order="BEFORE" keyProperty="projId" resultType="String">
-            SELECT To_char( NVL(MAX(TO_NUMBER(proj_id)), 0) +1) FROM proj
+            SELECT NVL(SUBSTR(MAX(proj_id),1,1)|| TRIM(TO_CHAR(SUBSTR(MAX(proj_id),2) + 1,'000')),'M001')FROM PROJ
         </selectKey>
         INSERT INTO proj (
         proj_id,
@@ -87,36 +122,58 @@
 
     <!--프로젝트 멤버 생성 com.ipms.main.newProject.mapper.ProjMapper.insertProjMem-->
     <insert id="insertProjMem" parameterType="com.ipms.main.newProject.vo.ProjMemVO">
-        insert into proj_mem(
-          mem_code
-        , proj_id
-        , team_id
-        , PRTPT_APROV_CODE
-        , REFER_CTS
-        )
-        values (
-        #{memCode}
-        ,#{projId}
-        ,#{teamId}
-        , 'Y'
-        , '0'
-        )
+        insert into proj_mem( mem_code
+                            , proj_id
+                            , team_id
+                            , PRTPT_APROV_CODE
+                            , REFER_CTS)
+        values ( #{memCode}
+               , #{projId}
+               , #{teamId}
+               , 'Y'
+               , '0')
     </insert>
 
 
     <!--프로젝트 수정 com.ipms.main.newProject.mapper.ProjMapper.projAuthInsert-->
-    <insert id="projAuthInsert" parameterType="com.ipms.main.login.vo.MemberAuth" >
-        INSERT INTO member_auth(mem_code,PROJ_ID,mem_auth)
-        values
-            (#{memCode},#{projId},#{memAuth})
+    <insert id="projAuthInsert" parameterType="com.ipms.main.login.vo.MemberAuth">
+        INSERT INTO member_auth(mem_code, PROJ_ID, mem_auth)
+        values (#{memCode}, #{projId}, #{memAuth})
     </insert>
 
     <delete id="authDelete" parameterType="string">
-        delete from member_auth where mem_code = #{memCode}
+        delete
+        from member_auth
+        where mem_code = #{memCode}
     </delete>
 
+    <!-- 프로젝트 가입신청-->
+    <insert id="joinProject" parameterType="com.ipms.main.newProject.vo.ProjMemVO">
+        INSERT INTO proj_mem
+        (mem_code,
+         proj_id,
+         team_id,
+         prtpt_aprov_code,
+         refer_cts)
+        VALUES (#{memCode},
+                #{projId},
+                #{teamId},
+                'N',
+                '0')
 
+    </insert>
 
+    <select id="registrationStatus"  parameterType="com.ipms.main.newProject.vo.ProjMemVO" resultType="string">
+        SELECT MEM_CODE
+        FROM PROJ_MEM
+        WHERE MEM_CODE = (SELECT MEM_CODE
+                          FROM PROJ_MEM
+                          WHERE PROJ_ID = #{projId}
+                            AND TEAM_ID = #{teamId}
+                            and prtpt_aprov_code = 'Y')
+          AND prtpt_aprov_code = 'Y'
+          and rownum = 1
+    </select>
 </mapper>
 
 

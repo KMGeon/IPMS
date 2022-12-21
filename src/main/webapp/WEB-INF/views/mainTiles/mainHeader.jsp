@@ -272,8 +272,8 @@
 
             <!--로그인 -->
             <sec:authorize access="hasRole('ROLE_MEMBER')">
-<%--                ${mvo.member.memName}님--%>
-                <p style="font-size: large"> <sec:authentication property="principal.member.memName"/></p>
+                ${mvo.member.memName}님
+<%--                <p style="font-size: large"> <sec:authentication property="principal.member.memName"/></p>--%>
                 <button type="button" id="myPage"  class="btn btn-outline-secondary" ><i class="fa fa-plug"></i>마이페이지</button>
                 <form action="/customLogout" method='post'>
                     <button  class="btn btn-outline-secondary" >로그아웃</button>

@@ -47,7 +47,7 @@
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="/proj/erd">
+					<a href="/proj/${projId}/erd">
 					<i class="fa fa-database"></i>
 						<span class="menu-title" data-i18n="Kanban Application">ERD그리기</span>
 					</a>
@@ -59,13 +59,7 @@
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="#">
-					<i class="fa fa-comments"></i>
-						<span class="menu-title" data-i18n="Kanban Application">채팅하기</span>
-					</a>
-				</li>
-				<li class=" nav-item">
-					<a href="/proj/wiki">
+					<a href="/proj/${projId}/wiki">
 					<i class="fa fa-sitemap"></i>
 						<span class="menu-title" data-i18n="Kanban Application">위키</span>
 					</a>

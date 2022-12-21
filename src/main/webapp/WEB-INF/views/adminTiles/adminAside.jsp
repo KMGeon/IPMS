@@ -37,7 +37,12 @@
 				<div class="d-inline mr-25">
 					<i class="fa fa-paper-plane"></i> &nbsp;&nbsp;고객 센터 관리
 				</div> 
-			</a> <a href="/main/projManagement" class="list-group-item">
+			</a> <a href="/main/adminNoticeInsert" class="list-group-item">
+				<div class="d-inline mr-25">
+					<i class="feather icon-clipboard"></i> &nbsp;&nbsp;게시물 등록
+				</div> 
+			</a> 
+			 <a href="/main/projManagement" class="list-group-item">
 				<div class="d-inline mr-25" >
 					<i class="fa fa-th"></i> &nbsp;&nbsp;전체 프로젝트 관리
 				</div> 

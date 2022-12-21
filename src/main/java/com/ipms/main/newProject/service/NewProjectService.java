@@ -20,5 +20,6 @@ public interface NewProjectService {
     public int authDelete(String memCoed);
 
     public int insertProTeam(ProjTeamVO projTeamVO);
+
     public String projectCreate(ProjVO projVO, MemVO memVO, ProjTeamVO projTeamVO, String teamId, String memCode);
 }

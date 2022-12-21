@@ -1,12 +1,17 @@
 package com.ipms.main.wholeProject.controller;
 
+import com.ipms.commons.pageHandler.Criteria;
+import com.ipms.commons.pageHandler.PageDTO;
 import com.ipms.commons.pageHandler.PageHandler;
+import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.main.wholeProject.service.WholeProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.velocity.runtime.directive.Foreach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,42 +35,30 @@ public class WholeProjectController {
 
     @RequestMapping(value = "/wholeProject", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public String wholeProject(Integer page, Integer pageSize, Model model) {
-//        if (page == null) {
-//            page = 1;
-//        }
-//        if (pageSize == null) {
-//            pageSize = 9;
-//        }
-//        int totalCnt = wholeProjectService.count();
-//        PageHandler pageHandler = new PageHandler(totalCnt, page, pageSize);
-//        Map map = new HashMap();
-//        map.put("offset", page + pageSize);
-//        map.put("pageSize", pageSize+pageSize);
-        List<ProjVO> list = this.wholeProjectService.listProj();
+    public String wholeProject(Criteria criteria, Model model) {
+        List<ProjVO> list = this.wholeProjectService.getListPage(criteria);
         model.addAttribute("list", list);
-//        model.addAttribute("ph",pageHandler);
+        model.addAttribute("pageMaker", new PageDTO(criteria, 10));
         return "main/wholeProject/wholeProject";
     }
 
-    //    @PreAuthorize("hasRole(ROLE_MEMBER)")
+    @PreAuthorize("isAuthenticated() and ( hasAnyRole('ROLE_MEMBER'))")
     @RequestMapping(value = "/projectDetail/{projId}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public String projectDetail(@PathVariable("projId") String projId, Model model, Authentication authentication,
-                                HttpServletResponse response) throws IOException {
+    public String projectDetail(@PathVariable("projId") String projId, Model model, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        List<ProjVO> test = this.wholeProjectService.getProjId(userDetails.getUsername());
-        for (ProjVO proj : test) {
-            log.info("projectId :" + proj.getProjId());
-            log.info("projId:::" + projId);
-            if (proj.getProjId().equals(projId)) {
-                List<ProjVO> detailList = this.wholeProjectService.detailPage(projId);
-                model.addAttribute("detailList", detailList);
-                return "main/wholeProject/projectDetail";
-            }
-        }
-        response.sendRedirect("/main/page");
-        return null;
+        String test = this.wholeProjectService.getProjId(userDetails.getUsername()).toString();
+        List<ProjVO> detailList = this.wholeProjectService.detailPage(projId);
+
+        model.addAttribute("detailList", detailList);
+        return "main/wholeProject/projectDetail";
     }
 
+    @RequestMapping(value = "/joinProject", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public int joinProject(ProjMemVO projMemVO) {
+        int division = this.wholeProjectService.registrationApplication(projMemVO);
+        return division;
+    }
 }

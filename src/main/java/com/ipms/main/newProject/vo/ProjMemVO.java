@@ -2,13 +2,8 @@ package com.ipms.main.newProject.vo;
 
 import lombok.*;
 
-/**
- * @author KMG
- */
-//@Data
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
-@ToString
+
+@Data
 public class ProjMemVO {
     private String memCode;//회원코드
     private String projId;//프로젝트 아이디
@@ -17,4 +12,6 @@ public class ProjMemVO {
     private String referCts;//반려 내용 null
 
     private String memEmail;
+    private String projName;//프로젝트 이름
+    private  String memName;
 }

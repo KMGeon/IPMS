@@ -53,7 +53,8 @@ $(document).ready(function() {
 				<textarea id="editor" class="summernote" name="wikiCts">${list.wikiCts}</textarea> 
 			</div>
 		</div>
-
+		<sec:csrfInput/>
+		<input type="hidden" name="projId" value="${projId}">
 		<div class="form-actions right">
 			<a class="btn btn-warning mr-1" href="/proj/wiki">
 				<i class="feather icon-x"></i> Cancel

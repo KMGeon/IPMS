@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- Footer -->
 <footer class="footer footer-static footer-light navbar-shadow">
+	
 	<p
 		class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2 container center-layout">
 		<span class="float-md-left d-block d-md-inline-block">Copyright

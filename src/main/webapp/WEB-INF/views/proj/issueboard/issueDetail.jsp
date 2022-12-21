@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	
 <!DOCTYPE html>
 <!-- BEGIN: Head-->
 <head>
@@ -31,13 +33,13 @@
 								<div class="card-header px-0">
 									<div class="row">
 										<div class="col-md-12 col-lg-7 col-xl-4 mb-50">
-											<span class="invoice-id font-weight-bold">No. </span> <span>12345</span>
+											<span class="invoice-id font-weight-bold">No. </span> <span>${list.issueId}</span>
 										</div>
 										<div class="col-md-12 col-lg-5 col-xl-8">
 											<div
 												class="d-flex align-items-center justify-content-end justify-content-xs-start">
 												<div class="issue-date pr-2">
-													<span>2022/12/08 WED 10:05</span>
+													<span><fmt:formatDate value="${list.issueRgstDate}" pattern="yyyy-MM-dd"/></span>
 												</div>
 											</div>
 										</div>
@@ -49,12 +51,12 @@
 									<div
 										class="col-6 d-flex flex-column justify-content-center align-items-start">
 										<h2 class="text-primary"
-											style="font-family: 'MICEGothic Bold';">제목입니당</h2>
-										<span>김효정</span>
+											style="font-family: 'MICEGothic Bold';">${list.issueCts}</h2>
+										<span>${list.writer }</span>
 									</div>
 								</div>
 								<hr>
-								<div>일감 번호: 135</div>
+								<div>일감 번호: ${list.taskId}</div>
 								<br>
 								<!-- 몰라서 일단 만들어만 놓음.... 클릭하면 일감 이동..?? -->
 								<hr>
@@ -62,11 +64,7 @@
 								<!-- 글 내용 -->
 								<div class="row invoice-adress-info py-2">
 									<div class="col-6 mt-1 from-info">
-										<img src="/resources/images/imagesample.jpg"
-											style="width: 400px;"> <br> 죽는 날까지 하늘을 우러러<br>
-										한 점 부끄럼이 없기를<br> 잎새에 이는 바람에도<br> 나는 괴로워했다<br>
-										별을 노래하는 마음으로<br> 모든 죽어가는 것을 사랑해야지<br> 그리고 나한테 주어진 길을
-										걸어가야겠다<br> 오늘 밤에도 별이 바람에 스치운다
+											${list.issueCts}
 									</div>
 								</div>
 								<hr>
@@ -103,7 +101,7 @@
 										</div>
 									</div>
 									<div>
-										<input type="file" name="repfile" style="padding-top: 8px;">
+										<input type="file" id="	" name="repfile" style="padding-top: 8px;">
 									</div>
 								</form>
 							</div>

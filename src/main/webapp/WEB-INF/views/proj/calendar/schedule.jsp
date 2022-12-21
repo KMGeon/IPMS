@@ -96,7 +96,8 @@ function stringFormat(p_val){
 		calendar.render();
 	});
 	
-	// 띄우기 
+	
+	// 띄우기 - 일정 리스트 
 	function loadEvent(){
 		
 		console.log("왔다");
@@ -115,22 +116,66 @@ function stringFormat(p_val){
 			  },
 	   		  success:function(list){
 	   			  
-	   			  for(var i=0;i<list.length;i++){
+				for(var i=0;i<list.length;i++){
 	   				  arr.push({
 	   					writer:list[i]['writer'],				// 작성자(회원코드)
 	   					indvSchdNum:list[i]['indvSchdNum'],		// 일정 번호
 	   					title:list[i]['indvSchdTitle'],			// 제목
 	   					start:list[i]['indvSchdStrtDate'],		// 시작일
 	   					end:list[i]['indvSchdEndDate'],			// 종료일
-	   					indvSchdCts:list[i]['indvSchdCts']		// 내용
-	   				  
+	   					indvSchdCts:list[i]['indvSchdCts'],		// 내용
+	   					color: '#EEBACB'
 		   			  	});//end arr
+		   			  	
 		   			  	
 	   			  }//end for
 	   			console.log("arr : " ,JSON.stringify(arr));
-	   		  }
-	   	  })
-	   	return arr;
+	   			  
+	   		  } // success end
+	   	  }) // ajax end
+	   	  
+	  	let arrT = loadEvent2();
+	   	  
+	   	return [...arr,...arrT];	// **spread operator(펼침 연산자!) ... 배열을 합쳐줍니당
+	}
+	
+	// 띄우기 - 일감(task) 리스트
+	function loadEvent2() {
+		
+		console.log("일감 왔다");
+		
+		  let arr2 = [];
+ 			
+			  $.ajax({
+				 type:"post",
+				 url: "/proj/calList2",
+				 data:"{}",
+				 dataType: "json",
+				 contentType: "applecation/json; charset=utf-8",
+				 async: false,
+			 beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+		  	},
+		  	success:function(list){
+		  		
+		  		for(var j=0;j<list.length;j++){
+		  			arr2.push({
+		  				taskId:list[j]['taskId'],
+		  				highTaskId:list[j]['highTaskId'],
+		  				title:list[j]['taskTitle'],
+		  				taskCts:list[j]['taskCts'],
+		  				start:list[j]['taskStrtDate'],
+		  				end:list[j]['taskEndDate'],
+		  				color: '#CFE4F2',
+		  				textColor: '#135C94'
+		  			})
+		  		}
+		  		
+		  		console.log("arr2 : " ,JSON.stringify(arr2));
+		  	}
+		});
+			  
+		return arr2;
 	}
 </script>
 </head>
@@ -153,24 +198,26 @@ function stringFormat(p_val){
 
 				<!-- Modal body -->
 				<div class="modal-body">
-					<div class="form-group">
+					<div class="form-group" id="mTitle">
 						<label for="indvSchdTitle">일정 제목</label> <input type="text"
 							class="form-control" placeholder="제목을 입력하세요." id="indvSchdTitle" name="indvSchdTitle">
 					</div>
-					<div class="form-group">
+					<div class="form-group" id="mCts">
 						<label for="indvSchdCts">내용</label>
 						<div>
 							<textarea class="form-control" rows="5" placeholder="일정 내용을 입력하세요."
-								id="indvSchdCts" name="indvSchdCts" style="resize:none;"></textarea>
+							id="indvSchdCts" name="indvSchdCts" style="resize:none;"></textarea>
 						</div>
 					</div>
 				</div>
+				<input type="hidden" class="form-control" id="taskId" name="taskId">
 				<!-- Modal footer. 버튼 -->
 				<div class="modal-footer">
-					<button type="button" class="btn btn-info float-right insertBtn"
+					<button type="button" class="btn btn-secondary float-right insertBtn"
 						onclick="insertSchd('insertModal', g_arg)" id="insertBtn">저장</button>
-					<button type="button" class="btn btn-secondary  float-right deleteBtn"
+					<button type="button" class="btn btn-danger  float-right deleteBtn"
 						onclick="deleteSchd('insertModal', g_arg)">삭제</button>
+					<button type="button" class="btn btn-secondary float-right closeBtn" id="closeBtn" onclick="initModal('insertModal', g_arg)">닫기</button>
 				</div>
 			</div>
 		</div>
@@ -206,21 +253,60 @@ function stringFormat(p_val){
 		//console.log("혹시 필요한값이:",arg.event.extendedProps.indvSchdNum);
 		g_arg = arg;
 		
-		// 이미 등록된 일정을 클릭할 경우 - 조회 및 수정,삭제 가능
+		// 이미 등록된 일정을 클릭할 경우 - (일감: only 조회 / 개인 일정: 조회,수정,삭제 가능
+		console.log("g_arg: ",g_arg);
 		if(g_arg.event != undefined) {
-			$('.insertModal .deleteBtn').css('display', 'inline');
-			$('.insertModal #indvSchdNum').val(g_arg.event.extendedProps.indvSchdNum);
-			$('.insertModal #indvSchdTitle').val(g_arg.event.title);
-			$('.insertModal #indvSchdCts').val(g_arg.event.extendedProps.indvSchdCts);
-//			$('.insertModal #writer').val(g_arg.event.writer);
-			$('#modalTitle').html("<h4 class='modal-title' id='modalTitle'>일정 조회</h4>");
-			
-		} else {	// 새 일정(빈 곳 클릭)을 추가하는 경우 - 일정 추가 가능
+			alert("일정 이미 있음");
+
+			console.log("일정 있음 event:",g_arg.event);
+			console.log("일정 제목",$('.insertModal #taskId').val());
+			console.log("정확:",g_arg.event.setExtendedProp.taskId);
+
+			// 일감인지 개인 일정인지 구분
+			if(g_arg.event.extendedProps.taskId != undefined) {
+
+				alert("이것은 일감!")
+
+				$('#modalTitle').html("<h4 class='modal-title' id='modalTitle'>일감 조회</h4>");
+				$('#mTitle').html("<label for='taskTitle'>일감 제목</label><input type='text' class='form-control' id='taskTitle' name='taskTitle' disabled>");
+				$('#mCts').html("<label for='taskCts'>내용</label><div><textarea class='form-control' rows='5' id='taskCts' name='taskCts' style='resize:none;' disabled></textarea></div>");
+
+				$('.insertModal #taskId').val(g_arg.event.extendedProps.taskId);
+				$('.insertModal #highTaskId').val(g_arg.event.extendedProps.highTaskId);
+				$('.insertModal #taskTitle').val(g_arg.event.title);
+				$('.insertModal #taskCts').val(g_arg.event.extendedProps.taskCts);
+
+				$('.insertModal .insertBtn').css('display', 'none');
+				$('.insertModal .deleteBtn').css('display', 'none');
+				$('.insertModal .closeBtn').css('display', 'inline');
+				
+			} else {
+				alert("개인 일정");
+				console.log("else문",$('.insertModal #taskId').val())
+
+				$('#modalTitle').html("<h4 class='modal-title' id='modalTitle'>일정 조회</h4>");
+				$('#mTitle').html("<label for='indvSchdTitle'>일정 제목</label><input type='text' class='form-control' id='indvSchdTitle' name='indvSchdTitle'>");
+				$('#mCts').html("<label for='indvSchdCts'>내용</label><div><textarea class='form-control' rows='5' id='indvSchdCts' name='indvSchdCts' style='resize:none;'></textarea></div>");
+				$('.insertModal .insertBtn').css('display', 'inline');
+				$('.insertModal .deleteBtn').css('display', 'inline');
+				$('.insertModal .closeBtn').css('display', 'none');
+				$('.insertModal #indvSchdNum').val(g_arg.event.extendedProps.indvSchdNum);
+				$('.insertModal #indvSchdTitle').val(g_arg.event.title);
+				$('.insertModal #indvSchdCts').val(g_arg.event.extendedProps.indvSchdCts);
+	//			$('.insertModal #writer').val(g_arg.event.writer);
+			}
+
+		// 새 일정(빈 곳 클릭)을 추가하는 경우 - 일정 새로 추가 가능	
+		} else {
+			alert("일정 새로 추가");
 			$('#modalTitle').html("<h4 class='modal-title' id='modalTitle'>일정 등록</h4>");
+			$('#mTitle').html("<label for='indvSchdTitle'>일정 제목</label><input type='text' class='form-control' id='indvSchdTitle' name='indvSchdTitle'>");
+			$('#mCts').html("<label for='indvSchdCts'>내용</label><div><textarea class='form-control' rows='5' id='indvSchdCts' name='indvSchdCts' style='resize:none;'></textarea></div>");
 			
 		// 등록 버튼 외 숨김
 		$('.insertModal .insertBtn').css('display', 'inline');
 		$('.insertModal .deleteBtn').css('display', 'none');
+		$('.insertModal .closeBtn').css('display', 'none');
 	}
 	
 	// 모달창 show
@@ -241,7 +327,8 @@ function stringFormat(p_val){
 			var data = {
 <%-- 			writer: '<%=sessionId%>', --%>
 	//			indvSchdNum: $('.'+modal+' #indvSchdNum').val()		// 내가 따로 추가한 항목이니까 extendedProps어쩌구로 써야 먹히나봄
-			    indvSchdNum: arg.event.extendedProps.indvSchdNum	// 이거 때문에 삭제가 안 된 거였음!!!
+			    indvSchdNum: arg.event.extendedProps.indvSchdNum,	// 이거 때문에 삭제가 안 된 거였음!!!
+			    deleteYn: arg.event.extendedProps.deleteYn
 			}
 			
 			console.log("확인 메롱: ",data)
@@ -258,11 +345,13 @@ function stringFormat(p_val){
 	                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 			  },
 				success: function(data, status, xhr){
-					//alert(xhr.status);
 					console.log(data);
 					
-					arg.event.remove();
+					arg.event.setExtendedProp('deleteYn', 'y');	// 삭제 여부 Y/N만 조정하여 delete처리
+	//				arg.event.remove();
+					
 					initModal(modal, arg);
+					
 					alert('일정을 삭제하였습니다.');
 					location.href='/proj/schedule';
 				},
@@ -334,7 +423,8 @@ function stringFormat(p_val){
 			  		title : $('.'+modal+' #indvSchdTitle').val(),
 			  		indvSchdCts : $("#indvSchdCts").val(),
 			  		startdt : arg.event.startStr.substr(0, 10),
-			  		enddt : m_end_dt
+			  		enddt : m_end_dt,
+			  		deleteYn: arg.event.extendedProps.deleteYn
 			  	}
 			
 			console.log("hyojung222",data);
@@ -359,6 +449,7 @@ function stringFormat(p_val){
 					//	arg.event.setExtendedProp('allowyn', '0');
 				  
 				  initModal(modal, arg);
+				  
 				  alert('일정을 수정하였습니다!');
 					location.href='/proj/schedule';
 			  },
@@ -461,6 +552,7 @@ function stringFormat(p_val){
 	<script
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/modal/components-modal.js"></script>
 	<!-- END: Page JS-->
+
 </body>
 
 </html>

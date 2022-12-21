@@ -1,12 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
+<script type="text/javascript" src="/resources/js/issueboard.js"></script>
+<script type="text/javascript" src="/resources/js/jquery-3.6.0.js"></script>
+
 <head>
+<style>
+.ck-editor__editable {
+    min-height: 300px;
+}
+</style>
 
 </head>
 <!-- END: Head-->
 <!-- BEGIN: Body-->
-
+<script>
+	var header = '${_csrf.headerName}';
+	var token = '${_csrf.token}';
+</script>
 <body>
 	<!-- BEGIN: Content-->
 	<div class="content-body">
@@ -24,55 +37,38 @@
 						</div>
 						<div class="card-content collapse show">
 							<div class="card-body">
-								<form class="form">
 									<div class="row justify-content-md-center">
 										<div class="col-md-6">
 											<div class="form-body">
 												<div class="form-group">
-													<label for="eventInput1">제목</label> <input
-														type="text" id="eventInput1" class="form-control"
-														placeholder="제목을 입력해주세요." name="title" required>
+													<label for="eventInput1">제목</label> 
+													<input type="text" id="issueTitle" name="issueTitle" 
+													class="form-control" placeholder="제목을 입력해주세요."  required>
 												</div>
 
 									<!-- 체크박스로 일감 관련된 이슈/관련없는 이슈 나눠서 일감관련에 체크할 경우에만 일감을 선택하여 연결할 수 있는 div를 밑에 뜨게 했으면 좋겠다는 의견 -->
 												<div class="form-group">
-													<label for="eventInput2">관련 일감</label> <input type="text"
-														id="eventInput2" class="form-control" placeholder="이 부분은 더 찾아봐야함.. text말고 일감을 어떤 방법으로 연결시킬지"
-														name="work">
+													<label for="eventInput2">관련 일감</label> 
+														<select id="taskId" name="taskId">
+														</select>
 												</div>
 												<div class="form-group">
-													<label for="eventInput3">내용</label> <input type="text"
-														id="eventInput3" class="form-control"
-														placeholder="내용을 입력해주세요." name="content" id="content" required>
+													<label for="eventInput3">내용</label> 
+													<textarea cols="" rows="30" id="issueCts" name="issueCts" 
+													class="form-control" placeholder="내용을 입력해주세요."  required> </textarea>
 												</div>
 
 												<div class="form-group">
-													<label>첨부파일</label><br><label id="projectinput7"
-														class="file center-block"> <input type="file"
-														id="file"> <span class="file-custom"></span>
+													<label>첨부파일</label><br>
+													<label id="projectinput7"
+														class="file center-block"> 
+														<input type="file" id="file" name="itgrnAttachFileNum"> 
+														<span class="file-custom"></span>
 													</label>
 												</div>
-												
-												<!-- 												<div class="form-group"> -->
-<!-- 													<label>Existing Customer</label> -->
-<!-- 													<div class="input-group"> -->
-<!-- 														<div -->
-<!-- 															class="d-inline-block custom-control custom-radio mr-1"> -->
-<!-- 															<input type="radio" name="customer1" -->
-<!-- 																class="custom-control-input" id="yes"> <label -->
-<!-- 																class="custom-control-label" for="yes">Yes</label> -->
-<!-- 														</div> -->
-<!-- 														<div class="d-inline-block custom-control custom-radio"> -->
-<!-- 															<input type="radio" name="customer1" -->
-<!-- 																class="custom-control-input" id="no"> <label -->
-<!-- 																class="custom-control-label" for="no">No</label> -->
-<!-- 														</div> -->
-<!-- 													</div> -->
-<!-- 												</div> -->
-
 										</div>
-									<div class="form-actions center">
-										<button type="submit" class="btn btn-primary">
+									<div class="form-actions center" style="text-align: center;">
+										<button id="sendbtn" class="btn btn-primary" >
 											<i class="fa fa-check-square-o"></i> 등록
 										</button>
 										<button type="reset" class="btn btn-secondary mr-1">
@@ -80,7 +76,6 @@
 										</button>
 									</div>
 									</div>
-								</form>
 
 							</div>
 						</div>
@@ -95,6 +90,7 @@
 <!-- END: Body-->
 </html>
 
-<script type="text/javascript">
-CKEDITOR.replace('content');
+<script>
+CKEDITOR.replace('issueCts');
+
 </script>

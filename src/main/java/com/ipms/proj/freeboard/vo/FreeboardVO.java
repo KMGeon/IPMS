@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class FreeboardVO {
 
-	private String projBdId;			// 글 번호
+	private int projBdId;			// 글 번호
 	private String writer;				// 작성자
 	private String projId;				// 프로젝트 번호
 	private String projBdTitle;			// 제목

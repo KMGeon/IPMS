@@ -1,12 +1,27 @@
 package com.ipms.commons.ftp;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.SocketException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ipms.commons.ftp.vo.IntgAttachFileVO;
+import com.ipms.commons.vo.FtpVO;
 import com.ipms.proj.docs.vo.DocsVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +30,11 @@ import lombok.extern.slf4j.Slf4j;
 public class FtpUtil {
 	
 	// FTP 서버의 아이피 주소
-	private static final String host = "192.168.36.62"; // 서버 컴 : 192.168.142.9
+	private static final String host = "192.168.142.9"; // 서버 컴 : 192.168.142.9, 192.168.42.49
 	// FTP 포트번호 (기본값 21)
 	private static final int port = 21;
 	// user name
-	private static final String user = "IPMSFOLDER"; // 서버 컴 : finalproj
+	private static final String user = "finalproj"; // 서버 컴 : finalproj
 	// user password
 	private static final String pwd = "java";
 	
@@ -63,6 +78,8 @@ public class FtpUtil {
 		
 		try {
 			ftp.login(user, pwd);
+			ftp.setFileType(FTP.BINARY_FILE_TYPE);
+			ftp.enterLocalPassiveMode();
 		} catch (IOException e) {
 			log.error("FtpUtil - ftpServerConnect -> FTP 서버 로그인 에러");
 			e.printStackTrace();
@@ -76,10 +93,11 @@ public class FtpUtil {
 	
 	/**
 	 * 폴더 생성
+	 * 추후 폴더를 생성하는 경로 파라미터 추가
 	 * @param foldName
 	 * @return
 	 */
-	public static boolean docsMkdir(String foldName) {
+	public static boolean ftpDocsMkdir(String path, String foldName) {
 		
 		boolean flag = false;
 		
@@ -95,8 +113,11 @@ public class FtpUtil {
 				
 			}
 			
+			ftp.changeWorkingDirectory(path);
+			log.info("FtpUtil - ftpDocsMkdir -> 현재 작업디랙토리는 {}", ftp.printWorkingDirectory());
+			
 			// 나중에 프로젝트 아이디와 폴더함 번호 받아서 프로젝트 별 폴더 생성 구현하기
-			flag = ftp.makeDirectory("/" + foldName);
+			flag = ftp.makeDirectory(foldName);
 			
 		} catch (IOException e) {
 			log.error("FtpUtil - docsMkdir -> FTP 폴더 만들기 오류");
@@ -105,6 +126,7 @@ public class FtpUtil {
 			try {
 				ftp.disconnect();
 			} catch (IOException e) {
+				log.error("FtpUtil - docsMkdir -> FTP 서버 접속 종료 에러");
 				e.printStackTrace();
 			}
 		}
@@ -114,5 +136,247 @@ public class FtpUtil {
 	}
 	
 	
+	/**
+	 * 파일 업로드 메소드
+	 * 추후 파일을 업로드하는 경로를 파라미터로 추가
+	 * @param file : input 태그 파라미터
+	 */
+	public static void ftpFileUpload(MultipartFile file) {
+		
+		FTPClient ftp = ftpServerConnect();
+		
+		try(InputStream is = file.getInputStream();
+				OutputStream os = ftp.storeFileStream(file.getOriginalFilename());
+				BufferedInputStream bis = new BufferedInputStream(is);
+				BufferedOutputStream bos = new BufferedOutputStream(os);
+			) {
+			
+			// 나중에 경로를 바꾸자
+//			ftp.changeWorkingDirectory("/");
+			byte[] buffer = new byte[1024];
+			int length = -1;
+			
+			while( (length = bis.read(buffer, 0, buffer.length)) != -1) {
+				bos.write(buffer, 0, length);
+			}
+			
+		} catch (IOException e) {
+			log.error("FtpUtil - ftpFileUpload -> FTP 파일 생성 오류");
+			e.printStackTrace();
+		}finally {
+			try {
+				ftp.disconnect();
+			} catch (IOException e) {
+				log.error("FtpUtil - ftpFileUpload -> FTP 서버 접속 종료 에러");
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
 	
+	/**
+	 * 폴더만 조회 
+	 * @param path
+	 * @return
+	 */
+	public static List<DocsVO> ftpGetDir(String path) {
+		
+		FTPClient ftp = ftpServerConnect();
+		
+		List<DocsVO> docsVOList = null;
+		String temp = "";
+		
+		log.info("FtpUtil - ftpGetDir -> path : {}", path);
+		
+		if(!path.equals("/")) {
+			temp += "/" + path;
+		}
+		
+		log.info("FtpUtil - ftpGetDir -> temp : {}", temp);
+		
+		try {
+			ftp.changeWorkingDirectory(temp);
+			FTPFile[] files = ftp.listFiles();
+			docsVOList = new ArrayList<DocsVO>();
+			
+			for(FTPFile file : files) {
+				DocsVO docsVO = new DocsVO();
+				
+				if(file.isDirectory()) {
+					docsVO.setFoldName(file.getName());
+					docsVOList.add(docsVO);
+				}
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return docsVOList;
+		
+	}
+	
+	/**
+	 * 파일만 조회
+	 * @param path
+	 * @return
+	 */
+	public static List<IntgAttachFileVO> ftpGetFile(String path) {
+		
+		FTPClient ftp = ftpServerConnect();
+		
+		List<IntgAttachFileVO> intgAttachFileVOList = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date regDate = null;
+		
+		try {
+			ftp.changeWorkingDirectory(path);
+			FTPFile[] files = ftp.listFiles();
+			intgAttachFileVOList = new ArrayList<IntgAttachFileVO>();
+			
+			for(FTPFile file : files) {
+				IntgAttachFileVO intgAttachFileVO = new IntgAttachFileVO();
+				
+				if(file.isFile()) {
+					intgAttachFileVO.setFileName(file.getName());
+					intgAttachFileVO.setFileSize(file.getSize());
+					
+					regDate = file.getTimestamp().getTime();
+					intgAttachFileVO.setRgstDate(regDate);
+					
+					intgAttachFileVOList.add(intgAttachFileVO);
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return intgAttachFileVOList;
+	}
+	
+	// ========================== 여기서 부터 새로 시작 ===================================
+	public static List<FtpVO> getList(String path) {
+		
+		FTPClient ftp = ftpServerConnect();
+		
+		List<FtpVO> ftpVOList = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date regDate = null;
+		String tempDate;
+		
+		try {
+			ftp.changeWorkingDirectory(path);
+			FTPFile[] listFiles = ftp.listFiles();
+			
+			ftpVOList = new ArrayList<FtpVO>();
+//			int parentId = 0;
+			for(FTPFile file : listFiles) {
+				FtpVO ftpVO = new FtpVO();
+//				if(file.isDirectory() == true) {
+//					ftp.changeWorkingDirectory(path+"/"+file.getName());
+//					FTPFile[] rowListFiles = ftp.listFiles();
+//					for (FTPFile ftpFile : rowListFiles) {
+//						
+//					}
+					
+				ftpVO.setText(file.getName());
+				ftpVO.setSize(file.getSize());
+				
+				regDate = file.getTimestamp().getTime();
+				tempDate = sdf.format(regDate);
+				
+				ftpVO.setRegDate(tempDate);
+				if(file.isDirectory()) {
+					ftpVO.setDir(true);
+				}
+				
+				ftpVOList.add(ftpVO);
+					
+			}
+//				parentId++;
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return ftpVOList;
+	}
+	
+	// 파일 존재 여부 boolean
+	public static boolean isDirectoryExist(String path, String dirName) {
+		
+		log.info("[isDirectoryExist] isFileExist parameter");
+		log.info("[isDirectoryExist] param > path : {}", path);
+		log.info("[isDirectoryExist] param > fileName : {}", dirName);
+		
+		FTPClient ftpClient = ftpServerConnect();
+		
+		boolean flag = false;
+		
+		try {
+			
+			boolean moveDir = ftpClient.changeWorkingDirectory(path);
+			log.debug("[isDirectoryExist] moveDir : {} > {}", path, moveDir);
+				
+			
+			FTPFile[] files = ftpClient.listDirectories();
+			
+			for(FTPFile file : files) {
+				if(file.getName().equals(dirName)) {
+					flag = true;
+					break;
+				}
+			} // for end
+			
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				ftpClient.disconnect();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		log.debug("[isDirectoryExist] return : {}", flag);
+		return flag;
+	}
+	
+	// 폴더 생성
+	public static boolean createDirectory(String path, String dirName) {
+		
+		log.info("[createDirectory] createDirectory parameter");
+		log.info("[createDirectory] param > path : {}", path);
+		log.info("[createDirectory] param > dirName : {}", dirName);
+		
+		FTPClient ftpClient = ftpServerConnect();
+
+		boolean moveDir = false;
+		boolean makeResult = false;
+		try {
+			moveDir = ftpClient.changeWorkingDirectory(path);
+			log.debug("[createDirectory] moveDir : {} > {}", path, moveDir);
+			if(!moveDir) {
+				throw new RuntimeException("can't move directory...");
+			}
+			makeResult = ftpClient.makeDirectory(dirName);
+		} catch (IOException e) {
+			log.error("[createDirectory] move directory error : {}", e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				ftpClient.disconnect();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+			
+		return makeResult;
+	}
+	
+	// ========================== 여기서 부터 새로 끝  ===================================
 }

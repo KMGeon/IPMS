@@ -17,4 +17,8 @@ public interface TaskMapper {
 	public int HighWorkInsert(TaskVO vo);
 	
 	public TaskVO WorkDetail(TaskVO vo);
+	
+	public int taskApproval(TaskVO vo);
+	
+	public int referCts(TaskVO vo);
 }

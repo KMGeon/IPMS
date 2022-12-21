@@ -68,9 +68,29 @@
 <!-- END: Custom CSS-->
 
 <!-- BEGIN: font CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/css/commonFont.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/css/commonFont.css">
 <!-- END: font CSS-->
 
+<style>
+#chatOpen {
+	position: fixed;
+	height:50px;
+	width:50px;
+	bottom: 30px;
+	right: 30px;
+	width: $base-button-size;
+	height: $base-button-size;
+	color: $background-color;
+	background-color: $primary-color;
+	background-position: center center;
+	background-repeat: no-repeat;
+	box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.15);
+	border: 0;
+	border-radius: 50%;
+	cursor: pointer;
+}
+</style>
 </head>
 <!-- END: Head-->
 
@@ -80,36 +100,49 @@
 	data-open="click" data-menu="vertical-menu" data-col="2-columns">
 
 	<!-- projHeader 시작 -->
-	<tiles:insertAttribute name="projHeader"/>
+	<tiles:insertAttribute name="projHeader" />
 	<!-- projHeader 끝 -->
-	
+
 	<!-- projAside 시작 -->
-	<tiles:insertAttribute name="projAside"/>
+	<tiles:insertAttribute name="projAside" />
 	<!-- projAside 끝 -->
 
-	
+
 	<!-- projBody 시작 -->
 	<div class="app-content content">
 		<div class="content-overlay"></div>
 		<div class="content-wrapper">
 			<div class="content-header row"></div>
 			<div class="content-body">
-				<tiles:insertAttribute name="projBody"/>
+				<tiles:insertAttribute name="projBody" />
+				<div id="justify-content" class="container">
+					<div id="chatOpen" class="justify-content-end"
+						style="float: right;">
+						<i class="fa fa-comment fa-2x" aria-hidden="true" style="font-size: 44px"></i>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 	<!-- projBody 끝 -->
-	
+
 
 	<div class="sidenav-overlay"></div>
 	<div class="drag-target"></div>
 
 	<!-- projFooter 시작 -->
-	<tiles:insertAttribute name="projFooter"/>
+	<tiles:insertAttribute name="projFooter" />
 	<!-- projFooter 끝 -->
 
-
-
+	<!-- chatbox 시작 -->
+	<script type="text/javascript">
+		$("#chatOpen").on("click",function(){
+			window.open("http://192.168.142.7/proj/${projId}/chat","_blank", "menubar=no, toolbar=no,resizable=no, location=no, width=600px,height=865px");
+		});
+	
+	</script>
+	<!-- chatbox 끝 -->
+	
 	<!-- BEGIN: Vendor JS-->
 	<script
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>

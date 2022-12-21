@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <!-- BEGIN: Head-->
 <head>
@@ -29,63 +31,69 @@
 				<div class="row justify-content-md-center">
 					<div style="width: 1200px;">
 						<!-- using a bootstrap card -->
-						<div class="card">
-							<!-- card body -->
-							<div class="card-body p-2">
-								<!-- card-header -->
-								<div class="card-header px-0">
-									<div class="row">
-										<div class="col-md-12 col-lg-7 col-xl-4 mb-50">
-											<span class="invoice-id font-weight-bold">No. </span> <span>12345</span>
-										</div>
-										<div class="col-md-12 col-lg-5 col-xl-8">
-											<div
-												class="d-flex align-items-center justify-content-end justify-content-xs-start">
-												<div class="issue-date pr-2">
-													<span>2022/12/08 WED 10:05</span>
+							<div class="card">
+								<!-- card body -->
+								<div class="card-body p-2">
+									<!-- card-header -->
+									<div class="card-header px-0">
+										<div class="row">
+											<div class="col-md-12 col-lg-7 col-xl-4 mb-50">
+												<span class="invoice-id font-weight-bold">No. </span> <span>${data.projBdId}</span>
+												<input type="hidden" class="form-control" id="projBdId" name="projBdId" value="${data.projBdId}">
+											</div>
+											<div class="col-md-12 col-lg-5 col-xl-8">
+												<div
+													class="d-flex align-items-center justify-content-end justify-content-xs-start">
+													<div class="issue-date pr-2">
+														<span><fmt:formatDate value="${data.projBdWriteDate}" pattern="yyyy-MM-dd" /></span>
+														<input type="hidden" class="form-control" id="projBdWriteDate" name="projBdWriteDate"
+															value="${data.projBdWriteDate}">
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
 
-								<!-- invoice logo and title -->
-								<div class="invoice-logo-title row py-2">
-									<div
-										class="col-6 d-flex flex-column justify-content-center align-items-start">
-										<h2 class="text-primary"
-											style="font-family: 'MICEGothic Bold';">제목입니당</h2>
-										<span>김효정</span>
+									<div class="invoice-logo-title row py-2">
+										<div
+											class="col-6 d-flex flex-column justify-content-center align-items-start">
+											<h2 class="text-primary"
+												style="font-family: 'MICEGothic Bold';">${data.projBdTitle}</h2>
+											<input type="hidden" class="form-control" id="projBdTitle" name="projBdTitle" value="${data.projBdTitle}">
+											<span>작성자: ${data.writer}</span>
+											<input type="hidden" class="form-control" id="writer" name="writer" value="${data.writer}">
+										</div>
 									</div>
-								</div>
-								<hr>
+									<hr>
 
-								<!-- 글 내용 -->
-								<div class="row invoice-adress-info py-2">
-									<div class="col-6 mt-1 from-info">
-										<img src="/resources/images/imagesample.jpg"
-											style="width: 400px;"> <br> 죽는 날까지 하늘을 우러러<br>
-										한 점 부끄럼이 없기를<br> 잎새에 이는 바람에도<br> 나는 괴로워했다<br>
-										별을 노래하는 마음으로<br> 모든 죽어가는 것을 사랑해야지<br> 그리고 나한테 주어진 길을
-										걸어가야겠다<br> 오늘 밤에도 별이 바람에 스치운다
+									<!-- 글 내용 -->
+									<div class="row invoice-adress-info py-2">
+										<div class="col-6 mt-1 from-info">
+											${data.projBdCts}
+											<input type="hidden" class="form-control" id="projBdCts" name="projBdCts" value="${data.projBdCts}">
+										</div>
 									</div>
-								</div>
-								<hr>
-								<div>
-									<i class="feather icon-link"></i>첨부파일:
-									___________________________
-								</div>
+									<hr>
+<!-- 								<div class="form-group" id="itgrnAttachFileNum"> -->
+<!-- 									<label for="itgrnAttachFileNum"><i -->
+<!-- 										class="feather icon-link"></i>첨부파일:</label><br> -->
+
+<!-- 									</label> -->
+<!-- 								</div> -->
 								<div style="float: right;">
-									<button type="button" class="btn btn-secondary">
-										<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
-									</button>
-									<a href="/proj/freeBoardUpdate" class="btn btn-secondary">
-										<i class="feather icon-edit mr-25 common-size"></i>수정
-									</a> <a href="/proj/freeBoard" class="btn btn-primary"><i
-										class="fa fa-reply-all mr-25 common-size"></i>목록</a>
+										<button type="button" class="btn btn-danger" id="freeDel">
+											<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
+										</button>
+<!-- 										<button type="button" class="btn btn-secondary" id="updateFree"> -->
+<!-- 											<i class="feather icon-edit mr-25 common-size"></i>수정 -->
+<!-- 										</button> -->
+										<a href="/proj/freeBoardUpdate?projBdId=${data.projBdId}" class="btn btn-warning">
+											<i class="feather icon-edit mr-25 common-size"></i>수정
+										</a> <a href="/proj/freeboard" class="btn btn-secondary"><i
+											class="fa fa-reply-all mr-25 common-size"></i>목록</a>
+									</div>
 								</div>
 							</div>
-						</div>
 					</div>
 					<div class="card mb-2" style="width: 1200px; height: auto;">
 						<div class="card-body">
@@ -105,6 +113,8 @@
 									<div>
 										<input type="file" name="repfile" style="padding-top: 8px;">
 									</div>
+									<input type="hidden" class="form-control" id="projId" name="projId" value="${data.projId}">
+									<input type="hidden" class="form-control" id="deleteYn" name="deleteYn" value="${data.deleteYn}">
 								</form>
 							</div>
 						</div>
@@ -162,17 +172,62 @@
 
 <script type="text/javascript">
 
-$(function(){
-	
-	// 댓글 등록
-	$("#repAdd").on("click", function(){
-//  		alert("댓글 등록 떠라");
- 		let repCon = $("#repContent").val();
- 		$("#repListAdd").append(
- 		"<form class='form-horizontal'><div class='user-block'><div><div style='padding-bottom: 5px;'><span class='username'> <a href='#' style='font-size:15px;'>김효정</a>&nbsp;&nbsp;<span style='font-size: 8px; color: grey;'>2022-12-09 17:20</span><a href='#' class='float-right btn-box-tool replyDelBtn' data-toggle='modal' data-target='#delModal'><i class='fa fa-times' style='color: #D32F2F;'>삭제</i></a><a href='#' class='float-right btn-box-tool replyModBtn' data-toggle='modal' data-target='#modModal'><i class='fa fa-edit' style='color: #00838F;'>수정</i></a></span><span class='description'></span></div><div id='repContent'>"+repCon+"</div><div style='padding-top: 10px;'><button type='button' class='btn mr-1 mb-1 btn-secondary btn-sm'>ㄴ 댓글</button></div><hr></div></div></form>"		
- 		);
- 		$("#repContent").val("");
+	$(function() {
+
+		// 글 삭제 버튼 꾸욱
+		$("#freeDel").on("click", function() {
+			
+			let projBdId = $("#projBdId").val(); // 글 번호 가져와
+			let deleteYn = $("#deleteYn").val(); // 삭제 여부 가져와
+			
+			let data = {"projBdId":projBdId,
+					"deleteYn":deleteYn};		// 제이슨~
+			
+			console.log("data: " + JSON.stringify(data));
+			
+			// 아자작
+			$.ajax({
+				url:"/proj/freeBoardDelete",
+				contentType:"application/json;charset=utf-8",
+				data:JSON.stringify(data),
+				dataType:"json",
+				type:"post",
+		   		beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+		                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+				},
+				success: function(result) {
+					
+					console.log("result: " + JSON.stringify(result));
+					
+					let str = result.result;
+					
+					console.log("str : " + str);
+					
+					// result가 0보다 크면 성공, 아니면 실패
+					if(str > 0) {
+						alert("글을 삭제하였습니다.");
+						location.href="/proj/freeboard";
+					} else {
+						alert("삭제 실패. 다시 시도해주세요.");
+					}
+				}
+			})	// ajax end
+			
+		});
+
+		
+		
+		// 댓글 등록
+		$("#repAdd").on("click",function() {
+			//  		alert("댓글 등록 떠라");
+			let repCon = $("#repContent").val();
+			$("#repListAdd")
+					.append(
+							"<form class='form-horizontal'><div class='user-block'><div><div style='padding-bottom: 5px;'><span class='username'> <a href='#' style='font-size:15px;'>김효정</a>&nbsp;&nbsp;<span style='font-size: 8px; color: grey;'>2022-12-09 17:20</span><a href='#' class='float-right btn-box-tool replyDelBtn' data-toggle='modal' data-target='#delModal'><i class='fa fa-times' style='color: #D32F2F;'>삭제</i></a><a href='#' class='float-right btn-box-tool replyModBtn' data-toggle='modal' data-target='#modModal'><i class='fa fa-edit' style='color: #00838F;'>수정</i></a></span><span class='description'></span></div><div id='repContent'>"
+									+ repCon
+									+ "</div><div style='padding-top: 10px;'><button type='button' class='btn mr-1 mb-1 btn-secondary btn-sm'>ㄴ 댓글</button></div><hr></div></div></form>");
+			$("#repContent").val("");
+		});
+
 	});
-	
-});
 </script>

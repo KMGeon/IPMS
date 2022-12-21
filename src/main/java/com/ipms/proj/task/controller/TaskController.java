@@ -80,17 +80,11 @@ public class TaskController {
 		
 		if(vo.getHighTaskId() == null) {
 			log.info("TaskContoller -> taskInsert -> 상위일감 등록");
-			
 			TaskVO returnvo = this.taskservice.HighWorkNum(vo); // 최초에 상위일감이 생성 안되어 있을 때 NVL --> 1 RETURN
 			log.info("TaskContoller -> taskInsert -> 상위일감 등록  -> hightaskId : " + returnvo.toString());
-			
 			vo.setTaskId(returnvo.getTaskId());
-			
-			
 			int result = this.taskservice.HighWorkInsert(vo);
-			
 			sendresult = result+"";
-			
 			log.info("*Insert Result*  : " + result );
 			
 		}
@@ -107,6 +101,28 @@ public class TaskController {
 		
 		return reciveVO;
 	}
+	
+	@ResponseBody
+	@PostMapping("/taskApproval")
+	public int taskApproval(@RequestBody TaskVO vo) { // 일감 승인
+		log.error("★ receive ==> TaskController ==> taskapproval ==> vo.tostring()" + vo.toString());
+		int result = this.taskservice.taskApproval(vo);
+		log.error("★ receive ==> TaskController ==> taskapproval result : " + result);
+		
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping("/referCts")
+	public int referCts(@RequestBody TaskVO vo) { // 일감 반려
+		log.error("★ receive ==> TaskController ==> referCts ==> vo.tostring()" + vo.toString());
+		int result = this.taskservice.referCts(vo);
+		log.error("★ receive ==> TaskController ==> referCts result : " + result);
+		
+		return result;
+	}
+	
+	
 	
 
 	

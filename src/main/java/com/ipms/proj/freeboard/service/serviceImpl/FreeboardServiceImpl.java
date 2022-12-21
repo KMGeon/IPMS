@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ipms.commons.ftp.vo.IntgAttachFileVO;
+import com.ipms.commons.vo.Criteria;
 import com.ipms.proj.freeboard.mapper.FreeboardMapper;
 import com.ipms.proj.freeboard.service.FreeboardService;
 import com.ipms.proj.freeboard.vo.FreeboardVO;
@@ -47,15 +48,21 @@ public class FreeboardServiceImpl implements FreeboardService {
 	}
 
 	@Override
-	public int insertFile(IntgAttachFileVO intgAttachFileVO) {
+	public List<FreeboardVO> getFreePage(Criteria cri) {
 		
-		return this.freeboardMapper.insertFile(intgAttachFileVO);
+		return this.freeboardMapper.getFreePage(cri);
 	}
 
 	@Override
-	public int selectFreeNum() {
+	public int getTotal(String projId) {
 		
-		return freeboardMapper.selectFreeNum();
+		return this.freeboardMapper.getTotal(projId);
 	}
 
+	@Override
+	public int ckDelFree(FreeboardVO freeboardVO) {
+		
+		return this.freeboardMapper.ckDelFree(freeboardVO);
+	}
+	
 }

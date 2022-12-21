@@ -17,12 +17,12 @@ public class TaskVO {
 	private String taskTitle; // 일감 제목
 	private String taskCts; //  일감 내용
 	
-	@JsonFormat(pattern = "yy-MM-dd" , timezone = "Asia/Seoul")
-	@DateTimeFormat(pattern = "yy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd" , timezone = "Asia/Seoul")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date taskStrtDate; // 일감 시작일자	
 	
-	@JsonFormat(pattern = "yy-MM-dd" , timezone = "Asia/Seoul")
-	@DateTimeFormat(pattern = "yy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd" , timezone = "Asia/Seoul")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date taskEndDate; // 일감 종료일자
 	
 	private String taskStusCode; // 일감 상태 코드

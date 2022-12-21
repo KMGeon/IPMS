@@ -23,42 +23,18 @@ public class registerMemController {
 
     //회원가입
     @RequestMapping(value = "/signUpForm", method = RequestMethod.GET)
-    public String signUpFormGet(MemVO m) {
+    public String signUpFormGet( ) {
         return "main/login/signUpForm";
     }
 
-    /**
-     * 회원가입 POST
-     * @param memVO
-     * @return
-     * @author KMG
-     */
+
     @RequestMapping(value = "/signUpForm", method = RequestMethod.POST)
     public String signUpForm(@ModelAttribute MemVO memVO) {
-        String rawPw = "";
-        String encodePw = "";
-
 //        rawPw=memVO.getMemPasswd();
 //        encodePw = bcryptPasswordEncoder.encode(rawPw);
 //        memVO.setMemPasswd(encodePw);
-        int result = this.memService.registerMember(memVO);
-        log.info("result::" + result);
-        if (result == 1) {
-            log.info("memCode"+memVO.getMemCode());
-            List<MemberAuth> list = memVO.getMemAuthList();
-            for (MemberAuth authVO : list) {
-                if (authVO.getMemAuth() != null) {
-                    MemberAuth memberAuth = new MemberAuth();
-                    memberAuth.setMemCode(memVO.getMemCode());
-                    memberAuth.setMemAuth(authVO.getMemAuth());
-                    this.memService.authInsert(memberAuth);
-                }
-            }
-            return "redirect:/main/page";
-        }
-        return "redirect:/main/page";
+        return this.memService.signUp(memVO);
     }
-
     @GetMapping("/memRegisterCheck")
     public @ResponseBody int registerCheck(@RequestParam String memEmail) {
         int result = this.memService.registerCheck(memEmail);
@@ -66,11 +42,7 @@ public class registerMemController {
         return result;
     }
 
-    /**
-     * @param memVO
-     * @return
-     * @author KMG
-     */
+
     @PostMapping(value = "/UpdatePwd")
     public String UpdatePwd(@ModelAttribute MemVO memVO) {
         int result = this.memService.UpdatePwd(memVO);

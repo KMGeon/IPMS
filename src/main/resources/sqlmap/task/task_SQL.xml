@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.proj.task.mapper.TaskMapper">
 	<select id="HighWorkList" resultType="com.ipms.proj.task.vo.TaskVO">
+	 <!-- 일감 리스트 조회 --> 
 		SELECT
 		    TASK_ID, 
 		    PROJ_ID, 
@@ -19,19 +20,57 @@
 			DELETE_YN, 
 			REFER_CTS
 		FROM TASK
-		WHERE APROV_WHTH = 'n'
+<!-- 		WHERE APROV_WHTH = 'n' -->
 		 START WITH HIGH_TASK_ID IS NULL
 		CONNECT BY PRIOR TASK_ID = HIGH_TASK_ID
 		ORDER SIBLINGS BY TASK_ID ASC
     </select>
     
 	<select id="HighNum" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskVO" >
-		SELECT  MAX(LOW_RGST_SEQ) as LOW_RGST_SEQ , MAX(TASK_ID) as TASK_ID
+	
+		 SELECT  NVL(MAX(LOW_RGST_SEQ),1) AS LOW_RGST_SEQ ,MAX(TASK_ID+1) AS TASK_ID
 	    FROM    TASK
-	    WHERE HIGH_TASK_ID = #{highTaskId}
 	</select>
 	
+	<insert id="HighWorkInsert" parameterType="com.ipms.proj.task.vo.TaskVO">
+		 <!-- 상위일감 추가 -->
+		INSERT INTO TASK(
+			      TASK_ID
+			    , PROJ_ID
+			    , MEM_CODE
+			    , TASK_TITLE
+			    , TASK_CTS
+			    , TASK_STRT_DATE
+			    , TASK_END_DATE
+			    , TASK_STUS_CODE
+			    , TASK_PGRES
+			    , HIGH_TASK_ID
+			    , LOW_RGST_SEQ
+			    , APROV_WHTH
+			    , TASK_REPRE
+			    , DELETE_YN
+		    	)
+	    VALUES(
+		    	 #{taskId}
+			    ,''
+			    ,''
+			    ,#{taskTitle}
+			    ,'일감내용입니다'
+			    ,#{taskStrtDate}
+			    ,#{taskEndDate}
+			    ,#{taskStusCode}
+			    ,#{taskPgres}
+			    ,''
+			    ,#{lowRgstSeq}
+			    ,'n'
+			    ,'이문주'
+			    ,'n')
+	
+	
+	</insert>
+	
 	<insert id="lowWorkInsert" parameterType="com.ipms.proj.task.vo.TaskVO">
+		 <!-- 하위 일감 인설트 --> 
 		INSERT INTO TASK(
 			      TASK_ID
 			    , PROJ_ID
@@ -65,11 +104,48 @@
 			    ,'n')
 	</insert>
 	
-	<select id="HighWorkInsert" resultType="int">
-		SELECT MAX(TASK_ID) AS TASK_ID
+	<select id="HighWorkNum" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT NVL(MAX(TASK_ID+1),1) AS TASK_ID
 		FROM TASK
-		WHERE HIGH_TASK_ID IS NULL
 	</select>
+	
+	<!-- 일감 디테일 데이터 가져오기 -->
+	<select id="WorkDetail" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskVO">
+		
+		SELECT 
+			  TASK_ID
+			, PROJ_ID
+			, MEM_CODE
+			, HIGH_TASK_ID
+			, TASK_TITLE
+			, TASK_CTS
+			, TASK_STRT_DATE
+			, TASK_END_DATE
+			, TASK_STUS_CODE
+			, TASK_PGRES
+			, LOW_RGST_SEQ
+			, APROV_WHTH
+			, TASK_REPRE
+			, DELETE_YN
+			, REFER_CTS
+		FROM TASK
+		WHERE TASK_ID = #{taskId}
+	
+	
+	</select>
+	
+	<update id="taskApproval" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE TASK
+        SET APROV_WHTH = 'y' , REFER_CTS = null
+        WHERE TASK_ID = #{taskId}
+	</update>
+	
+	<update id="referCts" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE TASK
+        SET REFER_CTS = #{referCts}
+        WHERE TASK_ID = #{taskId}
+	</update>
+	
 </mapper>
 
 

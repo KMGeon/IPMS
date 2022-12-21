@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ipms.commons.ftp.vo.IntgAttachFileVO;
+import com.ipms.commons.vo.Criteria;
+import com.ipms.proj.freeboard.vo.FreeboardPageVO;
 import com.ipms.proj.freeboard.service.FreeboardService;
 import com.ipms.proj.freeboard.vo.FreeboardVO;
 import com.ipms.util.FileUploadUtil;
@@ -33,25 +35,57 @@ public class FreeboardController {
 	@Autowired
 	FreeboardService freeboardservice;
 	
-	
+//	 자유 게시판 리스트
 //	@GetMapping("/freeboard")
-//	public String freeboard() {
+//	public String selectFree(Model model) {
+//		
+//		List<FreeboardVO> freeboardVOList = this.freeboardservice.selectFree();
+//		log.info("freeboardVOList: " + freeboardVOList);
+//		
+//		model.addAttribute("freeboardVOList", freeboardVOList);
+//		
 //		return "proj/freeboard/freeBoard";
 //	}
-//	
-	
-	// 자유 게시판 리스트
+
+	// 자유 게시판 리스트 - 페이징 처리
 	@GetMapping("/freeboard")
-	public String selectFree(Model model) {
+	public String freeList(Model model, String pageNum, String amount) {
 		
-		List<FreeboardVO> freeboardVOList = this.freeboardservice.selectFree();
-		log.info("freeboardVOList: " + freeboardVOList);
+		Criteria criteria;
 		
-		model.addAttribute("freeboardVOList", freeboardVOList);
+		log.info("pageNum: {} , amount: {}", pageNum, amount);
+		
+		if(pageNum == null && amount == null) {
+			criteria = new Criteria();
+			log.info("첫 페이지 pageNum: {}", criteria.getPageNum());
+			
+		} else {
+			if(pageNum.equals("0")) {
+				pageNum = "1";
+			} 
+			criteria = new Criteria(Integer.parseInt(pageNum), Integer.parseInt(amount));
+			log.info("두 번째 페이지 pageNum: {}", criteria.getPageNum());
+
+			
+		}
+		
+		String memCode = "M002";
+		criteria.setMemCode(memCode);
+		
+		List<FreeboardVO> freeSelect = freeboardservice.getFreePage(criteria);
+		
+		int total = freeboardservice.getTotal(memCode);
+		
+		FreeboardPageVO freeboardPageVO = new FreeboardPageVO(criteria, total);
+		
+		model.addAttribute("freeSelect", freeSelect);
+		model.addAttribute("pageVO", freeboardPageVO);
 		
 		return "proj/freeboard/freeBoard";
+		
 	}
 	
+
 	@GetMapping("/freeBoardDetail")
 	public String detailFree(@ModelAttribute FreeboardVO freeboardVO, Model model) {
 
@@ -119,35 +153,26 @@ public class FreeboardController {
 		return map;
 	}
 	
-//	@PostMapping("{projId}/attFile")
-//	// 첨부 파일이 있는 경우 insert
-//	public List<IntgAttachFileVO> attFile(MultipartFile[] uploadFile, FreeboardVO freeboardVO, @PathVariable String projId){
-//		
-//		log.info("multi: " + uploadFile[0].getOriginalFilename());
-//		log.info("freeboardVO: " + freeboardVO.toString());
-//		
-//		List<IntgAttachFileVO> list = FileUploadUtil.fileUploadAction(uploadFile, freeboardVO.getProjId(), freeboardVO.getWriter());
-//		
-//		for(int i=0;i<list.size();i++) {
-//			
-//			int attachNum = freeboardservice.selectFreeNum();
-//			
-//			freeboardVO.setItgrnAttachFileNum(attachNum);
-//			log.info("attachNum을 넣은 후: " + freeboardVO.toString());
-//			
-//			int result = freeboardservice.insertFree(freeboardVO);
-//			
-//			list.get(i).setIntgAttachFileNum(Integer.toString(attachNum));
-//			
-//			freeboardservice.insertFile(list.get(i));
-//			
-//		}
-//		
-//		log.info("처리 후 데이터: " + list.toString());
-//		
-//		return list;
-//	}
-//	
+	@ResponseBody
+	@PostMapping("/deleteSelFree")
+	public int ckDelFree(@RequestParam(value = "ckbox[]") List<String> ckArr, FreeboardVO freeboardVO) {
+		
+		log.info("선택 삭제 -----------------");
+		
+		int result = 0;
+		int projBdId = 0;
+		
+		for(String i : ckArr) {
+			projBdId = Integer.parseInt(i);
+			freeboardVO.setProjBdId(projBdId);
+			freeboardservice.ckDelFree(freeboardVO);
+		}
+		
+		result = 1;
+		return result;
+	}
+	
+
 	
 	@GetMapping("/freeBoardPL")
 	public String freeBoardPL() {

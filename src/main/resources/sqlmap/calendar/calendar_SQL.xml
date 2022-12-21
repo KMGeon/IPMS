@@ -14,6 +14,15 @@
 			, INDV_SCHD_WRITE_DATE
 			, DELETE_YN
 		FROM INDV_SCHD
+		WHERE DELETE_YN = 'n'
+	</select>
+	
+	<select id="selectT" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT TASK_ID, PROJ_ID, MEM_CODE, HIGH_TASK_ID, TASK_TITLE, TASK_CTS
+				, TASK_STRT_DATE, TASK_END_DATE, TASK_STUS_CODE, TASK_PGRES, LOW_RGST_SEQ
+				, APROV_WHTH, TASK_REPRE, DELETE_YN, REFER_CTS
+		FROM TASK
+		WHERE MEM_CODE = 'M002' AND DELETE_YN = 'n' AND APROV_WHTH = 'y'
 	</select>
 	
 	<insert id="insertSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">
@@ -24,13 +33,24 @@
 		</selectKey>
 	
 		INSERT INTO INDV_SCHD(INDV_SCHD_NUM,WRITER,PROJ_ID,INDV_SCHD_TITLE,INDV_SCHD_CTS,INDV_SCHD_STRT_DATE,INDV_SCHD_END_DATE,INDV_SCHD_WRITE_DATE,DELETE_YN)
-				VALUES(#{indvSchdNum},'A001','100',#{indvSchdTitle},#{indvSchdCts},#{indvSchdStrtDate},#{indvSchdEndDate},sysdate,'n')
+				VALUES(#{indvSchdNum},'M002','P005',#{indvSchdTitle},#{indvSchdCts},#{indvSchdStrtDate},#{indvSchdEndDate},sysdate,'n')
 		
 	</insert>
 	
-	<delete id="deleteSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">
-		DELETE
-		FROM INDV_SCHD
+	<update id="deleteSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">
+		UPDATE INDV_SCHD
+		SET DELETE_YN = 'y'
 		WHERE INDV_SCHD_NUM = #{indvSchdNum}
-	</delete>
+	</update>
+	
+	<update id="updateSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">
+		UPDATE INDV_SCHD
+		SET 
+			INDV_SCHD_TITLE=#{indvSchdTitle},
+			INDV_SCHD_CTS=#{indvSchdCts},
+			INDV_SCHD_STRT_DATE=#{indvSchdStrtDate},
+			INDV_SCHD_END_DATE=#{indvSchdEndDate}
+		WHERE WRITER = 'M002' AND INDV_SCHD_NUM = #{indvSchdNum}
+	</update>
+	
 </mapper>

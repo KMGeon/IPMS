@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ipms.proj.calendar.service.CalendarService;
 import com.ipms.proj.calendar.vo.CalendarOriginVO;
 import com.ipms.proj.calendar.vo.CalendarVO;
+import com.ipms.proj.task.vo.TaskVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,10 +41,23 @@ public class CalendarController {
 	public List<CalendarVO> fullPost(){
 		log.info("풀캘린더 리스트!");
 		
-		List<CalendarVO> list = calendarservice.selectSchd();
-		log.info("schedule list: " + list.toString());
+		List<CalendarVO> list = calendarservice.selectSchd();	// 일정 리스트
+		
+		log.info("*******schedule list: " + list.toString());
 		
 		return list;
+	}
+	
+	@ResponseBody
+	@PostMapping("/calList2")
+	public List<TaskVO> fullPost2(){
+		log.info("일감 리스트!");
+		
+		List<TaskVO> listT = calendarservice.selectT();			// 일감 리스트
+		
+		log.info("*******task list: " + listT.toString());
+		
+		return listT;
 	}
 	
 	@ResponseBody

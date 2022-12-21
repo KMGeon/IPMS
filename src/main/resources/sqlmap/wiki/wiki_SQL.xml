@@ -43,17 +43,23 @@
 		    <if test="highWikiId != null">
 		    #{highWikiId},
 		    </if>
-		   
 		    sysdate
-		    
 		)
 	</insert>
 	
 	<select id="selectHighWikiId" resultMap="wikiVO" parameterType="string">
-		select WIKI_ID,WIKI_TITLE from wiki where proj_id = #{projId}
+		select 
+			WIKI_ID,
+			WIKI_TITLE
+		from 
+			wiki 
+		where 
+			proj_id = #{projId}
+		and
+			DELETE_YN = 'n'
 	</select>
 	
-	<select id="selectWiki" resultMap="wikiVO" parameterType="string">
+	<select id="selectWiki" resultMap="wikiVO" parameterType="com.ipms.proj.wiki.vo.WikiVO">
 	
 		<!-- chr(38)||'nbsp;' -->
 		SELECT replace(LPAD(' ', 1*(LEVEL-1)),' ','-') || WIKI_TITLE wiki_title,
@@ -62,6 +68,8 @@
         HIGH_WIKI_ID
 		FROM wiki
 		WHERE DELETE_YN = 'n'
+		
+		AND PROJ_ID = #{projId}
 		
 		<if test="wikiId == null">
 		START WITH HIGH_WIKI_ID IS NULL

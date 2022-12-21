@@ -21,7 +21,8 @@
     <!--회원가입-->
     <insert id="registerMember" parameterType="com.ipms.main.login.vo.MemVO">
         <selectKey order="BEFORE" keyProperty="memCode" resultType="String">
-            SELECT  To_char(NVL(MAX(mem_code),0)+1) FROM mem
+            SELECT NVL(SUBSTR(MAX(MEM_CODE),1,1)|| TRIM(TO_CHAR(SUBSTR(MAX(MEM_CODE),2) + 1,'000')),'M001')
+            FROM MEM
         </selectKey>
         INSERT INTO mem (
         MEM_CODE,
@@ -90,9 +91,9 @@
 
     <!--권한 추가 -->
     <insert id="authInsert" parameterType="com.ipms.main.login.vo.MemberAuth" >
-        INSERT INTO member_auth(mem_code,PROJ_ID,mem_auth)
+        INSERT INTO member_auth(mem_code,proj_id,mem_auth)
         values
-            (#{memCode},'0',#{memAuth})
+            (#{memCode},'P001',#{memAuth})
     </insert>
 </mapper>
 

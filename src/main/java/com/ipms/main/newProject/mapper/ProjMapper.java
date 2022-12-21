@@ -1,5 +1,6 @@
 package com.ipms.main.newProject.mapper;
 
+import com.ipms.commons.pageHandler.Criteria;
 import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjTeamVO;
@@ -13,7 +14,7 @@ import java.util.Map;
 public interface ProjMapper {
 
     public List<ProjVO> listProj();
-    public List<ProjVO> selectPage(Map map);
+    public List<ProjVO>getListPage(Criteria criteria);
     public int count();
     public List<ProjVO>getProjId(String memEmail);
 
@@ -29,5 +30,8 @@ public interface ProjMapper {
 
     public int insertProTeam(ProjTeamVO projTeamVO);
 
+    public int joinProject(ProjMemVO projMemVO);
+
+    String registrationStatus(ProjMemVO projMemVO);
 
 }

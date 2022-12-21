@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!-- BEGIN: Vendor CSS-->
 <link rel="stylesheet" type="text/css"
@@ -41,178 +43,95 @@
 					<div>
 						<table class="table table-striped table-bordered base-style table-hover">
 							<thead>
-								<tr role="row">
-									<th class="sorting" tabindex="0"
-										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Name: activate to sort column ascending"
-										style="width: 5px;">이슈번호</th>
-									<th class="sorting" tabindex="0"
-										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Position: activate to sort column ascending"
-										style="width: 450px;">제목</th>
-									<th class="sorting" tabindex="0"
-										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Office: activate to sort column ascending"
-										style="width: 30px;">작성자</th>
-									<th class="sorting" tabindex="0"
-										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Age: activate to sort column ascending"
-										style="width: 97.9531px;">상태</th>
-									<th class="sorting" tabindex="0"
-										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Age: activate to sort column ascending"
-										style="width: 250px;">작성일자</th>
-								</tr>
+									<tr role="row">
+										<th class="sorting" tabindex="0"
+											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+											aria-label="Name: activate to sort column ascending"
+											style="width: 5px;">이슈번호</th>
+										<th class="sorting" tabindex="0"
+											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+											aria-label="Position: activate to sort column ascending"
+											style="width: 450px;">제목</th>
+										<th class="sorting" tabindex="0"
+											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+											aria-label="Office: activate to sort column ascending"
+											style="width: 30px;">작성자</th>
+										<th class="sorting" tabindex="0"
+											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+											aria-label="Age: activate to sort column ascending"
+											style="width: 97.9531px;">상태</th>
+										<th class="sorting" tabindex="0"
+											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+											aria-label="Age: activate to sort column ascending"
+											style="width: 250px;">작성일자</th>
+									</tr>
 							</thead>
 							<tbody>
+							
+							<c:forEach var="vo" items="${vo}">
 								<tr>
-									<td>1</td>
-									<td><a href="/proj/issueDetail">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-success">해결</span></td>
-									<td>2022-12-05</td>
+									<td>${vo.issueId}</td>
+									<td><a href="/proj/issueDetail?issueTitle=${vo.issueTitle}">${vo.issueTitle }</a></td>
+									<td>${vo.writer}</td>
+									
+									<td>
+									<c:if test="${vo.issueStusCode eq '미해결' }">
+										<span class="badge badge-warning">${vo.issueStusCode}</span>
+									</c:if>
+									<c:if test="${vo.issueStusCode eq '해결' }">
+										<span class="badge badge-success">${vo.issueStusCode}</span>
+									</c:if>
+									</td>
+									<td> <fmt:formatDate value="${vo.issueRgstDate}" pattern="yyyy-MM-dd"/></td>
 								</tr>
-								<tr>
-									<td>2</td>
-									<td><a href="/proj/issueBoardPL">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-warning">미해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-success">해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-success">해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-success">해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-warning">미해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-warning">미해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-success">해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-warning">미해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-warning">미해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-success">해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-success">해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-success">해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-warning">미해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-warning">미해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td><span class="badge badge-success">해결</span></td>
-									<td>2022-12-05</td>
-								</tr>
+							</c:forEach>
+								
 						</table>
 						<div class="row">
-							<div class="col-sm-12 col-md-7 offset-5">
-								<div class="dataTables_paginate paging_simple_numbers"
-									id="DataTables_Table_0_paginate">
-									<ul class="pagination">
-										<li class="paginate_button page-item previous disabled"
-											id="DataTables_Table_0_previous"><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="0"
-											tabindex="0" class="page-link">Previous</a></li>
-										<li class="paginate_button page-item active"><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="1"
-											tabindex="0" class="page-link">1</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="2"
-											tabindex="0" class="page-link">2</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="3"
-											tabindex="0" class="page-link">3</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="4"
-											tabindex="0" class="page-link">4</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="5"
-											tabindex="0" class="page-link">5</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="6"
-											tabindex="0" class="page-link">6</a></li>
-										<li class="paginate_button page-item next"
-											id="DataTables_Table_0_next"><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="7"
-											tabindex="0" class="page-link">Next</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
+                        <!-- 페이징 처리 버튼 시작 -->
+                        <div class="col-sm-12 col-md-7">
+                            <div class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate">
+                                <ul class="pagination"  style="text-align: center; float: right;">
+
+                                    <!-- 이전 버튼 시작 -->
+                                    <c:if test="${pageVO.prev }">
+                                    <li class="paginate_button page-item previous" id="app-invoice-table_previous">
+                                        <a href="/proj/issueboard?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                    </li>
+                                    </c:if>
+                                    <!-- 이전 버튼 끝 -->
+									
+                                    <!-- 페이지 블록 시작 -->
+                                    <!-- 현재페이지 -->
+                                    <c:forEach var = "num" begin = "${pageVO.startPage }" end = "${pageVO.endPage }">
+                                    <c:choose>
+                                    <c:when test="${pageVO.pageNum eq num }">
+	                                    <li class="paginate_button page-item active">
+	                                        <a href="/proj/issueboard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
+	                                    </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                    	<li class="paginate_button page-item">
+	                                        <a href="/proj/issueboard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
+	                                    </li>
+                                    </c:otherwise>
+                                    </c:choose>
+                                    </c:forEach>
+                                    <!-- 페이지 블록 끝 -->
+
+                                    <!-- 다음 버튼 시작 -->
+                                    <c:if test="${pageVO.next }">
+                                    <li class="paginate_button page-item next" id="app-invoice-table_next">
+                                        <a href="/proj/issueboard?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="6" tabindex="0" class="page-link">Next</a>
+                                    </li>
+                                    </c:if>
+                                    <!-- 다음 버튼 끝 -->
+
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 페이징 처리 버튼 끝 -->
+                    </div>
 					</div>
 				</div>
 			</div>

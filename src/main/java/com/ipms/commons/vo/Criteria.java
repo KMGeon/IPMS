@@ -9,6 +9,7 @@ public class Criteria {
     private int amount;
 
     private String memCode;
+    private String keyword;
 
     public Criteria() {
         this( 1, 10 );

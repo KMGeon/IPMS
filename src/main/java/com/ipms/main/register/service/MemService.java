@@ -4,6 +4,7 @@ import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.login.vo.MemVO;
 
 public interface MemService {
+    public String signUp(MemVO memVO);
     public int registerCheck(String memEmail);
     public int registerMember(MemVO memVO);
     public int UpdatePwd(MemVO memVO);

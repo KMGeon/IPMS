@@ -32,5 +32,22 @@ public class SvcQaAServieImpl implements SvcQaAService{
 		return svcQaAMapper.total(memCode);
 		
 	}
+	
+	// Q&A 디테일 조회 
+	@Override
+	public SvcQaAVO svcQaADetail(String qnaNum) {
+		
+		return svcQaAMapper.svcQaADetail(qnaNum);
+		
+	}
+	
+	// Q&A 생성
+	@Override
+	public int svcQaAInsert(SvcQaAVO svcQaAVO) {
+		
+		return svcQaAMapper.svcQaAInsert(svcQaAVO);
+		
+	}
+	
 
 }

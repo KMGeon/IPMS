@@ -1,5 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <!DOCTYPE html>
 <script type="text/javascript"
 	src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
@@ -30,7 +34,7 @@
 <!-- BEGIN: Body-->
 
 <body>
-
+<input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
 	<!-- BEGIN: Content-->
     <div style="bottom:30px;" class="content-header-left col-md-6 col-12 mb-2">
 			<h3 class="content-header-title mb-0"><b>개인 정보 관리</b></h3>
@@ -42,6 +46,7 @@
 				<!-- account setting page start -->
 				<section id="page-account-settings">
 					<div class="row">
+
 						<!-- right content section -->
 						<div class="col-md-9">
 							<div class="card" style="width:800px;">
@@ -76,25 +81,21 @@
 														<div class="col-12">
 															<div class="form-group">
 																<div class="controls">
-																	<label for="account-username">이름</label> <input
-																		type="text" class="form-control" id="account-username"
-																		required>
+																	<label for="account-username">이름</label> <input type="text" name="memCode" class="form-control" value="${mvo.member.memName}" id="account-username" required>
 																</div>
 															</div>
 														</div>
 														<div class="col-12">
 															<div class="form-group">
 																<div class="controls">
-																	<label for="account-old-password">현재 비밀번호</label> <input
-																		type="password" class="form-control" required>
+																	<label for="account-old-password">현재 비밀번호</label> <input  type="password" value="${mvo.member.memPasswd}" class="form-control" required>
 																</div>
 															</div>
 														</div>
 														<div class="col-12">
 															<div class="form-group">
 																<div class="controls">
-																	<label for="account-new-password">비밀번호 변경</label> <input
-																		type="password" class="form-control" required>
+																	<label for="account-new-password">비밀번호 변경</label> <input type="password" placeholder="새로운 비밀번호를 입력하세요."  value="" class="form-control" required>
 																</div>
 															</div>
 														</div>
@@ -102,7 +103,7 @@
 															<div class="form-group">
 																<div class="controls">
 																	<label for="account-new-password">비밀번호 변경 확인</label> <input
-																		type="password" class="form-control" required>
+																		type="password" placeholder="새로운 비밀번호를 입력하세요."  class="form-control" required>
 																</div>
 															</div>
 														</div>
@@ -111,22 +112,7 @@
 																<div class="controls">
 																	<label for="account-phoneNumber">핸드폰 번호</label> <input
 																		type="text" class="form-control"
-																		id="account-phoneNumber" required>
-																</div>
-															</div>
-														</div>
-														<div class="col-12">
-															<div class="form-group">
-																<div class="controls">
-																	<label>분야</label> <select
-																		class="select2-data-array form-control select2-hidden-accessible"
-																		id="select2-array" data-select2-id="select2-array"
-																		tabindex="-1" aria-hidden="true"><option
-																			value="0" data-select2-id="342">분야를 선택하세요.</option>
-																		<option value="1" data-select2-id="be">백엔드</option>
-																		<option value="2" data-select2-id="fe">프론트엔드</option>
-																		<option value="3" data-select2-id="pb">퍼블리셔</option>
-																		</select>
+																		id="account-phoneNumber" value="${mvo.member.memPhoneNumber}" required>
 																</div>
 															</div>
 														</div>

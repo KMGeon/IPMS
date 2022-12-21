@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.sql.SQLException;
+
 @ControllerAdvice
 public class ExceptionController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -85,15 +87,17 @@ public class ExceptionController {
         logger.warn("NotFoundException : ");
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void handleRuntimeException(RuntimeException e) {
-        logger.error("RuntimeException : ", e);
+    @ExceptionHandler(NoSuchMethodException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void NoSuchMethodException(NotFoundException e) {
+        logger.warn("NoSuchMethodException : ");
     }
 
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public void handleException(Exception e) {
-//        logger.error("Exception : ", e);
-//    }
+    @ExceptionHandler(SQLException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void SQLException(SQLException e) {
+        logger.warn("NoSuchMethodException : ");
+    }
+
+
 }

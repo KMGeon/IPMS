@@ -62,4 +62,14 @@ public class TaskServiceImpl implements TaskService {
 		return rcvo;
 	}
 
+	@Override
+	public int taskApproval(TaskVO vo) {
+		return this.taskMapper.taskApproval(vo);
+	}
+
+	@Override
+	public int referCts(TaskVO vo) {
+		return this.taskMapper.referCts(vo);
+	}
+
 }
