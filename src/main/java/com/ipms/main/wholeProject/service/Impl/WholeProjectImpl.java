@@ -1,13 +1,11 @@
 package com.ipms.main.wholeProject.service.Impl;
 
 import com.ipms.commons.pageHandler.Criteria;
-import com.ipms.main.newProject.vo.ProjMemVO;
-import com.ipms.main.wholeProject.service.WholeProjectService;
 import com.ipms.main.newProject.mapper.ProjMapper;
+import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
-import lombok.extern.slf4j.Slf4j;
+import com.ipms.main.wholeProject.service.WholeProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class WholeProjectImpl implements WholeProjectService {
@@ -30,8 +27,8 @@ public class WholeProjectImpl implements WholeProjectService {
     @Transactional
     public String goToProjectDetails(String projId, Model model, Authentication authentication, HttpServletResponse response) throws IOException {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        List<ProjVO> test = this.wholeProjectService.getProjId(userDetails.getUsername());
-        for (ProjVO proj : test) {
+        List<ProjVO> projVOList = this.wholeProjectService.getProjId(userDetails.getUsername());
+        for (ProjVO proj : projVOList) {
             if (proj.getProjId().equals(projId)) {
                 List<ProjVO> detailList = this.wholeProjectService.detailPage(projId);
                 model.addAttribute("detailList", detailList);
@@ -64,7 +61,7 @@ public class WholeProjectImpl implements WholeProjectService {
 
 
     @Override
-    public List<ProjVO> listProj() {
+    public List<ProjMemVO> listProj() {
         return this.projMapper.listProj();
     }
 

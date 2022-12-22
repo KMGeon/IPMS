@@ -30,4 +30,19 @@ public class AdminSvcNoticeServiceImpl implements AdminSvcNoticeService{
 	public SvcNoticeVO SiteNoticeDetail(int siteNtNum) {
 		return adminSvcNoticeMapper.SiteNoticeDetail(siteNtNum);
 	}
+	
+	@Override
+	public int siteNoticeUpdate(SvcNoticeVO svcNoticeVO) {
+		return adminSvcNoticeMapper.siteNoticeUpdate(svcNoticeVO);
+	}
+	
+	@Override
+	public int siteNoticeDelete(SvcNoticeVO svcNoticeVO) {
+		return adminSvcNoticeMapper.siteNoticeDelete(svcNoticeVO);
+	}
+	
+	@Override
+	public int siteNoticeDeleteList(List<SvcNoticeVO> svcNoticeVOList) {
+		return adminSvcNoticeMapper.siteNoticeDeleteList(svcNoticeVOList);
+	}
 }

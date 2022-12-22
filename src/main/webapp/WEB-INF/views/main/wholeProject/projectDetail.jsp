@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fm" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
@@ -20,6 +21,7 @@
                 success: function (division) {
                     if (division == 1) {
                         alert("신청 보냈음");
+                        $("#joinBtn").css("display", "none");
                     } else {
                         alert("오류입니다.");
                     }
@@ -36,9 +38,9 @@
             <section id="search-images" class="card overflow-hidden">
                 <c:forEach var="item" items="${detailList}" varStatus="idx">
                 <form id="joinData">
-                    <input type="text" name="memCode" value="${mvo.member.memCode}">
-                    <input type="text" name="projId" value="${item.projId}">
-                    <input type="text" name="teamId" value="${item.projName}">
+                    <input type="hidden" name="memCode" value="${mvo.member.memCode}">
+                    <input type="hidden" name="projId" value="${item.projId}">
+                    <input type="hidden" name="teamId" value="${item.projName}">
                 </form>
                 <div class="card-content collapse show">
 
@@ -81,18 +83,18 @@
                                                 <div class="form-group">
                                                     <div style="float: left">
                                                         <label for="projStrtDate">Project Start Date</label>
+
                                                         <input type="text" id="projStrtDate"
                                                                class="form-control border-primary"
                                                                placeholder="Start Date" name="projStrtDate"
-                                                               pattern="yyyy-MM-dd" value="${item.projStrtDate}"
-                                                               readonly/>
+                                                               value="<fm:formatDate value="${item.projStrtDate}"/>" readonly>
                                                     </div>
                                                     <div style="float:right;">
                                                         <label for="projEndDate">Project End Date</label>
                                                         <input type="text" id="projEndDate"
                                                                class="form-control border-primary"
                                                                placeholder="Start End" name="projEndDate"
-                                                               pattern="yyyy-MM-dd" value="${item.projEndDate}"
+                                                               pattern="yyyy-MM-dd" value="<fm:formatDate value="${item.projEndDate}"/>"
                                                                readonly/>
                                                     </div>
                                                 </div>

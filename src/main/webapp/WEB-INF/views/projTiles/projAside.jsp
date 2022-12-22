@@ -107,20 +107,20 @@
     <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.js"></script>
 
 <script type="text/javascript">
-$(function() {
-	var flag = false;
-	$('#menuBtn').on('click', function() {
-		if(!flag){
-			$("#menuBtn").attr("class","nav-item has-sub open");
-			$('.menu-content').css('height', '82.3935px');
-			flag = true;
-		}else if(flag == true){
-			$("#menuBtn").attr("class","nav-item has-sub");
-			$('.menu-content').css('height', 'auto');
-			flag = false;
-		}
+// $(function() {
+// 	var flag = false;
+// 	$('#menuBtn').on('click', function() {
+// 		if(!flag){
+// 			$("#menuBtn").attr("class","nav-item has-sub open");
+// 			$('.menu-content').css('height', '82.3935px');
+// 			flag = true;
+// 		}else if(flag == true){
+// 			$("#menuBtn").attr("class","nav-item has-sub");
+// 			$('.menu-content').css('height', 'auto');
+// 			flag = false;
+// 		}
 		
-	});
-});
+// 	});
+// });
 	
 </script>

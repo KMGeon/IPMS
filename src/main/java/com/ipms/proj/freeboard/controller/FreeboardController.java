@@ -69,12 +69,12 @@ public class FreeboardController {
 			
 		}
 		
-		String memCode = "M002";
-		criteria.setMemCode(memCode);
+//		String memCode = "M002";
+//		criteria.setMemCode(memCode);
 		
 		List<FreeboardVO> freeSelect = freeboardservice.getFreePage(criteria);
 		
-		int total = freeboardservice.getTotal(memCode);
+		int total = freeboardservice.getTotal();
 		
 		FreeboardPageVO freeboardPageVO = new FreeboardPageVO(criteria, total);
 		

@@ -1,7 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<meta name="_csrf" th:content="${_csrf.token}">
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
 
@@ -20,11 +22,8 @@
 <script src="/resources/js/jquery-3.6.0.js"></script>
 <script>
     function registerCheck() {
-
         var memEmail = $("#memEmail").val();
-
         var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
         if (memEmail.match(regExp) != null) {
             alert('Good!');
         } else {
@@ -41,6 +40,9 @@
             url: "/main/memRegisterCheck",
             type: "get",
             data: {"memEmail": memEmail},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            },
             success: function (result) {
                 if (result == 0) {
                     $("#passMessage").html("이메일 사용이 가능합니다.");
@@ -58,7 +60,6 @@
         });
     }
 
-
     $("select[name=location]").change(function () {
         console.log($(this).val()); //value값 가져오기
         console.log($("select[name=location] option:selected").text()); //text값 가져오기
@@ -69,102 +70,105 @@
             var to = $("#memEmail").val();
             $("#to").attr("value", to);
             console.log(to);
-        })
-
-
-    $(function () {
-        const randomNumber = Math.floor(Math.random() * 8888) + 1;
-        $('input[name=text]').attr('value', randomNumber);
-        let text1 = $("#text").val();
-        let memEmail;
-        let to = $("#to").val();
-        to = $("#memEmail").val();
-        // let text1 = randomNumber;
-        let text2;
-        $("#btn").on("click", function () {
-            to = $("#memEmail").val();
-            alert("Click");
-            console.log("to::" + to);
-            let fData = $("#frm").serialize();
-
-            $.ajax({
-                url: "/sendMailProcess",
-                type: "post",
-                data: fData,
-                beforeSend: function (xhr) {   // 데이터 전송 전  헤더에 csrf값 설정
-                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-                },
-                success: function (data) { //여기서 data는 controller에 list이다.
-                    $("#hideEmail").css('display', 'block');
-                },
-                error: function () {
-                    alert("오류입니다.");
-                    $("#hideEmail").css('display', 'none');
-                }
-            })
-        })
-        $("#btn2").on("click", function () {
-            text2 = $("#emailNum1").val();
-            console.log("text2::" + text1);
-            console.log("text5::" + text2);
-            if (text1 == text2) {
-                alert("인증 성공");
-                $("#pwdForm1").css('display', 'block');
-                $("#pwdForm2").css('display', 'block');
-
-            } else {
-                alert("인증 실패");
-            }
         });
-        let pwd1 = $("#newPwd1").val();
-        let pwd2 = $("#newPwd2").val();
     })
-    $(function () {
-        $("#emailBtn").on("click", function () {
-            $("#hideEmail").css("display", 'block');
+
+
+        $(function () {
+            const randomNumber = Math.floor(Math.random() * 8888) + 1;
+            $('input[name=text]').attr('value', randomNumber);
+            let text1 = $("#text").val();
+            let memEmail;
+            let to = $("#to").val();
+            to = $("#memEmail").val();
+            // let text1 = randomNumber;
+            let text2;
+            $("#btn").on("click", function () {
+                to = $("#memEmail").val();
+                alert("Click");
+                console.log("to::" + to);
+                let fData = $("#frm").serialize();
+
+                $.ajax({
+                    url: "/sendMailProcess",
+                    type: "post",
+                    data: fData,
+                    beforeSend: function (xhr) {   // 데이터 전송 전  헤더에 csrf값 설정
+                        xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                    },
+                    success: function (data) { //여기서 data는 controller에 list이다.
+                        $("#hideEmail").css('display', 'block');
+                    },
+                    error: function () {
+                        alert("오류입니다.");
+                        $("#hideEmail").css('display', 'none');
+                    }
+                })
+            })
+            $("#btn2").on("click", function () {
+                text2 = $("#emailNum1").val();
+                console.log("text2::" + text1);
+                console.log("text5::" + text2);
+                if (text1 == text2) {
+                    alert("인증 성공");
+                    $("#pwdForm1").css('display', 'block');
+                    $("#pwdForm2").css('display', 'block');
+
+                } else {
+                    alert("인증 실패");
+                }
+            });
+            let pwd1 = $("#newPwd1").val();
+            let pwd2 = $("#newPwd2").val();
+        })
+
+
+        $(function () {
+            $("#emailBtn").on("click", function () {
+                $("#hideEmail").css("display", 'block');
+            });
         });
-    });
 
 
-    function passwordCheck() {
-        var password = $("#memPasswd").val();
-        var password2 = $("#paswd2").val();
-        if (password != password2) {
-            $("#passMessage").html("비밀번호가 서로 일치하지 않습니다.");
-            $("#passMessage").css("color", "red");
-            $("#password").attr("value", "$#@!");
-            $("#sbtBtn").css('display', 'none');
-            return false;
-        } else {
-            $("#passMessage").html("비밀번호가 서로 같습니다..");
-            $("#passMessage").css("color", "blue");
-            $("#sbtBtn").css('display', 'block');
-            return true;
-        }
-    }
-
-    function handleOnChange(ph) {
-        const values = [];
-        const texts = [];
-        var opts = ph.options;
-        console.log(ph.options);
-
-        for (i = 0; i < opts.length; i++) {
-            console.log(opts[i].selected);
-            if(opts[i].selected) {
-                values.push(opts.value);
-                texts.push(opts.text);
+        function passwordCheck() {
+            var password = $("#memPasswd").val();
+            var password2 = $("#paswd2").val();
+            if (password != password2) {
+                $("#passMessage").html("비밀번호가 서로 일치하지 않습니다.");
+                $("#passMessage").css("color", "red");
+                $("#password").attr("value", "$#@!");
+                $("#sbtBtn").css('display', 'none');
+                return false;
+            } else {
+                $("#passMessage").html("비밀번호가 서로 같습니다..");
+                $("#passMessage").css("color", "blue");
+                $("#sbtBtn").css('display', 'block');
+                return true;
             }
         }
-        document.getElementById('values').innerText = values;
-        document.getElementById('texts').innerText = texts;
-    }
 
-    function checkReg() {
-        var reg = /^[가-힣]{2,4}$/; //한글 2~3
-        var reg = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";//최소 8 자, 하나 이상의 문자와 하나의 숫자 정규식
-        var regExp = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
-    }
+        function handleOnChange(ph) {
+            const values = [];
+            const texts = [];
+            var opts = ph.options;
+            console.log(ph.options);
+
+            for (i = 0; i < opts.length; i++) {
+                console.log(opts[i].selected);
+                if (opts[i].selected) {
+                    values.push(opts.value);
+                    texts.push(opts.text);
+                }
+            }
+            document.getElementById('values').innerText = values;
+            document.getElementById('texts').innerText = texts;
+        }
+
+        function checkReg() {
+            var reg = /^[가-힣]{2,4}$/; //한글 2~3
+            var reg = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";//최소 8 자, 하나 이상의 문자와 하나의 숫자 정규식
+            var regExp = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
+        }
 
 
 </script>

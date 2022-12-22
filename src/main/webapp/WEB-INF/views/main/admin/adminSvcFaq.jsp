@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript"
 	src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 
@@ -36,20 +36,20 @@
 			<div class="card" style="width: 1200px;">
 				<div class="card-content">
 					<div class="card-body">
-						<!-- Task List table -->
 						<div class="row breadcrumbs-top" >
 					        <div class="breadcrumb-wrapper col-12">
 					            <ol class="breadcrumb" style="position: relative;margin-right: 15px; font-size: 25px; font-family: MICEGothic Bold">
-					                <li class="breadcrumb-item active"><a href="/main/adminSvcNotice" style="color: gray;">공지사항 관리</a>
+					                <li class="breadcrumb-item"><a href="/main/adminSvcNotice" style="color: gray;">공지사항 관리</a>
 					                </li>
-					                <li class="breadcrumb-item"><a href="/main/adminSvcFaq" style="color: #3F4E89">자주묻는질문 관리</a>
+					                <li class="breadcrumb-item active"><a href="/main/adminSvcFaq" style="color: #3F4E89;">자주묻는질문 관리</a>
 					                </li>
 					                <li class="breadcrumb-item"><a href="/main/adminSvcQaA" style="color: gray;">Q&A 관리</a>
 					                </li>
-					                 
+					               
 					            </ol>
 					        </div>
 					    </div>
+						<!-- Task List table -->
 						<div class="table-responsive">
 							<div>
 								<br>
@@ -77,62 +77,62 @@
 								<thead style="background: #3F4E89; color: white;">
 									<tr>
 										<th>선택</th>
-										<th>번호</th>
+										<th>자주묻는 질문 번호</th>
 										<th>제목</th>
-										<th>내용</th>
-										<th>등록일</th>
+										<th>등록일자</th>
 									</tr>
 								</thead>
 								<tbody>
+								<c:forEach items="${list}" var="noticeList" varStatus="stat">
 									<tr>
-										<td><input type='checkbox' id="ckbox" name="ckbox"
-											value=""></td>
-										<td>2345</td>
-										<td><b><a href="#" style="color: #455DBD;">사이트 이용방법</a></b>
-											<button type="button"
-												class="btn btn-outline-secondary btn-sm">
-												<i class="feather icon-search"></i>
-											</button></td>
-										<td>잘 이용하세요</td>
-										<td><span class="badge badge-success">2022-12-09</span></td>
+										<td><input type='checkbox' id="ckbox" class="ckbox" name="ckbox" value="${noticeList.siteNtNum}"></td>
+										<td>${stat.count}</td>
+										<td><b><a href="/main/adminSvcNoticeDetail?siteNtNum=${noticeList.siteNtNum}" style="color: #455DBD;">${noticeList.siteNtTitle}</a></b>
+										</td>
+										<td><span class="badge badge-success"><fmt:formatDate value="${noticeList.siteNtWriteDate}" pattern="yyyy-MM-dd" /></span></td>
 									</tr>
+								
+								</c:forEach>
 								</tbody>
 							</table>
 							<div class="row" style="padding-top: 20px; margin: auto;">
 								<div class="col-sm-12 col-md-7">
 									<div style="float: left;">
 										<button type="button" class="btn"
-											style="background-color: #546E7A; color: white;">삭제</button>
+											style="background-color: #546E7A; color: white;" id="chkDeleteBtn">삭제</button>
 									</div>
 									<div class="dataTables_paginate paging_simple_numbers"
 										id="DataTables_Table_0_paginate" style="padding-left: 400px;">
 										<ul class="pagination">
+										<c:if test="${pageVO.prev}">
 											<li class="paginate_button page-item previous disabled"
 												id="DataTables_Table_0_previous"><a href="#"
 												aria-controls="DataTables_Table_0" data-dt-idx="0"
 												tabindex="0" class="page-link">Previous</a></li>
-											<li class="paginate_button page-item active"><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="1"
-												tabindex="0" class="page-link">1</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="2"
-												tabindex="0" class="page-link">2</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="3"
-												tabindex="0" class="page-link">3</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="4"
-												tabindex="0" class="page-link">4</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="5"
-												tabindex="0" class="page-link">5</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="6"
-												tabindex="0" class="page-link">6</a></li>
-											<li class="paginate_button page-item next"
-												id="DataTables_Table_0_next"><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="7"
-												tabindex="0" class="page-link">Next</a></li>
+										</c:if>
+										 <c:forEach var = "num" begin = "${pageVO.startPage}" end = "${pageVO.endPage}">
+										 	<c:choose>
+	                                    	<c:when test="${pageVO.pageNum eq num}">
+												<li class="paginate_button page-item active"><a href="/main/adminSvcNotice?pageNum=${num}&amount=${pageVO.amount}"
+													aria-controls="DataTables_Table_0" data-dt-idx="1"
+													tabindex="0" class="page-link">${num}</a></li>
+											</c:when>
+                                    			<c:otherwise>
+                                    				<li class="paginate_button page-item "><a href="/main/adminSvcFaq?pageNum=${num}&amount=${pageVO.amount}"
+													aria-controls="DataTables_Table_0" data-dt-idx="2"
+													tabindex="0" class="page-link">${num}</a></li>
+                                    			</c:otherwise>
+	                                  	  </c:choose>
+	                                    </c:forEach>
+										<c:if test="${pageVO.next }">
+		                               
+			                                    <li class="paginate_button page-item next"
+													id="DataTables_Table_0_next"><a href="/main/adminSvcFaq?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}"
+													aria-controls="DataTables_Table_0" data-dt-idx="7"
+													tabindex="0" class="page-link">Next</a></li>
+		                                   
+                                    	</c:if>
+											
 										</ul>
 									</div>
 								</div>
@@ -142,10 +142,9 @@
 				</div>
 			</div>
 		</div>
-		</div>
+		
 	</section>
 	<!-- END: Content-->
-
 	<!-- BEGIN: Page Vendor JS-->
 	<script
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/tables/jquery.dataTables.min.js"></script>
@@ -165,7 +164,33 @@
 	<script
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-contacts.js"></script>
 	<!-- END: Page JS-->
-
+	<script type="text/javascript">
+		
+			$("#chkDeleteBtn").on("click",function(){
+				var param = [];
+				var storeOrder=[];
+				
+				if($('.ckbox:checked').length==0){
+					$(".message").text("발주할 물품 리스트를 체크해주세요")
+				}else{
+					$(".ckbox:checked").each(function(i) {
+					 
+					    storeOrder = {
+					    	"siteNtNum"	: $(this).val()
+					    };
+					        
+				    	//param 배열에 storeOrder 오브젝트를 담는다.
+					      param.push(storeOrder);
+					  });
+					
+				}
+					console.log(param);
+				}
+			);
+	
+	
+	</script>
+	
 </body>
 <!-- END: Body-->
 

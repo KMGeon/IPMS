@@ -9,10 +9,9 @@ import org.springframework.ui.Model;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public interface WholeProjectService {
-    public List<ProjVO> listProj();
+    public  List<ProjMemVO>listProj();
     public List<ProjVO>getListPage(Criteria criteria);
     public List<ProjVO>getProjId(String memEmail);
     public int count();

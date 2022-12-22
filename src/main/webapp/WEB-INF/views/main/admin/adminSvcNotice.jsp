@@ -85,8 +85,7 @@
 								<tbody>
 								<c:forEach items="${list}" var="noticeList" varStatus="stat">
 									<tr>
-										<td><input type='checkbox' id="ckbox" name="ckbox"
-											value=""></td>
+										<td><input type='checkbox' id="ckbox" class="ckbox" name="ckbox" value="${noticeList.siteNtNum}"></td>
 										<td>${stat.count}</td>
 										<td><b><a href="/main/adminSvcNoticeDetail?siteNtNum=${noticeList.siteNtNum}" style="color: #455DBD;">${noticeList.siteNtTitle}</a></b>
 										</td>
@@ -100,7 +99,7 @@
 								<div class="col-sm-12 col-md-7">
 									<div style="float: left;">
 										<button type="button" class="btn"
-											style="background-color: #546E7A; color: white;">삭제</button>
+											style="background-color: #546E7A; color: white;" id="chkDeleteBtn">삭제</button>
 									</div>
 									<div class="dataTables_paginate paging_simple_numbers"
 										id="DataTables_Table_0_paginate" style="padding-left: 400px;">
@@ -165,7 +164,43 @@
 	<script
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-contacts.js"></script>
 	<!-- END: Page JS-->
-
+	<script type="text/javascript">
+		
+			$("#chkDeleteBtn").on("click",function(){
+				var param = [];
+				var storeOrder=[];
+				
+				if($('.ckbox:checked').length==0){
+					alert("선택한 게시물이 없습니다.");
+				}else{
+					$(".ckbox:checked").each(function(i) {
+					 
+					    storeOrder = {
+					    	"siteNtNum"	: $(this).val()
+					    };
+					        
+				    	//param 배열에 storeOrder 오브젝트를 담는다.
+					      param.push(storeOrder);
+					  });
+					
+				}
+				$.ajax({
+					 type : 'post',           // 타입 (get, post, put 등등)
+					    url : '/main/adminSvcNoticeChkDelete',           // 요청할 서버url
+					    contentType : "application/json; charset=utf-8",
+					    dataType : 'json',       // 데이터 타입 (html, xml, json, text 등등)
+					    data : JSON.stringify(param),
+					    beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+				            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+					  	},
+					    success : function(result) { // 결과 성공 콜백함수
+					        console.log(result);
+					    	location.reload();
+					    }
+				});
+				}
+			);
+	</script>
 </body>
 <!-- END: Body-->
 

@@ -13,4 +13,10 @@ public interface AdminSvcNoticeService {
 
 	public SvcNoticeVO SiteNoticeDetail(int siteNtNum);
 
+	public int siteNoticeUpdate(SvcNoticeVO svcNoticeVO);
+
+	public int siteNoticeDelete(SvcNoticeVO svcNoticeVO);
+
+	public int siteNoticeDeleteList(List<SvcNoticeVO> svcNoticeVOList);
+
 }

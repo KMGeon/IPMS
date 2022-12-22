@@ -94,27 +94,25 @@
 									</div>
 								</div>
 							</div>
+						<input type="hidden" class="form-control" id="projId" name="projId" value="${data.projId}">
+						<input type="hidden" class="form-control" id="deleteYn" name="deleteYn" value="${data.deleteYn}">
 					</div>
+					<!-- 댓글 입력 창 -->
 					<div class="card mb-2" style="width: 1200px; height: auto;">
 						<div class="card-body">
 							<div>
 								<form class="form-horizontal">
 									<div class="row">
 										<div class='col-sm-10'>
-											<input type="text" class="form-control" id="repContent"
-												placeholder="댓글을 입력하세요." />
+											<input type="text" class="form-control" id="projBdCmtCts" name="projBdCmtCts"
+												placeholder="내용을 입력하세요." />
 										</div>
 										<div class='col-sm-2'>
 											<button type="button" class="btn btn-secondary"
-												style="width: 150px;" id="repAdd" onclick="repAdd()">댓글
+												style="width: 150px;" id="freeCmtAdd">댓글
 												등록</button>
 										</div>
 									</div>
-									<div>
-										<input type="file" name="repfile" style="padding-top: 8px;">
-									</div>
-									<input type="hidden" class="form-control" id="projId" name="projId" value="${data.projId}">
-									<input type="hidden" class="form-control" id="deleteYn" name="deleteYn" value="${data.deleteYn}">
 								</form>
 							</div>
 						</div>
@@ -126,31 +124,33 @@
 							style="padding: 13px; color: #455A64; font-size: 15px;">
 							Comments&nbsp;<i class="fa fa-comment fa"></i>
 						</div>
-						<div class="card-body" id="repListAdd">
-							<!-- 							<form class="form-horizontal"> -->
-							<!-- 								<div class="user-block"> -->
-							<!-- 									<div> -->
-							<!-- 										<div style="padding-bottom: 5px;"> -->
-							<!-- 											<span class="username"> <a href="#" style="font-size:15px;">김효정</a>&nbsp;&nbsp;<span -->
-							<!-- 												style="font-size: 8px; color: grey;">2022-12-09 17:20</span><a -->
-							<!-- 												href="#" class="float-right btn-box-tool replyDelBtn" -->
-							<!-- 												data-toggle="modal" data-target="#delModal"><i -->
-							<!-- 													class="fa fa-times" style="color: #D32F2F;">삭제</i> </a><a -->
-							<!-- 												href="#" class="float-right btn-box-tool replyModBtn" -->
-							<!-- 												data-toggle="modal" data-target="#modModal"> <i -->
-							<!-- 													class="fa fa-edit" style="color: #00838F;">수정</i> -->
-							<!-- 											</a> -->
-							<!-- 											</span> <span class="description"></span> -->
-							<!-- 										</div> -->
-							<!-- 										<div id="repContent">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div> -->
-							<!-- 										<div style="padding-top: 10px;"> -->
-							<!-- 											<button type="button" -->
-							<!-- 												class="btn mr-1 mb-1 btn-secondary btn-sm">ㄴ 댓글</button> -->
-							<!-- 										</div> -->
-							<!-- 										<hr> -->
-							<!-- 									</div> -->
-							<!-- 								</div> -->
-							<!-- 							</form> -->
+						<div class="card-body" id="cmtList">
+							<form class="form-horizontal">
+								<div class="user-block">
+									<c:forEach var="freeboardCmtVO" items="${dataCmt}">	
+									<div>
+										<div style="padding-bottom: 5px;">
+											<span class="username"> <a href="#" style="font-size:15px;">${freeboardCmtVO.writer}</a>&nbsp;&nbsp;<span
+												style="font-size: 8px; color: grey;"><fmt:formatDate value="${freeboardCmtVO.projBdCmtWriteDate}" pattern="yyyy-MM-dd HH:mm" /></span><a
+												href="#" class="float-right btn-box-tool cmtDelete"
+												data-toggle="modal" data-target="#delModal" id="cmtDelete"><i
+													class="fa fa-times" style="color: #D32F2F;">삭제</i> </a><a
+												href="#" class="float-right btn-box-tool cmtModify"
+												data-toggle="modal" data-target="#modModal" id="cmtModify"> <i
+													class="fa fa-edit" style="color: #00838F;">수정</i>
+											</a>
+											</span> <span class="description"></span>
+										</div>
+										<div id="CmtCts">${freeboardCmtVO.projBdCmtCts}</div>
+										<div style="padding-top: 10px;">
+											<button type="button"
+												class="btn mr-1 mb-1 btn-secondary btn-sm">ㄴ 댓글</button>
+										</div>
+										<hr>
+									</div>
+									</c:forEach>
+								</div>
+							</form>
 						</div>
 					</div>
 
@@ -214,19 +214,26 @@
 			})	// ajax end
 			
 		});
+		
 
-		
-		
-		// 댓글 등록
-		$("#repAdd").on("click",function() {
-			//  		alert("댓글 등록 떠라");
-			let repCon = $("#repContent").val();
-			$("#repListAdd")
-					.append(
-							"<form class='form-horizontal'><div class='user-block'><div><div style='padding-bottom: 5px;'><span class='username'> <a href='#' style='font-size:15px;'>김효정</a>&nbsp;&nbsp;<span style='font-size: 8px; color: grey;'>2022-12-09 17:20</span><a href='#' class='float-right btn-box-tool replyDelBtn' data-toggle='modal' data-target='#delModal'><i class='fa fa-times' style='color: #D32F2F;'>삭제</i></a><a href='#' class='float-right btn-box-tool replyModBtn' data-toggle='modal' data-target='#modModal'><i class='fa fa-edit' style='color: #00838F;'>수정</i></a></span><span class='description'></span></div><div id='repContent'>"
-									+ repCon
-									+ "</div><div style='padding-top: 10px;'><button type='button' class='btn mr-1 mb-1 btn-secondary btn-sm'>ㄴ 댓글</button></div><hr></div></div></form>");
-			$("#repContent").val("");
+// 		// 댓글 등록
+// 		$("#freeCmtAdd").on("click",function() {
+			
+// 			alert("댓글 등록 떠라");
+			
+//  			let cmtCts = $("#projBdCmtCts").val();
+// 			console.log(cmtCts);
+			
+// 			let data = {"projBdId":projBdId,
+// 					"projBdCmtCts":projBdCmtCts,
+// 					"deleteYn":deleteYn};
+			
+// 			$("#repListAdd")
+// 					.append(
+// 							"<form class='form-horizontal'><div class='user-block'><div><div style='padding-bottom: 5px;'><span class='username'> <a href='#' style='font-size:15px;'>김효정</a>&nbsp;&nbsp;<span style='font-size: 8px; color: grey;'>2022-12-09 17:20</span><a href='#' class='float-right btn-box-tool replyDelBtn' data-toggle='modal' data-target='#delModal'><i class='fa fa-times' style='color: #D32F2F;'>삭제</i></a><a href='#' class='float-right btn-box-tool replyModBtn' data-toggle='modal' data-target='#modModal'><i class='fa fa-edit' style='color: #00838F;'>수정</i></a></span><span class='description'></span></div><div id='repContent'>"
+// 									+ repCon
+// 									+ "</div><div style='padding-top: 10px;'><button type='button' class='btn mr-1 mb-1 btn-secondary btn-sm'>ㄴ 댓글</button></div><hr></div></div></form>");
+// 			$("#repContent").val("");
 		});
 
 	});

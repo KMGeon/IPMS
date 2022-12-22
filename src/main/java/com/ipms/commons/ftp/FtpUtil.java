@@ -378,5 +378,49 @@ public class FtpUtil {
 		return makeResult;
 	}
 	
+	// 파일 생성
+		public static void uploadToFtp(String savePath, String saveName, MultipartFile docsfile) {
+			
+			if(docsfile==null) return;
+			
+			FTPClient ftp = ftpServerConnect();
+			
+			try {
+				boolean moveDir = ftp.changeWorkingDirectory(savePath);
+				log.debug("[uploadToFtp] - moveDir -> {}", moveDir);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			try (
+					InputStream is = docsfile.getInputStream();
+					OutputStream os = ftp.storeFileStream(saveName);
+				){
+					
+					log.debug("[uploadToFtp] stream working...");
+					byte[] buffer = new byte[1024];
+					int length = -1;
+					while( (length = is.read(buffer, 0, buffer.length)) != -1 ) {
+						os.write(buffer, 0, length);
+					}
+					log.debug("[uploadToFtp] stream working end...");
+					
+				} catch (Exception e) {
+					log.error("[uploadToFtp] stream error : {}", e.getMessage());
+					throw new RuntimeException(e);
+				} finally {
+					
+					try {
+						ftp.disconnect();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					log.debug("[uploadToFtp] ftpClient return...");
+					
+				}
+			
+		}
+	
 	// ========================== 여기서 부터 새로 끝  ===================================
 }

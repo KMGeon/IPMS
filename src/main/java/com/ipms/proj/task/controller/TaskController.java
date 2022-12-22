@@ -123,6 +123,29 @@ public class TaskController {
 	}
 	
 	
+	@ResponseBody
+	@PostMapping("/taskCtsUpdate")
+	public int taskCtsUpdate(@RequestBody TaskVO vo) { // 일감 반려
+		
+		
+		log.error("★ receive ==> TaskController ==> taskCtsUpdate ==> vo.tostring()" + vo.toString());
+		int result = this.taskservice.taskCtsUpdate(vo);
+		log.error("★ receive ==> TaskController ==> taskCtsUpdate result : " + result);
+		
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping("/taskPgresUpdate")
+	public int taskPgresUpdate(@RequestBody TaskVO vo) { // 일감 반려
+		
+		
+		log.error("★ receive ==> TaskController ==> taskCtsUpdate ==> vo.tostring()" + vo.toString());
+		int result = this.taskservice.taskPgresUpdate(vo);
+		log.error("★ receive ==> TaskController ==> taskCtsUpdate result : " + result);
+		
+		return result;
+	}
 	
 
 	

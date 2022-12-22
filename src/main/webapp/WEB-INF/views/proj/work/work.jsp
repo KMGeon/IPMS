@@ -71,7 +71,22 @@
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/plugins/extensions/noui-slider.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/horizontal-menu.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/extensions/nouislider.min.css">
-<style type="text/css">.jqstooltip { position: absolute;left: 0px;top: 0px;visibility: hidden;background: rgb(0, 0, 0) transparent;background-color: rgba(0,0,0,0.6);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";color: white;font: 10px arial, san serif;text-align: left;white-space: nowrap;padding: 5px;border: 1px solid white;z-index: 10000;}.jqsfield { color: white;font: 10px arial, san serif;text-align: left;}</style>
+<style type="text/css">
+.jqstooltip {
+ position: absolute;
+ left: 0px;top: 0px;visibility:
+  hidden;background: rgb(0, 0, 0) transparent;
+  background-color: rgba(0,0,0,0.6);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+ -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+ color: white;font: 10px arial, san serif;
+ text-align: left;white-space: nowrap;padding: 5px;border: 1px solid white;
+ z-index: 10000;}
+ .jqsfield { 
+ color: white;font: 10px arial, san serif;
+ text-align: left;
+ }
+ </style>
 
 
 <script>
@@ -407,11 +422,10 @@
 								<!-- 슬라이더 바  -->
 
 								<div class="form-group" id="taskPgresdiv">
-										<label>진척도 설정</label>
-										<div>
+												<label>진척도 설정</label>
+												
 											<input id="taskPgres" name="taskPgres" type="range" min="1" max="100" value="20" class="slider">
 											<p style="font-size: 10px;">진척률: <span id="value"></span></p>
-										</div>
 								</div>
 
 
@@ -494,8 +508,7 @@
                 </button>
             </div>
             <div class="modal-body">
-            <textarea style="width: 100%; height: 100%; resize: none;" id="referCts" name="referCts" rows="4" cols="78"></textarea>
-                
+            	<textarea style="width: 100%; height: 100%; resize: none;" id="referCts" name="referCts" rows="4" cols="78"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn grey btn-outline-secondary modalclose" data-dismiss="modal">닫기</button>

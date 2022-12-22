@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.ipms.proj.taskcomment.service.TaskCommentService;
 import com.ipms.proj.taskcomment.vo.TaskCommentVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/task")
 public class TaskCommentController {
@@ -20,8 +23,9 @@ public class TaskCommentController {
 	@PostMapping("/cmtInsert")
 	public int TaskCommentInsert(@RequestBody TaskCommentVO vo) {
 		
-		int result = this.taskcommentservice.taskHighCmtInsert(vo);
+		log.info("TskCommentController -> HighCmtInsert -> receiveVO : " + vo.toString());
 		
+		int result = this.taskcommentservice.taskHighCmtInsert(vo);
 		
 		return result; 
 	}

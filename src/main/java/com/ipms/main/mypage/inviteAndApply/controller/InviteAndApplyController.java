@@ -28,38 +28,31 @@ public class InviteAndApplyController {
     NewProjectService newProjectService;
 
     @RequestMapping(value = "/inviteAndApply", method = RequestMethod.GET)
-
+    @ResponseStatus(HttpStatus.OK)
     public String inviteOrApply(Model model, Authentication authentication, ProjMemVO projMemVO) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String memEmail = this.inviteAndApplyService.getMemCode(userDetails.getUsername());
-        List<ProjMemVO> list = this.inviteAndApplyService.memberWhoApplied(memEmail);
-
-        model.addAttribute("list", list);
+        String memCode = this.inviteAndApplyService.getMemCode(userDetails.getUsername());
+        List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(memCode);
+        List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(memCode);
+        model.addAttribute("memberWhoApplied", memberWhoApplied);
+        model.addAttribute("projectsApplied", projectsApplied);
         return "main/mypage/inviteAndApply";
     }
+
 
     //프로젝트 승인(신청한 회원)
     @RequestMapping(value = "/approveProject", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public int approveProject(Authentication authentication, ProjMemVO projMemVO  , RedirectAttributes rttr) {
-        int division = this.inviteAndApplyService.approvalJoiningProject(projMemVO);
-        if(division==0){
-            rttr.addFlashAttribute("msg", "모든 내용을 입력하세요.");
-        }
-        return division;
+    public int approveProject(Authentication authentication, ProjMemVO projMemVO, RedirectAttributes rttr) {
+        return this.inviteAndApplyService.approval(projMemVO);
     }
 
     //프로젝트 취소(신청한 회원)
     @RequestMapping(value = "/projectCompanionship", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public int projectCompanionship(Authentication authentication, ProjMemVO projMemVO  , RedirectAttributes rttr) {
-        int division = this.inviteAndApplyService.approvalJoiningProject(projMemVO);
-        log.warn("division"+division);
-        if(division==1){
-            rttr.addFlashAttribute("msg", "실패");
-        }
-        return division;
+    public int projectCompanionship(Authentication authentication, ProjMemVO projMemVO, RedirectAttributes rttr) {
+        return this.inviteAndApplyService.companionProject(projMemVO);
     }
 }

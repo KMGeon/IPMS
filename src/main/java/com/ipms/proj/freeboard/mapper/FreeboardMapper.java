@@ -22,6 +22,6 @@ public interface FreeboardMapper {
 
 	public List<FreeboardVO> getFreePage(Criteria cri); // 리스트(페이징ver.)
 	
-	public int getTotal(String projId);
+	public int getTotal();
 	
 }

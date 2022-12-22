@@ -4,9 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<%-- <c:set var="contextPath" value="${pageContext.request.contextPath}"/> --%>
-<%-- <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/> --%>
-<%-- <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/> --%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 
 <!-- BEGIN: Vendor CSS-->
 <link rel="stylesheet" type="text/css"
@@ -160,9 +160,9 @@
 								</div>
 							</div>
 						</div>
-<%-- 						<input type="hidden" name="memEmail" value="<sec:authentication property="principal.username"/>"/> --%>
-<%-- 						<input type="hidden" name="memCode" value="${mvo.member.memCode}"/> --%>
-<%-- 						<input type="hidden" name="" value="${mvo.member}"/> --%>
+						<input type="hidden" name="memCode" value="<sec:authentication property='principal.member.memCode'/>"/>
+						<input type="hidden" name="" value="${mvo.member}"/>
+						<input type="hidden" id="projId" name="projId" value="P003" />
 					</div>
 				</div>
 			</div>

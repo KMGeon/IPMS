@@ -54,9 +54,9 @@ public class FreeboardServiceImpl implements FreeboardService {
 	}
 
 	@Override
-	public int getTotal(String projId) {
+	public int getTotal() {
 		
-		return this.freeboardMapper.getTotal(projId);
+		return this.freeboardMapper.getTotal();
 	}
 
 	@Override

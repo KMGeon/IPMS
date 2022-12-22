@@ -18,6 +18,9 @@ public class TaskCommentServiceImpl implements TaskCommentService {
 
 	@Override
 	public int taskHighCmtInsert(TaskCommentVO vo) {
+		
+		log.info("TskCommentServiceImpl -> taskHighCmtInsert -> receiveVO : " + vo.toString());
+		
 		return this.taskcommentmapper.taskHighCmtInsert(vo);
 	}
 	

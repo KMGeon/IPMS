@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface MyPageMapper {
     List<ProjMemVO> memberWhoApplied(String memCode);
+    List<ProjMemVO>projectsApplied(String memCode);
     String getMemCode(String memEmail);
     public     int approvalJoiningProject(ProjMemVO projMemVO);
     public     int companionProject(ProjMemVO projMemVO);

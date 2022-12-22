@@ -88,7 +88,7 @@
                             data-toggle="tab" href="#information" aria-controls="information"
                             role="tab" aria-selected="false"> <i
                             class="feather icon-info mr-25"></i><span
-                            class="d-none d-sm-block">신청한 프로젝트</span>
+                            class="d-none d-sm-block">초대한 회원</span>
                     </a></li>
                 </ul>
                 <div class="tab-content">
@@ -182,7 +182,7 @@
                             data-toggle="tab" href="#invite" aria-controls="invite"
                             role="tab" aria-selected="true"> <i
                             class="feather icon-user mr-25"></i><span
-                            class="d-none d-sm-block">초대한 회원</span>
+                            class="d-none d-sm-block">신청한 프로젝트</span>
                     </a></li>
                     <li class="nav-item"><a
                             class="nav-link d-flex align-items-center" id="apply-tab"
@@ -204,22 +204,22 @@
                                                    class="table table-hover mb-0 ps-container ps-theme-default">
                                                 <thead>
                                                 <tr>
-                                                    <th>시작일</th>
+                                                    <th>번호</th>
                                                     <th>프로젝트명</th>
-                                                    <th>기간</th>
+                                                    <th>신청인</th>
                                                     <th>승인 여부</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td class="text-truncate">2022-12-01</td>
-                                                    <td class="text-truncate"><a href="#">프로젝트 이름입니다</a></td>
-                                                    <td class="text-truncate">2022-12-10</td>
-                                                    <td class="text-truncate"><span
-                                                            class="badge badge-warning">응답중</span>
-                                                        <button type="button" class="btn btn-danger btn-sm">취소</button>
-                                                    </td>
-                                                </tr>
+                                                <c:forEach var="item" items="${projectsApplied}" varStatus="status">
+                                                    <tr>
+                                                        <td class="text-truncate">${status.count}</td>
+                                                        <td class="text-truncate"><a href="#">${item.teamId}</a></td>
+                                                        <td class="text-truncate">${mvo.member.memName}</td>
+                                                        <td class="text-truncate"><span class="badge badge-warning">대기중</span>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -249,16 +249,17 @@
                                                 </thead>
                                                 <tbody>
 
-                                                <c:forEach var="item" items="${list}" varStatus="status">
+                                                <c:forEach var="item" items="${memberWhoApplied}" varStatus="status">
+                                                    <div>
+                                                        <input >
 
+                                                    </div>
                                                     <tr>
                                                         <td class="text-truncate">&nbsp;${status.count}</td>
                                                         <td class="text-truncate"><a href="#">${item.teamId}</a></td>
                                                         <td class="text-truncate">${mvo.member.memName}</td>
                                                         <td class="text-truncate">
-                                                            <button type="button" id="sbscrMmbtn"
-                                                                    class="btn btn-success btn-sm"
-                                                                    onclick="fn_approve('${item.memCode}','${item.projId}' )">
+                                                            <button type="button" id="sbscrMmbtn" class="btn btn-success btn-sm" onclick="fn_approve('${item.memCode}','${item.projId}' )">
                                                                 승인
                                                             </button>
                                                             <button type="button" id="companionButton" class="btn btn-danger btn-sm" onclick="fn_companion('${item.memCode}','${item.projId}' )">반려</button>

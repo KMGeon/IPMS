@@ -2,14 +2,12 @@ package com.ipms.main.login.controller;
 
 import com.ipms.main.login.service.LoginService;
 import com.ipms.main.login.vo.MemVO;
-import com.ipms.main.login.mapper.MemMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 
@@ -40,7 +38,7 @@ public class LoginController {
     //로그인  POST
     @RequestMapping(value = "/loginPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public String loginPost(@ModelAttribute MemVO memvo, @RequestParam String memEmail, @RequestParam String memPasswd) {
+    public String loginPost(@ModelAttribute MemVO memvo) {
         int success = this.loginService.loginMem(memvo);
         if (success == 1) {
             return "redirect:/main/loginMain";

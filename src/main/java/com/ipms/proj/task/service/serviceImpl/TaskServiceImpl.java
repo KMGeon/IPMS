@@ -72,4 +72,15 @@ public class TaskServiceImpl implements TaskService {
 		return this.taskMapper.referCts(vo);
 	}
 
+	@Override
+	public int taskCtsUpdate(TaskVO vo) {
+		return this.taskMapper.taskCtsUpdate(vo);
+		
+	}
+
+	@Override
+	public int taskPgresUpdate(TaskVO vo) {
+		return this.taskMapper.taskPgresUpdate(vo);
+	}
+
 }

@@ -18,7 +18,8 @@
 			APROV_WHTH, 
 			TASK_REPRE, 
 			DELETE_YN, 
-			REFER_CTS
+			REFER_CTS,
+			WORK_UPDATE_NUM
 		FROM TASK
 <!-- 		WHERE APROV_WHTH = 'n' -->
 		 START WITH HIGH_TASK_ID IS NULL
@@ -128,6 +129,7 @@
 			, TASK_REPRE
 			, DELETE_YN
 			, REFER_CTS
+			, WORK_UPDATE_NUM
 		FROM TASK
 		WHERE TASK_ID = #{taskId}
 	
@@ -136,7 +138,7 @@
 	
 	<update id="taskApproval" parameterType="com.ipms.proj.task.vo.TaskVO">
 		UPDATE TASK
-        SET APROV_WHTH = 'y' , REFER_CTS = null
+        SET APROV_WHTH = 'y' , REFER_CTS = null , WORK_UPDATE_NUM = 0
         WHERE TASK_ID = #{taskId}
 	</update>
 	
@@ -144,6 +146,26 @@
 		UPDATE TASK
         SET REFER_CTS = #{referCts}
         WHERE TASK_ID = #{taskId}
+	</update>
+	
+	<update id="taskCtsUpdate" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE 
+			TASK
+		SET 
+			TASK_CTS = #{taskCts} 
+		  , WORK_UPDATE_NUM = WORK_UPDATE_NUM + 1
+		  , TASK_TITLE = #{taskTitle}
+		  , TASK_STRT_DATE = #{taskStrtDate}
+		  , TASK_END_DATE = #{taskEndDate}
+		  , TASK_STUS_CODE = #{taskStusCode}
+		WHERE TASK_ID = #{taskId} 
+	
+	</update>
+	
+	<update id="taskPgresUpdate" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE TASK
+		SET TASK_PGRES = #{taskPgres}
+		WHERE TASK_ID = #{taskId}
 	</update>
 	
 </mapper>

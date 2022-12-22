@@ -33,5 +33,6 @@ public class TaskVO {
 	private String taskRepre; // 담당자
 	private String deleteYn; // 삭제 여부
 	private String referCts; // 반려 내용
+	private int workUpdateNum; // 반려 시 내용 업데이트 번호
 	
 }

@@ -21,5 +21,9 @@ public interface TaskService {
 	public int taskApproval(TaskVO vo);
 	
 	public int referCts(TaskVO vo);
+	
+	public int taskCtsUpdate(TaskVO vo);
+	
+	public int taskPgresUpdate(TaskVO vo);
 
 }

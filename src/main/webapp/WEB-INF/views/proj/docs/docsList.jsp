@@ -88,10 +88,11 @@
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<section class="contact-form">
-										<form id="fileUploadForm" class="contact-input" action="/proj/docsFileUpload" method="post" enctype="multipart/form-data">
+										<!-- action="/proj/docsFileUpload" method="post" enctype="multipart/form-data" -->
+										<form id="fileUploadForm" class="contact-input">
 											<div class="modal-header">
 												<h5 class="modal-title" id="exampleModalLabel1">파일 업로드</h5>
-												<button type="button" class="close" data-dismiss="modal"
+												<button id="fileClose" type="button" class="close" data-dismiss="modal"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
 												</button>
@@ -99,18 +100,18 @@
 											<div class="modal-body">
 												<fieldset class="form-group col-12">
 													<input type="file" name="docsFile" class="form-control-file"
-														id="user-image">
+														id="docsFile" multiple="multiple">
 												</fieldset>
 											</div>
 											<div class="modal-footer">
 												<fieldset
 													class="form-group position-relative has-icon-left mb-0">
-													<input type="submit" id="docsFileUploadBtn" class="btn btn-info add-contact-item" data-dismiss="modal" value="업로드">
+													<input type="button" id="docsFileUploadBtn" class="btn btn-info add-contact-item" data-dismiss="modal" value="업로드">
 														<i class="fa fa-paper-plane-o d-block d-lg-none"></i> <span
 															class="d-none d-lg-block"></span>
 												</fieldset>
 											</div>
-											<sec:csrfInput/>
+											<!-- <sec:csrfInput/> -->
 										</form>
 									</section>
 								</div>
@@ -263,7 +264,7 @@
 			url : "/proj/docTest",
 			method : "get",
 			data : {
-				path : "/P001"
+				path : "P001"
 			},
 			dataType : "json",
 			success : function(resp){
@@ -279,7 +280,7 @@
 						treeData.push(treeObj);
 					}
 					let divBlock = fn_makeBlock(data); 	
-					fn_makeBlock(data);
+					// fn_makeBlock(data);
 					contentArea.append(divBlock);
 
 				});
@@ -336,6 +337,7 @@
 		// 여기 고침
 		if(text == "P001") path = "";
 		thisPath = path;
+		console.log("fn_makePath - thisPath -> ", thisPath);
 		return path;
 	}
 
@@ -358,6 +360,9 @@
 		let path = fn_makePath(text, parents);
 		let children = data.node.children;
 		thisPath = path;
+
+		console.log("treeArea - thisPath -> ", thisPath);
+		
 		thisId = parent;
 		thisParent = parents[0];
 		console.log("thisId", thisId);
@@ -544,7 +549,6 @@
 	// 폴더 생성
 	let makeFolderBtn = $("#makeFolderBtn");
 	let addFFolderModal = $("#AddFoder");
-	let modal = $(".modal-backdrop fade show");
 
 	makeFolderBtn.on("click", function(){
 		let dirName = dirInput.val();
@@ -556,6 +560,7 @@
 			return;
 		}
 		let path = thisPath;
+		console.log("makeFolderBtn - thisPath -> ", thisPath);
 		let result = fn_createDir(path, dirName);
 		$("#folerClose").trigger('click');
 	});
@@ -591,6 +596,121 @@
 			}
 		});
 		return true;
+	}
+
+	// 파일 업로드 
+	let AddFile = $("#AddFile");
+	let docsFileUploadBtn = $("#docsFileUploadBtn");
+
+	docsFileUploadBtn.on("click", function(){
+
+		console.log("docsFileUploadBtn - thisPath -> ", thisPath);
+		fn_uploadAjaxAwait(thisPath);
+	});
+
+	async function fn_uploadAjaxAwait(thisPath){
+		
+		console.log("fn_uploadAjaxAwait - thisPath -> ", thisPath);
+		
+		
+
+		// docsFileUploadBtn.submit();
+
+		// for(let i=0;i<files.length;i++){
+
+		let docsFile = $("#docsFile");
+
+		// console.log("docsFile[0].files: ", docsFile[0].files);
+
+		// if (docsFile[0].files.length === 0) {
+		// 	alert("파일은 선택해주세요");
+		// 	return;
+		// }
+		
+		for(let i=0; i < docsFile.length; i++){
+			let form = new FormData();
+			let files = docsFile[0].files[i];
+
+			console.log("files: ", files);
+			
+			form.append("docsFile", files);
+			form.append("path", thisPath);
+
+
+			await fn_uploadAjax(form);
+		}
+
+
+
+		// 	let file = files[i].file;
+		// 	form.append("docsFile", file);
+		// 	form.append("path", thisPath);
+			
+		// 	let progressbar = fn_makeProgressTag();
+		// 	console.log(progressbar);
+		// 	console.log(filebox[i]);
+		// 	$(filebox[i]).after(progressbar);
+		// 	var promise = fn_uploadAjax(i, form);
+		// }
+
+		$("#fileClose").modal("hide");
+		$("#docsFile").val("");
+		fn_ajaxMoveDir(thisPath);
+	}
+	
+	function fn_uploadAjax(data){
+		
+		// console.log("fn_uploadAjax - data : ", data);
+
+		// let progressbar = $(".progress-bar");
+		// let completeTd = $(".complete-td");
+		
+		// return new Promise(function(resolve, reject){
+		
+		var header = "${_csrf.headerName}";
+		var token = "${_csrf.token}";
+		
+		return new Promise(function(resolve, reject){
+			$.ajax({
+				// xhr: function() {
+				// 	var xhr = new window.XMLHttpRequest();
+					
+				// 	xhr.upload.addEventListener("progress", function(event) {
+				// 		if (event.lengthComputable) {
+				// 			var percentComplete = event.loaded / event.total;
+				// 			percentComplete = parseInt(percentComplete * 100);
+							
+				// 			$(progressbar[index]).attr("style", "width:"+percentComplete+"%");
+				// 			let iconTag = $("<img>").attr("src", "${cPath}/resources/groupware/icon/check.png")
+				// 									.attr("class", "icon-img");
+				// 			if (percentComplete === 100) {
+				// 				$(completeTd[index]).append(iconTag);	
+				// 			}
+				// 		}
+				// 	}, false);
+				// 	return xhr;
+				// },
+				beforeSend : function(xhr){
+					xhr.setRequestHeader(header, token);
+				},
+				url : "/proj/uploadFileTest",
+				method : "post",
+				data : data,
+				contentType : false,
+				processData : false,
+				enctype : 'multipart/form-data',
+				dataType : "json",
+				success : function(resp) {
+					console.log(resp);
+					resolve(resp);
+				},
+				error : function(errorResp) {
+					console.log(errorResp.status);
+					reject(errorResp);
+				}
+			});
+		});
+		
 	}
 
 </script>

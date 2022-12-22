@@ -3,19 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.main.newProject.mapper.ProjMapper">
     <!--전체 프로젝트  com.ipms.main.newProject.mapper.ProjMapper.listProj-->
-    <select id="listProj" resultType="com.ipms.main.newProject.vo.ProjVO">
-        SELECT proj_id,
-               mem_code,
-               proj_name,
-               proj_strt_date,
-               proj_end_date,
-               proj_smry,
-               proj_opn_whth,
-               proj_creatn_date,
-               proj_img_route,
-               delete_whth
-        FROM proj
-        order by proj_creatn_date desc
+    <select id="listProj" resultType="com.ipms.main.newProject.vo.ProjMemVO">
+        SELECT A.PROJ_ID,
+               A.MEM_CODE,
+               B.TEAM_ID,
+               B.prtpt_aprov_code
+        FROM PROJ A
+                 INNER JOIN PROJ_MEM B
+                            ON A.PROJ_ID = B.PROJ_ID
+                                and A.MEM_CODE = B.MEM_CODE
+                                AND B.prtpt_aprov_code = 'Y'
     </select>
 
     <select id="getProjId" parameterType="string" resultType="com.ipms.main.newProject.vo.ProjVO">
@@ -160,10 +157,9 @@
                 #{teamId},
                 'N',
                 '0')
-
     </insert>
 
-    <select id="registrationStatus"  parameterType="com.ipms.main.newProject.vo.ProjMemVO" resultType="string">
+    <select id="registrationStatus" parameterType="com.ipms.main.newProject.vo.ProjMemVO" resultType="string">
         SELECT MEM_CODE
         FROM PROJ_MEM
         WHERE MEM_CODE = (SELECT MEM_CODE

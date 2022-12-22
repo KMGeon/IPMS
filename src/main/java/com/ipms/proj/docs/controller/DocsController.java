@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ipms.commons.ftp.FtpUtil;
 import com.ipms.commons.vo.FtpVO;
@@ -114,5 +115,23 @@ public class DocsController {
 		return result;
 	}
 	
-	
+	@ResponseBody
+	@PostMapping("/uploadFileTest")
+	public boolean uploadFile(MultipartFile[] docsFile, String path) {
+		
+		String savePath = "";
+		
+		if(StringUtils.isNotBlank(path) || docsFile.length > 0 || docsFile != null) {
+			log.info("DocsTestController - uploadFile -> path : {}", path);
+			log.info("DocsTestController - uploadFile -> docsFile.length : {}", docsFile.length);
+			savePath += path;
+		}
+		
+		
+		for(int i=0; i < docsFile.length; i++) {
+			FtpUtil.uploadToFtp(savePath, docsFile[i].getOriginalFilename(), docsFile[i]);
+		}
+		
+		return true;
+	}
 }

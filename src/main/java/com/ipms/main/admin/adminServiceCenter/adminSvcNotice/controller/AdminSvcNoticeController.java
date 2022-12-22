@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ipms.commons.vo.Criteria;
 import com.ipms.commons.vo.PageVO;
@@ -14,6 +17,7 @@ import com.ipms.main.admin.adminServiceCenter.adminSvcNotice.service.AdminSvcNot
 import com.ipms.main.serviceCenter.svcNotice.vo.SvcNoticeVO;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Slf4j
 @RequestMapping("/main")
@@ -56,5 +60,28 @@ public class AdminSvcNoticeController {
 		
 		model.addAttribute("svcNotice",svcNotice);
 		return "main/admin/adminSvcNoticeDetail";
+	}
+	
+	@ResponseBody
+	@PostMapping("/adminSvcNoticeUpdate")
+	public int adminSvcNoticeUpdate(@RequestBody SvcNoticeVO svcNoticeVO) {
+		log.info("vo: "+svcNoticeVO);
+		int result = adminSvcNoticeService.siteNoticeUpdate(svcNoticeVO);
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping("/adminSvcNoticeDelete")
+	public int adminSvcNoticeDelete(@RequestBody SvcNoticeVO svcNoticeVO) {
+		int result = adminSvcNoticeService.siteNoticeDelete(svcNoticeVO);
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping("/adminSvcNoticeChkDelete")
+	public int adminSvcNoticeChkDelete(@RequestBody List<SvcNoticeVO> svcNoticeVOList) {
+		log.info("-------------vo: "+svcNoticeVOList);
+		int result = adminSvcNoticeService.siteNoticeDeleteList(svcNoticeVOList);
+		return result;
 	}
 }

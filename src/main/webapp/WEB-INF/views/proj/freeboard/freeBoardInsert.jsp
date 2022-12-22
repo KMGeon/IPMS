@@ -43,12 +43,12 @@
 													<textarea cols="5" id="projBdCts" class="form-control"
 														placeholder="내용을 입력해주세요." name="projBdCts" style="resize:none;" required></textarea>
 												</div>
-<!-- 											<div class="form-group"> -->
-<!-- 												<label for="itgrnAttachFileNum">첨부파일</label><br><label id="itgrnAttachFileNum" -->
-<!-- 													class="file center-block"> <input type="file" -->
-<!-- 													id="itgrnAttachFileNum"> <span class="file-custom"></span> -->
-<!-- 												</label> -->
-<!-- 											</div> -->
+											<div class="form-group">
+												<label for="itgrnAttachFileNum">첨부파일</label><br><label id="itgrnAttachFileNum"
+													class="file center-block"> <input type="file"
+													id="itgrnAttachFileNum"> <span class="file-custom"></span>
+												</label>
+											</div>
 											</div>
 											<div class="form-actions center"
 												style="padding-top: 50px; padding-bottom: 120px;">

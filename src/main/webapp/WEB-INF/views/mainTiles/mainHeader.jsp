@@ -265,7 +265,7 @@
                 </li>
             </ul>
             <!-- 비로그인-->
-            <sec:authorize access="not hasRole('ROLE_MEMBER')">
+            <sec:authorize access="not hasAnyRole('ROLE_MEMBER')">
                 <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그인</button>
                 <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입</button>
             </sec:authorize>

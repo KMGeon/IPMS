@@ -47,30 +47,26 @@
                     <!--Search Result-->
                     <div id="search-results" class="card-body">
                         <div class="my-gallery" itemscope="" itemtype="http://schema.org/ImageGalle
-                        ry"
+                    ry"
                              data-pswp-uid="1">
                             <div class="card-deck-wrapper">
                                 <div class="card-deck">
                                     <c:forEach var="item" items="${list}" varStatus="idx">
                                         <div class="grid-item" style="width:300px;margin-left:10px;">
-
                                             <figure class="card card-img-top border-grey border-lighten"
                                                     itemprop="associatedMedia" itemscope
                                                     itemtype="http://schema.org/ImageObject">
                                                 <a href="/main/projectDetail/${item.projId}" itemprop="contentUrl"
-                                                   data-size="480x360">
-                                                    <img class="gallery-thumbnail card-img-top"
-                                                         src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg"
-                                                         itemprop="thumbnail" alt="Image description">
+                                                   data-size="480x360"><img class="gallery-thumbnail card-img-top"
+                                                                            src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg"
+                                                                            itemprop="thumbnail"
+                                                                            alt="Image description">
                                                 </a>
-                                                <input type="hidden" name="projId" value="${item.projId}">
-                                                <input type="hidden" name="projName" value="${item.projName}">
-                                                <input type="hidden" name="projSmry" value="${item.projSmry}">
                                                 <div class="card-body px-0">
-                                                    <p><span class="text-bold-600"></span> ${item.projName} <span
-                                                            class="font-small-2 text-muted float-right">720 x 600</span>
+                                                    <p><span class="text-bold-600"></span> ${item.teamId} <span
+                                                            class="font-small-2 text-muted float-right">${item.projId}</span>
                                                     </p>
-                                                    <p class="card-text">${item.projSmry}</p>
+<%--                                                    <p class="card-text">${item.projSmry}</p>--%>
                                                 </div>
                                             </figure>
                                         </div>
@@ -84,28 +80,28 @@
                             <nav aria-label="Page navigation">
                                 <ul class="pagination pagination-separate pagination-round pagination-flat"
                                     style="text-align: center;margin-left: 500px">
-                                    <c:if test="${pageMaker.prev}">
-                                        <li class="page-item">
-                                            <a class="page-link" href="${pageMaker.startPage-1}" aria-label="Previous">
-                                                <span aria-hidden="true">« Prev</span>
-                                                <span class="sr-only">Previous</span>
-                                            </a></li>
-                                    </c:if>
-                                    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">
-                                        <li class="page-item active${pageMaker.cri.pageNum==num?"active":""}"><a
-                                                class="page-link" href="${num}">${num}</a></li>
-                                    </c:forEach>
-                                    <c:if test="${pageMaker.next}">
-                                        <li class="page-item">
-                                            <a class="page-link" href="${pageMaker.startPage+1}" aria-label="Next">
-                                                <span class="sr-only">Next</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
-                                    <form id="actionForm" action="/main/wholeProject" method="get">
-                                        <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"/>
-                                        <input type="hidden" name="amount" value="${pageMaker.cri.amount}"/>
-                                    </form>
+                                    <%--                                    <c:if test="${pageMaker.prev}">--%>
+                                    <%--                                        <li class="page-item">--%>
+                                    <%--                                            <a class="page-link" href="${pageMaker.startPage-1}" aria-label="Previous">--%>
+                                    <%--                                                <span aria-hidden="true">« Prev</span>--%>
+                                    <%--                                                <span class="sr-only">Previous</span>--%>
+                                    <%--                                            </a></li>--%>
+                                    <%--                                    </c:if>--%>
+                                    <%--                                    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">--%>
+                                    <%--                                        <li class="page-item active${pageMaker.cri.pageNum==num?"active":""}"><a--%>
+                                    <%--                                                class="page-link" href="${num}">${num}</a></li>--%>
+                                    <%--                                    </c:forEach>--%>
+                                    <%--                                    <c:if test="${pageMaker.next}">--%>
+                                    <%--                                        <li class="page-item">--%>
+                                    <%--                                            <a class="page-link" href="${pageMaker.startPage+1}" aria-label="Next">--%>
+                                    <%--                                                <span class="sr-only">Next</span>--%>
+                                    <%--                                            </a>--%>
+                                    <%--                                        </li>--%>
+                                    <%--                                    </c:if>--%>
+                                    <%--                                    <form id="actionForm" action="/main/wholeProject" method="get">--%>
+                                    <%--                                        <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"/>--%>
+                                    <%--                                        <input type="hidden" name="amount" value="${pageMaker.cri.amount}"/>--%>
+                                    <%--                                    </form>--%>
                                 </ul>
                             </nav>
                         </div>

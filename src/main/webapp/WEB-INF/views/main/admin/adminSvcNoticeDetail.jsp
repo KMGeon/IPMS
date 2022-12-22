@@ -1,21 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!-- BEGIN: Head-->
 <head>
-
-<!-- BEGIN: Page CSS-->
 <link rel="stylesheet" type="text/css"
    href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/app-invoice.css">
+<script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
 <!-- END: Page CSS-->
-
+<style type="text/css">
+	.ck.ck-editor {
+	    max-width: 100%;
+	  }
+	.ck-editor__editable {
+	   min-height: 350px;
+	  }
+</style>
 </head>
-<!-- END: Head-->
-
-<!-- BEGIN: Body-->
-
 <body>
-
    <!-- BEGIN: Content-->
    <div class="content-wrapper">
       <!--       <div class="content-header row"> -->
@@ -53,27 +54,26 @@
                         <div class="invoice-logo-title row py-2">
                            <div
                               class="col-6 d-flex flex-column justify-content-center align-items-start">
-                              <h2 class="text-primary"
-                                 style="font-family: 'MICEGothic Bold';">${svcNotice.siteNtTitle}</h2>
+                              <input style="font-family: 'MICEGothic Bold';" value="${svcNotice.siteNtTitle}" id="title">
                            </div>
                         </div>
                         <hr>
 
                         <!-- 글 내용 -->
                         <div class="row invoice-adress-info py-2">
-                           <div class="col-6 mt-1 from-info">
-                             ${svcNotice.siteNtCts}
+                           <div class="col-12 mt-1 from-info">
+                           	<textarea id="cts">${svcNotice.siteNtCts}</textarea>  
                            </div>
                         </div>
                         <hr>
                        
                         <div style="float: right;">
-                           <button type="button" class="btn btn-secondary">
+                           <button type="button" class="btn btn-secondary" id="deleteBtn">
                               <i class="feather icon-trash-2 mr-25 common-size"></i>삭제
                            </button>
-                           <a href="/main/" class="btn btn-secondary">
+                           <button class="btn btn-secondary" id="updateBtn">
                               <i class="feather icon-edit mr-25 common-size"></i>수정
-                           </a>
+                           </button>
                            <a href="/main/adminSvcNotice" class="btn btn-primary"><i
                               class="fa fa-reply-all mr-25 common-size"></i>목록</a>
                         </div>
@@ -87,10 +87,67 @@
    <!-- END: Content-->
 
    <!-- BEGIN: Page JS-->
-   <script
-      src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-invoice.js"></script>
+   <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-invoice.js"></script>
    <!-- END: Page JS-->
-
+	<script type="text/javascript">
+	$(document).ready(function() {
+		//여기 아래 부분
+		 ClassicEditor.create( document.querySelector( '#cts' ), {
+			    language: "ko",
+			    height : 500
+			  } )
+			  .then( contents => {
+			theEditor = contents; // #contents에 있는 값을 theEditor에 넣어놓는다.
+		} )
+	});
+	$("#updateBtn").on("click",function(){
+		
+		
+		let data = {"siteNtNum":"${svcNotice.siteNtNum}",
+					"siteNtTitle":$("#title").val(),
+					"siteNtCts":theEditor.getData()};
+		console.log(data);
+		$.ajax({
+			 type : 'post',           // 타입 (get, post, put 등등)
+			    url : '/main/adminSvcNoticeUpdate',           // 요청할 서버url
+			    contentType : "application/json; charset=utf-8",
+			    dataType : 'json',       // 데이터 타입 (html, xml, json, text 등등)
+			    data : JSON.stringify(data),
+			    beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+		            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+			  	},
+			    success : function(result) { // 결과 성공 콜백함수
+			        console.log(result);
+			    	if(result > 0){
+			    		window.location = document.referrer;
+			    	}else{
+			    		alert("에러");
+			    	}
+			    }
+		});
+	});
+	$("#deleteBtn").on("click",function(){
+		let data = {"siteNtNum":"${svcNotice.siteNtNum}"};	
+		$.ajax({
+			 type : 'post',           // 타입 (get, post, put 등등)
+			    url : '/main/adminSvcNoticeDelete',           // 요청할 서버url
+			    contentType : "application/json; charset=utf-8",
+			    dataType : 'json',       // 데이터 타입 (html, xml, json, text 등등)
+			    data : JSON.stringify(data),
+			    beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+		            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+			  	},
+			    success : function(result) { // 결과 성공 콜백함수
+			        console.log(result);
+			    	if(result > 0){
+			    		window.location = document.referrer;
+			    	}else{
+			    		alert("에러");
+			    	}
+			    }
+		});
+	});
+	</script>
 </body>
 <!-- END: Body-->
 

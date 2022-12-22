@@ -1,16 +1,12 @@
 package com.ipms.main.register.controller;
 
-import com.ipms.main.register.service.MemService;
-import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.login.vo.MemVO;
+import com.ipms.main.register.service.MemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -38,7 +34,6 @@ public class registerMemController {
     @GetMapping("/memRegisterCheck")
     public @ResponseBody int registerCheck(@RequestParam String memEmail) {
         int result = this.memService.registerCheck(memEmail);
-        log.info("중복체크:::" + result);
         return result;
     }
 
