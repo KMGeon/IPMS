@@ -1,7 +1,7 @@
-package com.ipms.proj.projQuit.service;
+package com.ipms.proj.projQuit.mapper;
 
 import com.ipms.main.newProject.vo.ProjVO;
 
-public interface ProjQuitService {
+public interface ProjQuitMapper {
     public int dropApplication(ProjVO projVO);
 }

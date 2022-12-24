@@ -1,9 +1,8 @@
 package com.ipms.main.mypage.inviteAndApply.controller;
 
 import com.ipms.main.mypage.inviteAndApply.service.InviteAndApplyService;
-import com.ipms.main.newProject.service.NewProjectService;
+import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
-import com.ipms.main.register.service.MemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -23,20 +25,12 @@ public class InviteAndApplyController {
     @Autowired
     InviteAndApplyService inviteAndApplyService;
     @Autowired
-    MemService memService;
-    @Autowired
-    NewProjectService newProjectService;
+    MyPageMapper myPageMapper;
 
     @RequestMapping(value = "/inviteAndApply", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public String inviteOrApply(Model model, Authentication authentication, ProjMemVO projMemVO) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String memCode = this.inviteAndApplyService.getMemCode(userDetails.getUsername());
-        List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(memCode);
-        List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(memCode);
-        model.addAttribute("memberWhoApplied", memberWhoApplied);
-        model.addAttribute("projectsApplied", projectsApplied);
-        return "main/mypage/inviteAndApply";
+       return this.inviteAndApplyService.inviteOrApply(model , authentication , projMemVO);
     }
 
 

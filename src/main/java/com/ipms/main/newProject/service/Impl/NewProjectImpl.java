@@ -2,12 +2,11 @@ package com.ipms.main.newProject.service.Impl;
 
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.login.vo.MemberAuth;
-import com.ipms.main.newProject.service.NewProjectService;
 import com.ipms.main.newProject.mapper.ProjMapper;
+import com.ipms.main.newProject.service.NewProjectService;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjTeamVO;
 import com.ipms.main.newProject.vo.ProjVO;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,7 @@ public class NewProjectImpl implements NewProjectService {
         if (sortation == 1) {
             // 프로젝트 생성 -> 프로젝트 팀 생성
             projTeamVO.setProjId(projVO.getProjId());
-            insertProTeam(projTeamVO);
+//            insertProTeam(projTeamVO);
 
             //프로젝트 생성 -> 프로젝트 팀 생성 -> 프로젝트 멤버 생성
             ProjMemVO vo = new ProjMemVO();
@@ -68,15 +67,5 @@ public class NewProjectImpl implements NewProjectService {
     public int projAuthInsert(MemberAuth memberAuth) {
         return this.projMapper.projAuthInsert(memberAuth);
 
-    }
-
-    @Override
-    public int authDelete(String memCoed) {
-        return this.projMapper.authDelete(memCoed);
-    }
-
-    @Override
-    public int insertProTeam(ProjTeamVO projTeamVO) {
-        return this.projMapper.insertProTeam(projTeamVO);
     }
 }

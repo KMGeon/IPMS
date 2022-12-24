@@ -1,5 +1,6 @@
 package com.ipms.main.newProject.vo;
 
+import com.ipms.main.login.vo.MemberAuth;
 import lombok.Data;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,5 +26,7 @@ public class ProjVO {
     private String projImgRoute;//파일 위치
     private String deleteWhth;//삭제여부
     private String memEmail;
+
     List<ProjMemVO> projMemVOList;
+    List<MemberAuth>memberAuthList;
 }

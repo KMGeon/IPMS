@@ -3,7 +3,6 @@ package com.ipms.main.newProject.mapper;
 import com.ipms.commons.pageHandler.Criteria;
 import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.newProject.vo.ProjMemVO;
-import com.ipms.main.newProject.vo.ProjTeamVO;
 import com.ipms.main.newProject.vo.ProjVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,8 +20,10 @@ public interface ProjMapper {
     public int insertProjMem(ProjMemVO projMemVO);
     public int projAuthInsert(MemberAuth memberAuth);
     public int authDelete(String memCoed);
-    public int insertProTeam(ProjTeamVO projTeamVO);
-    public int joinProject(ProjMemVO projMemVO);
+    public int joinProject(ProjVO projVO);
     String registrationStatus(ProjMemVO projMemVO);
+//    -----------------
+    public List<ProjVO>checkMyProject(String projId);
+    public List<ProjVO> checkMyProject2(ProjVO projVO);
 
 }

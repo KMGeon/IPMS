@@ -15,9 +15,7 @@ import java.io.IOException;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler, AuthenticationFailureHandler {
 
     @Override
-    public void handle(HttpServletRequest request,
-                       HttpServletResponse response, AccessDeniedException accessException)
-            throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessException) throws ServletException, IOException {
 
 
         log.info("=============================================================");

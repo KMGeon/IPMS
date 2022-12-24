@@ -28,4 +28,5 @@ public class MemVO {
     private String memImgRoute;//프로필
 
     private List<MemberAuth> memAuthList;//N+1
+    private  String projId;
 }

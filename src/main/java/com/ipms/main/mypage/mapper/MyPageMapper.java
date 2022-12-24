@@ -1,6 +1,7 @@
 package com.ipms.main.mypage.mapper;
 
 import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.main.newProject.vo.ProjVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface MyPageMapper {
     public     int approvalJoiningProject(ProjMemVO projMemVO);
     public     int companionProject(ProjMemVO projMemVO);
     public List<ProjMemVO>goingProjects(String memCode);
+     List<ProjVO> getCheckProjId(String memEmail);
 }

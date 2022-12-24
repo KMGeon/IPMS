@@ -7,8 +7,11 @@ import com.ipms.main.newProject.mapper.ProjMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -19,6 +22,18 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     MyPageMapper myPageMapper;
     @Autowired
     ProjMapper projMapper;
+    @Autowired
+    InviteAndApplyService inviteAndApplyService;
+
+    @Transactional
+    public String inviteOrApply(Model model, Authentication authentication, ProjMemVO projMemVO) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
+        List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
+        model.addAttribute("memberWhoApplied", memberWhoApplied);
+        model.addAttribute("projectsApplied", projectsApplied);
+        return "main/mypage/inviteAndApply";
+    }
 
     @Transactional
     public int approval(ProjMemVO projMemVO) {
