@@ -9,8 +9,8 @@
         FROM PROJ_MEM A
         WHERE A.MEM_CODE <> #{memCode}
           AND A.prtpt_aprov_code = 'N'
-          AND A.PROJ_ID IN   (SELECT B.PROJ_ID FROM MEMBER_AUTH B WHERE B.MEM_CODE = #{memCode} AND B.MEM_AUTH = 'ROLE_PROJECT_LEADER')
-
+          AND A.PROJ_ID IN
+              (SELECT B.PROJ_ID FROM MEMBER_AUTH B WHERE B.MEM_CODE = #{memCode} AND B.MEM_AUTH = 'ROLE_PROJECT_LEADER')
         ]]>
     </select>
 
@@ -27,8 +27,7 @@
     <select id="getCheckProjId" parameterType="string" resultType="com.ipms.main.newProject.vo.ProjVO">
         select proj_id
         from proj_mem
-        where mem_code = (select mem_code from mem where mem_email =#{memEmail})
-
+        where mem_code = (select mem_code from mem where mem_email = #{memEmail})
     </select>
 
 
@@ -59,16 +58,45 @@
 
     <select id="goingProjects" parameterType="com.ipms.main.newProject.vo.ProjMemVO"
             resultType="com.ipms.main.newProject.vo.ProjMemVO">
-        SELECT (SELECT M.MEM_NAME
-                FROM MEM M
-                WHERE M.MEM_CODE IN (SELECT A.MEM_CODE
-                                     FROM MEMBER_AUTH A
-                                     WHERE A.MEM_AUTH = 'ROLE_PROJECT_LEADER'
-                                       AND A.MEM_CODE = #{memCode})) as mem_name
-             , MEM_CODE
-             , PROJ_ID
+        SELECT DISTINCT(SELECT M.MEM_NAME
+                        FROM MEM M
+                        WHERE M.MEM_CODE IN (SELECT A.MEM_CODE
+                                             FROM MEMBER_AUTH A
+                                             WHERE A.MEM_AUTH = 'ROLE_PROJECT_LEADER'
+                                               AND A.MEM_CODE = #{memCode})) as mem_name
+                      , MEM_CODE
+                      , PROJ_ID
         FROM PROJ_MEM
         WHERE MEM_CODE = #{memCode}
           AND prtpt_aprov_code = 'Y'
+          AND DROPSTATUS = '0'
     </select>
+
+    <select id="invitationWaitingList" parameterType="com.ipms.main.newProject.vo.ProjMemVO"
+            resultType="com.ipms.main.newProject.vo.ProjMemVO">
+        select mem_code, proj_Id
+        from INVITATION
+        where mem_code = #{memCode}
+    </select>
+
+    <!-- 마이페이지 초대신청 -> 초대된 프로젝트 승인-->
+    <insert id="acceptInvitation" parameterType="com.ipms.main.newProject.vo.ProjMemVO">
+        INSERT INTO proj_mem (
+            mem_code,
+            proj_id,
+            PRTPT_APROV_CODE
+        ) VALUES (
+                     #{memCode},
+                   #{projId},
+                     'Y'
+                 )
+    </insert>
+
+    <!-- 마이페이지 초대신청 -> 초대된 프로젝트 거절-->
+    <delete id="refusalInvitation" parameterType="com.ipms.main.newProject.vo.ProjMemVO">
+        DELETE FROM invitation
+        WHERE
+            proj_id=#{projId}
+          AND MEM_CODE =#{memCode}
+    </delete>
 </mapper>

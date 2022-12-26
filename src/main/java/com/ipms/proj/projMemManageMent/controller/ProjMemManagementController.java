@@ -2,8 +2,10 @@ package com.ipms.proj.projMemManageMent.controller;
 
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.mypage.mapper.MyPageMapper;
+import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.proj.projMemManageMent.service.ProjMemManageMentService;
+import com.ipms.proj.projMemManageMent.vo.InvitationVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,25 +32,32 @@ public class ProjMemManagementController {
         ProjVO vo = new ProjVO();
         vo.setProjId(projId);
         vo.setMemCode(this.myPageMapper.getMemCode(userDetails.getUsername()));
-        log.info("중요한 데이터======================================"+vo.toString());
         model.addAttribute("dropMemList",this.projMemManageMentService.dropSupportPersonnel(vo));
         model.addAttribute("ProjectParticipantsMem",this.projMemManageMentService.projectPersonnelInquiry(vo));
         model.addAttribute("projectInvitationList",this.projMemManageMentService.projectInvitationList(vo));
+        model.addAttribute("unapprovedInvitationList", this.projMemManageMentService.unapprovedInvitationList(projId));//미승인 초대 리스트
         return "proj/memmanagement/projMemberManagement";
     }
 
     @RequestMapping(value = "/dropMemListProcessing", method = RequestMethod.POST)
     @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public int dropMemListProcessing(MemVO memVO) {
-        return this.dropMemListProcessing(memVO);
+        return this.projMemManageMentService.dropMemListProcessing(memVO);
     }
 
-//    @RequestMapping(value = "/inviteBtnProcess", method = RequestMethod.POST)
-//    @ResponseBody
-//    @ResponseStatus(HttpStatus.OK)
-//    public int invitationRequestButton(ProjVO projVO) {
-//        return this.projMemManageMentService.invitationRequestButton(projVO);
-//    }
+    @ResponseBody
+    @RequestMapping(value = "/sendInvitation" , method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public int sendInvitation(InvitationVO invitationVO ){
+        return this.projMemManageMentService.sendInvitation(invitationVO );
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/extractionParticipants" , method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public int extractionParticipants(ProjMemVO projMemVO){
+        return this.projMemManageMentService.extractionParticipants(projMemVO);
+    }
 }
 

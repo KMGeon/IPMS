@@ -9,10 +9,21 @@ import java.util.List;
 @Mapper
 public interface MyPageMapper {
     List<ProjMemVO> memberWhoApplied(String memCode);
-    List<ProjMemVO>projectsApplied(String memCode);
+
+    List<ProjMemVO> projectsApplied(String memCode);
+
     String getMemCode(String memEmail);
-    public     int approvalJoiningProject(ProjMemVO projMemVO);
-    public     int companionProject(ProjMemVO projMemVO);
-    public List<ProjMemVO>goingProjects(String memCode);
-     List<ProjVO> getCheckProjId(String memEmail);
+
+    public int approvalJoiningProject(ProjMemVO projMemVO);
+
+    public int companionProject(ProjMemVO projMemVO);
+
+    public List<ProjMemVO> goingProjects(String memCode);
+
+    List<ProjVO> getCheckProjId(String memEmail);
+
+    List<ProjMemVO> invitationWaitingList(String memCode);
+
+    int acceptInvitation(ProjMemVO projMemVO);
+    int refusalInvitation(ProjMemVO projMemVO);
 }

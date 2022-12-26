@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @RequestMapping("/main")
 @Slf4j
@@ -34,7 +31,7 @@ public class InviteAndApplyController {
     }
 
 
-    //프로젝트 승인(신청한 회원)
+    //신청한 회원-프로젝트 승인(신청한 회원)
     @RequestMapping(value = "/approveProject", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -42,11 +39,26 @@ public class InviteAndApplyController {
         return this.inviteAndApplyService.approval(projMemVO);
     }
 
-    //프로젝트 취소(신청한 회원)
+    //신청한 회원-프로젝트 취소(신청한 회원)
     @RequestMapping(value = "/projectCompanionship", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public int projectCompanionship(Authentication authentication, ProjMemVO projMemVO, RedirectAttributes rttr) {
         return this.inviteAndApplyService.companionProject(projMemVO);
+    }
+
+    //초대된 프로젝트 수락
+    @RequestMapping(value = "/acceptInvitation", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public int acceptInvitation(Authentication authentication, ProjMemVO projMemVO ) {
+        return this.inviteAndApplyService.acceptInvitation(projMemVO);
+    }
+    //초대된 프로젝트 거절
+    @RequestMapping(value = "/refusalInvitation", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public int refusalInvitation(Authentication authentication, ProjMemVO projMemVO) {
+        return this.inviteAndApplyService.refusalInvitation(projMemVO);
     }
 }

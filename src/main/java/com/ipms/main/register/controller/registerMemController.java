@@ -19,7 +19,7 @@ public class registerMemController {
 
     //회원가입
     @RequestMapping(value = "/signUpForm", method = RequestMethod.GET)
-    public String signUpFormGet( ) {
+    public String signUpFormGet() {
         return "main/login/signUpForm";
     }
 
@@ -31,17 +31,18 @@ public class registerMemController {
 //        memVO.setMemPasswd(encodePw);
         return this.memService.signUp(memVO);
     }
-    @GetMapping("/memRegisterCheck")
-    public @ResponseBody int registerCheck(@RequestParam String memEmail) {
-        int result = this.memService.registerCheck(memEmail);
-        return result;
+
+    @PostMapping("/memRegisterCheck")
+    @ResponseBody
+    public int registerCheck(@RequestParam String memEmail) {
+        return this.memService.registerCheck(memEmail);
     }
 
 
     @PostMapping(value = "/UpdatePwd")
     public String UpdatePwd(@ModelAttribute MemVO memVO) {
-        int result = this.memService.UpdatePwd(memVO);
-        if (result == 1) {
+
+        if (this.memService.UpdatePwd(memVO) == 1) {
             return "main/page";
         } else {
             return "redirect:/main/loginForm";

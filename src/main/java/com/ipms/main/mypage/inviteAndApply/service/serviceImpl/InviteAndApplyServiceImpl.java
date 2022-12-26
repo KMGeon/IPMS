@@ -30,10 +30,28 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
         List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
+        List<ProjMemVO>invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(this.myPageMapper.getMemCode(userDetails.getUsername()));
         model.addAttribute("memberWhoApplied", memberWhoApplied);
         model.addAttribute("projectsApplied", projectsApplied);
+        model.addAttribute("invitationWaitingList",invitationWaitingList);
         return "main/mypage/inviteAndApply";
     }
+
+    @Override
+    public List<ProjMemVO> invitationWaitingList(String memCode) {
+        return this.myPageMapper.invitationWaitingList(memCode);
+    }
+
+    @Override
+    public int acceptInvitation(ProjMemVO projMemVO) {
+        return this.myPageMapper.acceptInvitation(projMemVO);
+    }
+
+    @Override
+    public int refusalInvitation(ProjMemVO projMemVO) {
+        return this.myPageMapper.refusalInvitation(projMemVO);
+    }
+
 
     @Transactional
     public int approval(ProjMemVO projMemVO) {

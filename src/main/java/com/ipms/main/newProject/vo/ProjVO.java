@@ -25,7 +25,11 @@ public class ProjVO {
     private  Date projCreatnDate;//프로젝트 생성일자
     private String projImgRoute;//파일 위치
     private String deleteWhth;//삭제여부
+
+
     private String memEmail;
+    private  String memName;
+
 
     List<ProjMemVO> projMemVOList;
     List<MemberAuth>memberAuthList;

@@ -20,4 +20,9 @@ public interface InviteAndApplyService {
     public int approval(ProjMemVO projMemVO);
 
     public String inviteOrApply(Model model, Authentication authentication, ProjMemVO projMemVO) ;
+
+    List<ProjMemVO> invitationWaitingList(String memCode);
+
+    int acceptInvitation(ProjMemVO projMemVO);
+    int refusalInvitation(ProjMemVO projMemVO);
 }

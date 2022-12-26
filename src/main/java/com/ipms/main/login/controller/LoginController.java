@@ -37,18 +37,6 @@ public class LoginController {
     }
 
 
-    //로그인  POST
-//    @RequestMapping(value = "/loginPost", method = RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public String loginPost(@ModelAttribute MemVO memvo) {
-//        int success = this.loginService.loginMem(memvo);
-//        if (success == 1) {
-//            return "redirect:/main/loginMain";
-//        } else {
-//            return "redirect:/main/loginForm";
-//        }
-//    }
-
     //로그인 메인페이지
     @GetMapping("/loginMain")
     public String asd() {
