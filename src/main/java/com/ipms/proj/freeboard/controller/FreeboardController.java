@@ -48,11 +48,11 @@ public class FreeboardController {
 //	}
 
 	// 자유 게시판 리스트 - 페이징 처리
-	@GetMapping("/freeboard")
-	public String freeList(Model model, String pageNum, String amount) {
+	@GetMapping("/{projId}/freeboard")
+	public String freeList(Model model, String pageNum, String amount, @PathVariable String projId) {
 		
 		Criteria criteria;
-		
+		log.info("===================="+projId);
 		log.info("pageNum: {} , amount: {}", pageNum, amount);
 		
 		if(pageNum == null && amount == null) {
@@ -66,12 +66,11 @@ public class FreeboardController {
 			criteria = new Criteria(Integer.parseInt(pageNum), Integer.parseInt(amount));
 			log.info("두 번째 페이지 pageNum: {}", criteria.getPageNum());
 
-			
 		}
 		
 //		String memCode = "M002";
 //		criteria.setMemCode(memCode);
-		
+//		criteria.setProjId(projId);
 		List<FreeboardVO> freeSelect = freeboardservice.getFreePage(criteria);
 		
 		int total = freeboardservice.getTotal();

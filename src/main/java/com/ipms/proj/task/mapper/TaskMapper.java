@@ -2,11 +2,14 @@ package com.ipms.proj.task.mapper;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
+import com.ipms.main.login.vo.MemVO;
 import com.ipms.proj.task.vo.TaskVO;
 
 public interface TaskMapper {
 	
-	public List<TaskVO> HighWorkList();
+	public List<TaskVO> HighWorkList(TaskVO vo);
 
 	public TaskVO HighNum(TaskVO vo);
 	
@@ -25,4 +28,14 @@ public interface TaskMapper {
 	public int taskCtsUpdate(TaskVO vo);
 	
 	public int taskPgresUpdate(TaskVO vo);
+	
+	public int highTaskCtsUpdate(TaskVO vo);
+	
+	public String userNameSelect(MemVO vo);
+	
+	public String[] authCheck(TaskVO vo);
+	
+	public List<TaskVO> memberTaskList(TaskVO vo);
+	
+	public List<TaskVO> nullHighTaskId(TaskVO vo);
 }

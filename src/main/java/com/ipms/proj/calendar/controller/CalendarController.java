@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ipms.proj.calendar.service.CalendarService;
-import com.ipms.proj.calendar.vo.CalendarOriginVO;
 import com.ipms.proj.calendar.vo.CalendarVO;
 import com.ipms.proj.task.vo.TaskVO;
 
@@ -93,32 +92,22 @@ public class CalendarController {
 		return map;
 	}
 	
+	//data : {"indvSchdNum":11,"title":"ㅋㅋㄴ","indvSchdCts":"ㅎㅎㄴ","indvSchdStrtDate":"2022-12-28T06:00","indvSchdEndDate":"2022-12-28T06:30"}
 	@ResponseBody
 	@PostMapping("/updateSchd")
-	public Map<String, String> updateSchd(@RequestBody CalendarOriginVO calendarOriginVO){
-		/*
-		{
-	    "indvSchdNum": 11,
-	    "title": "ㅋㅇㅇ",
-	    "indvSchdCts": "ㅋㅇㅇ",
-	    "startdt": "2022-12-12",
-	    "enddt": "1899-11-30"	<- 이 자식 맘에 안들어
-		}
-		*/	
+	public Map<String, String> updateSchd(@RequestBody CalendarVO calendarVO){
+
 		log.info("수정!!!!!!");
-		log.info("calendarOriginVO : " + calendarOriginVO.toString());
+//		
+//		//CalendarVO(indvSchdNum=11, writer=null, projId=null, indvSchdTitle=null, 
+//		//indvSchdCts=ㅎㅎㅎㅎㅎ, deleteYn=null, indvSchdStrtDate=2022-12-28T06:00, indvSchdEndDate=2022-12-28T06:30, indvSchdWriteDate=null)
+//		calendarVO.setIndvSchdTitle(calendarVO.getTitle());
 		
-		CalendarVO calendarVO = new CalendarVO();
-		calendarVO.setIndvSchdNum(calendarOriginVO.getIndvSchdNum());
-		calendarVO.setIndvSchdTitle(calendarOriginVO.getTitle());
-		calendarVO.setIndvSchdCts(calendarOriginVO.getIndvSchdCts());
-		calendarVO.setIndvSchdStrtDate(calendarOriginVO.getStartdt());
-		calendarVO.setIndvSchdEndDate(calendarOriginVO.getEnddt());
+		//calendarVO : CalendarVO(indvSchdNum=11, writer=null, projId=null, indvSchdTitle=ㅋㅋㄴ, indvSchdCts=ㅎㅎㄴ, deleteYn=null, 
+		//title=ㅋㅋㄴ, indvSchdStrtDate=2022-12-28T06:00, indvSchdEndDate=2022-12-28T06:30, indvSchdWriteDate=null)
+		log.info("calendarVO : " + calendarVO.toString());
 		
-		//calendarVO : CalendarVO(indvSchdNum=2, writer=null, projId=null
-		//, indvSchdTitle=123ㅎㅎ, indvSchdCts=123ㅎㅎ, indvSchdStrtDate=Tue Dec 13 09:00:00 KST 2022
-		//, indvSchdEndDate=Thu Nov 30 09:00:00 KST 1899, indvSchdWriteDate=null, deleteYn=null)
-		log.info("calendarVO : " + calendarVO);
+		log.info("map : " + calendarVO);
 		
 		calendarservice.updateSchd(calendarVO);
 		
@@ -127,5 +116,6 @@ public class CalendarController {
 
 		return map;
 	}
+
 	
 }

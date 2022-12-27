@@ -48,7 +48,7 @@ public class NewProjectService {
             }
             return "main/page";
         }
-        return "main/loginFrom";
+        return "redirect:/main/page";
     }
 
     private int projInsert(ProjVO projVO) {

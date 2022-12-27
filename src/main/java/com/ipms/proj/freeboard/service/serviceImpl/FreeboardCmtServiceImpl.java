@@ -21,5 +21,23 @@ public class FreeboardCmtServiceImpl implements FreeboardCmtService{
 		
 		return this.freeboardCmtMapper.freeCmtList(freeboardVO);
 	}
+
+	@Override
+	public int insertFreeCmt(FreeboardCmtVO freeboardCmtVO) {
+		
+		return this.freeboardCmtMapper.insertFreeCmt(freeboardCmtVO);
+	}
+
+	@Override
+	public int deleteFreeCmt(FreeboardCmtVO freeboardCmtVO) {
+		
+		return this.freeboardCmtMapper.deleteFreeCmt(freeboardCmtVO);
+	}
+
+	@Override
+	public int updateFreeCmt(FreeboardCmtVO freeboardCmtVO) {
+		
+		return this.freeboardCmtMapper.updateFreeCmt(freeboardCmtVO);
+	}
 	
 }

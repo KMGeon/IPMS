@@ -2,19 +2,21 @@ package com.ipms.proj.task.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
 import com.ipms.proj.task.vo.TaskVO;
 
 public interface TaskService {
 	
-	public List<TaskVO> HighWorkList();
+	public List<TaskVO> HighWorkList(TaskVO vo, Authentication authentication);
 	
 	public TaskVO HighNum(TaskVO vo);
 	
-	public int lowWorkInsert(TaskVO vo);
+	public int lowWorkInsert(TaskVO vo , Authentication authentication);
 	
 	public TaskVO HighWorkNum(TaskVO vo);
 	
-	public int HighWorkInsert(TaskVO vo);
+	public int HighWorkInsert(TaskVO vo , Authentication authentication);
 	
 	public TaskVO WorkDetail(TaskVO vo);
 	
@@ -25,5 +27,9 @@ public interface TaskService {
 	public int taskCtsUpdate(TaskVO vo);
 	
 	public int taskPgresUpdate(TaskVO vo);
+	
+	public int highTaskCtsUpdate(TaskVO vo);
+	
+	public String[] authCheck(TaskVO vo);
 
 }

@@ -1,4 +1,4 @@
-package com.ipms.proj.dashboard.service;
+package com.ipms.proj.dashboard.mapper;
 
 import java.util.List;
 import java.util.Map;
@@ -10,18 +10,17 @@ import com.ipms.proj.noticeboard.vo.NoticeBoardVO;
 import com.ipms.proj.task.vo.TaskVO;
 import com.ipms.proj.wiki.vo.WikiVO;
 
-public interface DashboardService {
-
+public interface DashBoardMapper {
+	
 	public List<TaskVO> selectTask(Map<String, Object> map);
-
+	
 	public List<IssueVO> selectIssue(Map<String, Object> map);
-
+	
 	public List<NoticeBoardVO> selectProjNotice(Map<String, Object> map);
-
+	
 	public List<FreeboardVO> selectProjBoard(Map<String, Object> map);
-
+	
 	public List<ErdVO> selectErd(Map<String, Object> map);
-
+	
 	public List<WikiVO> selectWiki(Map<String, Object> map);
-
 }

@@ -25,5 +25,9 @@ public interface MyPageMapper {
     List<ProjMemVO> invitationWaitingList(String memCode);
 
     int acceptInvitation(ProjMemVO projMemVO);
+
     int refusalInvitation(ProjMemVO projMemVO);
+
+    int acceptInviteAndDelete(ProjMemVO projMemVO);
+
 }

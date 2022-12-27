@@ -1,5 +1,8 @@
 package com.ipms.main.admin.adminServiceCenter.adminSvcFaq.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +27,9 @@ public class AdminSvcFaqController {
 	AdminSvcFaqService adminSvcFaqService;
 	
 	@GetMapping("/adminSvcFaq")
-	public String adminSvcFaq(Model model,String pageNum,String amount) {
+	public String adminSvcFaq(Model model,String pageNum,String amount,String keyword,String category,String searchDate) {
 		Criteria criteria;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		
 		log.info("pageNum : {} , amount : {}", pageNum, amount);
 		
@@ -39,15 +43,35 @@ public class AdminSvcFaqController {
 			criteria = new Criteria(Integer.parseInt( pageNum ), Integer.parseInt( amount ));
 			log.info("두번쨰 페이지 pageNum : {}",criteria.getPageNum());
 		}
+		if(category == null || category.equals("")) {
+			criteria.setCategory("");
+		}else {
+			criteria.setCategory(category);
+		}
+		criteria.setKeyword("%"+keyword+"%");
+		Date date = null;
+		if(searchDate != null && !searchDate.isEmpty()) {			
+			try {
+				date = format.parse(searchDate);
+				criteria.setSearchDate(date);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			date = null;
+		}
+		
 		List<SvcNoticeVO> list = adminSvcFaqService.selectFaq(criteria);
 		
-		int total = adminSvcFaqService.total();
+		int total = adminSvcFaqService.total(criteria);
 		PageVO pageVO = new PageVO(criteria, total);
 		
+		model.addAttribute("date",searchDate);
+		model.addAttribute("keyword",keyword);
 		model.addAttribute("list",list);
 		model.addAttribute("pageVO",pageVO);
-		
-		return "main/admin/adminSvcFaq";
+		return "main/admin/adminSvcNotice";
 	}
 	
 }

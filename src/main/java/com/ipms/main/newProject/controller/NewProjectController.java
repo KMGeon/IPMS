@@ -61,7 +61,6 @@ public class NewProjectController {
         System.out.println("fileSize : " + fileSize);
 
         String safeFile = path + originFileName;
-
         try {
             mf.transferTo(new File(safeFile));
         } catch (IllegalStateException e) {
@@ -71,7 +70,6 @@ public class NewProjectController {
 
             e.printStackTrace();
         }
-
-        return "redirect:/";
+        return "redirect:/main/page";
     }
 }

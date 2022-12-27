@@ -12,4 +12,5 @@ public class SvcNoticeVO {
 	private Date siteNtWriteDate;
 	private String ntCtgCode;
 	private String deleteYn;
+	
 }

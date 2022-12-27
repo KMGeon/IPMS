@@ -9,7 +9,7 @@ public interface AdminSvcNoticeService {
 
 	public List<SvcNoticeVO> selectNotice(Criteria criteria);
 
-	public int total();
+	public int total(Criteria criteria);
 
 	public SvcNoticeVO SiteNoticeDetail(int siteNtNum);
 

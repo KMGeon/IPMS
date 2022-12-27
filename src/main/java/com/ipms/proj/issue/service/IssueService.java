@@ -2,6 +2,7 @@ package com.ipms.proj.issue.service;
 
 import java.util.List;
 
+import com.ipms.commons.ftp.vo.IntgAttachFileVO;
 import com.ipms.commons.vo.Criteria;
 import com.ipms.commons.vo.PageVO;
 import com.ipms.proj.issue.vo.IssueVO;
@@ -20,6 +21,10 @@ public interface IssueService {
 	
 	public IssueVO IssueDetail(IssueVO vo);
 	
-	public int MaxFileNumSelect(IssueVO vo);
+	public int MaxFileNumSelect();
+	
+	public int uploadFileInsert(IntgAttachFileVO vo);
+	
+	public String getMemCode(String userName);
 
 }

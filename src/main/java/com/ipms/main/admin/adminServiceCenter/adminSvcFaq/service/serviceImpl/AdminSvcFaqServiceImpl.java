@@ -22,7 +22,7 @@ public class AdminSvcFaqServiceImpl implements AdminSvcFaqService{
 	}
 	
 	@Override
-	public int total() {
-		return adminSvcFaqMapper.total();
+	public int total(Criteria criteria) {
+		return adminSvcFaqMapper.total(criteria);
 	}
 }

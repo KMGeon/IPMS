@@ -9,4 +9,10 @@ public interface FreeboardCmtMapper {
 
 	// 댓걸 select
 	public List<FreeboardCmtVO> freeCmtList(FreeboardVO freeboardVO);
+	
+	public int insertFreeCmt(FreeboardCmtVO freeboardCmtVO); // 댓글 등록
+	
+	public int updateFreeCmt(FreeboardCmtVO freeboardCmtVO); // 댓글 수정
+	
+	public int deleteFreeCmt(FreeboardCmtVO freeboardCmtVO); // 댓글 삭제
 }

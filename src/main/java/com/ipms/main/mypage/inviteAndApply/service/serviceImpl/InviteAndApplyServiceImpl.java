@@ -30,11 +30,20 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
         List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
-        List<ProjMemVO>invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(this.myPageMapper.getMemCode(userDetails.getUsername()));
+        List<ProjMemVO> invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(this.myPageMapper.getMemCode(userDetails.getUsername()));
         model.addAttribute("memberWhoApplied", memberWhoApplied);
         model.addAttribute("projectsApplied", projectsApplied);
-        model.addAttribute("invitationWaitingList",invitationWaitingList);
+        model.addAttribute("invitationWaitingList", invitationWaitingList);
         return "main/mypage/inviteAndApply";
+    }
+
+    @Transactional
+    public int acceptInvitationProcess(ProjMemVO projMemVO) {
+        if (this.myPageMapper.acceptInvitation(projMemVO) == 1) {
+            this.myPageMapper.acceptInviteAndDelete(projMemVO);
+            return 1;
+        }
+        return 0;
     }
 
     @Override
@@ -50,6 +59,11 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     @Override
     public int refusalInvitation(ProjMemVO projMemVO) {
         return this.myPageMapper.refusalInvitation(projMemVO);
+    }
+
+    @Override
+    public int acceptInviteAndDelete(ProjMemVO projMemVO) {
+        return this.myPageMapper.acceptInviteAndDelete(projMemVO);
     }
 
 

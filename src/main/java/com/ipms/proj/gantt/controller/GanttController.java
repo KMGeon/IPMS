@@ -28,13 +28,13 @@ public class GanttController {
 		return "proj/gantt/gantt";
 	}
 	
-	@ResponseBody
-	@PostMapping("/ganttSelectData")
-	public List<TaskVO> ganttSelectData(){
-		
-		List<TaskVO> taskData = taskService.HighWorkList();
-		
-		return taskData;
-	}
+//	@ResponseBody
+//	@PostMapping("/ganttSelectData")
+//	public List<TaskVO> ganttSelectData(){
+//		
+//		List<TaskVO> taskData = taskService.HighWorkList();
+//		
+//		return taskData;
+//	}
 	
 }

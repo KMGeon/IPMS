@@ -22,8 +22,8 @@ public class AdminSvcNoticeServiceImpl implements AdminSvcNoticeService{
 	}
 	
 	@Override
-	public int total() {
-		return adminSvcNoticeMapper.total();
+	public int total(Criteria criteria) {
+		return adminSvcNoticeMapper.total(criteria);
 	}
 	
 	@Override

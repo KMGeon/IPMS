@@ -16,17 +16,18 @@ public class CalendarVO {
 	private String projId;
 	private String indvSchdTitle;
 	private String indvSchdCts;
+	private String deleteYn;
+//	private String title;
 	
 //	JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date indvSchdStrtDate;
+//	DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	private String indvSchdStrtDate;
 	
 //	JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date indvSchdEndDate;
+//	DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	private String indvSchdEndDate;
 	
 //	JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date indvSchdWriteDate;
-	private String deleteYn;
 }

@@ -15,24 +15,22 @@ import java.io.IOException;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler, AuthenticationFailureHandler {
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessException) throws ServletException, IOException {
+    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+        log.info("=========================================================================================");
+        log.info("==============실패해서 accessDeniedHandler왔음====================");
+        log.info("=========================================================================================");
+        log.info("msg",e.getMessage());
+        httpServletResponse.sendRedirect("/main/loginForm");
+    }
 
-
+    @Override
+    public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
         log.info("=============================================================");
         log.info("=============================================================");
         log.error("===========해당  권한에 문제가 있습니다. 다시 확인하세요.============");
         log.info("=============================================================");
         log.info("=============================================================");
-
-
-        response.sendRedirect("/main/page");
-    }
-
-    @Override
-    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        log.info("=========================================================================================");
-        log.info("==============실패해서 accessDeniedHandler왔음====================");
-        log.info("=========================================================================================");
-        httpServletResponse.sendRedirect("/main/loginForm");
+        log.info(e.getMessage());
+        httpServletResponse.sendRedirect("/main/page");
     }
 }

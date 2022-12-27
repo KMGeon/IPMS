@@ -9,5 +9,5 @@ public interface AdminSvcFaqMapper {
 	
 	public List<SvcNoticeVO> selectFaq(Criteria criteria);
 	
-	public int total();
+	public int total(Criteria criteria);
 }

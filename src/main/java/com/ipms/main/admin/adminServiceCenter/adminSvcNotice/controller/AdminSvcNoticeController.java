@@ -1,5 +1,8 @@
 package com.ipms.main.admin.adminServiceCenter.adminSvcNotice.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ipms.commons.vo.Criteria;
@@ -27,9 +31,11 @@ public class AdminSvcNoticeController {
 	@Autowired
 	AdminSvcNoticeService adminSvcNoticeService;
 	
+	
 	@GetMapping("/adminSvcNotice")
-	public String adminSvcNotice(Model model,String pageNum,String amount) {
+	public String adminSvcNotice(Model model,String pageNum,String amount,String keyword,String category,String searchDate) {
 		Criteria criteria;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		
 		log.info("pageNum : {} , amount : {}", pageNum, amount);
 		
@@ -43,11 +49,32 @@ public class AdminSvcNoticeController {
 			criteria = new Criteria(Integer.parseInt( pageNum ), Integer.parseInt( amount ));
 			log.info("두번쨰 페이지 pageNum : {}",criteria.getPageNum());
 		}
+		if(category == null || category.equals("")) {
+			criteria.setCategory("");
+		}else {
+			criteria.setCategory(category);
+		}
+		criteria.setKeyword("%"+keyword+"%");
+		Date date = null;
+		if(searchDate != null && !searchDate.isEmpty()) {			
+			try {
+				date = format.parse(searchDate);
+				criteria.setSearchDate(date);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			date = null;
+		}
+		
 		List<SvcNoticeVO> list = adminSvcNoticeService.selectNotice(criteria);
 		
-		int total = adminSvcNoticeService.total();
+		int total = adminSvcNoticeService.total(criteria);
 		PageVO pageVO = new PageVO(criteria, total);
 		
+		model.addAttribute("date",searchDate);
+		model.addAttribute("keyword",keyword);
 		model.addAttribute("list",list);
 		model.addAttribute("pageVO",pageVO);
 		return "main/admin/adminSvcNotice";

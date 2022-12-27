@@ -21,23 +21,19 @@ import java.util.List;
 @Slf4j
 public class OngoingProjectController {
 
-@Autowired
+	@Autowired
 	OnGoingProjectService onGoingProjectService;
-@Autowired
-InviteAndApplyService inviteAndApplyService;
+	@Autowired
+	InviteAndApplyService inviteAndApplyService;
 
 	@GetMapping("/ongoing")
 	@ResponseStatus(HttpStatus.CREATED)
 	public String ongoing(Model model, Authentication authentication) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		String memCode = this.inviteAndApplyService.getMemCode(userDetails.getUsername());
-		List<ProjMemVO>list = this.onGoingProjectService.goingProjects(memCode);
+		List<ProjMemVO> list = this.onGoingProjectService.goingProjects(memCode);
 		model.addAttribute("list", list);
 		return "main/mypage/ongoingProject";
 	}
-	
+
 }
-
-
-	
-	

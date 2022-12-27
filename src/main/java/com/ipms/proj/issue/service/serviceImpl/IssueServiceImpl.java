@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ipms.commons.ftp.vo.IntgAttachFileVO;
 import com.ipms.commons.vo.Criteria;
 import com.ipms.proj.issue.mapper.IsuueMapper;
 import com.ipms.proj.issue.service.IssueService;
@@ -53,9 +54,19 @@ public class IssueServiceImpl implements IssueService {
 	}
 
 	@Override
-	public int MaxFileNumSelect(IssueVO vo) {
+	public int MaxFileNumSelect() {
 		
-		return this.issuemapper.MaxFileNumSelect(vo);
+		return this.issuemapper.MaxFileNumSelect();
+	}
+
+	@Override
+	public int uploadFileInsert(IntgAttachFileVO vo) {
+		return this.issuemapper.uploadFileInsert(vo);
+	}
+
+	@Override
+	public String getMemCode(String userName) {
+		return this.issuemapper.getMemCode(userName);
 	}
 	
 	

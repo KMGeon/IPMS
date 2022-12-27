@@ -21,5 +21,6 @@ public class IssueVO {
 	private String deleteYn; // 삭제 여부
 	private String writer; // 작성자
 	private String taskTitle; // 일감 타이틀
+	private String filePath; // 파일 경로
 
 }

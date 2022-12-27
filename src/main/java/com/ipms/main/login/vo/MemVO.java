@@ -1,5 +1,6 @@
 package com.ipms.main.login.vo;
 
+import com.ipms.main.register.vo.TechStackVO;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -28,5 +29,6 @@ public class MemVO {
     private String memImgRoute;//프로필
 
     private List<MemberAuth> memAuthList;//N+1
-    private  String projId;
+    private List<TechStackVO> techStackVOList;
+    private String projId;
 }

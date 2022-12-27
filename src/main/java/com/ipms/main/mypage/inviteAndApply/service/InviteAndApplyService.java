@@ -25,4 +25,6 @@ public interface InviteAndApplyService {
 
     int acceptInvitation(ProjMemVO projMemVO);
     int refusalInvitation(ProjMemVO projMemVO);
+    int acceptInviteAndDelete(ProjMemVO projMemVO);
+    public int acceptInvitationProcess(ProjMemVO projMemVO);
 }
