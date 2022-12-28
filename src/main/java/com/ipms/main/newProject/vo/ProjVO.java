@@ -29,7 +29,7 @@ public class ProjVO {
 
     private String memEmail;
     private  String memName;
-
+    private String keyword;
 
     List<ProjMemVO> projMemVOList;
     List<MemberAuth>memberAuthList;

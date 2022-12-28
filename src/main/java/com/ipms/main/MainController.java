@@ -8,12 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
-@RequestMapping("/main")
 @Controller
+@RequestMapping(value = "/main")
 public class MainController {
 	@GetMapping("/page")
 	public String hello(Authentication auth, Model model) {
-
 		return "main/page";
+	}
+
+	@GetMapping("/test")
+	public  String test(){
+		return "test";
 	}
 }

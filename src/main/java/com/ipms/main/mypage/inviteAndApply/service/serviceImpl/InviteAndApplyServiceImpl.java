@@ -5,6 +5,7 @@ import com.ipms.main.mypage.inviteAndApply.service.InviteAndApplyService;
 import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.mapper.ProjMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.proj.projMemManageMent.vo.InvitationVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -30,42 +31,36 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
         List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
-        List<ProjMemVO> invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(this.myPageMapper.getMemCode(userDetails.getUsername()));
+        List<InvitationVO> invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(this.myPageMapper.getMemCode(userDetails.getUsername()));
+        log.info("===============" + memberWhoApplied);
+        log.info("===============" + projectsApplied);
+        log.info("===============" + invitationWaitingList);
         model.addAttribute("memberWhoApplied", memberWhoApplied);
         model.addAttribute("projectsApplied", projectsApplied);
         model.addAttribute("invitationWaitingList", invitationWaitingList);
         return "main/mypage/inviteAndApply";
     }
 
-    @Transactional
-    public int acceptInvitationProcess(ProjMemVO projMemVO) {
-        if (this.myPageMapper.acceptInvitation(projMemVO) == 1) {
-            this.myPageMapper.acceptInviteAndDelete(projMemVO);
-            return 1;
-        }
-        return 0;
-    }
 
     @Override
-    public List<ProjMemVO> invitationWaitingList(String memCode) {
+    public List<InvitationVO> invitationWaitingList(String memCode) {
         return this.myPageMapper.invitationWaitingList(memCode);
     }
 
     @Override
-    public int acceptInvitation(ProjMemVO projMemVO) {
-        return this.myPageMapper.acceptInvitation(projMemVO);
+    public int invitationApproved(ProjMemVO projMemVO) {
+        return this.myPageMapper.invitationApproved(projMemVO);
     }
 
     @Override
-    public int refusalInvitation(ProjMemVO projMemVO) {
-        return this.myPageMapper.refusalInvitation(projMemVO);
+    public int invitedMemberApproval(ProjMemVO projMemVO) {
+        return this.myPageMapper.invitedMemberApproval(projMemVO);
     }
 
     @Override
-    public int acceptInviteAndDelete(ProjMemVO projMemVO) {
-        return this.myPageMapper.acceptInviteAndDelete(projMemVO);
+    public int refusalInvitation(InvitationVO invitationVO) {
+        return this.myPageMapper.refusalInvitation(invitationVO);
     }
-
 
     @Transactional
     public int approval(ProjMemVO projMemVO) {
@@ -94,12 +89,6 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     public String getMemCode(String memEmail) {
         return this.myPageMapper.getMemCode(memEmail);
     }
-
-    @Override
-    public int approvalJoiningProject(ProjMemVO projMemVO) {
-        return this.myPageMapper.approvalJoiningProject(projMemVO);
-    }
-
 
     @Override
     public int companionProject(ProjMemVO projMemVO) {

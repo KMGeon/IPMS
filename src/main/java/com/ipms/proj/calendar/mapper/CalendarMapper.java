@@ -7,9 +7,9 @@ import com.ipms.proj.task.vo.TaskVO;
 
 public interface CalendarMapper {
 
-	public List<CalendarVO> selectSchd(); // 리스트 뽑기
+	public List<CalendarVO> selectSchd(CalendarVO calendarVO); // 리스트 뽑기
 	
-	public List<TaskVO> selectT();	// 일감 리스트 뽑기
+	public List<TaskVO> selectT(CalendarVO calendarVO);	// 일감 리스트 뽑기
 	
 	public int insertSchd(CalendarVO calendarVO);	// 일정 등록
 	

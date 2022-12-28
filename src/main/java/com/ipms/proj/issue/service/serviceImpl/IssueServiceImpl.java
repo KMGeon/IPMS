@@ -68,6 +68,11 @@ public class IssueServiceImpl implements IssueService {
 	public String getMemCode(String userName) {
 		return this.issuemapper.getMemCode(userName);
 	}
+
+	@Override
+	public String getUserName(String userEmail) {
+		return this.issuemapper.getUserName(userEmail);
+	}
 	
 	
 

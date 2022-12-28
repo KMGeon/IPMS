@@ -48,7 +48,7 @@
 							, PROJ_BD_TITLE
 							, PROJ_BD_WRITE_DATE
                         FROM PROJ_BD
-                        WHERE PROJ_ID = 'P003' AND DELETE_YN = 'n'
+                        WHERE DELETE_YN = 'n'
                         ORDER BY PROJ_BD_ID ASC) A )
             WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
 		]]>
@@ -60,7 +60,6 @@
 		
 		SELECT COUNT(PROJ_BD_ID)
 		FROM PROJ_BD
-		WHERE PROJ_ID = 'P003'
 		
 	</select>
 
@@ -83,12 +82,12 @@
 		</selectKey>
 
 		INSERT INTO PROJ_BD(PROJ_BD_ID, WRITER, PROJ_ID, PROJ_BD_TITLE, PROJ_BD_CTS, PROJ_BD_WRITE_DATE, DELETE_YN)
-		VALUES(#{projBdId},#{writer},'P003',#{projBdTitle},#{projBdCts},sysdate,'n')
+		VALUES(#{projBdId},#{writer},#{projId},#{projBdTitle},#{projBdCts},sysdate,'n')
 	</insert>
 	
 	<update id="updateFree" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO">
 		UPDATE PROJ_BD
-		SET PROJ_BD_ID=#{projBdId}, WRITER=#{writer}, PROJ_ID='P003', PROJ_BD_TITLE = #{projBdTitle}, PROJ_BD_CTS = #{projBdCts},
+		SET PROJ_BD_ID=#{projBdId}, WRITER=#{writer}, PROJ_ID=#{projId}, PROJ_BD_TITLE = #{projBdTitle}, PROJ_BD_CTS = #{projBdCts},
 			PROJ_BD_WRITE_DATE=sysdate, DELETE_YN='n'
 		WHERE PROJ_BD_ID = #{projBdId}
 	</update>

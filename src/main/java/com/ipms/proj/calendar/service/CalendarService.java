@@ -7,9 +7,9 @@ import com.ipms.proj.task.vo.TaskVO;
 
 public interface CalendarService {
 	
-	public List<CalendarVO> selectSchd();	// 개인 일정 리스트
+	public List<CalendarVO> selectSchd(CalendarVO calendarVO);	// 개인 일정 리스트
 	
-	public List<TaskVO> selectT();	// 일감 리스트
+	public List<TaskVO> selectT(CalendarVO calendarVO);	// 일감 리스트
 	
 	public int insertSchd(CalendarVO calendarVO);	// 등록
 	

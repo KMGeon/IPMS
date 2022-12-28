@@ -31,5 +31,7 @@ public interface TaskService {
 	public int highTaskCtsUpdate(TaskVO vo);
 	
 	public String[] authCheck(TaskVO vo);
+	
+	public int hiworkDelBefor(TaskVO vo);
 
 }

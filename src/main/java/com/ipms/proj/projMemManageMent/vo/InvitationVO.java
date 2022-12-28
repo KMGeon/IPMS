@@ -8,4 +8,6 @@ public class InvitationVO {
     private String memCode;//회원코드
     private String projId;//프로젝트 아이디
     private String invttnot;//초대여부
+
+    private  String projName;
 }

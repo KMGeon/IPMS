@@ -25,4 +25,6 @@ public interface IsuueMapper {
 	public int uploadFileInsert(IntgAttachFileVO vo);
 	
 	public String getMemCode(String userName);
+	
+	public String getUserName(String userEmail);
 }

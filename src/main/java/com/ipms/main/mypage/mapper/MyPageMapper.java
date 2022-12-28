@@ -2,6 +2,7 @@ package com.ipms.main.mypage.mapper;
 
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
+import com.ipms.proj.projMemManageMent.vo.InvitationVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,12 +23,12 @@ public interface MyPageMapper {
 
     List<ProjVO> getCheckProjId(String memEmail);
 
-    List<ProjMemVO> invitationWaitingList(String memCode);
+    List<InvitationVO> invitationWaitingList(String memCode);//초대된 프로젝트
 
-    int acceptInvitation(ProjMemVO projMemVO);
+    int invitationApproved(ProjMemVO projMemVO);//초대 승인1
 
-    int refusalInvitation(ProjMemVO projMemVO);
+    int invitedMemberApproval(ProjMemVO projMemVO);//초대 승인2
 
-    int acceptInviteAndDelete(ProjMemVO projMemVO);
+    int refusalInvitation(InvitationVO invitationVO);//초대 거절
 
 }

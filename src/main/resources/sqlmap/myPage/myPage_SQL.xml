@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.main.mypage.mapper.MyPageMapper">
+
+
     <!-- 신청한 회원 조회  com.ipms.main.mypage.mapper.MyPageMapper.memberWhoApplied-->
     <select id="memberWhoApplied" parameterType="com.ipms.main.newProject.vo.ProjMemVO"
             resultType="com.ipms.main.newProject.vo.ProjMemVO">
         <![CDATA[
-        SELECT A.MEM_CODE, A.PROJ_ID
+        SELECT A.MEM_CODE, A.PROJ_ID , (SELECT B.MEM_NAME FROM MEM B WHERE A.MEM_CODE = B.MEM_CODE) as memName
         FROM PROJ_MEM A
         WHERE A.MEM_CODE <> #{memCode}
           AND A.prtpt_aprov_code = 'N'
@@ -64,39 +66,62 @@
                                              FROM MEMBER_AUTH A
                                              WHERE A.MEM_AUTH = 'ROLE_PROJECT_LEADER'
                                                AND A.MEM_CODE = #{memCode})) as mem_name
-                      , MEM_CODE
-                      , PROJ_ID
-        FROM PROJ_MEM
-        WHERE MEM_CODE = #{memCode}
-          AND prtpt_aprov_code = 'Y'
-          AND DROPSTATUS = '0'
+                      , A.MEM_CODE
+                      , A.PROJ_ID
+                      ,(SELECT P.PROJ_NAME FROM PROJ P WHERE P.PROJ_ID = A.PROJ_ID) as proj_name
+        FROM PROJ_MEM A
+        WHERE A.MEM_CODE = #{memCode}
+          AND A.prtpt_aprov_code = 'Y'
+          AND A.DROPSTATUS = '0'
     </select>
 
-    <select id="invitationWaitingList" parameterType="com.ipms.main.newProject.vo.ProjMemVO"
-            resultType="com.ipms.main.newProject.vo.ProjMemVO">
-        select mem_code, proj_Id
-        from INVITATION
-        where mem_code = #{memCode}
+
+    <!-- 마이페이지 초대된 프로젝트
+     com.ipms.main.mypage.mapper.MyPageMapper.invitationWaitingList-->
+    <select id="invitationWaitingList" parameterType="string"
+            resultType="com.ipms.proj.projMemManageMent.vo.InvitationVO">
+
+        SELECT
+            a.INVITE_NUM,
+            a.MEM_CODE,
+            a.PROJ_ID,
+            a.INVTTNOT,
+            (select b.proj_name from proj b where a.proj_id = b.proj_id) as proj_name
+        FROM INVITATION a
+        WHERE a.INVTTNOT='1'
+          AND a.MEM_CODE=#{memCode}
     </select>
 
-    <!-- 마이페이지 초대신청 -> 초대된 프로젝트 승인-->
-    <insert id="acceptInvitation" parameterType="com.ipms.main.newProject.vo.ProjMemVO">
+    <!-- 마이페이지 초대신청 -> 초대된 프로젝트 승인 part.1-->
+    <update id="invitationApproved"    parameterType="com.ipms.main.newProject.vo.ProjMemVO">
+        UPDATE invitation
+        SET
+            INVTTNOT = '0'
+        WHERE
+            mem_code = #{memCode}
+          AND proj_id = #{projId}
+          AND invttnot = '1'
+    </update>
+
+    <!-- 마이페이지 초대신청 -> 초대된 프로젝트 승인 part.2-->
+    <insert id="invitedMemberApproval"  parameterType="com.ipms.main.newProject.vo.ProjMemVO">
         INSERT INTO proj_mem (
             mem_code,
             proj_id,
-            PRTPT_APROV_CODE
+            prtpt_aprov_code
         ) VALUES (
                      #{memCode},
-                   #{projId},
+                     #{projId},
                      'Y'
                  )
     </insert>
 
-    <!-- 마이페이지 초대신청 -> 초대된 프로젝트 거절-->
-    <delete id="refusalInvitation" parameterType="com.ipms.main.newProject.vo.ProjMemVO">
+
+    <!-- 마이페이지 초대신청 -> 초대된 프로젝트 삭제-->
+    <delete id="refusalInvitation" parameterType="com.ipms.proj.projMemManageMent.vo.InvitationVO">
         DELETE FROM invitation
         WHERE
-            proj_id=#{projId}
-          AND MEM_CODE =#{memCode}
+            mem_code = #{memCode}
+          AND proj_id =#{projId}
     </delete>
 </mapper>

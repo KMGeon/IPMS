@@ -52,7 +52,7 @@ public class NewProjectController {
         String src = mRequest.getParameter("src");
         MultipartFile mf = mRequest.getFile("file");
 
-        String path = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\resources\\upload";
+        String path = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\\resources\\upload\\img\\";
 
         String originFileName = mf.getOriginalFilename(); // 원본 파일 명
         long fileSize = mf.getSize(); // 파일 사이즈

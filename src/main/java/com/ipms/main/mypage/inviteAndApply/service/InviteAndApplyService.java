@@ -1,6 +1,7 @@
 package com.ipms.main.mypage.inviteAndApply.service;
 
 import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.proj.projMemManageMent.vo.InvitationVO;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 
@@ -13,18 +14,18 @@ public interface InviteAndApplyService {
 
     public String getMemCode(String memEmail);
 
-    public int approvalJoiningProject(ProjMemVO projMemVO);
-
     public int companionProject(ProjMemVO projMemVO);
 
     public int approval(ProjMemVO projMemVO);
 
     public String inviteOrApply(Model model, Authentication authentication, ProjMemVO projMemVO) ;
 
-    List<ProjMemVO> invitationWaitingList(String memCode);
+    List<InvitationVO> invitationWaitingList(String memCode);
 
-    int acceptInvitation(ProjMemVO projMemVO);
-    int refusalInvitation(ProjMemVO projMemVO);
-    int acceptInviteAndDelete(ProjMemVO projMemVO);
-    public int acceptInvitationProcess(ProjMemVO projMemVO);
+    int invitationApproved(ProjMemVO projMemVO);//초대 승인1
+
+    int invitedMemberApproval(ProjMemVO projMemVO);//초대 승인2
+
+    int refusalInvitation(InvitationVO invitationVO);//초대 거절
+
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.issue.mapper.IssueCommentMapper">
+	<insert id="HighCmtInsert" parameterType="com.ipms.proj.issue.vo.IssueCommentVO" >
+		
+		<selectKey keyProperty="issueCmtId,lowRgstWhth" order="BEFORE" resultType="com.ipms.proj.issue.vo.IssueCommentVO">
+			SELECT  
+				NVL(MAX(TO_NUMBER(ISSUE_CMT_ID))+1,1) as ISSUE_CMT_ID
+			   ,NVL(MAX(TO_NUMBER(LOW_RGST_WHTH))+1,1) as LOW_RGST_WHTH
+        	FROM ISSUE_CMT
+		</selectKey>
+		INSERT INTO ISSUE_CMT(
+				  ISSUE_CMT_ID
+				, ISSUE_ID
+				, HIGH_CMT_ID
+				, ISSUE_CMT_CTS
+				, ISSUE_CMT_WRITE_DATE
+				, LOW_RGST_WHTH
+				, DELETE_YN
+				, WRITER
+			)
+			VALUES(
+				#{issueCmtId}
+				,#{issueId}
+				,null
+				,#{issueCmtCts}
+				,sysdate
+				,#{lowRgstWhth}
+				,'n'
+				,#{writer}
+			)
+		
+	</insert>
+	
+	<select id="getMemname" parameterType="string" resultType="string">
+		SELECT MEM_NAME
+		FROM MEM
+		WHERE MEM_EMAIL = #{memEmail}
+		
+	</select>
+	
+	<select id="getcmtList" parameterType="com.ipms.proj.issue.vo.IssueCommentVO" resultType="com.ipms.proj.issue.vo.IssueCommentVO">
+		SELECT 
+			  ISSUE_CMT_ID
+			, ISSUE_ID
+			, HIGH_CMT_ID
+			, ISSUE_CMT_CTS
+			, ISSUE_CMT_WRITE_DATE
+			, LOW_RGST_WHTH
+			, DELETE_YN
+			, WRITER
+		FROM ISSUE_CMT
+		WHERE ISSUE_ID = #{issueId}
+	</select>
+</mapper>

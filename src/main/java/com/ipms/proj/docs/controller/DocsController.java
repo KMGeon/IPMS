@@ -184,31 +184,31 @@ public class DocsController {
 			
 	}
 		
-		// 삭제
-		@ResponseBody
-		@PostMapping("/removeFile")
-		public boolean removeFiles(@RequestParam("path") String path, @RequestParam("fileName[]") String[] fileName) {
+	// 삭제
+	@ResponseBody
+	@PostMapping("/removeFile")
+	public boolean removeFiles(@RequestParam("path") String path, @RequestParam("fileName[]") String[] fileName) {
+		
+		String savePath = "";
+		
+		if(StringUtils.isNotBlank(path)) {
+			savePath += path;
 			
-			String savePath = "";
-			
-			if(StringUtils.isNotBlank(path)) {
-				savePath += path;
-				
-				log.info("DocsTestController - removeFiles -> path : {}", path);
-				log.info("DocsTestController - removeFiles -> savePath : {}", savePath);
-			}
-			
-			boolean result = true;
-			
-			for(String name : fileName) {
-				log.info("DocsTestController - removeFiles -> name : {}", name);
-				result = FtpUtil.removeFiles(savePath, name);
-				
-				if(!result) {
-					break;
-				}
-			}
-			
-			return result;
+			log.info("DocsTestController - removeFiles -> path : {}", path);
+			log.info("DocsTestController - removeFiles -> savePath : {}", savePath);
 		}
+		
+		boolean result = true;
+		
+		for(String name : fileName) {
+			log.info("DocsTestController - removeFiles -> name : {}", name);
+			result = FtpUtil.removeFiles(savePath, name);
+			
+			if(!result) {
+				break;
+			}
+		}
+		
+		return result;
+	}
 }

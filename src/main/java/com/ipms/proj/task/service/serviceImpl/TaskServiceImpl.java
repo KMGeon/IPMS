@@ -87,12 +87,14 @@ public class TaskServiceImpl implements TaskService {
 			}
 		}	
 		
+		log.info(" 셀렉트 전 vo : " + vo.toString());
 		//일반 멤버일 경우 셀렉
 		List<TaskVO> memberTask = this.taskMapper.memberTaskList(vo);
 		List<TaskVO> nullTask = this.taskMapper.nullHighTaskId(vo); // projId 넘겨야됨
 		
-		for(TaskVO nt: nullTask) {
-			memberTask.add(nt);
+		for(TaskVO nt: memberTask) {
+			log.info("nt : --> : " + nt.toString());
+			nullTask.add(nt);
 		}
 		
 		log.info("memberTask --> : " + memberTask.toString());
@@ -100,7 +102,7 @@ public class TaskServiceImpl implements TaskService {
 		
 		
 		
-		return memberTask;
+		return nullTask;
 	}
 
 	@Override
@@ -158,6 +160,11 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public String[] authCheck(TaskVO vo) {
 		return this.taskMapper.authCheck(vo);
+	}
+
+	@Override
+	public int hiworkDelBefor(TaskVO vo) {
+		return this.taskMapper.hiworkDelBefor(vo);
 	}
 
 }

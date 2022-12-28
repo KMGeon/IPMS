@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.main.newProject.mapper.ProjMapper">
+
+<sql id="criteria">
+    <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+        <foreach item='type' collection="typeArr">
+            <trim prefix="OR">
+                <choose>
+                    <when test="type == 'T'.toString()">
+                        proj_id like '%'||#{keyword}||'%'
+                    </when>
+                    <when test="type == 'C'.toString()">
+                        proj_name like '%'||#{keyword}||'%'
+                    </when>
+                </choose>
+            </trim>
+        </foreach>
+    </trim>
+</sql>
+
     <!--전체 프로젝트  com.ipms.main.newProject.mapper.ProjMapper.listProj-->
     <select id="listProj" resultType="com.ipms.main.newProject.vo.ProjMemVO">
         SELECT A.PROJ_ID,
@@ -15,15 +33,69 @@
                                 AND B.prtpt_aprov_code = 'Y'
     </select>
 
+    <select id="getListPage" resultType="com.ipms.main.newProject.vo.ProjVO">
+        <![CDATA[
+  select
+    proj_id,
+               mem_code,
+               proj_name,
+               proj_strt_date,
+               proj_end_date,
+               proj_smry,
+               proj_opn_whth,
+               proj_creatn_date,
+               proj_img_route,
+               delete_whth
+  from
+      (
+      select /*+INDEX_DESC(tbl_board pk_board) */
+        rownum rn, proj_id,
+               mem_code,
+               proj_name,
+               proj_strt_date,
+               proj_end_date,
+               proj_smry,
+               proj_opn_whth,
+               proj_creatn_date,
+               proj_img_route,
+               delete_whth
+      from
+        proj
+      where
+  ]]>
+        <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+            <foreach item='type' collection="typeArr">
+                <trim prefix="OR">
+                    <choose>
+                        <when test="type == 'T'.toString()">
+                            proj_id like '%'||#{keyword}||'%'
+                        </when>
+                        <when test="type == 'C'.toString()">
+                            proj_name like '%'||#{keyword}||'%'
+                        </when>
+                          </choose>
+                </trim>
+            </foreach>
+        </trim>
+
+        <![CDATA[
+      rownum <= #{pageNum} * #{amount}
+      )
+  where rn > (#{pageNum} -1) * #{amount}
+  ]]>
+    </select>
+
+    <!-- 게시글 총 개수 -->
+    <select id="getWholeProjectTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
+        SELECT COUNT(proj_id)
+        FROM proj
+    </select>
+
+
     <select id="getProjId" parameterType="string" resultType="com.ipms.main.newProject.vo.ProjVO">
         select proj_id
         from proj
         where mem_code = (select mem_code from mem where mem_email = #{memEmail})
-    </select>
-
-    <select id="count" resultType="int">
-        SELECT count(*)
-        FROM proj
     </select>
 
     <select id="detailPage" resultType="com.ipms.main.newProject.vo.ProjVO">

@@ -1,7 +1,8 @@
 package com.ipms.main.wholeProject.controller;
 
+import com.ipms.commons.vo.Criteria;
+import com.ipms.commons.vo.PageVO;
 import com.ipms.main.mypage.mapper.MyPageMapper;
-import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.main.wholeProject.service.WholeProjectService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +27,11 @@ public class WholeProjectController {
     @Autowired
     MyPageMapper myPageMapper;
 
-    @RequestMapping(value = "/wholeProject", method = RequestMethod.GET)
+    @GetMapping(value = "/wholeProject")
     @ResponseStatus(value = HttpStatus.OK)
-    public String wholeProject(Model model) {
-        List<ProjMemVO> list = this.wholeProjectService.listProj();
-        model.addAttribute("list", list);
+    public String wholeProject(Model model , Criteria cri) {
+        model.addAttribute("list",wholeProjectService.getListPage(cri));
+        model.addAttribute("pageMaker",new PageVO(cri,this.wholeProjectService.getWholeProjectTotal()));
         return "main/wholeProject/wholeProject";
     }
 
@@ -56,7 +57,6 @@ public class WholeProjectController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public int joinProject(ProjVO projVO, Authentication authentication) {
-
         return this.wholeProjectService.joinProjectProcess(projVO , authentication);
     }
 }

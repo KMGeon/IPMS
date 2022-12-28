@@ -13,6 +13,7 @@ public class CalendarVO {
 
 	private int indvSchdNum;
 	private String writer;
+	private String memCode;
 	private String projId;
 	private String indvSchdTitle;
 	private String indvSchdCts;

@@ -40,12 +40,10 @@ public class IssueController {
 	IssueService issueservice;
 
 	@GetMapping("/{projId}/issueboard")
-	public ModelAndView issueboard(ModelAndView mav , String pageNum , String amount , @PathVariable String projId) {
-		
-//		List<IssueVO> vo = this.issueservice.IssueListSelect();
-//		log.info("vo : " + vo.toString());
+	public ModelAndView issueboard(ModelAndView mav , String pageNum , String amount , @PathVariable String projId , Authentication authentication) {
 		
 		Criteria criteria;
+		
 		
 		log.info("pageNum : {} , amount : {}", pageNum, amount);
 		
@@ -59,12 +57,12 @@ public class IssueController {
 			criteria = new Criteria(Integer.parseInt( pageNum ), Integer.parseInt( amount ));
 			log.info("두번쨰 페이지 pageNum : {}",criteria.getPageNum());
 		}
+		criteria.setProjId(projId);
 		
-		// 한 회원의 QaA만 필요한 경우
+		
 		List<IssueVO> vo = this.issueservice.issuePage(criteria);
 		
 		
-		// total은 전체 페이지의 수를 결정하기위해 필요
 		int total = issueservice.totalNum();
 		
 		PageVO pageVO = new PageVO(criteria, total);
@@ -84,8 +82,9 @@ public class IssueController {
 		return "proj/issueboard/issueBoardPL";
 	}
 	
-	@GetMapping("/issueDetail")
-	public ModelAndView issueDetail(ModelAndView mav , IssueVO vo ) {
+	@GetMapping("/{projId}/issueDetail")
+	public ModelAndView issueDetail(ModelAndView mav , IssueVO vo , @PathVariable String projId ) {
+		vo.setProjId(projId);
 		IssueVO list = this.issueservice.IssueDetail(vo);
 		
 		mav.addObject("list",list);
@@ -94,23 +93,23 @@ public class IssueController {
 		return mav;
 	}
 	
-	@GetMapping("/issueInsert")
-	public String issueInsert() {
+	@GetMapping("/{projId}/issueInsert") // insert 폼 이동
+	public String issueInsert(@PathVariable String projId) {
 		return "proj/issueboard/issueInsert";
 	}
 	
-	@GetMapping("/issueUpdate")
-	public String issueUpdate() {
+	@GetMapping("/{projId}/issueUpdate")
+	public String issueUpdate(@PathVariable String projId) {
 		return "proj/issueboard/issueUpdate";
 	}
 	
 	String uploadFolder = "C:\\eGovFrameDev-3.10.0-64bit\\finalproject\\ipms\\src\\main\\webapp\\resources";
 	
 	@ResponseBody
-	@PostMapping("/issueDataInsert")
-	public int issueDataInsert( IssueVO vo , MultipartFile[] uploadFile , Authentication authentication) {
-		
+	@PostMapping("/{projId}/issueDataInsert")
+	public int issueDataInsert( IssueVO vo , MultipartFile[] uploadFile , Authentication authentication , @PathVariable String projId) {
 		List<IntgAttachFileVO> attachVOList = new ArrayList<IntgAttachFileVO>();
+		vo.setProjId(projId);
 		
 		log.info("* view -> CONTROLLER * IssueController => issueDataInsert Value : "  + vo.toString());
 		log.info("* view -> CONTROLLER * IssueController => uploadFile Value : "  + uploadFile.length);
@@ -119,8 +118,12 @@ public class IssueController {
 		String userName = userdetail.getUsername();
 		log.info("username : " + userName);
 		
-		String memCode = this.issueservice.getMemCode(userName); // 멤코드 조회
+		String memCode = this.issueservice.getMemCode(userName); // 멤코드 조회 파일 업로드 시 멤코드 사용
 		log.info("memCode : " + memCode);
+		
+		// 인설트 할때 유저이름 넣어줘야됨
+		String memName = this.issueservice.getUserName(userName);
+		vo.setWriter(memName);
 		
 		File uploadPath = new File(uploadFolder,getFolder());
 		if(uploadPath.exists() == false) {
@@ -191,11 +194,9 @@ public class IssueController {
 	}
 	
 	
-	
-	
 	@ResponseBody
-	@PostMapping("/taskListSelect")
-	public JSONObject taskListSelect() {
+	@PostMapping("/{projId}/taskListSelect")
+	public JSONObject taskListSelect( @PathVariable String projId) {
 		List<IssueVO> returnvo = this.issueservice.taskListSelect();
 		
 		log.info("* DB -> CONTROLLER * IssueController => taskListSelct Value : "  + returnvo.toString());

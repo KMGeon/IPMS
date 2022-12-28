@@ -1,5 +1,6 @@
 package com.ipms.main.wholeProject.service.Impl;
 
+import com.ipms.commons.vo.Criteria;
 import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.mapper.ProjMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
@@ -64,14 +65,25 @@ public class WholeProjectImpl implements WholeProjectService {
     }
 
     @Override
+    public List<ProjVO> getListPage() {
+        return this.projMapper.getListPage();
+    }
+
+    @Override
+    public int getWholeProjectTotal() {
+        return this.projMapper.getWholeProjectTotal();
+    }
+
+    @Override
+    public List<ProjVO> getListPage(Criteria criteria) {
+        return this.projMapper.getListPage(criteria);
+    }
+
+    @Override
     public List<ProjVO> getProjId(String memEmail) {
         return this.projMapper.getProjId(memEmail);
     }
 
-    @Override
-    public int count() {
-        return this.projMapper.count();
-    }
 
     @Override
     public List<ProjVO> detailPage(String projId) {

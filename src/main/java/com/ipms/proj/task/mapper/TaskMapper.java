@@ -38,4 +38,6 @@ public interface TaskMapper {
 	public List<TaskVO> memberTaskList(TaskVO vo);
 	
 	public List<TaskVO> nullHighTaskId(TaskVO vo);
+	
+	public int hiworkDelBefor(TaskVO vo);
 }

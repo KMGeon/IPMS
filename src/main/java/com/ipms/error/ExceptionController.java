@@ -24,79 +24,79 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        logger.warn("MethodArgumentNotValidException : ", e);
+        logger.warn("MethodArgumentNotValidException : ", e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleMethodArgumentNotValidException(MethodArgumentTypeMismatchException e) {
-        logger.warn("MethodArgumentTypeMismatchException : ", e);
+        logger.warn("MethodArgumentTypeMismatchException : ", e.getMessage());
     }
 
     @ExceptionHandler(ConversionFailedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleConversionFailedException(ConversionFailedException e) {
-        logger.warn("ConversionFailedException : ", e);
+        logger.warn("ConversionFailedException : ", e.getMessage());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        logger.warn("HttpMessageNotReadableException : ", e);
+        logger.warn("HttpMessageNotReadableException : ", e.getMessage());
     }
 
     @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleNumberFormatException(NumberFormatException e) {
-        logger.warn("NumberFormatException : ", e);
+        logger.warn("NumberFormatException : ", e.getMessage());
     }
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleBindException(BindException e) {
-        logger.warn("BindException : ", e);
+        logger.warn("BindException : ", e.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleIllegalArgumentException(IllegalArgumentException e) {
-        logger.warn("IllegalArgumentException : ", e);
+        logger.warn("IllegalArgumentException : ", e.getMessage());
     }
 
     @ExceptionHandler(BeanInstantiationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleBeanInstantiationException(BeanInstantiationException e) {
-        logger.warn("BeanInstantiationException : ", e);
+        logger.warn("BeanInstantiationException : ", e.getMessage());
     }
 
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException e) {
-        logger.warn("InvalidDataAccessApiUsageException : ", e);
+        logger.warn("InvalidDataAccessApiUsageException : ", e.getMessage());
     }
 
     @ExceptionHandler(AuthorizationServiceException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public void handleAuthorizationServiceException(AuthorizationServiceException e) {
-        logger.warn("AuthorizationServiceException : ", e);
+        logger.warn("AuthorizationServiceException : ", e.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void handleNotFoundException(NotFoundException e) {
-        logger.warn("NotFoundException : ");
+        logger.warn("NotFoundException : ",e.getMessage());
     }
 
     @ExceptionHandler(NoSuchMethodException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void NoSuchMethodException(NotFoundException e) {
-        logger.warn("NoSuchMethodException : ");
+        logger.warn("NoSuchMethodException : ",e.getMessage());
     }
 
     @ExceptionHandler(SQLException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void SQLException(SQLException e) {
-        logger.warn("NoSuchMethodException : ");
+        logger.warn("NoSuchMethodException : ",e.getMessage());
     }
 
 

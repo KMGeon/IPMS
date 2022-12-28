@@ -8,10 +8,9 @@
 	</select>
 	
 	<insert id="IssueDataInsert" parameterType="com.ipms.proj.issue.vo.IssueVO" >
-		<selectKey keyProperty="issueId , itgrnAttachFileNum" order="BEFORE" resultType="com.ipms.proj.issue.vo.IssueVO">
-			select  NVL(MAX(TO_NUMBER(S.ISSUE_ID))+1,1) as issueId
-             		, MAX(I.INTG_ATTACH_FILE_NUM)+1 as itgrnAttachFileNum
-        	from ISSUE S , INTG_ATTACH_FILE I
+		<selectKey keyProperty="issueId" order="BEFORE" resultType="string">
+			select  NVL(MAX(TO_NUMBER(ISSUE_ID))+1,1) as ISSUE_ID
+        	from ISSUE
 		</selectKey>
 		
 		INSERT INTO ISSUE(
@@ -23,7 +22,8 @@
 			, ISSUE_STUS_CODE
 			, ITGRN_ATTACH_FILE_NUM
 			, DELETE_YN
-			, WRITER)
+			, WRITER
+			, PROJ_ID)
 		VALUES(
 			 #{issueId}
 			,#{taskId}
@@ -33,55 +33,17 @@
 			,'미해결'
 			,#{itgrnAttachFileNum}
 			,'n'
-			,'박종환'
+			, #{writer}
+			, #{projId}
 			)
 	</insert>
 	
 	
-	<select id="MaxFileNumSelect" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="int">
-		SELECT MAX(ITGRN_ATTACH_FILE_NUM) as ITGRN_ATTACH_FILE_NUM
-		FROM ISSUE
-		WHERE ISSUE_TITLE = #{issueTitle}
+	<select id="MaxFileNumSelect" resultType="int">
+		SELECT MAX(INTG_ATTACH_FILE_NUM)+1 
+		FROM INTG_ATTACH_FILE
 	</select>
-	
-<!-- 	<insert id="FileInsert" parameterType="com.ipms.commons.ftp.vo.IntgAttachFileVO"> -->
-<!-- 	INSERT INTO ( -->
-<!--               INTG_ATTACH_FILE_NUM -->
-<!--             , ATTACH_FILE_SEQ -->
-<!--             , FILE_PATH -->
-<!--             , FILE_NAME -->
-<!--             , SAVE_FILE_NAME -->
-<!--             , FILE_SIZE -->
-<!--             , FILE_SIZE_NAME -->
-<!--             , RGST_DATE -->
-<!--             , RGST_ID -->
-<!--             , FILE_DELETE_YN -->
-<!--             , FILE_TYPE)  -->
-<!--      VALUES -->
-<!--             (	 -->
-<!--            	   #{} -->
-<!--                ,(SELECT MAX(ATTACH_FILE_SEQ)+1 FROM INTG_ATTACH_FILE) -->
-<!-- 			   ,#{} -->
-<!-- 			   ,#{} -->
-<!-- 			   ,#{} -->
-<!-- 			   ,#{} -->
-<!-- 			   ,#{} -->
-<!-- 			   ,#{} -->
-<!-- 			   ,#{} -->
-<!-- 			   ,#{} -->
-<!-- 			   ,#{} -->
-<!-- 		   ) -->
-			   
-	
-<!-- 	</insert> -->
-	
-	
-	
-	
-	
-	
-	
-	
+
 	<select id="IssueListSelect" resultType="com.ipms.proj.issue.vo.IssueVO">
 		SELECT 
 		 ISSUE_ID
@@ -111,6 +73,7 @@
               , ITGRN_ATTACH_FILE_NUM
               , DELETE_YN
               , WRITER
+              , PROJ_ID
             FROM ( SELECT ROWNUM RN
                       , ISSUE_ID
                       , TASK_ID
@@ -121,6 +84,7 @@
                       , ITGRN_ATTACH_FILE_NUM
                       , DELETE_YN
                       , WRITER
+                      , PROJ_ID
                 FROM( SELECT ISSUE_ID
 	                      , TASK_ID
 	                      , ISSUE_TITLE
@@ -130,9 +94,12 @@
 	                      , ITGRN_ATTACH_FILE_NUM
 	                      , DELETE_YN
 	                      , WRITER
+                          , PROJ_ID
                 FROM ISSUE
+                WHERE PROJ_ID = #{projId}
 	                        ORDER BY  TO_NUMBER(ISSUE_ID) DESC ) A )
 	            WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+	            
             ]]>
 		
 	</select>
@@ -152,10 +119,62 @@
 			, ISSUE_STUS_CODE
 			, ITGRN_ATTACH_FILE_NUM
 			, DELETE_YN, WRITER
+                    , (
+	                      SELECT  SAVE_FILE_NAME
+	                      FROM INTG_ATTACH_FILE
+	                      WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM
+<!-- 	                      AND ATTACH_FILE_SEQ = 1 -->
+                      ) AS FILE_PATH
+                    , (
+                      SELECT  FILE_NAME
+                      FROM INTG_ATTACH_FILE
+                      WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM
+<!--                       AND ATTACH_FILE_SEQ = 1 -->
+                      ) AS FILE_NAME
 		FROM ISSUE
-		WHERE ISSUE_TITLE = TO_CHAR(#{issueTitle})
+		WHERE ISSUE_TITLE =  TO_CHAR(#{issueTitle})
+		AND PROJ_ID = #{projId}
+	</select>
 	
+	<insert id="uploadFileInsert" parameterType="com.ipms.commons.ftp.vo.IntgAttachFileVO" >
+		INSERT INTO INTG_ATTACH_FILE(
+              INTG_ATTACH_FILE_NUM
+            , ATTACH_FILE_SEQ
+            , FILE_PATH
+            , FILE_NAME
+            , SAVE_FILE_NAME
+            , FILE_SIZE
+            , FILE_SIZE_NAME
+            , RGST_DATE
+            , RGST_ID
+            , FILE_DELETE_YN
+            , FILE_TYPE) 
+     VALUES(	
+           	   #{intgAttachFileNum}
+               ,#{attachFileSeq}
+			   ,#{filePath}
+			   ,#{fileName}
+			   ,#{saveFileName}
+			   ,#{fileSize}
+			   ,#{fileSizeName}
+			   ,sysdate
+			   ,'나다'
+			   ,'n'
+			   ,#{fileType}
+		   )
 	
+	</insert>
+	
+	<select id="getMemCode" parameterType="string" resultType="string">
+		SELECT MEM_CODE
+		FROM MEM
+		WHERE MEM_EMAIL =#{userName} 
+	</select>
+	
+	<select id="getUserName" parameterType="string" resultType="string">
+		SELECT MEM_NAME
+		FROM MEM
+		WHERE MEM_EMAIL =#{memName}
 	</select>
 	
 

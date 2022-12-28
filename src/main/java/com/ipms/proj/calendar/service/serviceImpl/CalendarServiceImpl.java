@@ -18,9 +18,9 @@ public class CalendarServiceImpl implements CalendarService {
 	
 	// 일정 리스트
 	@Override
-	public List<CalendarVO> selectSchd() {
+	public List<CalendarVO> selectSchd(CalendarVO calendarVO) {
 		
-		return this.calendarMapper.selectSchd();
+		return this.calendarMapper.selectSchd(calendarVO);
 	}
 
 	// 일정 등록
@@ -44,9 +44,9 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 
 	@Override
-	public List<TaskVO> selectT() {
+	public List<TaskVO> selectT(CalendarVO calendarVO) {
 		
-		return this.calendarMapper.selectT();
+		return this.calendarMapper.selectT(calendarVO);
 	}
 
 }

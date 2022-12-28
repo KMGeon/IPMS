@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 public class PageVO {
-	
+
 	private int startPage; // 첫 페이지 번호
     private int endPage; // 마지막페이지 번호
     private boolean next; // 다음 버튼 활성화
@@ -14,18 +14,18 @@ public class PageVO {
     private int total; // 총 게시글 수
     private int pageNum; // 조회하는 페이지 번호 ( cri에도 존재함 )
     private int amount; // 보여질 데이터 개수 ( 한 페이지에 보여질 게시물 수 )
-    
+
     private Criteria cri;
-    
+
  // 만약 Criteria를 안쓸거면 pageNum이랑 amount를 파라미터로 보내줘도 됨
     public PageVO( Criteria cri, int total ) {
         // 번호, 개수, 총 게시글 수 초기화
         this.pageNum = cri.getPageNum();
         log.debug( "pageNum : {}", pageNum );
-        this.amount = cri.getAmount(); 
+        this.amount = cri.getAmount();
         this.total = total;
         this.cri = cri;
-        
+
         // endPage( 끝번호 ) 계산
         /*
          * pageNum 5번 -> 끝페이지 번호는 10
@@ -56,7 +56,7 @@ public class PageVO {
          // endPage는 10, 20, 30 ... realEnd
          this.next = this.pageNum < realEnd;
          log.debug( "next : {}", next );
-		 
+
     }
-   
+
 }

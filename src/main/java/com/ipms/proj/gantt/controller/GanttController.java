@@ -11,15 +11,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ipms.proj.task.service.TaskService;
-import com.ipms.proj.task.vo.TaskVO;
+import com.ipms.proj.gantt.service.GanttService;
+import com.ipms.proj.gantt.vo.GanttVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/proj")
 public class GanttController {
 	
 	@Autowired
-	TaskService taskService;
+	GanttService ganttService;
 	
 	@GetMapping("/{projId}/gantt")
 	public String ganttSelect(@PathVariable String projId,Model model) {
@@ -28,13 +31,13 @@ public class GanttController {
 		return "proj/gantt/gantt";
 	}
 	
-//	@ResponseBody
-//	@PostMapping("/ganttSelectData")
-//	public List<TaskVO> ganttSelectData(){
-//		
-//		List<TaskVO> taskData = taskService.HighWorkList();
-//		
-//		return taskData;
-//	}
+	@ResponseBody
+	@PostMapping("/{projId}/ganttSelectData")
+	public List<GanttVO> ganttSelectData(@PathVariable String projId){
+		
+		List<GanttVO> taskData = ganttService.ganttSelect(projId);
+		
+		return taskData;
+	}
 	
 }

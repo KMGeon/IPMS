@@ -22,5 +22,7 @@ public class IssueVO {
 	private String writer; // 작성자
 	private String taskTitle; // 일감 타이틀
 	private String filePath; // 파일 경로
+	private String projId; // 프로젝트 아이디
+	private String fileName; // 파일이름
 
 }

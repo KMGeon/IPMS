@@ -3,6 +3,7 @@ package com.ipms.main.mypage.inviteAndApply.controller;
 import com.ipms.main.mypage.inviteAndApply.service.InviteAndApplyService;
 import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.proj.projMemManageMent.vo.InvitationVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class InviteAndApplyController {
     @Autowired
     MyPageMapper myPageMapper;
 
-    @RequestMapping(value = "/inviteAndApply", method = RequestMethod.GET)
+    @GetMapping(value = "/inviteAndApply")
     @ResponseStatus(HttpStatus.OK)
     public String inviteOrApply(Model model, Authentication authentication, ProjMemVO projMemVO) {
         return this.inviteAndApplyService.inviteOrApply(model, authentication, projMemVO);
@@ -30,39 +31,42 @@ public class InviteAndApplyController {
 
 
     //신청한 회원-프로젝트 승인(신청한 회원)
-    @RequestMapping(value = "/approveProject", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
+    @PostMapping(value = "/approveProject")
+    @ResponseStatus(HttpStatus.CREATED)
     public int approveProject(Authentication authentication, ProjMemVO projMemVO, RedirectAttributes rttr) {
         return this.inviteAndApplyService.approval(projMemVO);
     }
 
     //신청한 회원-프로젝트 취소(신청한 회원)
-    @RequestMapping(value = "/projectCompanionship", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
+    @PostMapping(value = "/projectCompanionship")
+    @ResponseStatus(HttpStatus.CREATED)
     public int projectCompanionship(Authentication authentication, ProjMemVO projMemVO, RedirectAttributes rttr) {
         return this.inviteAndApplyService.companionProject(projMemVO);
     }
 
     //초대된 프로젝트 수락
-    @RequestMapping(value = "/acceptInvitation", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public int acceptInvitation(Authentication authentication, @ModelAttribute ProjMemVO projMemVO) {
+    @PostMapping(value = "/acceptInvitation")
+    @ResponseStatus(HttpStatus.CREATED)
+    public int acceptInvitation(Authentication authentication,
+                                @ModelAttribute ProjMemVO projMemVO) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         projMemVO.setMemCode(this.myPageMapper.getMemCode(userDetails.getUsername()));
-        if(this.inviteAndApplyService.acceptInvitation(projMemVO) == 1){
-            this.inviteAndApplyService.acceptInviteAndDelete(projMemVO);
+        if (this.inviteAndApplyService.invitationApproved(projMemVO) == 1) {
+            this.inviteAndApplyService.invitedMemberApproval(projMemVO);
+            return 1;
         }
-        return this.inviteAndApplyService.acceptInvitationProcess(projMemVO);
+        return 0;
+    }    //초대된 프로젝트 거절
+
+    @ResponseBody
+    @PostMapping(value = "/refusalInvitation")
+    @ResponseStatus(HttpStatus.CREATED)
+    public int refusalInvitation(@ModelAttribute InvitationVO invitationVO) {
+        return this.inviteAndApplyService.refusalInvitation(invitationVO);
     }
 
-    //초대된 프로젝트 거절
-    @RequestMapping(value = "/refusalInvitation", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public int refusalInvitation(Authentication authentication, ProjMemVO projMemVO) {
-        return this.inviteAndApplyService.refusalInvitation(projMemVO);
-    }
+
 }
