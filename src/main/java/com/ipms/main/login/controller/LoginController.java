@@ -1,17 +1,20 @@
 package com.ipms.main.login.controller;
 
 import com.ipms.main.login.service.LoginService;
+import com.ipms.main.login.vo.MemVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.inject.Inject;
+import java.util.List;
 
 @Slf4j
 @RequestMapping("/main")
@@ -24,7 +27,15 @@ public class LoginController {
 
 
     @GetMapping("/loginForm")
-    public String loginForm() {
+    public String loginForm(Model model) {
+        List<MemVO> test = this.loginService.allGetMemCode();
+        for(int i=0; i<test.size(); i++) {
+            test.get(i).getMemCode();
+            log.info(test.get(i).getMemCode());
+
+        }
+        log.info("test"+test.size());
+        log.info("test"+test.toString());
         return "main/login/loginForm";
     }
 

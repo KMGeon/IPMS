@@ -1,7 +1,7 @@
 package com.ipms.main.login.mapper;
 
-import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.login.vo.MemVO;
+import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.register.vo.CommonCodeVO;
 import com.ipms.main.register.vo.TechStackVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,4 +25,7 @@ public interface MemMapper {
     public int insertTechStack(TechStackVO techStackVO);
     //공통코드 뿌리기
     public List<CommonCodeVO> techStack();
+
+    public List<MemVO> allGetMemCode();
+
 }

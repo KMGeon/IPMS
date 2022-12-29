@@ -1,5 +1,6 @@
 package com.ipms.proj.projMemManageMent.controller;
 
+import com.ipms.main.alert.vo.AlrmVO;
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
@@ -49,8 +50,13 @@ public class ProjMemManagementController {
     @ResponseBody
     @RequestMapping(value = "/sendInvitation" , method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public int sendInvitation(InvitationVO invitationVO ){
-        return this.projMemManageMentService.sendInvitation(invitationVO );
+    public int sendInvitation(InvitationVO invitationVO  , AlrmVO alrmVO){
+        int division=this.projMemManageMentService.sendInvitation(invitationVO  );
+        if(division==1){
+            this.projMemManageMentService.insertAlrm(alrmVO);
+            return 1;
+        }
+        return 0;
     }
 
     @ResponseBody
@@ -59,5 +65,12 @@ public class ProjMemManagementController {
     public int extractionParticipants(ProjMemVO projMemVO){
         return this.projMemManageMentService.extractionParticipants(projMemVO);
     }
+    @ResponseBody
+    @RequestMapping(value = "/insertAlrm" , method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public int insertAlrm(AlrmVO alrmVO){
+        return this.projMemManageMentService.insertAlrm(alrmVO);
+    }
+
 }
 

@@ -22,6 +22,10 @@ public interface FreeboardService {
 	
 	public List<FreeboardVO> getFreePage(Criteria cri);
 	
-	public int getTotal();
+	public int getTotal(String projId);
+	
+	public String[] authCheck(FreeboardVO freeboardVO);
+	
+	public FreeboardVO detailFree2(FreeboardVO freeboardVO);
 
 }

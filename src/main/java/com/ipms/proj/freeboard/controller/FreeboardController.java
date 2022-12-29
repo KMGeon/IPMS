@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +22,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ipms.commons.ftp.vo.IntgAttachFileVO;
 import com.ipms.commons.vo.Criteria;
+import com.ipms.proj.freeboard.vo.FreeboardCmtVO;
 import com.ipms.proj.freeboard.vo.FreeboardPageVO;
+import com.ipms.proj.calendar.vo.CalendarVO;
+import com.ipms.proj.freeboard.service.FreeboardCmtService;
 import com.ipms.proj.freeboard.service.FreeboardService;
 import com.ipms.proj.freeboard.vo.FreeboardVO;
+import com.ipms.proj.issue.service.IssueService;
+import com.ipms.proj.noticeboard.vo.NoticeBoardVO;
 import com.ipms.util.FileUploadUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +41,12 @@ public class FreeboardController {
 
 	@Autowired
 	FreeboardService freeboardservice;
+	
+	@Autowired
+	IssueService issueService;
+	
+	@Autowired
+	FreeboardCmtService freeboardCmtService;
 	
 //	 자유 게시판 리스트
 //	@GetMapping("/freeboard")
@@ -49,7 +62,7 @@ public class FreeboardController {
 
 	// 자유 게시판 리스트 - 페이징 처리
 	@GetMapping("/{projId}/freeboard")
-	public String freeList(Model model, String pageNum, String amount, @PathVariable String projId) {
+	public String freeList(Model model, String pageNum, String amount, FreeboardVO freeboardVO, Authentication authentication, @PathVariable String projId) {
 		
 		Criteria criteria;
 		log.info("===================="+projId);
@@ -68,54 +81,124 @@ public class FreeboardController {
 
 		}
 		
-//		String memCode = "M002";
-//		criteria.setMemCode(memCode);
-//		criteria.setProjId(projId);
+		criteria.setProjId(projId);
+		
 		List<FreeboardVO> freeSelect = freeboardservice.getFreePage(criteria);
 		
-		int total = freeboardservice.getTotal();
+		int total = freeboardservice.getTotal(projId);
 		
 		FreeboardPageVO freeboardPageVO = new FreeboardPageVO(criteria, total);
 		
 		model.addAttribute("freeSelect", freeSelect);
 		model.addAttribute("pageVO", freeboardPageVO);
 		
+		//
+		UserDetails userdetail = (UserDetails)authentication.getPrincipal();
+		String userEmail = userdetail.getUsername();
+		String userCode = this.issueService.getMemCode(userEmail); // memcode가져오기
+		
+	//	log.info("userCode::::::::::: " + userCode);
+		
+		freeboardVO.setWriter(userCode);
+		
+		String[] auth = freeboardservice.authCheck(freeboardVO);
+		
+		String authCheck = "";
+		
+		for (String string : auth) {
+			if(string.equals("ROLE_PROJECT_LEADER")) {
+				authCheck = "true";
+			}else {
+				authCheck ="false";
+			}
+		}
+		
+		log.info("authCheck : {}", authCheck);
+		
+		model.addAttribute("authCheck",authCheck);
+		//
+		
 		return "proj/freeboard/freeBoard";
 		
 	}
 	
 
-	@GetMapping("/freeBoardDetail")
-	public String detailFree(@ModelAttribute FreeboardVO freeboardVO, Model model) {
-
+	@GetMapping("/{projId}/freeBoardDetail")
+	public String detailFree(@ModelAttribute FreeboardVO freeboardVO, Model model, Authentication authentication, @PathVariable String projId) {
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		String memName = userDetails.getUsername();
+		log.info("userName: " + memName);
+		
+		String writer = this.issueService.getMemCode(memName);
+		log.info("writer: " + writer);
+		
+		freeboardVO.setWriter(writer);
+		freeboardVO.setProjId(projId);
+		log.info("projId: " + projId);
+		
 		FreeboardVO data = this.freeboardservice.detailFree(freeboardVO);
 		log.info("detailFree->freeboardVO: " + data.toString());
 		
+		// 로그인 한 사람이 쓴 글인지 판단하고 상세 페이지에서 수정/삭제 버튼 처리
+			FreeboardVO data2 = this.freeboardservice.detailFree2(freeboardVO);
+			
+			String memCheck = "";
+			
+			if(data2.getWriter().equals(writer)) {
+				memCheck = "true";
+			} else {
+				memCheck = "false";
+			}
+			
+			log.info("memCheck : {}", memCheck);
+			
+			model.addAttribute("memCheck", memCheck);
+		//
+		
 		model.addAttribute("data", data);
+		
+		// 댓글 리스트
+		List<FreeboardCmtVO> dataCmt = this.freeboardCmtService.freeCmtList(freeboardVO);
+		log.info("cmt list: " + dataCmt.toString());
+		
+		model.addAttribute("data", data);
+		model.addAttribute("dataCmt", dataCmt);
 		
 		return "proj/freeboard/freeBoardDetail";
 	}
 	
 	@PreAuthorize("hasRole('ROLE_MEMBER')")
-	@GetMapping("/freeBoardInsert")
-	public String fInsert(Model model) {
+	@GetMapping("/{projId}/freeBoardInsert")
+	public String fInsert(Model model, @PathVariable String projId) {
 		return "proj/freeboard/freeBoardInsert";
 	}
 	
-	@PostMapping("/freeBoardInsertPost")
-	public String freeInsert(@ModelAttribute FreeboardVO freeboardVO) {
+	@PostMapping("/{projId}/freeBoardInsertPost")
+	public String freeInsert(@ModelAttribute FreeboardVO freeboardVO, Authentication authentication, @PathVariable String projId) {
 		
 		log.info("freeInsert->freeboardVO: " + freeboardVO.toString());
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		String memName = userDetails.getUsername();
+		log.info("userName: " + memName);
+		
+		String writer = this.issueService.getMemCode(memName);
+		log.info("writer: " + writer);
+		
+		freeboardVO.setWriter(writer);
+		freeboardVO.setProjId(projId);
+		log.info("projId -------> " + projId);
 		
 		// 글 입력
 		int result = this.freeboardservice.insertFree(freeboardVO);
 		log.info("result: " + result);
 		
-		return "redirect:/proj/freeBoardDetail?projBdId="+freeboardVO.getProjBdId();
+		return "redirect:/proj/{projId}/freeBoardDetail?projBdId="+freeboardVO.getProjBdId();
 	}
 	
-	@GetMapping("/freeBoardUpdate")
-	public String fUpdate(@ModelAttribute FreeboardVO freeboardVO, Model model) {
+	@GetMapping("/{projId}/freeBoardUpdate")
+	public String fUpdate(@ModelAttribute FreeboardVO freeboardVO, Model model, @PathVariable String projId) {
 	
 		FreeboardVO data = this.freeboardservice.detailFree(freeboardVO);
 		
@@ -124,22 +207,44 @@ public class FreeboardController {
 		return "proj/freeboard/freeBoardUpdate";
 	}
 	
-	@PostMapping("/freeBoardUpdatePost")
-	public String freeUpdate(@ModelAttribute FreeboardVO freeboardVO) {
+	@PostMapping("/{projId}/freeBoardUpdatePost")
+	public String freeUpdate(@ModelAttribute FreeboardVO freeboardVO, Authentication authentication, @PathVariable String projId) {
 		
 		log.info("freeUpdate -> freeboardVO: " + freeboardVO.toString());
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		String memName = userDetails.getUsername();
+		log.info("userName: " + memName);
+		
+		String writer = this.issueService.getMemCode(memName);
+		log.info("writer: " + writer);
+		
+		freeboardVO.setWriter(writer);
+		freeboardVO.setProjId(projId);
+		log.info("projId -------> " + projId);
 		
 		int result = this.freeboardservice.updateFree(freeboardVO);
 		log.info("result: " + result);
 		
-		return "redirect:/proj/freeBoardDetail?projBdId="+freeboardVO.getProjBdId();
+		return "redirect:/proj/{projId}/freeBoardDetail?projBdId="+freeboardVO.getProjBdId();
 	}
 	
 
 	@ResponseBody
-	@PostMapping("/freeBoardDelete")
-	public Map<String, String> deleteFree(@RequestBody FreeboardVO freeboardVO){
+	@PostMapping("/{projId}/freeBoardDelete")
+	public Map<String, String> deleteFree(@RequestBody FreeboardVO freeboardVO, Authentication authentication, @PathVariable String projId){
 		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		String memName = userDetails.getUsername();
+		log.info("userName: " + memName);
+		
+		String writer = this.issueService.getMemCode(memName);
+		log.info("writer: " + writer);
+		
+		freeboardVO.setWriter(writer);
+		freeboardVO.setProjId(projId);
+		
+		log.info("projId: " + projId);
 		log.info("deleteFree->freeboardVO :" + freeboardVO);
 		
 		Map<String, String> map = new HashMap<String, String>();
@@ -171,11 +276,4 @@ public class FreeboardController {
 		return result;
 	}
 	
-
-	
-	@GetMapping("/freeBoardPL")
-	public String freeBoardPL() {
-		return "proj/freeboard/freeBoardPL";
-	}
-
 }

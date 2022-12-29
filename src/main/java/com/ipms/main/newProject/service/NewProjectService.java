@@ -1,5 +1,6 @@
 package com.ipms.main.newProject.service;
 
+import com.ipms.commons.ftp.FtpUtil;
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.mypage.mapper.MyPageMapper;
@@ -46,6 +47,9 @@ public class NewProjectService {
                     this.projAuthInsert(memberAuth);
                 }
             }
+            
+            // 프로젝트 생성 시 프로젝트 폴더(문서함)생성 
+            FtpUtil.createDirectory("/", projVO.getProjId());
             return "main/page";
         }
         return "redirect:/main/page";

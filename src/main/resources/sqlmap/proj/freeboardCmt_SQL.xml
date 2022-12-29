@@ -11,7 +11,6 @@
 		ORDER BY PROJ_BD_CMT_ID ASC
 	</select>
 	
-	
 	<insert id="insertFreeCmt" parameterType="com.ipms.proj.freeboard.vo.FreeboardCmtVO">
 		<selectKey order="BEFORE" keyProperty="projBdCmtId" resultType="int">
 			SELECT NVL(MAX(PROJ_BD_CMT_ID),0)+1 FROM PROJ_BD_CMT

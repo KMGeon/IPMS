@@ -1,6 +1,11 @@
 package com.ipms.main.alert;
 
+import com.ipms.main.login.mapper.MemMapper;
+import com.ipms.main.login.vo.MemVO;
+import com.ipms.proj.projMemManageMent.mapper.MemManageMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -12,13 +17,18 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+@Controller
 public class AlarmHandler extends TextWebSocketHandler {
+    @Autowired
+    MemMapper memMapper;
+    @Autowired
+    MemManageMapper memManageMapper;
     //소켓에 연결한 클라이언트 목록
-    private List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();
+    private List<WebSocketSession> sessions = new ArrayList<>();
 
     //특정 사용자를 찾기 위한 map
     //특정 사용자의 id 값으로 메시지를 보내기 위해 사용된다
-    private Map<String, WebSocketSession> userSessionsMap = new HashMap<String, WebSocketSession>();
+    private Map<String, WebSocketSession> userSessionsMap = new HashMap<>();
 
     //소켓연결
     @Override
@@ -61,23 +71,25 @@ public class AlarmHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         //받은 메시지를 String 값으로 받는다
         String msg = message.getPayload();
-
-        //메시지를 ','로 나눠준다
+        List<MemVO> memCode = this.memMapper.allGetMemCode();
         String[] msgs = msg.split(",");
 
-        //메시지 전송대상이 all 이면 연결된 모든 소켓에 전송
-        if (msgs[1].equals("all")) {
-            for (int i = 0; i < sessions.size(); i++) {
+
+        for (int j = 0; j < memCode.size(); j++) {
+            if (msgs[1].equals(memCode.get(j).getMemCode())) {
+                for (int i = 0; i < sessions.size(); i++) {
+                    TextMessage tmsg = new TextMessage(msgs[0]);
+                    sessions.get(i).sendMessage(tmsg);
+                }
+                //메시지 전송대상이 me 이면 나에게만 전송
+            } else if (msgs[1].equals("me")) {
+                //메시지를 받을 세션의 id값으로 map에서 세션값을 찾아 메시지를 전송한다
+                Map<String, Object> sessionGet = session.getAttributes();
+                String sessionId = (String) sessionGet.get("id");
                 TextMessage tmsg = new TextMessage(msgs[0]);
-                sessions.get(i).sendMessage(tmsg);
+                userSessionsMap.get(sessionId).sendMessage(tmsg);
+
             }
-            //메시지 전송대상이 me 이면 나에게만 전송
-        } else if (msgs[1].equals("me")) {
-            //메시지를 받을 세션의 id값으로 map에서 세션값을 찾아 메시지를 전송한다
-            Map<String, Object> sessionGet = session.getAttributes();
-            String sessionId = (String) sessionGet.get("id");
-            TextMessage tmsg = new TextMessage(msgs[0]);
-            userSessionsMap.get(sessionId).sendMessage(tmsg);
         }
     }
 }

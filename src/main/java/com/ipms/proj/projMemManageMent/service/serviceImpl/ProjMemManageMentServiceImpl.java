@@ -1,5 +1,6 @@
 package com.ipms.proj.projMemManageMent.service.serviceImpl;
 
+import com.ipms.main.alert.vo.AlrmVO;
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
@@ -57,5 +58,10 @@ public class ProjMemManageMentServiceImpl implements ProjMemManageMentService {
     @Override
     public int extractionParticipants(ProjMemVO projMemVO) {
         return this.memManageMapper.extractionParticipants(projMemVO);
+    }
+
+    @Override
+    public int insertAlrm(AlrmVO alrmVO) {
+        return this.memManageMapper.insertAlrm(alrmVO);
     }
 }

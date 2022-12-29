@@ -1,24 +1,47 @@
 package com.ipms.proj.noticeboard.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ipms.commons.ftp.vo.IntgAttachFileVO;
 import com.ipms.commons.vo.Criteria;
+import com.ipms.proj.issue.service.IssueService;
 import com.ipms.proj.noticeboard.service.NoticeService;
 import com.ipms.proj.noticeboard.vo.NoticeBoardVO;
 import com.ipms.proj.noticeboard.vo.NoticePageVO;
+import com.ipms.security.domain.CustomUser;
 
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Slf4j
 @RequestMapping("/proj")
@@ -28,9 +51,12 @@ public class NoticeController {
 	@Autowired
 	NoticeService noticeService;
 	
+	@Autowired
+	IssueService issueService;
+	
 	// 프로젝트 공지사항 리스트 출력(select) & 페이징 처리
-	@GetMapping("/noticeBoard")
-	public String ntList(String pageNum, String amount, Model model) {
+	@GetMapping("/{projId}/noticeBoard")
+	public String ntList(String pageNum, String amount, Model model, NoticeBoardVO noticeBoardVO, Authentication authentication, @PathVariable String projId) {
 		
 		Criteria criteria;
 		
@@ -48,50 +74,86 @@ public class NoticeController {
 			
 		}
 		
+		criteria.setProjId(projId);
+		
 		List<NoticeBoardVO> ntSelect = noticeService.getNtPage(criteria);
 		
-		int total = noticeService.getTotal(); // 게시글 총 개수! 
+		int total = noticeService.getTotal(projId); // 게시글 총 개수! 
 		
 		NoticePageVO noticePageVO = new NoticePageVO(criteria, total);
 		
 		model.addAttribute("ntSelect", ntSelect);
 		model.addAttribute("pageVO", noticePageVO);
 		
+		//
+		UserDetails userdetail = (UserDetails)authentication.getPrincipal();
+		String userEmail = userdetail.getUsername();
+		String userCode = this.issueService.getMemCode(userEmail);
+		noticeBoardVO.setMemCode(userCode);
+		
+		String[] auth = noticeService.authCheck(noticeBoardVO);
+		
+		String authCheck = "";
+		
+		for (String string : auth) {
+			if(string.equals("ROLE_PROJECT_LEADER")) {
+				authCheck = "true";
+			}else {
+				authCheck ="false";
+			}
+		}
+		
+		log.info(" authCheck : {}",authCheck);
+		
+		model.addAttribute("authCheck",authCheck);
+		//
+		
 		return "proj/noticeboard/noticeBoard";
 	}
 	
 	
-	@GetMapping("/noticeBoardDetail")
-	public String detailNt(@ModelAttribute NoticeBoardVO noticeBoardVO, Model model) {
+	@GetMapping("/{projId}/noticeBoardDetail")
+	public String detailNt(@ModelAttribute NoticeBoardVO noticeBoardVO, Model model, Authentication authentication, @PathVariable String projId) {
+		
+		log.info("noticeBoardVO : " + noticeBoardVO.toString());
 		
 		NoticeBoardVO data = this.noticeService.detailNt(noticeBoardVO);
 		log.info("notice detail -> noticeboardVO: " + data.toString());
+		
+		//
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		String memName = userDetails.getUsername();
+		log.info("userName: " + memName); // ddit
+		
+		String memCode = this.issueService.getMemCode(memName);
+		log.info("memCode: " + memCode); // M002
+		
+		// 로그인 한 사람이 쓴 글이면 상세 페이지에서 수정/삭제 버튼 보이도록 
+		NoticeBoardVO data2 = this.noticeService.detailNt2(noticeBoardVO);
+		
+		String memCheck = "";
+		
+		if(data2.getMemCode().equals(memCode)) {
+			memCheck = "true";
+		} else {
+			memCheck = "false";
+		}
+		
+		log.info("memCheck : {}", memCheck);
+		
+		model.addAttribute("memCheck", memCheck);
+		//
+		
+//		noticeBoardVO.setMemCode(memCode);
+		noticeBoardVO.setProjId(projId);
 		
 		model.addAttribute("data", data);
 		
 		return "proj/noticeboard/noticeBoardDetail";
 	}
-	
-	@GetMapping("/noticeInsert")
-	public String nInsert(Model model) {
-		
-		return "proj/noticeboard/noticeInsert";
-	}
-	
-	@PostMapping("/noticeBoardInsertPost")
-	public String insertNt(@ModelAttribute NoticeBoardVO noticeBoardVO) {
-		
-		log.info("notice insert -> noticeBoardVO: " + noticeBoardVO.toString());
-		
-		int result = this.noticeService.insertNt(noticeBoardVO);
-		log.info("result: " + result);
-		
-		return "redirect:/proj/noticeBoardDetail?projNtNum="+noticeBoardVO.getProjNtNum();
-		
-	}
 
-	@GetMapping("/noticeUpdate")
-	public String nUpdate(@ModelAttribute NoticeBoardVO noticeBoardVO, Model model) {
+	@GetMapping("/{projId}/noticeUpdate")
+	public String nUpdate(@ModelAttribute NoticeBoardVO noticeBoardVO, Model model, @PathVariable String projId) {
 		
 		NoticeBoardVO data = this.noticeService.detailNt(noticeBoardVO);
 		
@@ -100,20 +162,101 @@ public class NoticeController {
 		return "proj/noticeboard/noticeUpdate";
 	}
 	
-	@PostMapping("/noticeBoardUpdatePost")
-	public String updateNt(@ModelAttribute NoticeBoardVO noticeBoardVO) {
+	@PostMapping("/{projId}/noticeBoardUpdatePost")
+	public String updateNt(@ModelAttribute NoticeBoardVO noticeBoardVO, @PathVariable String projId) throws IllegalStateException, IOException {
 		
-		log.info("update notice: ", noticeBoardVO.toString());
+		log.info("update notice: " + noticeBoardVO.toString());
+
+		// 업로드 될 폴더 설정
+		String uploadFolder = "C:\\eGovFrameDev-3.10.0-64bit\\finalProject\\ipms\\src\\main\\webapp\\resources\\uploadNt";
+		// 연/월/일 폴더 생성
+		String uploadFolderPath = getFolder();
+		// 폴더 생성(계획)
+		File uploadPath = new File(uploadFolder, uploadFolderPath);
+		
+		// 계획된 경로에 폴더가 없다면 생성
+		if(uploadPath.exists()==false) {
+			uploadPath.mkdirs();
+		}
+		
+//		MultipartFile[] uploadFile = noticeBoardVO.getItgrnAttachFileNum();
+		
+		List<IntgAttachFileVO> intgAttachFileVOList = new ArrayList<IntgAttachFileVO>();
+		
+		int cnt = 1;
+		
+		//INTG_ATTACH_FILE 테이블의 MAX(INTG_ATTACH_FILE_NUM)+1 컬럼 값 가져오기
+		int intgAttachFileNum = this.noticeService.getIntgAttachFileNum();
+		log.info("intgAttachFileNum : " + intgAttachFileNum);
+		
+		MultipartFile[] mf = noticeBoardVO.getUploadFile();
+		
+		log.info("mf.length : " + mf.length + ", mf : " + mf);
+		
+		// 파일 객체 배열로부터 하나씩 파일 객체를 꺼내오기
+		for(MultipartFile multipartFile : mf) {
+			// 실제 파일명
+			String uploadFileName = multipartFile.getOriginalFilename();
+			// IE 처리. 경로를 제외한 파일 명만 추출
+			// c:\\temp\\개똥이.jpg => 개똥이.jpg
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+			// UUID 붙이기
+			UUID uuid = UUID.randomUUID();
+			uploadFileName = uuid.toString() + "_" + uploadFileName;
+			
+			// 파일 업로드 처리
+			// uploadPath: static폴더및연월일까지
+			// uploadFileName: UUID_실제파일명
+			// 계획
+			File saveFile = new File(uploadPath, uploadFileName);
+			// 실행
+			multipartFile.transferTo(saveFile);
+			
+			IntgAttachFileVO intgAttachFileVO = new IntgAttachFileVO();
+			
+			intgAttachFileVO.setIntgAttachFileNum(intgAttachFileNum+"");
+			intgAttachFileVO.setAttachFileSeq(cnt++);
+			intgAttachFileVO.setFilePath(uploadFolder);
+			intgAttachFileVO.setFileName(multipartFile.getOriginalFilename());
+			intgAttachFileVO.setFileSize((int)multipartFile.getSize());
+			intgAttachFileVO.setFileSizeName(multipartFile.getContentType());
+			intgAttachFileVO.setRgstId(noticeBoardVO.getMemCode());
+			intgAttachFileVO.setFileType(Files.probeContentType(saveFile.toPath()));
+			intgAttachFileVO.setSaveFileName(uploadFolderPath.replace("\\", "/") + "/" + uploadFileName); 
+			
+			//파일이 있을 때에만 리스트에 넣기
+			if(intgAttachFileVO.getFileSize()>0) {
+				intgAttachFileVOList.add(intgAttachFileVO);
+			}
+		}
+		
+		log.info("intgAttachFileVOList : " + intgAttachFileVOList);
+		
+		int resultFile = 0;
+		
+		//1-1) 첨부파일이 있을 때 처리 시작 -------------------------------------
+		if(intgAttachFileVOList.size()>0) {
+			resultFile = this.noticeService.insertFile(intgAttachFileVOList);
+			log.info("resultFile : " + resultFile);
+					
+			noticeBoardVO.setItgrnAttachFileNum(intgAttachFileNum+"");
+		//1-1) 첨부파일이 있을 때 처리 끝 -------------------------------------
+			
+		}else {
+		//1-2) 첨부파일이 없을 때 처리 시작 -------------------------------------			
+			noticeBoardVO.setItgrnAttachFileNum("");
+		//1-2) 첨부파일이 없을 때 처리 끝 -------------------------------------
+		}
 		
 		int result = this.noticeService.updateNt(noticeBoardVO);
 		log.info("result", result);
 		
-		return "redirect:/proj/noticeBoardDetail?projNtNum="+noticeBoardVO.getProjNtNum();
+		return "redirect:/proj/{projId}/noticeBoardDetail?projNtNum="+noticeBoardVO.getProjNtNum();
 	}
 	
 	@ResponseBody
-	@PostMapping("/noticeBoardDelete")
-	public int deleteNt(@RequestBody NoticeBoardVO noticeBoardVO) {
+	@PostMapping("/{projId}/noticeBoardDelete")
+	public int deleteNt(@RequestBody NoticeBoardVO noticeBoardVO, @PathVariable String projId) {
 		
 		int result = this.noticeService.deleteNt(noticeBoardVO);
 		log.info("result", result);
@@ -123,8 +266,8 @@ public class NoticeController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/deleteSelNt")
-	public int ckDelNt(@RequestParam(value = "ckbox[]") List<String> ckArr, NoticeBoardVO noticeBoardVO) {
+	@PostMapping("/{projId}/deleteSelNt")
+	public int ckDelNt(@RequestParam(value = "ckbox[]") List<String> ckArr, NoticeBoardVO noticeBoardVO, @PathVariable String projId) {
 		
 		log.info("선택 삭제 ---------------------");
 		
@@ -142,5 +285,159 @@ public class NoticeController {
 		return result;
 	}
 	
+	
+	@GetMapping("/{projId}/noticeInsert")
+	public String nInsert(Model model, @PathVariable String projId) {
+		
+		return "proj/noticeboard/noticeInsert";
+	}
+	
+	// 첨부파일 없는 일반 insert
+//	@PostMapping("/noticeBoardInsertPost")
+//	public String insertNt(@ModelAttribute NoticeBoardVO noticeBoardVO) {
+//		
+//		log.info("notice insert -> noticeBoardVO: " + noticeBoardVO.toString());
+//		
+//		int result = this.noticeService.insertNt(noticeBoardVO);
+//		log.info("result: " + result);
+//		
+//		return "redirect:/proj/noticeBoardDetail?projNtNum="+noticeBoardVO.getProjNtNum();
+//		
+//	}
+	
+	// 첨부파일 포함 insert
+	@PostMapping("/{projId}/noticeBoardInsertPost")
+	public String insertNt(@ModelAttribute NoticeBoardVO noticeBoardVO, @PathVariable String projId) throws IllegalStateException, IOException {
+
+		log.info("notice insert -> noticeBoardVO: " + noticeBoardVO.toString());
+		
+		// 업로드 될 폴더 설정
+		String uploadFolder = "C:\\eGovFrameDev-3.10.0-64bit\\finalProject\\ipms\\src\\main\\webapp\\resources\\uploadNt";
+		// 연/월/일 폴더 생성
+		String uploadFolderPath = getFolder();
+		// 폴더 생성(계획)
+		File uploadPath = new File(uploadFolder, uploadFolderPath);
+		
+		// 계획된 경로에 폴더가 없다면 생성
+		if(uploadPath.exists()==false) {
+			uploadPath.mkdirs();
+		}
+		
+//		MultipartFile[] uploadFile = noticeBoardVO.getItgrnAttachFileNum();
+		
+		List<IntgAttachFileVO> intgAttachFileVOList = new ArrayList<IntgAttachFileVO>();
+		
+		int cnt = 1;
+		
+		//INTG_ATTACH_FILE 테이블의 MAX(INTG_ATTACH_FILE_NUM)+1 컬럼 값 가져오기
+		int intgAttachFileNum = this.noticeService.getIntgAttachFileNum();
+		log.info("intgAttachFileNum : " + intgAttachFileNum);
+		
+		MultipartFile[] mf = noticeBoardVO.getUploadFile();
+		
+		log.info("mf.length : " + mf.length + ", mf : " + mf);
+		
+		// 파일 객체 배열로부터 하나씩 파일 객체를 꺼내오기
+		for(MultipartFile multipartFile : mf) {
+			// 실제 파일명
+			String uploadFileName = multipartFile.getOriginalFilename();
+			// IE 처리. 경로를 제외한 파일 명만 추출
+			// c:\\temp\\개똥이.jpg => 개똥이.jpg
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+			// UUID 붙이기
+			UUID uuid = UUID.randomUUID();
+			uploadFileName = uuid.toString() + "_" + uploadFileName;
+			
+			// 파일 업로드 처리
+			// uploadPath: static폴더및연월일까지
+			// uploadFileName: UUID_실제파일명
+			// 계획
+			File saveFile = new File(uploadPath, uploadFileName);
+			// 실행
+			multipartFile.transferTo(saveFile);
+			
+			IntgAttachFileVO intgAttachFileVO = new IntgAttachFileVO();
+			
+			intgAttachFileVO.setIntgAttachFileNum(intgAttachFileNum+"");
+			intgAttachFileVO.setAttachFileSeq(cnt++);
+			intgAttachFileVO.setFilePath(uploadFolder);
+			intgAttachFileVO.setFileName(multipartFile.getOriginalFilename());
+			intgAttachFileVO.setFileSize((int)multipartFile.getSize());
+			intgAttachFileVO.setFileSizeName(multipartFile.getContentType());
+			intgAttachFileVO.setRgstId(noticeBoardVO.getMemCode());
+			intgAttachFileVO.setFileType(Files.probeContentType(saveFile.toPath()));
+			intgAttachFileVO.setSaveFileName(uploadFolderPath.replace("\\", "/") + "/" + uploadFileName); 
+			
+			//파일이 있을 때에만 리스트에 넣기
+			if(intgAttachFileVO.getFileSize()>0) {
+				intgAttachFileVOList.add(intgAttachFileVO);
+			}
+		}
+		
+		log.info("intgAttachFileVOList : " + intgAttachFileVOList);
+		
+		int resultFile = 0;
+		
+		//1-1) 첨부파일이 있을 때 처리 시작 -------------------------------------
+		if(intgAttachFileVOList.size()>0) {
+			resultFile = this.noticeService.insertFile(intgAttachFileVOList);
+			log.info("resultFile : " + resultFile);
+					
+			noticeBoardVO.setItgrnAttachFileNum(intgAttachFileNum+"");
+		//1-1) 첨부파일이 있을 때 처리 끝 -------------------------------------
+			
+		}else {
+		//1-2) 첨부파일이 없을 때 처리 시작 -------------------------------------			
+			noticeBoardVO.setItgrnAttachFileNum("");
+		//1-2) 첨부파일이 없을 때 처리 끝 -------------------------------------
+		}
+		
+		
+		int result = this.noticeService.insertNt(noticeBoardVO);
+		log.info("result: " + result);
+		
+		return "redirect:/proj/{projId}/noticeBoardDetail?projNtNum="+noticeBoardVO.getProjNtNum();
+	}
+	
+	//날짜 계층형 폴더
+	public String getFolder() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date date = new Date();
+		//str : 2022-08-03
+		String str = sdf.format(date);
+		//2022폴더 > 08폴더 > 03폴더
+		return str.replace("-", File.separator);
+	}
+	
+
+//	@ResponseBody
+//	@GetMapping("/download")
+//	public ResponseEntity<Resource> download(@RequestParam String fileName) {
+//		
+//		log.info("fileName : " + fileName);
+//		
+//		//resource : 다운로드 받을 파일(자원)
+//		Resource resource = new FileSystemResource(
+//				"C:\\eclipse-jee-2020-06-R-win32-x86_64\\workspace\\TspringProj\\src\\main\\webapp\\resources\\upload"
+//				+fileName
+//				);
+//		
+//		//cd862ebd-10a2-4220-bbbb-5bbf8ffdadd7_phone01.jpg
+//		String resourceName = resource.getFilename();
+//		
+//		//header : 인코딩 정보, 파일명 정보
+//		HttpHeaders headers = new HttpHeaders();
+//		
+//		try {
+//			headers.add("Content-Disposition", "attachment;filename="+
+//					new String(resourceName.getBytes("UTF-8"),"ISO-8859-1"));
+//		} catch (UnsupportedEncodingException e) {
+//			log.info(e.getMessage());
+//		}
+//		
+//		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+//	}
+//	
 	
 }

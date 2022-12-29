@@ -1,5 +1,6 @@
 package com.ipms.main.login.vo;
 
+import com.ipms.main.alert.vo.AlrmReceiverVO;
 import com.ipms.main.register.vo.TechStackVO;
 import lombok.Data;
 
@@ -30,5 +31,6 @@ public class MemVO {
 
     private List<MemberAuth> memAuthList;//N+1
     private List<TechStackVO> techStackVOList;
+    private List<AlrmReceiverVO>alrmReceiverVOList;
     private String projId;
 }

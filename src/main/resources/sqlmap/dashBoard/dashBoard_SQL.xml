@@ -136,4 +136,109 @@
 		WHERE 
 		    proj_id = #{projId}
 	</select>
+	
+	<select id="selectTaskList" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT 
+			TASK_ID, 
+			PROJ_ID, 
+			MEM_CODE, 
+			HIGH_TASK_ID, 
+			TASK_TITLE, 
+			TASK_STRT_DATE, 
+			TASK_END_DATE, 
+			TASK_STUS_CODE, 
+			TASK_PGRES, 
+			LOW_RGST_SEQ, 
+			APROV_WHTH, 
+			TASK_REPRE, 
+			DELETE_YN, 
+			REFER_CTS, 
+			WORK_UPDATE_NUM
+		FROM (
+	    SELECT ROWNUM RN, 
+	    		TASK_ID, 
+	    		A.PROJ_ID, 
+	    		A.MEM_CODE, 
+	    		A.HIGH_TASK_ID, 
+	    		A.TASK_TITLE,  
+	    		A.TASK_STRT_DATE, 
+	    		A.TASK_END_DATE, 
+	    		A.TASK_STUS_CODE, 
+	    		A.TASK_PGRES, 
+	    		A.LOW_RGST_SEQ, 
+	    		A.APROV_WHTH, 
+	    		A.TASK_REPRE, 
+	    		A.DELETE_YN, 
+	    		A.REFER_CTS, 
+	    		A.WORK_UPDATE_NUM
+	    FROM(
+        SELECT 
+            TASK_ID, 
+            PROJ_ID, 
+            MEM_CODE, 
+            HIGH_TASK_ID, 
+            TASK_TITLE, 
+            TASK_STRT_DATE, 
+            TASK_END_DATE, 
+            TASK_STUS_CODE, 
+            TASK_PGRES, 
+            LOW_RGST_SEQ, 
+            APROV_WHTH,
+            TASK_REPRE, 
+            DELETE_YN, 
+            REFER_CTS, 
+            WORK_UPDATE_NUM
+        FROM TASK
+        WHERE PROJ_ID = #{projId}
+        <if test="keyword != null">
+      		AND TASK_TITLE like #{keyword} 
+        </if>
+        <if test="startDate != null">
+        	AND TASK_STRT_DATE = #{startDate}
+        </if>
+        <if test="endDate != null">
+        	AND TASK_END_DATE = #{endDate}
+        </if>
+        <if test="memCode != null">
+        	AND MEM_CODE = #{memCode}
+        </if>
+        <if test="'aprov'.equals(aprov)">
+        	AND APROV_WHTH = 'n' 
+        </if>
+      	  	AND DELETE_YN = 'n'
+       		ORDER BY TASK_STRT_DATE DESC
+  		  ) A
+		)
+		WHERE RN <![CDATA[>]]> ( #{pageNum} - 1 ) * #{amount} AND RN <![CDATA[<=]]> #{pageNum} * #{amount}
+		
+	</select>
+	
+	<select id="total" parameterType="com.ipms.commons.vo.Criteria" resultType="int">
+		SELECT 
+			COUNT(TASK_ID)
+		FROM 
+			TASK
+		WHERE
+			PROJ_ID = #{projId}
+		<if test="keyword != null">
+      		AND TASK_TITLE like #{keyword} 
+        </if>
+        <if test="startDate != null">
+        	AND TASK_STRT_DATE = #{startDate}
+        </if>
+        <if test="endDate != null">
+        	AND TASK_END_DATE = #{endDate}
+        </if>
+        <if test="memCode != null">
+        	AND MEM_CODE = #{memCode}
+        </if>
+        <if test="aprov != null">
+        	AND APROV_WHTH = 'n' 
+        </if>
+        <if test="'aprov'.equals(aprov)">
+        	AND APROV_WHTH = 'n' 
+        </if>
+		AND
+			DELETE_YN = 'n'
+	</select>
 </mapper>

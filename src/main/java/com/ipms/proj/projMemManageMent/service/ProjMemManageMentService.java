@@ -1,5 +1,6 @@
 package com.ipms.proj.projMemManageMent.service;
 
+import com.ipms.main.alert.vo.AlrmVO;
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
@@ -20,13 +21,6 @@ public interface ProjMemManageMentService {
 
     int dropMemListProcessing(MemVO memVO);//하차 승인
     int extractionParticipants(ProjMemVO projMemVO);
-//    public List<MemVO> dropApplicationList(MemVO memVO);
-//
-//    public int dropMemListProcessing(MemVO memVO);
-//
-//    public List<MemVO> listPeopleDisembarked(MemVO memVO);
-//
-//    public int deleteAuthority(MemVO memVO);
-//    public List<MemVO> projectInvitationList(MemVO memVO);
+    int insertAlrm(AlrmVO alrmVO);
 
 }

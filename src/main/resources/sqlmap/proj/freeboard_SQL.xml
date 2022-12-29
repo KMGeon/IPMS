@@ -44,12 +44,13 @@
 					, A.PROJ_BD_TITLE
 					, A.PROJ_BD_WRITE_DATE
                 FROM( SELECT PROJ_BD_ID
-							, WRITER
+							, (SELECT M.MEM_NAME FROM MEM M WHERE P.WRITER = M.MEM_CODE) AS WRITER
 							, PROJ_BD_TITLE
 							, PROJ_BD_WRITE_DATE
-                        FROM PROJ_BD
+                        FROM PROJ_BD P
                         WHERE DELETE_YN = 'n'
-                        ORDER BY PROJ_BD_ID ASC) A )
+                        AND PROJ_ID = #{projId}
+                        ORDER BY PROJ_BD_ID DESC) A )
             WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
 		]]>
 		
@@ -60,21 +61,22 @@
 		
 		SELECT COUNT(PROJ_BD_ID)
 		FROM PROJ_BD
+		WHERE PROJ_ID = #{projId}
 		
 	</select>
 
 	<select id="detailFree" resultType="com.ipms.proj.freeboard.vo.FreeboardVO" resultMap="freeboardMap">
 		SELECT PROJ_BD_ID
-			, WRITER
+			, (SELECT M.MEM_NAME FROM MEM M WHERE P.WRITER = M.MEM_CODE) AS WRITER
 			, PROJ_ID
 			, PROJ_BD_TITLE
 			, PROJ_BD_CTS
 			, PROJ_BD_WRITE_DATE
 			, DELETE_YN
-		FROM PROJ_BD
+		FROM PROJ_BD P
 		WHERE PROJ_BD_ID = #{projBdId}
+		AND PROJ_ID = #{projId}
 	</select>
-	
 	
 	<insert id="insertFree" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO">
 		<selectKey order="BEFORE" keyProperty="projBdId" resultType="int">
@@ -87,23 +89,46 @@
 	
 	<update id="updateFree" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO">
 		UPDATE PROJ_BD
-		SET PROJ_BD_ID=#{projBdId}, WRITER=#{writer}, PROJ_ID=#{projId}, PROJ_BD_TITLE = #{projBdTitle}, PROJ_BD_CTS = #{projBdCts},
-			PROJ_BD_WRITE_DATE=sysdate, DELETE_YN='n'
-		WHERE PROJ_BD_ID = #{projBdId}
+		SET PROJ_BD_TITLE = #{projBdTitle}, PROJ_BD_CTS = #{projBdCts}, PROJ_BD_WRITE_DATE=sysdate
+		WHERE PROJ_ID = #{projId}
+		AND PROJ_BD_ID = #{projBdId}
+		AND WRITER = #{writer}
 	</update>
 	
 	<update id="deleteFree" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO">
 		UPDATE PROJ_BD
 		SET DELETE_YN = 'y'
-		WHERE PROJ_BD_ID = #{projBdId}
+		WHERE PROJ_ID = #{projId}
+		AND WRITER = #{writer}
+		AND PROJ_BD_ID = #{projBdId}
 	</update>
 	
 	<update id="ckDelFree" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO">
 		UPDATE PROJ_BD
 		SET DELETE_YN = 'y'
-		WHERE PROJ_BD_ID = #{projBdId}
+		WHERE PROJ_ID = #{projId}
+		AND PROJ_BD_ID = #{projBdId}
 	</update>
 	
+	<!-- 로그인한 회원이 리더인지 아닌지 판별 -->
+	<select id="authCheck" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO" resultType="string">
+		SELECT MEM_AUTH
+        FROM MEMBER_AUTH
+        WHERE MEM_CODE = #{writer}
+        AND PROJ_ID = #{projId}
+	</select>
 	
+	<select id="detailFree2" resultType="com.ipms.proj.freeboard.vo.FreeboardVO" resultMap="freeboardMap">
+		SELECT PROJ_BD_ID
+			, WRITER
+			, PROJ_ID
+			, PROJ_BD_TITLE
+			, PROJ_BD_CTS
+			, PROJ_BD_WRITE_DATE
+			, DELETE_YN
+		FROM PROJ_BD P
+		WHERE PROJ_ID = #{projId}
+		AND PROJ_BD_ID = #{projBdId}
+	</select>
 	
 </mapper>

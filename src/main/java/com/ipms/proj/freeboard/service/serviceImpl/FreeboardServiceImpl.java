@@ -54,15 +54,27 @@ public class FreeboardServiceImpl implements FreeboardService {
 	}
 
 	@Override
-	public int getTotal() {
+	public int getTotal(String projId) {
 		
-		return this.freeboardMapper.getTotal();
+		return this.freeboardMapper.getTotal(projId);
 	}
 
 	@Override
 	public int ckDelFree(FreeboardVO freeboardVO) {
 		
 		return this.freeboardMapper.ckDelFree(freeboardVO);
+	}
+
+	@Override
+	public String[] authCheck(FreeboardVO freeboardVO) {
+		
+		return this.freeboardMapper.authCheck(freeboardVO);
+	}
+
+	@Override
+	public FreeboardVO detailFree2(FreeboardVO freeboardVO) {
+		
+		return this.freeboardMapper.detailFree2(freeboardVO);
 	}
 	
 }

@@ -81,68 +81,32 @@
           AND MEM_CODE =#{memCode}
     </delete>
 
-<!--    &lt;!&ndash;하차된 인원 리스트 &ndash;&gt;-->
-<!--    <select id="listPeopleDisembarked"  parameterType="com.ipms.main.login.vo.MemVO" resultType="com.ipms.main.login.vo.MemVO">-->
-<!--        SELECT MEM_CODE,-->
-<!--               PROJ_ID,-->
-<!--               DROPSTATUS-->
-<!--        FROM PROJ_MEM-->
-<!--        WHERE PROJ_ID = #{projId}-->
-<!--          AND DROPSTATUS = 'Y'-->
-<!--    </select>-->
 
-<!--    <delete id="deleteAuthority" parameterType="com.ipms.main.login.vo.MemVO">-->
-<!--        DELETE member_auth-->
-<!--            WHERE mem_code=#{memCode}-->
-<!--            AND proj_id=#{projId}-->
-<!--    </delete>-->
-
-<!--    &lt;!&ndash; 초대 버튼&ndash;&gt;-->
-<!--    <insert id="invitationRequestButton" parameterType="com.ipms.main.newProject.vo.ProjVO">-->
-<!--        INSERT INTO proj_mem (-->
-<!--            mem_code,-->
-<!--            proj_id,-->
-<!--            team_id,-->
-<!--            prtpt_aprov_code,-->
-<!--            refer_cts,-->
-<!--            dropstatus,-->
-<!--            invttnot-->
-<!--        ) VALUES (-->
-<!--                     #{memCode},-->
-<!--                     #{projId},-->
-<!--                     (SELECT TEAM_ID FROM PROJ_TEAM WHERE PROJ_ID=#{projId}),-->
-<!--                     '0',-->
-<!--                     '0',-->
-<!--                     '0',-->
-<!--                     '1'-->
-<!--                 )-->
-<!--    </insert>-->
+    <insert id="insertAlrm" parameterType="com.ipms.main.alert.vo.AlrmVO">
+        <selectKey order="BEFORE" resultType="string" keyProperty="alrmId">
+            SELECT NVL(SUBSTR(MAX(alrm_id),1,1)|| TRIM(TO_CHAR(SUBSTR(MAX(alrm_id),2) + 1,'000')),'A001')
+            FROM  alrm
+        </selectKey>
+        INSERT INTO alrm (alrm_id,
+                          mem_code,
+                          alrm_cts,
+                          alrm_time,
+                          alrm_dvsion_code)
+        VALUES (#{alrmId},
+                #{memCode},
+                #{alrmCts},
+                sysdate,
+                '1')
+    </insert>
+    <select id="getAlrmList" parameterType="string" resultType="com.ipms.main.alert.vo.AlrmVO">
+    SELECT
+    alrm_id,
+    mem_code,
+    alrm_cts,
+    alrm_time,
+    alrm_dvsion_code
+    FROM
+    alrm
+    where mem_code=#{memCode}
+    </select>
 </mapper>
-        <!--    <resultMap type="com.ipms.main.login.vo.MemVO" id="memberMap">-->
-        <!--        <result property="memCode" column="MEM_CODE" />-->
-        <!--        <result property="memEmail" column="MEM_EMAIL" />-->
-        <!--        <result property="projId" column="PROJ_ID" />-->
-        <!--        <result property="memPasswd" column="MEM_PASSWD" />-->
-        <!--        <result property="memName" column="MEM_NAME" />-->
-        <!--        <result property="memPhoneNumber" column="MEM_PHONE_NUMBER" />-->
-        <!--        <result property="memWhdrlWhth" column="MEM_WHDRL_YN" />-->
-        <!--        <result property="memImgRoute" column="mem_img_route" />-->
-        <!--        <result property="memSgnupDate" column="MEM_SGNUP_DATE" />-->
-        <!--        <collection property="memAuthList" resultMap="authMap"></collection>-->
-        <!--    </resultMap>-->
-        <!--    <resultMap type="com.ipms.main.login.vo.MemberAuth" id="authMap">-->
-        <!--        <result property="memCode" column="MEM_CODE" />-->
-        <!--        <result property="projId" column="PROJ_ID" />-->
-        <!--        <result property="memAuth" column="MEM_AUTH" />-->
-        <!--    </resultMap>-->
-
-        <!--    &lt;!&ndash; 하차 멤버 리스트&ndash;&gt;-->
-        <!--    <select id="dropApplicationList" parameterType="com.ipms.main.login.vo.MemVO" resultMap="memberMap">-->
-        <!--        select P.proJ_id , P.mem_code , MA.MEM_AUTH-->
-        <!--        from proj_mem P, MEMBER_AUTH MA-->
-        <!--        where-->
-        <!--            P.PROJ_ID=#{projId}-->
-        <!--          AND P.DROPSTATUS='N'-->
-        <!--          AND MA.PROJ_ID = #{projId}-->
-        <!--          AND MA.MEM_CODE=#{memCode}-->
-        <!--    </select>-->
