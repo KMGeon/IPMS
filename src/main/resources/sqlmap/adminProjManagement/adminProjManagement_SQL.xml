@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ipms.main.admin.projManagement.mapper.ProjManagementMapper">
+
+	<resultMap type="com.ipms.main.admin.projManagement.vo.ProjManaVO" id="adProjMap">
+		<result property="projId" column="PROJ_ID" />
+		<result property="memCode" column="MEM_CODE" />
+		<result property="projName" column="PROJ_NAME" />
+		<result property="projStrtDate" column="PROJ_STRT_DATE" />
+		<result property="projEndDate" column="PROJ_END_DATE" />
+		<result property="projSmry" column="PROJ_SMRY" jdbcType="CLOB" javaType="java.lang.String"/>
+		<result property="projOpnWhth" column="PROJ_OPN_WHTH" />
+		<result property="projCreatnDate" column="PROJ_CREATN_DATE" />
+		<result property="projImgRoute" column="PROJ_IMG_ROUTE" />
+		<result property="deleteWhth" column="DELETE_WHTH" />
+	</resultMap>
+
+	<select id="adminProjList" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
+		<![CDATA[
+		SELECT PROJ_ID
+               , MEM_CODE
+               , PROJ_NAME
+            , PROJ_STRT_DATE
+               , PROJ_END_DATE
+                , PROJ_SMRY
+                , PROJ_OPN_WHTH
+                    , PROJ_CREATN_DATE
+                    , PROJ_IMG_ROUTE
+                    , DELETE_WHTH
+            FROM ( SELECT ROWNUM RN
+                    , A.PROJ_ID
+                    , A.MEM_CODE
+                    , A.PROJ_NAME
+                    , A.PROJ_STRT_DATE
+                    , A.PROJ_END_DATE
+                    , A.PROJ_SMRY
+                    , A.PROJ_OPN_WHTH
+                    , A.PROJ_CREATN_DATE
+                    , A.PROJ_IMG_ROUTE
+                    , A.DELETE_WHTH
+                FROM( SELECT PROJ_ID
+                    , (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS MEM_CODE
+                    , PROJ_NAME
+                    , PROJ_STRT_DATE
+                    , PROJ_END_DATE
+                    , PROJ_SMRY
+                    , PROJ_OPN_WHTH
+                    , PROJ_CREATN_DATE
+                    , PROJ_IMG_ROUTE
+                    , DELETE_WHTH
+                    FROM PROJ P
+                    ORDER BY PROJ_CREATN_DATE DESC) A )
+                    WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+                    ]]>
+	</select>
+	
+	<select id="getTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT COUNT(PROJ_ID)
+		FROM PROJ
+	</select>
+	
+	<select id="adminProjDetail" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO" resultMap="adProjMap">
+		SELECT PROJ_ID
+			, (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS MEM_CODE
+			, PROJ_NAME
+			, PROJ_STRT_DATE
+			, PROJ_END_DATE
+			, PROJ_SMRY
+			, PROJ_OPN_WHTH
+			, PROJ_CREATN_DATE
+			, PROJ_IMG_ROUTE
+			, DELETE_WHTH
+		FROM PROJ P
+		WHERE PROJ_ID = #{projId}
+	</select>
+
+</mapper>

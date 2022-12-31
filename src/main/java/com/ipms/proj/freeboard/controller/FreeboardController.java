@@ -82,6 +82,7 @@ public class FreeboardController {
 		}
 		
 		criteria.setProjId(projId);
+		criteria.setAmount(10);
 		
 		List<FreeboardVO> freeSelect = freeboardservice.getFreePage(criteria);
 		
@@ -258,10 +259,16 @@ public class FreeboardController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/deleteSelFree")
-	public int ckDelFree(@RequestParam(value = "ckbox[]") List<String> ckArr, FreeboardVO freeboardVO) {
+	@PostMapping("/{projId}/deleteSelFree")
+	public int ckDelFree(@RequestParam(value = "ckbox[]") List<String> ckArr, Authentication authentication, FreeboardVO freeboardVO, @PathVariable String projId) {
 		
 		log.info("선택 삭제 -----------------");
+		
+		UserDetails userdetail = (UserDetails)authentication.getPrincipal();
+		String userEmail = userdetail.getUsername();
+		String userCode = this.issueService.getMemCode(userEmail); // memcode가져오기
+		
+		freeboardVO.setWriter(userCode);
 		
 		int result = 0;
 		int projBdId = 0;
@@ -271,8 +278,8 @@ public class FreeboardController {
 			freeboardVO.setProjBdId(projBdId);
 			freeboardservice.ckDelFree(freeboardVO);
 		}
-		
 		result = 1;
+		
 		return result;
 	}
 	

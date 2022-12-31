@@ -181,7 +181,12 @@
 		SELECT 
 			  TASK_ID
 			, PROJ_ID
-			, MEM_CODE
+			, (
+				SELECT M.MEM_NAME
+				FROM MEM M , TASK T
+				WHERE T.MEM_CODE = M.MEM_CODE
+				AND T.TASK_ID = #{taskId}
+			) as memCode
 			, HIGH_TASK_ID
 			, TASK_TITLE
 			, TASK_CTS

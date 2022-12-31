@@ -12,7 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @RequestMapping("/main")
 @Slf4j
@@ -30,11 +31,21 @@ public class InviteAndApplyController {
     }
 
 
-    //신청한 회원-프로젝트 승인(신청한 회원)
+    //신청한 회원
+    @ResponseBody
+    @PostMapping(value = "/approval")
+    @ResponseStatus(HttpStatus.CREATED)
+    public  List<ProjMemVO> memberWhoApplied(Authentication authentication, ProjMemVO projMemVO) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
+        return memberWhoApplied;
+    }
+
+// 신청한 회원-프로젝트 승인(신청한 회원)
     @ResponseBody
     @PostMapping(value = "/approveProject")
     @ResponseStatus(HttpStatus.CREATED)
-    public int approveProject(Authentication authentication, ProjMemVO projMemVO, RedirectAttributes rttr) {
+    public int approveProject(Authentication authentication, ProjMemVO projMemVO) {
         return this.inviteAndApplyService.approval(projMemVO);
     }
 
@@ -42,7 +53,7 @@ public class InviteAndApplyController {
     @ResponseBody
     @PostMapping(value = "/projectCompanionship")
     @ResponseStatus(HttpStatus.CREATED)
-    public int projectCompanionship(Authentication authentication, ProjMemVO projMemVO, RedirectAttributes rttr) {
+    public int projectCompanionship(Authentication authentication, ProjMemVO projMemVO) {
         return this.inviteAndApplyService.companionProject(projMemVO);
     }
 

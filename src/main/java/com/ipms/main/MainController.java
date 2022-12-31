@@ -19,27 +19,39 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/main")
 public class MainController {
-	@Autowired
-	MemManageMapper memManageMapper;
+    @Autowired
+    MemManageMapper memManageMapper;
 
-	@GetMapping("/page")
-	public String hello(Authentication auth) {
-		return "main/page";
-	}
+    @GetMapping("/page")
+    public String hello(Authentication auth) {
+        return "main/page";
+    }
 
-	@GetMapping("/test")
-	public  String test(){
-		return "test";
-	}
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
 
-	@ResponseBody
-	@RequestMapping(value = "/boardList" ,method = RequestMethod.GET)
-	public  List<AlrmVO> boardList1(){
-		Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-		CustomUser user = (CustomUser) authentication.getPrincipal();
-		log.info("userPrincipal: " +user.getMember().getMemCode());
-		List<AlrmVO> list = this.memManageMapper.getAlrmList(user.getMember().getMemCode());
-		return  list;
-	}
+    @ResponseBody
+    @RequestMapping(value = "/boardList", method = RequestMethod.GET)
+    public List<AlrmVO> boardList1() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        List<AlrmVO> list = this.memManageMapper.getAlrmList(user.getMember().getMemCode());
+        return list;
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "/deleteAlrm", method = RequestMethod.POST)
+    public int deleteAlrm(AlrmVO alrmVO) {
+        return this.memManageMapper.deleteAlrm(alrmVO);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/countAlrm", method = RequestMethod.POST)
+    public int countAlrm(AlrmVO alrmVO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        return this.memManageMapper.countAlrm(user.getMember().getMemCode());
+    }
 }

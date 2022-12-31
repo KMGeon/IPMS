@@ -18,6 +18,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     @Autowired
     MyPageMapper myPageMapper;
@@ -29,13 +30,11 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     @Transactional
     public String inviteOrApply(Model model, Authentication authentication, ProjMemVO projMemVO) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
+        //신청한 회원
+//        List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
         List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
         List<InvitationVO> invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(this.myPageMapper.getMemCode(userDetails.getUsername()));
-        log.info("===============" + memberWhoApplied);
-        log.info("===============" + projectsApplied);
-        log.info("===============" + invitationWaitingList);
-        model.addAttribute("memberWhoApplied", memberWhoApplied);
+//        model.addAttribute("memberWhoApplied", memberWhoApplied);
         model.addAttribute("projectsApplied", projectsApplied);
         model.addAttribute("invitationWaitingList", invitationWaitingList);
         return "main/mypage/inviteAndApply";

@@ -21,9 +21,9 @@ public class IssueServiceImpl implements IssueService {
 	IsuueMapper issuemapper;
 
 	@Override
-	public List<IssueVO> taskListSelect() {
+	public List<IssueVO> taskListSelect(String projId) {
 
-		return this.issuemapper.taskListSelect();
+		return this.issuemapper.taskListSelect(projId);
 	}
 
 	@Override

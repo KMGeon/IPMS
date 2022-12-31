@@ -24,10 +24,11 @@
 				, TASK_STRT_DATE, TASK_END_DATE, TASK_STUS_CODE, TASK_PGRES, LOW_RGST_SEQ
 				, APROV_WHTH, TASK_REPRE, DELETE_YN, REFER_CTS
 		FROM TASK
-		WHERE MEM_CODE = #{writer}
-		AND PROJ_ID = #{projId}
+		WHERE PROJ_ID = #{projId}
+		AND MEM_CODE = #{writer}
 		AND DELETE_YN = 'n' 
 		AND APROV_WHTH = 'y'
+		AND TASK_PGRES &lt; 100
 	</select>
 	
 	<insert id="insertSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">

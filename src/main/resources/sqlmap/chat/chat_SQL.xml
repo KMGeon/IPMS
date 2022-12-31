@@ -10,7 +10,19 @@
 		<result property="writer" column="WRITER" />
 		<result property="deleteYn" column="DELETE_YN" />
 	</resultMap>
-
+	
+	<insert id="createChatRoom" parameterType="com.ipms.main.newProject.vo.ProjVO">
+		INSERT INTO chat_room (
+		    chat_room_id,
+		    mem_code,
+		    proj_id
+		) VALUES (
+		    #{projId},
+		    #{memCode},
+		    #{projId}
+		)
+	
+	</insert>
 
 	<insert id="insertChat" parameterType="com.ipms.proj.chat.vo.ChatVO">
 		<selectKey keyProperty="chatNum" order="BEFORE" resultType="int">

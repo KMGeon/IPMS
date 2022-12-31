@@ -22,5 +22,6 @@ public interface ProjMemManageMentService {
     int dropMemListProcessing(MemVO memVO);//하차 승인
     int extractionParticipants(ProjMemVO projMemVO);
     int insertAlrm(AlrmVO alrmVO);
+    int deleteAlrm(AlrmVO alrmVO);
 
 }

@@ -8,7 +8,7 @@ import com.ipms.proj.issue.vo.IssueVO;
 
 public interface IsuueMapper {
 	
-	public List<IssueVO> taskListSelect();
+	public List<IssueVO> taskListSelect(String projId);
 	
 	public int IssueDataInsert(IssueVO vo);
 	

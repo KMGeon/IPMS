@@ -69,6 +69,7 @@
                       , A.MEM_CODE
                       , A.PROJ_ID
                       ,(SELECT P.PROJ_NAME FROM PROJ P WHERE P.PROJ_ID = A.PROJ_ID) as proj_name
+                      ,(SELECT P.PROJ_IMG_ROUTE FROM PROJ P WHERE P.PROJ_ID = A.PROJ_ID) as proj_img_route
         FROM PROJ_MEM A
         WHERE A.MEM_CODE = #{memCode}
           AND A.prtpt_aprov_code = 'Y'

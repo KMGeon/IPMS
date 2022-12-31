@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ipms.main.admin.memManagement.mapper.AdminMemManagementMapper">
+	
+	<resultMap type="com.ipms.main.admin.memManagement.vo.AdminMemVO" id="adMemMap">
+		<result property="memCode" column="MEM_CODE" />
+		<result property="memEmail" column="MEM_EMAIL" />
+		<result property="memPasswd" column="MEM_PASSWD" />
+		<result property="memName" column="MEM_NAME" />
+		<result property="memPhoneNumber" column="MEM_PHONE_NUMBER" />
+		<result property="memSgnupDate" column="MEM_SGNUP_DATE" />
+		<result property="memImgRoute" column="MEM_IMG_ROUTE" />
+		<result property="memWhdrlYn" column="MEM_WHDRL_YN" />
+		<result property="memProjQuit" column="MEM_PROJ_QUIT" />
+	</resultMap>
+	
+	<select id="adminMemList" resultType="com.ipms.main.admin.memManagement.vo.AdminMemVO">
+		SELECT MEM_CODE
+			, MEM_EMAIL
+			, MEM_PASSWD
+			, MEM_NAME
+			, MEM_PHONE_NUMBER
+			, MEM_SGNUP_DATE
+			, MEM_IMG_ROUTE
+			, MEM_WHDRL_YN
+			, MEM_PROJ_QUIT
+        FROM MEM
+	</select>
+	
+	<select id="adminMemDetail" resultType="com.ipms.main.admin.memManagement.vo.AdminMemVO" resultMap="adMemMap">
+		SELECT MEM_EMAIL, MEM_CODE, MEM_NAME, MEM_PHONE_NUMBER, MEM_SGNUP_DATE
+		FROM MEM
+		WHERE MEM_CODE = #{memCode}
+	</select>
+	
+</mapper>

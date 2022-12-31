@@ -64,4 +64,9 @@ public class ProjMemManageMentServiceImpl implements ProjMemManageMentService {
     public int insertAlrm(AlrmVO alrmVO) {
         return this.memManageMapper.insertAlrm(alrmVO);
     }
+
+    @Override
+    public int deleteAlrm(AlrmVO alrmVO) {
+        return this.memManageMapper.deleteAlrm(alrmVO);
+    }
 }

@@ -28,4 +28,9 @@ public interface MemManageMapper {
     int insertAlrm(AlrmVO alrmVO);
 
     List<AlrmVO> getAlrmList(String memCode);
+
+    int deleteAlrm(AlrmVO alrmVO);
+
+    int countAlrm(String memCode);
+
 }

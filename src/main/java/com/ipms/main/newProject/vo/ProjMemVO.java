@@ -16,4 +16,6 @@ public class ProjMemVO {
     private String memEmail;
     private String projName;//프로젝트 이름
     private  String memName;
+    private  String projImgRoute;
+
 }

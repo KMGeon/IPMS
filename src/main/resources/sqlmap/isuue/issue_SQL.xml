@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.proj.issue.mapper.IsuueMapper">
-	<select id="taskListSelect" resultType="com.ipms.proj.issue.vo.IssueVO">
+	<select id="taskListSelect" parameterType="string" resultType="com.ipms.proj.issue.vo.IssueVO">
 		SELECT TASK_ID , TASK_TITLE
 		FROM TASK
 		WHERE HIGH_TASK_ID IS NOT NULL
+		AND PROJ_ID = #{projId}
 	</select>
 	
 	<insert id="IssueDataInsert" parameterType="com.ipms.proj.issue.vo.IssueVO" >
@@ -113,12 +114,26 @@
 	<select id="IssueDetail" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="com.ipms.proj.issue.vo.IssueVO">
 		SELECT ISSUE_ID
 			, TASK_ID
+			, (
+				SELECT TASK_TITLE
+				FROM TASK T , ISSUE I
+				WHERE T.TASK_ID = I.TASK_ID
+				AND I.ISSUE_ID = #{issueId}  
+			) as TASK_TITLE
 			, ISSUE_TITLE
 			, ISSUE_CTS
 			, ISSUE_RGST_DATE
 			, ISSUE_STUS_CODE
 			, ITGRN_ATTACH_FILE_NUM
-			, DELETE_YN, WRITER
+			, PROJ_ID
+			, DELETE_YN
+					, (
+		                SELECT M.MEM_NAME
+		                FROM MEM M , ISSUE I
+		                WHERE M.MEM_CODE = I.WRITER
+		                AND ISSUE_ID = #{issueId}
+		            
+		            ) AS WRITER
                     , (
 	                      SELECT  SAVE_FILE_NAME
 	                      FROM INTG_ATTACH_FILE
@@ -130,9 +145,35 @@
                       FROM INTG_ATTACH_FILE
                       WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM
 <!--                       AND ATTACH_FILE_SEQ = 1 -->
+                    ) AS FILE_NAME
+		FROM ISSUE
+		WHERE ISSUE_ID =  #{issueId}
+		AND PROJ_ID = #{projId}
+	</select>
+	
+	<select id="IssueUpdateDetail" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="com.ipms.proj.issue.vo.IssueVO">
+		SELECT ISSUE_ID
+			, TASK_ID
+			, ISSUE_TITLE
+			, ISSUE_CTS
+			, ISSUE_RGST_DATE
+			, ISSUE_STUS_CODE
+			, ITGRN_ATTACH_FILE_NUM
+			, DELETE_YN, WRITER
+                    , (
+	                      SELECT  SAVE_FILE_NAME
+	                      FROM INTG_ATTACH_FILE
+	                      WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM
+ 	                      AND ATTACH_FILE_SEQ = 1
+                      ) AS FILE_PATH
+                    , (
+                      SELECT  FILE_NAME
+                      FROM INTG_ATTACH_FILE
+                      WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM
+                       AND ATTACH_FILE_SEQ = 1
                       ) AS FILE_NAME
 		FROM ISSUE
-		WHERE ISSUE_TITLE =  TO_CHAR(#{issueTitle})
+		WHERE ISSUE_ID =  #{issueId})
 		AND PROJ_ID = #{projId}
 	</select>
 	

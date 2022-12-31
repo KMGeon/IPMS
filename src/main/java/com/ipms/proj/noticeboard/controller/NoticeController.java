@@ -75,7 +75,7 @@ public class NoticeController {
 		}
 		
 		criteria.setProjId(projId);
-		
+		criteria.setAmount(10);
 		List<NoticeBoardVO> ntSelect = noticeService.getNtPage(criteria);
 		
 		int total = noticeService.getTotal(projId); // 게시글 총 개수! 
@@ -244,7 +244,7 @@ public class NoticeController {
 			
 		}else {
 		//1-2) 첨부파일이 없을 때 처리 시작 -------------------------------------			
-			noticeBoardVO.setItgrnAttachFileNum("");
+			noticeBoardVO.setItgrnAttachFileNum(null);
 		//1-2) 첨부파일이 없을 때 처리 끝 -------------------------------------
 		}
 		
@@ -267,9 +267,14 @@ public class NoticeController {
 	
 	@ResponseBody
 	@PostMapping("/{projId}/deleteSelNt")
-	public int ckDelNt(@RequestParam(value = "ckbox[]") List<String> ckArr, NoticeBoardVO noticeBoardVO, @PathVariable String projId) {
+	public int ckDelNt(@RequestParam(value = "ckbox[]") List<String> ckArr, NoticeBoardVO noticeBoardVO, Authentication authentication, @PathVariable String projId) {
 		
 		log.info("선택 삭제 ---------------------");
+		
+		UserDetails userdetail = (UserDetails)authentication.getPrincipal();
+		String userEmail = userdetail.getUsername();
+		String userCode = this.issueService.getMemCode(userEmail);
+		noticeBoardVO.setMemCode(userCode);
 		
 		int result = 0;
 		int projNtNum = 0;
@@ -279,7 +284,6 @@ public class NoticeController {
 			noticeBoardVO.setProjNtNum(projNtNum);
 			noticeService.ckDelNt(noticeBoardVO);
 		}
-		
 		result = 1;
 		
 		return result;

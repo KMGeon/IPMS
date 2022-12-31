@@ -31,6 +31,8 @@
 	<select id="getTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
 		SELECT COUNT(PROJ_NT_NUM)
 		FROM PROJ_NT
+		WHERE DELETE_YN = 'n'
+        AND PROJ_ID = #{projId}
 	</select>
 	
 	<resultMap type="com.ipms.proj.noticeboard.vo.NoticeBoardVO" id="ntMap">
@@ -48,6 +50,7 @@
 	<resultMap type="com.ipms.commons.ftp.vo.IntgAttachFileVO" id="intgAttachFileMap">
 		<result property="intgAttachFileNum" column="INTG_ATTACH_FILE_NUM" />
 		<result property="fileName" column="FILE_NAME" />
+		<result property="saveFileName" column="SAVE_FILE_NAME" />
 	</resultMap>
 	<select id="detailNt" resultType="com.ipms.proj.noticeboard.vo.NoticeBoardVO" resultMap="ntMap">
 <!-- 		SELECT P.PROJ_NT_NUM -->
@@ -100,7 +103,11 @@
 
 	<update id="updateNt" parameterType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
 		UPDATE PROJ_NT
-		SET	PROJ_NT_TITLE = #{projNtTitle}, PROJ_NT_CTS = #{projNtCts}, ITGRN_ATTACH_FILE_NUM = #{itgrnAttachFileNum}, PROJ_NT_WRITE_DATE = sysdate
+		SET	PROJ_NT_TITLE = #{projNtTitle}, PROJ_NT_CTS = #{projNtCts}
+		<if test="itgrnAttachFileNum != null">
+		,ITGRN_ATTACH_FILE_NUM = #{itgrnAttachFileNum}
+		</if>
+		 , PROJ_NT_WRITE_DATE = sysdate
 		WHERE PROJ_ID = #{projId}
 		AND MEM_CODE = #{memCode}
 		AND PROJ_NT_NUM = #{projNtNum}
@@ -109,7 +116,7 @@
 	<update id="deleteNt" parameterType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
 		UPDATE PROJ_NT
 		SET DELETE_YN = 'y'
-		WHERE PROJ_NT_NUM = #{projNtNum}
+		WHERE PROJ_ID = #{projId}
 		AND MEM_CODE = #{memCode}
 		AND PROJ_NT_NUM = #{projNtNum}
 	</update>
@@ -117,7 +124,7 @@
 	<update id="ckDelNt" parameterType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
 		UPDATE PROJ_NT
 		SET DELETE_YN = 'y'
-		WHERE PROJ_NT_NUM = #{projNtNum}
+		WHERE PROJ_ID = #{projId}
 		AND MEM_CODE = #{memCode}
 		AND PROJ_NT_NUM = #{projNtNum}
 	</update>

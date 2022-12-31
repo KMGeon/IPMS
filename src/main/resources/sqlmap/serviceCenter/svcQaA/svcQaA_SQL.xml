@@ -7,42 +7,46 @@
 
 	<select id="svcQaASelect" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
 		<![CDATA[
-		SELECT QNA_NUM
-			, WRITER
-			, QNA_TITLE
-			, QNA_WRITE_DATE
+		SELECT Q.QNA_NUM
+			    ,  M.MEM_NAME AS WRITER
+			    , Q.QNA_TITLE
+			    , Q.QNA_WRITE_DATE
+			    , Q.QNA_STATUS
             FROM ( SELECT ROWNUM RN
                     , A.QNA_NUM
 					, A.WRITER
 					, A.QNA_TITLE
 					, A.QNA_WRITE_DATE
+					, A.QNA_STATUS
                 FROM( SELECT QNA_NUM
 							, WRITER
 							, QNA_TITLE
 							, QNA_WRITE_DATE
+							, QNA_STATUS
                         FROM QNA
-                        WHERE WRITER = #{memCode}
-                        ORDER BY QNA_WRITE_DATE DESC ) A )
-            WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+                        ORDER BY QNA_WRITE_DATE DESC ) A ) Q, MEM M
+			WHERE Q.WRITER = M.MEM_CODE
+            AND RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
         ]]>
 	</select>
 	
 	<select id="total" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
 		SELECT COUNT(QNA_NUM)
 		FROM QNA
-		WHERE WRITER = #{memCode}
 	</select>
 
 
 
 	<select id="svcQaADetail" parameterType="string" resultType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
-		SELECT QNA_NUM
-			, WRITER
-			, QNA_TITLE
-			, QNA_CTS
-			, QNA_WRITE_DATE
-		FROM QNA
-		WHERE QNA_NUM = #{qnaNum}
+		SELECT Q.QNA_NUM
+			,  M.MEM_NAME AS WRITER
+			, Q.QNA_TITLE
+			, Q.QNA_CTS
+			, Q.QNA_WRITE_DATE
+		 	, Q.QNA_STATUS
+		FROM QNA Q, MEM M
+		WHERE Q.WRITER = M.MEM_CODE
+		AND QNA_NUM = #{qnaNum}
 	</select>
 	
 	<insert id="svcQaAInsert" parameterType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
@@ -50,12 +54,14 @@
 			, WRITER
 			, QNA_TITLE
 			, QNA_CTS
-			, QNA_WRITE_DATE) 
+			, QNA_WRITE_DATE
+			, QNA_STATUS) 
 		VALUES(QNA_NUM_SEQ.NEXTVAL
 			, #{writer}
 			, #{qnaTitle}
 			, #{qnaCts}
-			, SYSDATE)
+			, SYSDATE
+			, '응답중')
 	</insert>
 	
 </mapper>

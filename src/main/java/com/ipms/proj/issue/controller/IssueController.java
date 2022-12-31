@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -84,10 +85,12 @@ public class IssueController {
 	
 	@GetMapping("/{projId}/issueDetail")
 	public ModelAndView issueDetail(ModelAndView mav , IssueVO vo , @PathVariable String projId ) {
+		log.info("detailvo : {}",vo.toString());
 		vo.setProjId(projId);
 		IssueVO list = this.issueservice.IssueDetail(vo);
 		
 		mav.addObject("list",list);
+		mav.addObject("issueCd",list.getIssueId());
 		mav.setViewName("proj/issueboard/issueDetail");
 		
 		return mav;
@@ -98,8 +101,15 @@ public class IssueController {
 		return "proj/issueboard/issueInsert";
 	}
 	
-	@GetMapping("/{projId}/issueUpdate")
-	public String issueUpdate(@PathVariable String projId) {
+	@GetMapping("/{projId}/issueUpdate")// 디테일에서 수정버튼 클릭 시 
+	public String issueUpdate(@PathVariable String projId , IssueVO vo , Model model) {
+		log.info("*CONTROLLER * IssueController => issueUpdate Value : "  + vo.toString());
+		vo.setProjId(projId);
+		
+		IssueVO list = this.issueservice.IssueDetail(vo);
+		
+		model.addAttribute("list",list);
+		
 		return "proj/issueboard/issueUpdate";
 	}
 	
@@ -122,8 +132,8 @@ public class IssueController {
 		log.info("memCode : " + memCode);
 		
 		// 인설트 할때 유저이름 넣어줘야됨
-		String memName = this.issueservice.getUserName(userName);
-		vo.setWriter(memName);
+		
+		vo.setWriter(memCode);
 		
 		File uploadPath = new File(uploadFolder,getFolder());
 		if(uploadPath.exists() == false) {
@@ -197,7 +207,7 @@ public class IssueController {
 	@ResponseBody
 	@PostMapping("/{projId}/taskListSelect")
 	public JSONObject taskListSelect( @PathVariable String projId) {
-		List<IssueVO> returnvo = this.issueservice.taskListSelect();
+		List<IssueVO> returnvo = this.issueservice.taskListSelect(projId);
 		
 		log.info("* DB -> CONTROLLER * IssueController => taskListSelct Value : "  + returnvo.toString());
 		

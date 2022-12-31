@@ -62,7 +62,7 @@
 		SELECT COUNT(PROJ_BD_ID)
 		FROM PROJ_BD
 		WHERE PROJ_ID = #{projId}
-		
+		AND DELETE_YN = 'n'
 	</select>
 
 	<select id="detailFree" resultType="com.ipms.proj.freeboard.vo.FreeboardVO" resultMap="freeboardMap">

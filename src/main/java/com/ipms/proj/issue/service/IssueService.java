@@ -9,7 +9,7 @@ import com.ipms.proj.issue.vo.IssueVO;
 
 public interface IssueService {
 	
-	public List<IssueVO> taskListSelect();
+	public List<IssueVO> taskListSelect(String projId);
 	
 	public int IssueDataInsert(IssueVO vo);
 	

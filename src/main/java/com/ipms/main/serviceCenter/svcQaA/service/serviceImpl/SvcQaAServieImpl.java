@@ -27,9 +27,9 @@ public class SvcQaAServieImpl implements SvcQaAService{
 	
 	// 데이터 검증 하기
 	@Override
-	public int total(String memCode) {
+	public int total() {
 		
-		return svcQaAMapper.total(memCode);
+		return svcQaAMapper.total();
 		
 	}
 	

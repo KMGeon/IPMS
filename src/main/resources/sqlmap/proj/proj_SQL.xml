@@ -139,7 +139,7 @@
         #{projSmry},
         'Y',
         sysdate,
-        '/',
+        #{projImgRoute},
         '0'
         )
     </insert>

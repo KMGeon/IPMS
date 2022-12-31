@@ -6,11 +6,14 @@ import com.ipms.main.serviceCenter.svcQaA.service.SvcQaAService;
 import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -38,14 +41,14 @@ public class SvcQaAController {
             log.info("두번쨰 페이지 pageNum : {}", criteria.getPageNum());
         }
         // 한 회원의 QaA만 필요한 경우
-        String id = "M001";
-        criteria.setMemCode(id);
+//        String id = "M001";
+//        criteria.setMemCode(id);
 
         List<SvcQaAVO> svcQaASelect = svcQaAService.svcQaASelect(criteria);
         // 오류 핸들링
 //		if(svcQaASelect)
         // total은 전체 페이지의 수를 결정하기위해 필요
-        int total = svcQaAService.total(id);
+        int total = svcQaAService.total();
         PageVO pageVO = new PageVO(criteria, total);
         model.addAttribute("svcQaASelect", svcQaASelect);
         model.addAttribute("pageVO", pageVO);
@@ -75,12 +78,13 @@ public class SvcQaAController {
     }
 
     @PostMapping("/svcInsert")
-    public String svcInsert(SvcQaAVO svcQaAVO) {
+    public String svcInsert(SvcQaAVO svcQaAVO, Authentication authentication) {
 
         if (svcQaAVO != null) {
             log.info("SvcQaAController - svcInsert -> svcQaAVO : {}", svcQaAVO.toString());
-            // 작성자 하드 코딩 바꾸기
-            svcQaAVO.setWriter("M001");
+            
+            UserDetails principal = (UserDetails) authentication.getPrincipal();
+            svcQaAVO.setWriter(principal.getUsername());
         }
 
         int result = svcQaAService.svcQaAInsert(svcQaAVO);
@@ -92,6 +96,18 @@ public class SvcQaAController {
         }
 
         return "redirect:/main/svcQaA";
+    }
+    
+    @GetMapping("/svcQaAUpdateForm")
+    public String svcQaAUpdateForm(@RequestParam String qnaNum, Model model) {
+    	
+    	log.info("SvcQaAController - svcQaAUpdateForm");
+    	
+    	SvcQaAVO svcQaAVO = svcQaAService.svcQaADetail(qnaNum);
+
+        model.addAttribute("svcQaAVO", svcQaAVO);
+    	
+    	return "main/serviceCenter/svcQaAUpdateForm";
     }
 
 }
