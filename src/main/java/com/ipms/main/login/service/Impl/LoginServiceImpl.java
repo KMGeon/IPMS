@@ -10,12 +10,8 @@ import java.util.List;
 
 @Service
 public class LoginServiceImpl implements LoginService {
-    @Autowired
-    MemMapper memMapper;
-    public  int loginMem(MemVO memvo ){
-        return  this.memMapper.loginMem( memvo);
-    }
-
+@Autowired
+MemMapper memMapper;
     @Override
     public List<MemVO> allGetMemCode() {
         return this.memMapper.allGetMemCode();

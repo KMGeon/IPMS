@@ -16,22 +16,49 @@
 	</resultMap>
 	
 	<select id="adminMemList" resultType="com.ipms.main.admin.memManagement.vo.AdminMemVO">
+		<![CDATA[
 		SELECT MEM_CODE
-			, MEM_EMAIL
-			, MEM_PASSWD
-			, MEM_NAME
-			, MEM_PHONE_NUMBER
-			, MEM_SGNUP_DATE
-			, MEM_IMG_ROUTE
-			, MEM_WHDRL_YN
-			, MEM_PROJ_QUIT
-        FROM MEM
+        		, MEM_EMAIL
+        		, MEM_PASSWD
+            	, MEM_NAME
+        		, MEM_PHONE_NUMBER
+        		, MEM_SGNUP_DATE
+        		, MEM_IMG_ROUTE
+        		, MEM_WHDRL_YN
+        		, (SELECT COUNT(P.DROPSTATUS)FROM PROJ_MEM P WHERE P.DROPSTATUS = 'Y' AND B.MEM_CODE = P.MEM_CODE) AS MEM_PROJ_QUIT
+            FROM ( SELECT ROWNUM RN
+                    , MEM_CODE
+        			, MEM_EMAIL
+        			, MEM_PASSWD
+            		, MEM_NAME
+        			, MEM_PHONE_NUMBER
+        			, MEM_SGNUP_DATE
+        			, MEM_IMG_ROUTE
+        			, MEM_WHDRL_YN
+        			, MEM_PROJ_QUIT
+                FROM(SELECT MEM_CODE
+	        			, MEM_EMAIL
+	        			, MEM_PASSWD
+	            		, MEM_NAME
+	        			, MEM_PHONE_NUMBER
+	        			, MEM_SGNUP_DATE
+	        			, MEM_IMG_ROUTE
+	        			, MEM_WHDRL_YN
+	        			, MEM_PROJ_QUIT 
+	                      FROM MEM) A ) B
+                     WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+         ]]>
 	</select>
 	
 	<select id="adminMemDetail" resultType="com.ipms.main.admin.memManagement.vo.AdminMemVO" resultMap="adMemMap">
 		SELECT MEM_EMAIL, MEM_CODE, MEM_NAME, MEM_PHONE_NUMBER, MEM_SGNUP_DATE
 		FROM MEM
 		WHERE MEM_CODE = #{memCode}
+	</select>
+	
+	<select id="getTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT COUNT(MEM_EMAIL)
+		FROM MEM
 	</select>
 	
 </mapper>

@@ -63,25 +63,15 @@
         proj
       where
   ]]>
-        <trim prefix="(" suffix=") AND " prefixOverrides="OR">
-            <foreach item='type' collection="typeArr">
-                <trim prefix="OR">
-                    <choose>
-                        <when test="type == 'T'.toString()">
-                            proj_id like '%'||#{keyword}||'%'
-                        </when>
-                        <when test="type == 'C'.toString()">
-                            proj_name like '%'||#{keyword}||'%'
-                        </when>
-                          </choose>
-                </trim>
-            </foreach>
-        </trim>
-
+        <include refid="criteria">
+        </include>
         <![CDATA[
       rownum <= #{pageNum} * #{amount}
+           AND DELETE_WHTH='n'
       )
   where rn > (#{pageNum} -1) * #{amount}
+
+     order by proj_id desc
   ]]>
     </select>
 
@@ -89,6 +79,7 @@
     <select id="getWholeProjectTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
         SELECT COUNT(proj_id)
         FROM proj
+
     </select>
 
 
@@ -185,15 +176,16 @@
         from proj
         where proj_id = #{projId}
     </select>
-
-    <!-- -->
-    <select id="checkMyProject2" parameterType="com.ipms.main.newProject.vo.ProjVO"
-            resultType="com.ipms.main.newProject.vo.ProjVO">
-        SELECT MEM_CODE
+    <select id="projectsAlreadyApplied" parameterType="com.ipms.main.newProject.vo.ProjVO" resultType="int">
+        SELECT count(*)
         FROM PROJ_MEM
         WHERE PROJ_ID = #{projId}
-          AND PRTPT_APROV_CODE = 'N'
           and mem_code = #{memCode}
+    </select>
+
+
+    <select id="getDetailLeaderInfo" parameterType="string" resultType="com.ipms.main.login.vo.MemVO">
+        select * from mem where mem_code=#{memCode}
     </select>
 </mapper>
 

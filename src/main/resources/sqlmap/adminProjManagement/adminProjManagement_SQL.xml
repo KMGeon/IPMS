@@ -14,7 +14,12 @@
 		<result property="projCreatnDate" column="PROJ_CREATN_DATE" />
 		<result property="projImgRoute" column="PROJ_IMG_ROUTE" />
 		<result property="deleteWhth" column="DELETE_WHTH" />
+		<result property="prtptAprovCode" column="PRTPT_APROV_CODE" />
+		<result property="referCts" column="REFER_CTS" />
+		<result property="dropStatus" column="DROPSTATUS" />
+		<result property="invttnot" column="INVTTNOT" />
 	</resultMap>
+	
 
 	<select id="adminProjList" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
 		<![CDATA[
@@ -60,6 +65,7 @@
 		FROM PROJ
 	</select>
 	
+	<!-- 프로젝트 상세 정보 -->
 	<select id="adminProjDetail" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO" resultMap="adProjMap">
 		SELECT PROJ_ID
 			, (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS MEM_CODE
@@ -75,4 +81,30 @@
 		WHERE PROJ_ID = #{projId}
 	</select>
 
+	<!-- MEM_CODE 뽑아오기 위함 -->
+	<select id="adminProjDetail2" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO" resultMap="adProjMap">
+		SELECT PROJ_ID
+			, MEM_CODE
+			, PROJ_NAME
+			, PROJ_STRT_DATE
+			, PROJ_END_DATE
+			, PROJ_SMRY
+			, PROJ_OPN_WHTH
+			, PROJ_CREATN_DATE
+			, PROJ_IMG_ROUTE
+			, DELETE_WHTH
+		FROM PROJ P
+		WHERE PROJ_ID = #{projId}
+	</select>
+	
+	<!-- 해당 프로젝트에 참여중인 회원 리스트 뽑아오기 -->
+	<select id="adminProjMem" parameterType="com.ipms.main.admin.projManagement.vo.ProjManaVO" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
+		SELECT (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS writer,
+                P.MEM_CODE as MEM_CODE
+		FROM PROJ_MEM P
+		WHERE PROJ_ID = #{projId}
+		AND PRTPT_APROV_CODE = 'Y'
+		AND DROPSTATUS = 'N'
+	</select>
+	
 </mapper>

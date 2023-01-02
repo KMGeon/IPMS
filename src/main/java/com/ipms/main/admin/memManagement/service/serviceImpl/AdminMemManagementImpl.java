@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ipms.commons.vo.Criteria;
 import com.ipms.main.admin.memManagement.mapper.AdminMemManagementMapper;
 import com.ipms.main.admin.memManagement.service.AdminMemManagementService;
 import com.ipms.main.admin.memManagement.vo.AdminMemVO;
@@ -16,11 +17,17 @@ public class AdminMemManagementImpl implements AdminMemManagementService {
 	AdminMemManagementMapper adminMemManagementMapper;
 	
 	@Override
-	public List<AdminMemVO> adminMemList() {
+	public List<AdminMemVO> adminMemList(Criteria cri) {
 		
-		return this.adminMemManagementMapper.adminMemList();
+		return this.adminMemManagementMapper.adminMemList(cri);
 	}
-
+	
+	@Override
+	public int getTotal() {
+		
+		return this.adminMemManagementMapper.getTotal();
+	}
+	
 	@Override
 	public AdminMemVO adminMemDetail(AdminMemVO adminMemVO) {
 		

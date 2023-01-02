@@ -22,6 +22,7 @@
 							, QNA_STATUS
                         FROM QNA
                         WHERE WRITER = #{memCode}
+                        AND DELETE_YN = 'n'
                         ORDER BY QNA_WRITE_DATE DESC ) A ) Q, MEM M
 			WHERE Q.WRITER = M.MEM_CODE
             AND RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}

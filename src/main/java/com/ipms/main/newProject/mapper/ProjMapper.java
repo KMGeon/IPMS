@@ -1,6 +1,7 @@
 package com.ipms.main.newProject.mapper;
 
 import com.ipms.commons.vo.Criteria;
+import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
@@ -21,9 +22,7 @@ public interface ProjMapper {
     public int insertProjMem(ProjMemVO projMemVO);
     public int projAuthInsert(MemberAuth memberAuth);
     public int joinProject(ProjVO projVO);
-
-//    -----------------
+    public List<MemVO>getDetailLeaderInfo(String memCode);
     public List<ProjVO>checkMyProject(String projId);
-    public List<ProjVO> checkMyProject2(ProjVO projVO);
-
+    public int projectsAlreadyApplied(ProjVO projVO);
 }

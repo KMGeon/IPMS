@@ -3,7 +3,6 @@ package com.ipms.main.wholeProject.service.Impl;
 import com.ipms.commons.vo.Criteria;
 import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.mapper.ProjMapper;
-import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.main.wholeProject.service.WholeProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,6 @@ public class WholeProjectImpl implements WholeProjectService {
         ProjVO vo = new ProjVO();
         vo.setMemCode(memCode);
         vo.setProjId(projVO.getProjId());
-        List<ProjVO> list = this.wholeProjectService.checkMyProject2(vo);
         return this.wholeProjectService.joinProject(vo);
     }
 
@@ -59,15 +57,7 @@ public class WholeProjectImpl implements WholeProjectService {
     }
 
 
-    @Override
-    public List<ProjMemVO> listProj() {
-        return this.projMapper.listProj();
-    }
 
-    @Override
-    public List<ProjVO> getListPage() {
-        return this.projMapper.getListPage();
-    }
 
     @Override
     public int getWholeProjectTotal() {
@@ -96,9 +86,6 @@ public class WholeProjectImpl implements WholeProjectService {
         return this.projMapper.checkMyProject(projId);
     }
 
-    @Override
-    public List<ProjVO> checkMyProject2(ProjVO projVO) {
-        return this.projMapper.checkMyProject2(projVO);
-    }
+
 
 }

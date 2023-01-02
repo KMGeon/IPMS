@@ -16,4 +16,6 @@ public class FreeboardCmtVO {
 	private String highCmtId;			// 상위 댓글 아이디
 	private int lowRgstSeq;				// 하위 등록 순서
 	private String deleteYn;			// 삭제 여부
+	
+	private String memCode;
 }

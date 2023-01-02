@@ -34,11 +34,17 @@ public class MainController {
 
     @ResponseBody
     @RequestMapping(value = "/boardList", method = RequestMethod.GET)
-    public List<AlrmVO> boardList1() {
+    public List<AlrmVO> boardList1() throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUser user = (CustomUser) authentication.getPrincipal();
-        List<AlrmVO> list = this.memManageMapper.getAlrmList(user.getMember().getMemCode());
-        return list;
+        CustomUser user = null;
+        try {
+            user = (CustomUser) authentication.getPrincipal();
+            List<AlrmVO> list = this.memManageMapper.getAlrmList(user.getMember().getMemCode());
+            return list;
+        } catch (Exception ex) {
+            log.info("erw"+ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
     }
 
     @ResponseBody

@@ -1,11 +1,11 @@
-package com.ipms.main.serviceCenter.svcQaA.vo;
+package com.ipms.main.admin.adminServiceCenter.adminSvcQaA.vo;
 
 import java.util.Date;
 
 import lombok.Data;
 
 @Data
-public class SvcQaAVO {
+public class AdminSvcQaAVO {
 	
 	private int qnaNum; // Q&A 번호
 	private String writer; // 작성자
@@ -15,4 +15,5 @@ public class SvcQaAVO {
 	private String qnaStatus; // 답변 상태
 	private String memCode; // 회원 코드 
 	private String deleteYn; // 삭제 여부
+	
 }

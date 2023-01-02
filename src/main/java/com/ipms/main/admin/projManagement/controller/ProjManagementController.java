@@ -13,6 +13,7 @@ import com.ipms.commons.vo.Criteria;
 import com.ipms.main.admin.projManagement.service.ProjManagementService;
 import com.ipms.main.admin.projManagement.vo.ProjManaPageVO;
 import com.ipms.main.admin.projManagement.vo.ProjManaVO;
+import com.ipms.main.newProject.vo.ProjMemVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -64,14 +65,17 @@ public class ProjManagementController {
 	public String adminProjDetail(@ModelAttribute ProjManaVO projManaVO, Model model) {
 		
 		ProjManaVO data = this.projManagementService.adminProjDetail(projManaVO);
+		ProjManaVO data2 = this.projManagementService.adminProjDetail2(projManaVO);
+		List<ProjManaVO> memData = this.projManagementService.adminProjMem(projManaVO);
 		
 		log.info("proj detail-------> " + data.toString());
+		log.info("proj memData-------> " + memData.toString());
 		
 		model.addAttribute("data", data);
+		model.addAttribute("data2", data2);
+		model.addAttribute("memData", memData);
 		
 		return "main/admin/adminPopUp/adminProjDetail";
 	}
-	
-	
 	
 }

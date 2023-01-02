@@ -1,10 +1,10 @@
-package com.ipms.main.mypage.portfolio.service;
+package com.ipms.main.mypage.portfolio.mapper;
 
 import java.util.List;
 
 import com.ipms.main.mypage.portfolio.vo.PortfolioVO;
 
-public interface PortfolioService {
+public interface PortfolioMapper {
 	
 	// 완성된 프로젝트 리스트 조회
 	public List<PortfolioVO> completeProjSelect(String memCode);

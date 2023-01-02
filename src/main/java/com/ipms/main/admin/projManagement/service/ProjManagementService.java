@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ipms.commons.vo.Criteria;
 import com.ipms.main.admin.projManagement.vo.ProjManaVO;
+import com.ipms.main.newProject.vo.ProjMemVO;
 
 public interface ProjManagementService {
 
@@ -12,5 +13,9 @@ public interface ProjManagementService {
 	public int getTotal();
 	
 	public ProjManaVO adminProjDetail(ProjManaVO projManaVO);
+	
+	public ProjManaVO adminProjDetail2(ProjManaVO projManaVO);
+	
+	public List<ProjManaVO> adminProjMem(ProjManaVO projManaVO);
 }
 

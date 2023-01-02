@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,8 +37,8 @@ public class NewProjectController {
      */
     @RequestMapping(value = "/newProjectPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication, MultipartFile[] uploadFile, Model model) {
-        return this.newProjectService.projectCreate(projVO, memVO, authentication,uploadFile,model);
+    public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication, MultipartFile[] uploadFile) {
+        return this.newProjectService.projectCreate(projVO, memVO, authentication,uploadFile);
     }
 
 }

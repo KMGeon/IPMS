@@ -18,5 +18,11 @@ public interface SvcQaAService {
 	
 	// Q&A 생성
 	public int svcQaAInsert(SvcQaAVO svcQaAVO);
+	
+	// Q&A 수정
+	public int svcQaAUpdate(SvcQaAVO svcQaAVO);
+	
+	// Q&A 삭제
+	public int svcQaADelete(SvcQaAVO svcQaAVO);
 }
 

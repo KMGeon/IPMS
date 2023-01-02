@@ -1,21 +1,26 @@
 package com.ipms.main.serviceCenter.svcQaA.controller;
 
-import com.ipms.commons.vo.Criteria;
-import com.ipms.commons.vo.PageVO;
-import com.ipms.main.serviceCenter.svcQaA.service.SvcQaAService;
-import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import com.ipms.commons.vo.Criteria;
+import com.ipms.commons.vo.PageVO;
+import com.ipms.main.serviceCenter.svcQaA.service.SvcQaAService;
+import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO;
+import com.ipms.security.domain.CustomUser;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequestMapping("/main")
@@ -68,7 +73,8 @@ public class SvcQaAController {
 
         return "main/serviceCenter/svcQaADetail";
     }
-
+    
+    @PreAuthorize("isAuthenticated() and ( hasAnyRole('ROLE_MEMBER'))")
     @GetMapping("svcQaAInsertForm")
     public String svcQaAInsertForm() {
 
@@ -77,16 +83,20 @@ public class SvcQaAController {
         return "main/serviceCenter/svcQaAInsertForm";
     }
 
-    @PostMapping("/svcInsert")
-    public String svcInsert(SvcQaAVO svcQaAVO, Authentication authentication) {
+    @PostMapping("/svcQaAInsert")
+    public String svcQaAInsert(SvcQaAVO svcQaAVO) {
 
         if (svcQaAVO != null) {
             log.info("SvcQaAController - svcInsert -> svcQaAVO : {}", svcQaAVO.toString());
             
-            UserDetails principal = (UserDetails) authentication.getPrincipal();
-            svcQaAVO.setWriter(principal.getUsername());
+            Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+            CustomUser user = (CustomUser) authentication.getPrincipal();
+            
+            log.info("userPrincipal: " +user.getMember().getMemCode()); 
+            svcQaAVO.setWriter(user.getMember().getMemCode());
         }
-
+        
+        
         int result = svcQaAService.svcQaAInsert(svcQaAVO);
 
         if (result > 0) {
@@ -108,6 +118,44 @@ public class SvcQaAController {
         model.addAttribute("svcQaAVO", svcQaAVO);
     	
     	return "main/serviceCenter/svcQaAUpdateForm";
+    }
+    
+    @PostMapping("/svcQaAUpdate")
+    public String svcQaAUpdate(SvcQaAVO svcQaAVO) {
+    	
+    	if(svcQaAVO != null) {
+    		log.info("SvcQaAController - svcQaAUpdate -> svcQaAVO : {}", svcQaAVO.toString());
+    	}
+    	
+    	log.info("SvcQaAController - svcQaAUpdate");
+    	
+    	int result = svcQaAService.svcQaAUpdate(svcQaAVO);
+    	
+    	if (result > 0) {
+            log.info("Q&A 수정 성공");
+        } else {
+            log.info("Q&A 수정 실패!!!");
+        }
+    	
+    	return "redirect:/main/svcQaADetail?qnaNum="+svcQaAVO.getQnaNum();
+    }
+    
+    @PostMapping("/svcQaADelete")
+    public String svcQaADelete(SvcQaAVO svcQaAVO) {
+    	
+    	if(svcQaAVO != null) {
+    		log.info("SvcQaAController - svcQaADelete -> svcQaAVO : {}", svcQaAVO.toString());
+    	}
+    	
+    	int result = svcQaAService.svcQaADelete(svcQaAVO);
+    	
+    	if (result > 0) {
+            log.info("Q&A 삭제 성공");
+        } else {
+            log.info("Q&A 삭제 실패!!!");
+        }
+    	
+    	return "redirect:/main/svcQaA";
     }
 
 }

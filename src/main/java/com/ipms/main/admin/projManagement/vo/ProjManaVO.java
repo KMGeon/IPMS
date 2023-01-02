@@ -27,4 +27,11 @@ public class ProjManaVO {
 	
 	private String projImgRoute;	// 프로젝트 대표 이미지 경로
 	private String deleteWhth;		// 프로젝트 삭제 여부
+	
+	private String writer;
+    private String prtptAprovCode;//참여 승인 코드 null
+    private String referCts;//반려 내용 null
+    private String dropStatus;//하차여부
+    private String invttnot;//초대여부
+	
 }

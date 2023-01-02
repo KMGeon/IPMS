@@ -5,8 +5,16 @@
 
 	<!-- 댓글 리스트 -->
 	<select id="freeCmtList" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO" resultType="com.ipms.proj.freeboard.vo.FreeboardCmtVO">
-		SELECT PROJ_BD_CMT_ID, PROJ_BD_ID, PROJ_BD_CMT_CTS, WRITER, PROJ_BD_CMT_WRITE_DATE, HIGH_CMT_ID, LOW_RGST_SEQ, DELETE_YN
-		FROM PROJ_BD_CMT
+		SELECT PROJ_BD_CMT_ID
+		, PROJ_BD_ID
+		, PROJ_BD_CMT_CTS
+		, (SELECT M.MEM_NAME FROM MEM M WHERE P.WRITER = M.MEM_CODE) AS WRITER
+		, (SELECT M.MEM_CODE FROM MEM M WHERE P.WRITER = M.MEM_CODE) AS MEM_CODE
+		, PROJ_BD_CMT_WRITE_DATE
+		, HIGH_CMT_ID
+		, LOW_RGST_SEQ
+		, DELETE_YN
+		FROM PROJ_BD_CMT P
 		WHERE PROJ_BD_ID = #{projBdId} AND DELETE_YN = 'n'
 		ORDER BY PROJ_BD_CMT_ID ASC
 	</select>

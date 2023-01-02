@@ -3,11 +3,12 @@ package com.ipms.main.mypage.ongoingProject.controller;
 import com.ipms.main.mypage.inviteAndApply.service.InviteAndApplyService;
 import com.ipms.main.mypage.ongoingProject.service.OnGoingProjectService;
 import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.security.domain.CustomUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +29,11 @@ public class OngoingProjectController {
 
 	@GetMapping("/ongoing")
 	@ResponseStatus(HttpStatus.CREATED)
-	public String ongoing(Model model, Authentication authentication) {
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		String memCode = this.inviteAndApplyService.getMemCode(userDetails.getUsername());
-		List<ProjMemVO> list = this.onGoingProjectService.goingProjects(memCode);
+	public String ongoing(Model model) {
+		Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+		CustomUser user = (CustomUser) authentication.getPrincipal();
+		List<ProjMemVO> list = this.onGoingProjectService.goingProjects(user.getMember().getMemCode());
+		log.info("=------------------"+list);
 		model.addAttribute("list", list);
 		return "main/mypage/ongoingProject";
 	}

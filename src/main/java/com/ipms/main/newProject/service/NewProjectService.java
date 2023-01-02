@@ -7,14 +7,12 @@ import com.ipms.main.newProject.mapper.ProjMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.proj.chat.mapper.ChatMapper;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +32,7 @@ public class NewProjectService {
 
 
     @Transactional
-    public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication, MultipartFile[] uploadFile, Model model) {
+    public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication, MultipartFile[] uploadFile ) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         String uploadFolder = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\\resources\\upload\\img";
@@ -76,7 +74,7 @@ public class NewProjectService {
             // 프로젝트 생성 시 프로젝트 폴더(문서함)생성 
 //            FtpUtil.createDirectory("/", projVO.getProjId());
             //프로젝트 생성시 채팅방 생성
-            chatMapper.createChatRoom(projVO);
+//            chatMapper.createChatRoom(projVO);
             return "main/page";
 
         }

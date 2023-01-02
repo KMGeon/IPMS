@@ -13,4 +13,5 @@ public interface ProjSmryCmtMapper {
     public int replyInsert(ProjSmryCmtVO projSmryCmtVO);
     public int replySeqUpdate(ProjSmryCmtVO parent);
 
+
 }

@@ -1,5 +1,8 @@
 package com.ipms.main.projectlistdetail.service.serviceImpl;
 
+import com.ipms.main.login.vo.MemVO;
+import com.ipms.main.newProject.mapper.ProjMapper;
+import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.main.projectlistdetail.mapper.ProjSmryCmtMapper;
 import com.ipms.main.projectlistdetail.service.ProjectListDetailService;
 import com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO;
@@ -12,37 +15,27 @@ import java.util.List;
 public class ProjectListDetailImpl implements ProjectListDetailService {
     @Autowired
     ProjSmryCmtMapper projSmryCmtMapper;
-
+    @Autowired
+    ProjMapper projMapper;
 
     @Override
-    public int insertReply(ProjSmryCmtVO projSmryCmtVO) {
-        return this.projSmryCmtMapper.insertReply(projSmryCmtVO);
+    public List<MemVO> getDetailLeaderInfo(String memCode) {
+        return this.projMapper.getDetailLeaderInfo(memCode);
     }
 
     @Override
-    public int replyInsert(ProjSmryCmtVO vo) {
-        return this.projSmryCmtMapper.replyInsert(vo);
-    }
-
-    public void replyreply(ProjSmryCmtVO vo) {
-        ProjSmryCmtVO parent = projSmryCmtMapper.read(vo.getProjSmryCmtNum());
-        vo.setReplyGroup(parent.getReplyGroup());
-        vo.setReplySeq(parent.getReplySeq() + 1);
-        vo.setReplyLevel(parent.getReplyLevel() + 1);
-        this.projSmryCmtMapper.replySeqUpdate(parent);
-        this.projSmryCmtMapper.replyInsert(vo) ;
-
-    }
-
-
-    @Override
-    public int replySeqUpdate(ProjSmryCmtVO parent) {
-        return this.projSmryCmtMapper.replySeqUpdate(parent);
+    public int projectsAlreadyApplied(ProjVO projVO) {
+        return this.projMapper.projectsAlreadyApplied(projVO);
     }
 
     @Override
     public List<ProjSmryCmtVO> getList() {
         return this.projSmryCmtMapper.getList();
+    }
+
+    @Override
+    public int joinProject(ProjVO projVO) {
+        return this.projMapper.joinProject(projVO);
     }
 
     @Override

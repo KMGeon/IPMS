@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ipms.commons.vo.Criteria;
 import com.ipms.main.admin.memManagement.service.AdminMemManagementService;
+import com.ipms.main.admin.memManagement.vo.AdminMemPageVO;
 import com.ipms.main.admin.memManagement.vo.AdminMemVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +25,36 @@ public class AdminMemManagementController {
 	AdminMemManagementService adminMemManagementService;
 	
 	@GetMapping("/adminMemberManagement")
-	public String adminMemList(Model model) {
+	public String adminMemList(AdminMemVO adminMemVO, String pageNum, String amount, Model model) {
 		
-		List<AdminMemVO> adminMemListVO = this.adminMemManagementService.adminMemList();
+		Criteria criteria;
+		
+		log.info("pageNum: {}, amount: {}", pageNum, amount);
+		
+		if(pageNum == null && amount == null) {
+			criteria = new Criteria();
+			log.info("첫 페이지 pageNum: {}", criteria.getPageNum());
+		} else {
+			if(pageNum.equals("0")) {
+				pageNum = "1";
+			}
+			criteria = new Criteria(Integer.parseInt(pageNum), Integer.parseInt(amount));
+			log.info("두 번째 페이지 pageNum: {}", criteria.getPageNum());
+			
+		}
+		
+		criteria.setAmount(10);
+		
+		List<AdminMemVO> adminMemListVO = this.adminMemManagementService.adminMemList(criteria);
 		
 		log.info("adminMemListVO: " + adminMemListVO);
 		
+		int total = adminMemManagementService.getTotal();
+		
+		AdminMemPageVO adminMemPageVO = new AdminMemPageVO(criteria, total);
+		
 		model.addAttribute("adminMemListVO", adminMemListVO);
+		model.addAttribute("pageVO", adminMemPageVO);
 		
 		return "main/admin/adminMemManagement";
 	}

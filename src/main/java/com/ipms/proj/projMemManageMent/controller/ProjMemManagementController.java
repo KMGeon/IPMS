@@ -48,10 +48,10 @@ public class ProjMemManagementController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/sendInvitation" , method = RequestMethod.POST)
+    @PostMapping(value = "/sendInvitation")
     @ResponseStatus(HttpStatus.CREATED)
     public int sendInvitation(InvitationVO invitationVO  , AlrmVO alrmVO){
-        int division=this.projMemManageMentService.sendInvitation(invitationVO  );
+        int division=this.projMemManageMentService.sendInvitation(invitationVO);
         if(division==1){
             this.projMemManageMentService.insertAlrm(alrmVO);
             return 1;
@@ -65,12 +65,5 @@ public class ProjMemManagementController {
     public int extractionParticipants(ProjMemVO projMemVO){
         return this.projMemManageMentService.extractionParticipants(projMemVO);
     }
-    @ResponseBody
-    @RequestMapping(value = "/insertAlrm" , method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public int insertAlrm(AlrmVO alrmVO){
-        return this.projMemManageMentService.insertAlrm(alrmVO);
-    }
-
 }
 

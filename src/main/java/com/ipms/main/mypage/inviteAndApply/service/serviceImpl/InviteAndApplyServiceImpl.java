@@ -27,19 +27,6 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     @Autowired
     InviteAndApplyService inviteAndApplyService;
 
-    @Transactional
-    public String inviteOrApply(Model model, Authentication authentication, ProjMemVO projMemVO) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        //신청한 회원
-//        List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
-        List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(this.myPageMapper.getMemCode(userDetails.getUsername()));
-        List<InvitationVO> invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(this.myPageMapper.getMemCode(userDetails.getUsername()));
-//        model.addAttribute("memberWhoApplied", memberWhoApplied);
-        model.addAttribute("projectsApplied", projectsApplied);
-        model.addAttribute("invitationWaitingList", invitationWaitingList);
-        return "main/mypage/inviteAndApply";
-    }
-
 
     @Override
     public List<InvitationVO> invitationWaitingList(String memCode) {

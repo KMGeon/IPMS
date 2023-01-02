@@ -49,5 +49,18 @@ public class SvcQaAServieImpl implements SvcQaAService{
 		
 	}
 	
+	// Q&A 수정
+	@Override
+	public int svcQaAUpdate(SvcQaAVO svcQaAVO) {
+		
+		return svcQaAMapper.svcQaAUpdate(svcQaAVO);
+	}
+
+	@Override
+	public int svcQaADelete(SvcQaAVO svcQaAVO) {
+		
+		return svcQaAMapper.svcQaADelete(svcQaAVO);
+	}
+	
 
 }
