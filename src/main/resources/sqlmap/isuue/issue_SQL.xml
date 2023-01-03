@@ -55,7 +55,7 @@
 		, ISSUE_STUS_CODE
 		, ITGRN_ATTACH_FILE_NUM
 		, DELETE_YN
-		, WRITER
+		, (SELECT MEM_NAME FROM MEM WHERE WRITER = MEM_CODE) AS WRITER
 		FROM ISSUE
 		ORDER BY TO_NUMBER(ISSUE_ID) ASC
 	
@@ -73,7 +73,7 @@
               , ISSUE_STUS_CODE
               , ITGRN_ATTACH_FILE_NUM
               , DELETE_YN
-              , WRITER
+              , (SELECT MEM_NAME FROM MEM WHERE WRITER = MEM_CODE) AS WRITER
               , PROJ_ID
             FROM ( SELECT ROWNUM RN
                       , ISSUE_ID
@@ -97,29 +97,69 @@
 	                      , WRITER
                           , PROJ_ID
                 FROM ISSUE
-                WHERE PROJ_ID = #{projId}
-	                        ORDER BY  TO_NUMBER(ISSUE_ID) DESC ) A )
+                WHERE 1=1
+	            ]]>
+ 	            	<if test='keyword != ""'> AND ISSUE_TITLE LIKE '%'||#{keyword}||'%'</if>
+ 	            	<if test='comple.equals("comple")'>AND ISSUE_STUS_CODE LIKE '해결'</if>
+ 	            	<if test='noncomple.equals("noncomple")'>AND ISSUE_STUS_CODE LIKE '미해결'</if>
+	            <![CDATA[
+                AND PROJ_ID = #{projId}
+               	ORDER BY  TO_NUMBER(ISSUE_ID) DESC 
+					) A )
 	            WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
 	            
             ]]>
 		
 	</select>
 	
-	<select id="totalNum" resultType="int">
+	<select id="totalNum" parameterType="com.ipms.commons.vo.Criteria" resultType="int">
 		SELECT COUNT(ISSUE_ID)
 		FROM ISSUE
+		WHERE PROJ_ID = #{projId}
+           	  <if test='keyword != ""'> AND ISSUE_TITLE LIKE '%'||#{keyword}||'%'</if>
+ 	           <if test='comple.equals("comple")'>AND ISSUE_STUS_CODE LIKE '해결'</if>
+ 	           <if test='noncomple.equals("noncomple")'>AND ISSUE_STUS_CODE LIKE '미해결'</if>
 		
 	</select>
 	
-	<select id="IssueDetail" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="com.ipms.proj.issue.vo.IssueVO">
+	<select id="IssueDetail" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="com.ipms.proj.issue.vo.IssueVO">	
+<!-- 		SELECT ISSUE_ID -->
+<!-- 			, TASK_ID -->
+<!-- 			, ( -->
+<!-- 				SELECT TASK_TITLE -->
+<!-- 				FROM TASK T , ISSUE I -->
+<!-- 				WHERE T.TASK_ID = I.TASK_ID -->
+<!-- 				AND I.ISSUE_ID = #{issueId} -->
+<!-- 			) as TASK_TITLE -->
+<!-- 			, ISSUE_TITLE -->
+<!-- 			, ISSUE_CTS -->
+<!-- 			, ISSUE_RGST_DATE -->
+<!-- 			, ISSUE_STUS_CODE -->
+<!-- 			, ITGRN_ATTACH_FILE_NUM -->
+<!-- 			, PROJ_ID -->
+<!-- 			, DELETE_YN -->
+<!--             , SAVE_FILE_NAME -->
+<!-- 			, FILE_NAME -->
+<!--             , FILE_TYPE -->
+<!--             , FILE_PATH -->
+<!--             , M.MEM_NAME AS WRITER -->
+<!-- 		FROM ISSUE I , INTG_ATTACH_FILE F , MEM M -->
+<!-- 		WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM -->
+<!--         AND M.MEM_CODE = I.WRITER -->
+<!--         AND ISSUE_ID =   -->
+<!-- 		AND PROJ_ID =  -->
+<!--                AND (F.ATTACH_FILE_SEQ IS NULL OR F.ATTACH_FILE_SEQ = 1) -->
+
+
 		SELECT ISSUE_ID
 			, TASK_ID
 			, (
 				SELECT TASK_TITLE
 				FROM TASK T , ISSUE I
 				WHERE T.TASK_ID = I.TASK_ID
-				AND I.ISSUE_ID = #{issueId}  
+				AND I.ISSUE_ID = #{issueId}
 			) as TASK_TITLE
+             , (SELECT MEM_NAME FROM MEM WHERE  I.WRITER = MEM_CODE) AS WRITER
 			, ISSUE_TITLE
 			, ISSUE_CTS
 			, ISSUE_RGST_DATE
@@ -127,28 +167,16 @@
 			, ITGRN_ATTACH_FILE_NUM
 			, PROJ_ID
 			, DELETE_YN
-					, (
-		                SELECT M.MEM_NAME
-		                FROM MEM M , ISSUE I
-		                WHERE M.MEM_CODE = I.WRITER
-		                AND ISSUE_ID = #{issueId}
-		            
-		            ) AS WRITER
-                    , (
-	                      SELECT  SAVE_FILE_NAME
-	                      FROM INTG_ATTACH_FILE
-	                      WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM
-<!-- 	                      AND ATTACH_FILE_SEQ = 1 -->
-                      ) AS FILE_PATH
-                    , (
-                      SELECT  FILE_NAME
-                      FROM INTG_ATTACH_FILE
-                      WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM
-<!--                       AND ATTACH_FILE_SEQ = 1 -->
-                    ) AS FILE_NAME
-		FROM ISSUE
-		WHERE ISSUE_ID =  #{issueId}
-		AND PROJ_ID = #{projId}
+            , SAVE_FILE_NAME
+			, FILE_NAME
+            , FILE_TYPE
+            , FILE_PATH
+		FROM ISSUE I , INTG_ATTACH_FILE F
+		WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM(+)
+        AND ISSUE_ID =#{issueId}
+		AND PROJ_ID =#{projId}
+
+
 	</select>
 	
 	<select id="IssueUpdateDetail" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="com.ipms.proj.issue.vo.IssueVO">

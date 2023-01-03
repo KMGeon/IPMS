@@ -33,7 +33,6 @@ public class OngoingProjectController {
 		Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
 		CustomUser user = (CustomUser) authentication.getPrincipal();
 		List<ProjMemVO> list = this.onGoingProjectService.goingProjects(user.getMember().getMemCode());
-		log.info("=------------------"+list);
 		model.addAttribute("list", list);
 		return "main/mypage/ongoingProject";
 	}

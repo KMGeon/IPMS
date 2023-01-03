@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ipms.commons.vo.Criteria;
 import com.ipms.main.admin.memManagement.vo.AdminMemVO;
+import com.ipms.main.admin.projManagement.vo.ProjManaVO;
 
 public interface AdminMemManagementService {
 
@@ -12,5 +13,7 @@ public interface AdminMemManagementService {
 	public int getTotal();
 	
 	public AdminMemVO adminMemDetail(AdminMemVO adminMemVO);
+	
+	public int ckDelMem(AdminMemVO adminMemVO);
 }
 

@@ -17,5 +17,10 @@ public interface ProjManagementService {
 	public ProjManaVO adminProjDetail2(ProjManaVO projManaVO);
 	
 	public List<ProjManaVO> adminProjMem(ProjManaVO projManaVO);
+	
+	public int ckDelProj(ProjManaVO projManaVO);
+	
+	public int ckRestoreProj(ProjManaVO projManaVO);
+	
 }
 

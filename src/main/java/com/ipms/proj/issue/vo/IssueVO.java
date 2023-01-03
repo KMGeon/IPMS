@@ -24,4 +24,6 @@ public class IssueVO {
 	private String filePath; // 파일 경로
 	private String projId; // 프로젝트 아이디
 	private String fileName; // 파일이름
+	private String fileType; // 파일 타입
+	private String saveFileName; // 저장된 파일이름
 }

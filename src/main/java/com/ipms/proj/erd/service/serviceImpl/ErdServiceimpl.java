@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ipms.proj.erd.mapper.ErdMapper;
 import com.ipms.proj.erd.service.ErdService;
 import com.ipms.proj.erd.vo.ErdVO;
 
 @Service
+@Transactional
 public class ErdServiceimpl implements ErdService{
 	
 	@Autowired

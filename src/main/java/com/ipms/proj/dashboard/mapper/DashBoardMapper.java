@@ -33,4 +33,10 @@ public interface DashBoardMapper {
 	public List<TaskVO> selectTaskList (Criteria criteria);
 	
 	public int total(Criteria criteria);
+	
+	public int selectTaskMiddle(String projId);
+	public int selectTaskFinish(String projId);
+	public int selectTaskAprove(String projId);
+	public int selectTaskNot(String projId);
+	
 }

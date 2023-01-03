@@ -7,12 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ipms.commons.vo.Criteria;
 import com.ipms.main.admin.memManagement.service.AdminMemManagementService;
 import com.ipms.main.admin.memManagement.vo.AdminMemPageVO;
 import com.ipms.main.admin.memManagement.vo.AdminMemVO;
+import com.ipms.main.admin.projManagement.vo.ProjManaVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,8 +29,8 @@ public class AdminMemManagementController {
 	AdminMemManagementService adminMemManagementService;
 	
 	@GetMapping("/adminMemberManagement")
-	public String adminMemList(AdminMemVO adminMemVO, String pageNum, String amount, Model model) {
-		
+	public String adminMemList(AdminMemVO adminMemVO, String pageNum, String amount, Model model, String keyword, String category) {
+//		log.info(keyword+" : "+category);
 		Criteria criteria;
 		
 		log.info("pageNum: {}, amount: {}", pageNum, amount);
@@ -40,11 +44,17 @@ public class AdminMemManagementController {
 			}
 			criteria = new Criteria(Integer.parseInt(pageNum), Integer.parseInt(amount));
 			log.info("두 번째 페이지 pageNum: {}", criteria.getPageNum());
-			
 		}
 		
-		criteria.setAmount(10);
+		if(category == null || category.equals("")) {
+			criteria.setCategory("");
+		} else {
+			criteria.setCategory(category);
+		}
 		
+		criteria.setKeyword("%"+keyword+"%");
+		criteria.setAmount(10);
+		log.info("-------------criteria="+criteria);
 		List<AdminMemVO> adminMemListVO = this.adminMemManagementService.adminMemList(criteria);
 		
 		log.info("adminMemListVO: " + adminMemListVO);
@@ -55,6 +65,8 @@ public class AdminMemManagementController {
 		
 		model.addAttribute("adminMemListVO", adminMemListVO);
 		model.addAttribute("pageVO", adminMemPageVO);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("category", category);
 		
 		return "main/admin/adminMemManagement";
 	}
@@ -74,6 +86,21 @@ public class AdminMemManagementController {
 		
 	}
 	
-
+	@ResponseBody
+	@PostMapping("/ckDelMem")
+	public int ckDelMem(@RequestParam(value = "ckbox[]") List<String> ckArr, AdminMemVO adminMemVO) {
+		
+		log.info("선택 삭제 ---------------------");
+		
+		int result = 0;
+		
+		for(String memCode : ckArr) {
+			adminMemVO.setMemCode(memCode);
+			adminMemManagementService.ckDelMem(adminMemVO);
+		}
+		result = 1;
+		
+		return result;
+	}
 	
 }

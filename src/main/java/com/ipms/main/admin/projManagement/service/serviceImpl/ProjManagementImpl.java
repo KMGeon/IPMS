@@ -46,7 +46,18 @@ public class ProjManagementImpl implements ProjManagementService {
 		
 		return this.projManagementMapper.adminProjMem(projManaVO);
 	}
-	
+
+	@Override
+	public int ckDelProj(ProjManaVO projManaVO) {
+		
+		return this.projManagementMapper.ckDelProj(projManaVO);
+	}
+
+	@Override
+	public int ckRestoreProj(ProjManaVO projManaVO) {
+		
+		return this.projManagementMapper.ckRestoreProj(projManaVO);
+	}
 	
 
 }

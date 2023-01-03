@@ -21,8 +21,7 @@
 	</resultMap>
 	
 
-	<select id="adminProjList" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
-		<![CDATA[
+	<select id="adminProjList" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
 		SELECT PROJ_ID
                , MEM_CODE
                , PROJ_NAME
@@ -55,7 +54,16 @@
                     , PROJ_IMG_ROUTE
                     , DELETE_WHTH
                     FROM PROJ P
+                    <if test="keyword != null and keyword != ''">
+                    	<if test="category.equals('projName')">
+                    		WHERE PROJ_NAME LIKE #{keyword}
+                    	</if>
+                    	<if test="category.equals('memCode')">
+                    		WHERE MEM_CODE IN (SELECT MEM_CODE FROM MEM WHERE MEM_NAME LIKE #{keyword})
+                    	</if>
+                    </if>
                     ORDER BY PROJ_CREATN_DATE DESC) A )
+					<![CDATA[
                     WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
                     ]]>
 	</select>
@@ -63,6 +71,14 @@
 	<select id="getTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
 		SELECT COUNT(PROJ_ID)
 		FROM PROJ
+		<if test="keyword != null and keyword != ''">
+			<if test="category.equals('projName')">
+				WHERE PROJ_NAME LIKE #{keyword}
+			</if>
+			<if test="category.equals('memCode')">
+				WHERE MEM_CODE LIKE #{keyword}
+			</if>
+		</if>
 	</select>
 	
 	<!-- 프로젝트 상세 정보 -->
@@ -106,5 +122,19 @@
 		AND PRTPT_APROV_CODE = 'Y'
 		AND DROPSTATUS = 'N'
 	</select>
+	
+	<!-- 체크박스 삭제 -->
+	<update id="ckDelProj" parameterType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
+		UPDATE PROJ
+		SET DELETE_WHTH = 'y'
+		WHERE PROJ_ID = #{projId}
+	</update>
+	
+	<!-- 체크박스 복구 -->
+	<update id="ckRestoreProj" parameterType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
+		UPDATE PROJ
+		SET DELETE_WHTH = 'n'
+		WHERE PROJ_ID = #{projId}
+	</update>
 	
 </mapper>

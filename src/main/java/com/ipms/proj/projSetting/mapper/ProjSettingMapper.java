@@ -9,4 +9,5 @@ import java.util.List;
 public interface ProjSettingMapper {
 List<ProjVO>listProjectSettings(String projId);
 int modifyProjectSettings(ProjVO projVO);
+int withdrawalProject(String projId);
 }

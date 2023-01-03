@@ -69,4 +69,21 @@ public class DashboardServiceImpl implements DashboardService{
 	public int total(Criteria criteria) {
 		return dashBoardMapper.total(criteria);
 	}
+	
+	@Override
+	public int selectTaskMiddle(String projId) {
+		return dashBoardMapper.selectTaskMiddle(projId);
+	}
+	@Override
+	public int selectTaskFinish(String projId) {
+		return dashBoardMapper.selectTaskFinish(projId);
+	}
+	@Override
+	public int selectTaskAprove(String projId) {
+		return dashBoardMapper.selectTaskAprove(projId);
+	}
+	@Override
+	public int selectTaskNot(String projId) {
+		return dashBoardMapper.selectTaskNot(projId);
+	}
 }

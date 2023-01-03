@@ -150,7 +150,7 @@
 			TASK_PGRES, 
 			LOW_RGST_SEQ, 
 			APROV_WHTH, 
-			TASK_REPRE, 
+			(SELECT M.MEM_NAME FROM MEM M WHERE M.MEM_CODE = B.MEM_CODE) as TASK_REPRE, 
 			DELETE_YN, 
 			REFER_CTS, 
 			WORK_UPDATE_NUM
@@ -173,42 +173,46 @@
 	    		A.WORK_UPDATE_NUM
 	    FROM(
         SELECT 
-            TASK_ID, 
-            PROJ_ID, 
-            MEM_CODE, 
-            HIGH_TASK_ID, 
-            TASK_TITLE, 
-            TASK_STRT_DATE, 
-            TASK_END_DATE, 
-            TASK_STUS_CODE, 
-            TASK_PGRES, 
-            LOW_RGST_SEQ, 
-            APROV_WHTH,
-            TASK_REPRE, 
-            DELETE_YN, 
-            REFER_CTS, 
-            WORK_UPDATE_NUM
-        FROM TASK
-        WHERE PROJ_ID = #{projId}
+            B.TASK_ID, 
+            B.PROJ_ID, 
+            B.MEM_CODE, 
+            B.HIGH_TASK_ID, 
+            B.TASK_TITLE, 
+            B.TASK_STRT_DATE, 
+            B.TASK_END_DATE, 
+            B.TASK_STUS_CODE, 
+            B.TASK_PGRES, 
+            B.LOW_RGST_SEQ, 
+            B.APROV_WHTH,
+            B.TASK_REPRE, 
+            B.DELETE_YN, 
+            B.REFER_CTS, 
+            B.WORK_UPDATE_NUM
+        FROM TASK B
+        WHERE B.PROJ_ID = #{projId}
         <if test="keyword != null">
-      		AND TASK_TITLE like #{keyword} 
+      		AND B.TASK_TITLE like #{keyword} 
         </if>
         <if test="startDate != null">
-        	AND TASK_STRT_DATE = #{startDate}
+        	AND B.TASK_STRT_DATE = #{startDate}
         </if>
         <if test="endDate != null">
-        	AND TASK_END_DATE = #{endDate}
+        	AND B.TASK_END_DATE = #{endDate}
         </if>
         <if test="memCode != null">
-        	AND MEM_CODE = #{memCode}
+        	AND B.MEM_CODE = #{memCode}
         </if>
-        <if test="'aprov'.equals(aprov)">
+        <if test='aprov == "y"'>
+        	AND APROV_WHTH = 'y' 
+        </if>
+        <if test='aprov == "n"'>
         	AND APROV_WHTH = 'n' 
         </if>
-      	  	AND DELETE_YN = 'n'
-       		ORDER BY TASK_STRT_DATE DESC
+       
+      	  	AND B.DELETE_YN = 'n'
+       		ORDER BY B.TASK_STRT_DATE DESC
   		  ) A
-		)
+		) B
 		WHERE RN <![CDATA[>]]> ( #{pageNum} - 1 ) * #{amount} AND RN <![CDATA[<=]]> #{pageNum} * #{amount}
 		
 	</select>
@@ -232,13 +236,61 @@
         <if test="memCode != null">
         	AND MEM_CODE = #{memCode}
         </if>
-        <if test="aprov != null">
-        	AND APROV_WHTH = 'n' 
+        <if test="aprov.equals('y')">
+        	AND APROV_WHTH = 'y' 
         </if>
-        <if test="'aprov'.equals(aprov)">
+        <if test="aprov.equals('n')">
         	AND APROV_WHTH = 'n' 
         </if>
 		AND
 			DELETE_YN = 'n'
+	</select>
+	
+	<select id="selectTaskMiddle" parameterType="string" resultType="int">
+	<!-- 진행중인 일감 -->
+		SELECT COUNT(TASK_ID) 
+		FROM
+		    TASK
+		WHERE
+		    TASK_PGRES between 1 and 99
+		AND 
+		    APROV_WHTH = 'y'
+		AND 
+			PROJ_ID = #{projId}
+	</select>
+	
+	<select id="selectTaskFinish" parameterType="string" resultType="int">
+	<!-- 완료된 일감 -->
+		SELECT COUNT(TASK_ID) 
+		FROM
+		    TASK
+		WHERE
+		    TASK_PGRES = 100
+		AND 
+		    APROV_WHTH = 'y'
+		AND 
+			PROJ_ID = #{projId}
+	</select>
+	
+	<select id="selectTaskAprove" parameterType="string" resultType="int">
+		<!-- 승인된 일감 -->
+		SELECT COUNT(TASK_ID) 
+		FROM
+		    TASK
+		WHERE 
+		    APROV_WHTH = 'y'
+		AND 
+			PROJ_ID = #{projId}
+	</select>
+	
+	<select id="selectTaskNot" parameterType="string" resultType="int">
+		<!-- 미승인 일감 -->
+		SELECT COUNT(TASK_ID) 
+		FROM
+		    TASK
+		WHERE 
+		    APROV_WHTH = 'n'
+		AND 
+			PROJ_ID = #{projId}
 	</select>
 </mapper>

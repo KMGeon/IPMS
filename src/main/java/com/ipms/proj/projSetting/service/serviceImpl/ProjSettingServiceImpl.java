@@ -41,6 +41,11 @@ public class ProjSettingServiceImpl implements ProjSettingService {
         }return "main/page";
     }
 
+    @Override
+    public int withdrawalProject(String projId) {
+        return this.projSettingMapper.withdrawalProject(projId);
+    }
+
 
     @Override
     public List<ProjVO> listProjectSettings(String projId) {

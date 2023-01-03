@@ -33,7 +33,6 @@
 	<select id="getFreePage" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.proj.freeboard.vo.FreeboardVO">
 		<!-- CDATA: character data(문자 데이터)를 의미. 일반 문자 데이터.
 					일반 문자열로 인식되도록 할 수 있음. CDATA 사이에 원하는 텍스트를 넣어주면 해당 영역은 문자 그대로 인식됨 -->
-		<![CDATA[
 		SELECT PROJ_BD_ID
 			, WRITER
 			, PROJ_BD_TITLE
@@ -50,7 +49,16 @@
                         FROM PROJ_BD P
                         WHERE DELETE_YN = 'n'
                         AND PROJ_ID = #{projId}
+                         <if test="keyword != null and keyword != ''">
+					        <if test="category.equals('title')">
+					            AND PROJ_BD_TITLE LIKE #{keyword}
+					        </if>
+					        <if test="category.equals('cts')">
+					            AND PROJ_BD_CTS LIKE #{keyword}
+					        </if>
+				        </if>
                         ORDER BY PROJ_BD_ID DESC) A )
+		<![CDATA[
             WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
 		]]>
 		
@@ -63,6 +71,14 @@
 		FROM PROJ_BD
 		WHERE PROJ_ID = #{projId}
 		AND DELETE_YN = 'n'
+		<if test="keyword != null and keyword != ''">
+	        <if test="category.equals('title')">
+	            AND PROJ_BD_TITLE LIKE #{keyword}
+	        </if>
+	        <if test="category.equals('cts')">
+	            AND PROJ_BD_CTS LIKE #{keyword}
+	        </if>
+        </if>
 	</select>
 
 	<select id="detailFree" resultType="com.ipms.proj.freeboard.vo.FreeboardVO" resultMap="freeboardMap">

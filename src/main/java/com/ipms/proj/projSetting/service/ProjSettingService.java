@@ -10,4 +10,5 @@ public interface ProjSettingService {
     List<ProjVO> listProjectSettings(String projId);
     int modifyProjectSettings(ProjVO projVO);
     public String projectCreate(@ModelAttribute ProjVO projVO, MultipartFile[] uploadFile );
+    int withdrawalProject(String projId);
 }

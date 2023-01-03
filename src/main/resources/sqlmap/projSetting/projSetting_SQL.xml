@@ -20,6 +20,7 @@
     where proj_id=#{projId}
 </select>
 
+    <!-- 프로젝트 수정-->
     <update id="modifyProjectSettings"  parameterType="com.ipms.main.newProject.vo.ProjVO">
         UPDATE PROJ
         SET  proj_name = #{projName}
@@ -29,6 +30,14 @@
           ,PROJ_SMRY = #{projSmry}
         WHERE  PROJ_ID=#{projId}
     </update>
+
+    <!--프로젝트 탈퇴 -->
+    <update id="withdrawalProject" parameterType="string">
+        update proj
+        set delete_whth ='y'
+        WHERE  PROJ_ID=#{projId}
+    </update>
+
 
 </mapper>
 

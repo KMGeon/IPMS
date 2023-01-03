@@ -15,8 +15,7 @@
 		<result property="memProjQuit" column="MEM_PROJ_QUIT" />
 	</resultMap>
 	
-	<select id="adminMemList" resultType="com.ipms.main.admin.memManagement.vo.AdminMemVO">
-		<![CDATA[
+	<select id="adminMemList" resultType="com.ipms.main.admin.memManagement.vo.AdminMemVO" parameterType="com.ipms.commons.vo.Criteria">
 		SELECT MEM_CODE
         		, MEM_EMAIL
         		, MEM_PASSWD
@@ -45,7 +44,20 @@
 	        			, MEM_IMG_ROUTE
 	        			, MEM_WHDRL_YN
 	        			, MEM_PROJ_QUIT 
-	                      FROM MEM) A ) B
+	                      FROM MEM
+	                    <if test="keyword != null || keyword != ''">
+							<if test="category.equals('memEmail')">
+								WHERE MEM_EMAIL LIKE #{keyword}
+							</if>
+							<if test="category.equals('memName')">
+								WHERE MEM_NAME LIKE #{keyword}
+							</if>
+							<if test="category.equals('memCode')">
+								WHERE MEM_CODE LIKE #{keyword}
+							</if>
+						</if>                    
+	                      ) A ) B
+					<![CDATA[
                      WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
          ]]>
 	</select>
@@ -59,6 +71,24 @@
 	<select id="getTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
 		SELECT COUNT(MEM_EMAIL)
 		FROM MEM
+		<if test="keyword != null and keyword != ''">
+			<if test="category.equals('memEmail')">
+				WHERE MEM_EMAIL LIKE #{keyword}
+			</if>
+			<if test="category.equals('memName')">
+				WHERE MEM_NAME LIKE #{keyword}
+			</if>
+			<if test="category.equals('memCode')">
+				WHERE MEM_CODE LIKE #{keyword}
+			</if>
+		</if> 
 	</select>
+	
+	<!-- 체크박스 삭제 -->
+	<update id="ckDelMem" parameterType="com.ipms.main.admin.memManagement.vo.AdminMemVO">
+		UPDATE MEM
+		SET MEM_WHDRL_YN = 'y'
+		WHERE MEM_EMAIL = #{memEmail}
+	</update>
 	
 </mapper>

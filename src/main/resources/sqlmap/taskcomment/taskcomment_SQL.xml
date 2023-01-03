@@ -13,7 +13,6 @@
            , WRITER)
     	VALUES
     		('1',#{taskId},null,#{taskCmtCts},sysdate,null,'n','박종환')
-	
 	</insert>
 	
 </mapper>

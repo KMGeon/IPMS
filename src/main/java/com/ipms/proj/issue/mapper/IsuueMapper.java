@@ -16,7 +16,7 @@ public interface IsuueMapper {
 	
 	public List<IssueVO> issuePage(Criteria criteria);
 	
-	public int totalNum();
+	public int totalNum(Criteria criteria);
 	
 	public IssueVO IssueDetail(IssueVO vo);
 	

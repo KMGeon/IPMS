@@ -43,8 +43,8 @@ public class IssueServiceImpl implements IssueService {
 	}
 
 	@Override
-	public int totalNum() {
-		return this.issuemapper.totalNum();
+	public int totalNum(Criteria criteria) {
+		return this.issuemapper.totalNum(criteria);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.ipms.commons.vo.Criteria;
 import com.ipms.main.admin.memManagement.mapper.AdminMemManagementMapper;
 import com.ipms.main.admin.memManagement.service.AdminMemManagementService;
 import com.ipms.main.admin.memManagement.vo.AdminMemVO;
+import com.ipms.main.admin.projManagement.vo.ProjManaVO;
 
 @Service
 public class AdminMemManagementImpl implements AdminMemManagementService {
@@ -32,6 +33,12 @@ public class AdminMemManagementImpl implements AdminMemManagementService {
 	public AdminMemVO adminMemDetail(AdminMemVO adminMemVO) {
 		
 		return this.adminMemManagementMapper.adminMemDetail(adminMemVO);
+	}
+
+	@Override
+	public int ckDelMem(AdminMemVO adminMemVO) {
+		
+		return this.adminMemManagementMapper.ckDelMem(adminMemVO);
 	}
 
 	

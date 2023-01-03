@@ -57,6 +57,7 @@ public class WikiController {
 			wikiDetail = wikiService.selectWikiDetail(wikiId);
 			model.addAttribute("wikiDetail",wikiDetail);
 		}
+		
 		model.addAttribute("projId",projId);
 		model.addAttribute("list",wikiList);
 		return "proj/wiki/wiki";
@@ -72,8 +73,6 @@ public class WikiController {
 		}
 		
 		log.info("highWikiId: "+highWikiId.toString());
-		
-	
 		
 		model.addAttribute("projId",projId);
 		return "proj/wiki/wikiInsert";

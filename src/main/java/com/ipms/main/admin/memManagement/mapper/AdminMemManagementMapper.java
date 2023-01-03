@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ipms.commons.vo.Criteria;
 import com.ipms.main.admin.memManagement.vo.AdminMemVO;
+import com.ipms.main.admin.projManagement.vo.ProjManaVO;
 import com.ipms.proj.noticeboard.vo.NoticeBoardVO;
 
 public interface AdminMemManagementMapper {
@@ -13,4 +14,6 @@ public interface AdminMemManagementMapper {
 	public int getTotal();
 	
 	public AdminMemVO adminMemDetail(AdminMemVO adminMemVO); // 회원 상세 
+	
+	public int ckDelMem(AdminMemVO adminMemVO);
 }

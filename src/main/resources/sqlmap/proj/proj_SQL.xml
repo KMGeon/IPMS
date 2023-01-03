@@ -67,11 +67,10 @@
         </include>
         <![CDATA[
       rownum <= #{pageNum} * #{amount}
-           AND DELETE_WHTH='n'
+           AND proj_opn_whth='Y'
       )
   where rn > (#{pageNum} -1) * #{amount}
-
-     order by proj_id desc
+  order by proj_id desc
   ]]>
     </select>
 
@@ -79,6 +78,7 @@
     <select id="getWholeProjectTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
         SELECT COUNT(proj_id)
         FROM proj
+        where proj_opn_whth='Y'
 
     </select>
 
@@ -131,7 +131,7 @@
         'Y',
         sysdate,
         #{projImgRoute},
-        '0'
+        'n'
         )
     </insert>
 

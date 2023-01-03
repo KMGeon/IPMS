@@ -5,7 +5,6 @@
 	<!-- 공지사항 리스트(페이징 처리) -->
 	<select id="getNtPage" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
 		
-		<![CDATA[
 		SELECT PROJ_NT_NUM
 			, MEM_CODE
 			, PROJ_NT_TITLE
@@ -22,7 +21,16 @@
                         FROM PROJ_NT P
                         WHERE DELETE_YN = 'n'
                         AND PROJ_ID = #{projId}
+                        <if test="keyword != null and keyword != ''">
+							<if test="category.equals('projNtTitle')">
+								AND PROJ_NT_TITLE LIKE #{keyword}
+							</if>
+							<if test="category.equals('projNtCts')">
+								AND PROJ_NT_CTS LIKE #{keyword}
+							</if>
+						</if>      
                         ORDER BY PROJ_NT_NUM DESC) A )
+         <![CDATA[
             WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
 		]]>
 	</select>
@@ -33,6 +41,14 @@
 		FROM PROJ_NT
 		WHERE DELETE_YN = 'n'
         AND PROJ_ID = #{projId}
+        <if test="keyword != null and keyword != ''">
+			<if test="category.equals('projNtTitle')">
+				AND PROJ_NT_TITLE LIKE #{keyword}
+			</if>
+			<if test="category.equals('projNtCts')">
+				AND PROJ_NT_CTS LIKE #{keyword}
+			</if>
+		</if> 
 	</select>
 	
 	<resultMap type="com.ipms.proj.noticeboard.vo.NoticeBoardVO" id="ntMap">

@@ -56,7 +56,7 @@ public class NoticeController {
 	
 	// 프로젝트 공지사항 리스트 출력(select) & 페이징 처리
 	@GetMapping("/{projId}/noticeBoard")
-	public String ntList(String pageNum, String amount, Model model, NoticeBoardVO noticeBoardVO, Authentication authentication, @PathVariable String projId) {
+	public String ntList(String keyword, String category, String pageNum, String amount, Model model, NoticeBoardVO noticeBoardVO, Authentication authentication, @PathVariable String projId) {
 		
 		Criteria criteria;
 		
@@ -74,6 +74,14 @@ public class NoticeController {
 			
 		}
 		
+		if(category == null || category.equals("")) {
+			criteria.setCategory("");
+		} else {
+			criteria.setCategory(category);
+		}
+		
+		criteria.setKeyword("%"+keyword+"%");
+		
 		criteria.setProjId(projId);
 		criteria.setAmount(10);
 		List<NoticeBoardVO> ntSelect = noticeService.getNtPage(criteria);
@@ -84,6 +92,8 @@ public class NoticeController {
 		
 		model.addAttribute("ntSelect", ntSelect);
 		model.addAttribute("pageVO", noticePageVO);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("category", category);
 		
 		//
 		UserDetails userdetail = (UserDetails)authentication.getPrincipal();

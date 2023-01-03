@@ -31,6 +31,13 @@ public class ProjSettingController {
         return this.projSettingService.projectCreate(projVO, uploadFile);
     }
 
+    //프로젝트 탈퇴하기
+    @ResponseBody
+    @GetMapping(value = "/withdrawalProject")
+    public int withdrawalProject(String projId){
+        return this.projSettingService.withdrawalProject(projId);
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/VerifyRecaptcha", method = RequestMethod.POST)

@@ -62,7 +62,7 @@ public class FreeboardController {
 
 	// 자유 게시판 리스트 - 페이징 처리
 	@GetMapping("/{projId}/freeboard")
-	public String freeList(Model model, String pageNum, String amount, FreeboardVO freeboardVO, Authentication authentication, @PathVariable String projId) {
+	public String freeList(String keyword, String category, Model model, String pageNum, String amount, FreeboardVO freeboardVO, Authentication authentication, @PathVariable String projId) {
 		
 		Criteria criteria;
 		log.info("===================="+projId);
@@ -81,6 +81,13 @@ public class FreeboardController {
 
 		}
 		
+		if(category == null || category.equals("")) {
+			criteria.setCategory("");
+		}else {
+			criteria.setCategory(category);
+		}
+		criteria.setKeyword("%"+keyword+"%");
+		
 		criteria.setProjId(projId);
 		criteria.setAmount(10);
 		
@@ -92,6 +99,7 @@ public class FreeboardController {
 		
 		model.addAttribute("freeSelect", freeSelect);
 		model.addAttribute("pageVO", freeboardPageVO);
+		model.addAttribute("keyword",keyword);
 		
 		//
 		UserDetails userdetail = (UserDetails)authentication.getPrincipal();
