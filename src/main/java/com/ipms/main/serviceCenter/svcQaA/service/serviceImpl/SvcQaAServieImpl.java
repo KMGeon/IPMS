@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ipms.commons.vo.Criteria;
 import com.ipms.main.serviceCenter.svcQaA.mapper.SvcQaAMapper;
 import com.ipms.main.serviceCenter.svcQaA.service.SvcQaAService;
+import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaACommentVO;
 import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO;
 
 @Service
@@ -41,6 +42,14 @@ public class SvcQaAServieImpl implements SvcQaAService{
 		
 	}
 	
+	// Q&A 답글 조회
+	@Override
+	public SvcQaACommentVO svcQaACommentSelect(String qnaNum) {
+
+		return svcQaAMapper.svcQaACommentSelect(qnaNum);
+		
+	}
+	
 	// Q&A 생성
 	@Override
 	public int svcQaAInsert(SvcQaAVO svcQaAVO) {
@@ -61,6 +70,8 @@ public class SvcQaAServieImpl implements SvcQaAService{
 		
 		return svcQaAMapper.svcQaADelete(svcQaAVO);
 	}
+
+	
 	
 
 }

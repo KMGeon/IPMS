@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface TeckStackManageMapper {
     public int addSkillStack(TechStackVO techStackVO);
+    public int clearSkillStack(String commonCodeValue);
 }

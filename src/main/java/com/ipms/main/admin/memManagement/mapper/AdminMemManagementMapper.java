@@ -11,7 +11,7 @@ public interface AdminMemManagementMapper {
 
 	public List<AdminMemVO> adminMemList(Criteria cri); // 회원 리스트
 	
-	public int getTotal();
+	public int getTotal(Criteria criteria);
 	
 	public AdminMemVO adminMemDetail(AdminMemVO adminMemVO); // 회원 상세 
 	

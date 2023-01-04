@@ -9,13 +9,21 @@ import org.springframework.stereotype.Service;
 import com.ipms.main.mypage.portfolio.mapper.PortfolioMapper;
 import com.ipms.main.mypage.portfolio.service.PortfolioService;
 import com.ipms.main.mypage.portfolio.vo.PortfolioVO;
+import com.ipms.main.register.vo.TechStackVO;
 
 @Service
 public class PortfolioServiceImpl implements PortfolioService{
 	
 	@Autowired
 	PortfolioMapper portfolioMapper;
-
+	
+	@Override
+	public TechStackVO portfolioTechStackSelect(String memCode) {
+		
+		return portfolioMapper.portfolioTechStackSelect(memCode);
+		
+	}
+	
 	@Override
 	public List<PortfolioVO> completeProjSelect(String memCode) {
 		
@@ -53,5 +61,6 @@ public class PortfolioServiceImpl implements PortfolioService{
 		return proceedingProjSelect;
 		
 	}
+
 
 }

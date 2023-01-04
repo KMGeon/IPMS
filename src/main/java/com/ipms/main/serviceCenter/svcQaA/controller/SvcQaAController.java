@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ipms.commons.vo.Criteria;
 import com.ipms.commons.vo.PageVO;
 import com.ipms.main.serviceCenter.svcQaA.service.SvcQaAService;
+import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaACommentVO;
 import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO;
 import com.ipms.security.domain.CustomUser;
 
@@ -68,8 +69,10 @@ public class SvcQaAController {
         }
 
         SvcQaAVO svcQaAVO = svcQaAService.svcQaADetail(qnaNum);
+        SvcQaACommentVO svcQaACommentSelect = svcQaAService.svcQaACommentSelect(qnaNum);
 
         model.addAttribute("svcQaAVO", svcQaAVO);
+        model.addAttribute("svcQaACommentSelect", svcQaACommentSelect);
 
         return "main/serviceCenter/svcQaADetail";
     }

@@ -31,7 +31,7 @@ public class ProjBookMarkController {
 	ProjectBookMarkService bookmarkservice;
 	
 	@GetMapping("/bookmark")
-	public String bookmark(Model model , String pageNum , String amount) {
+	public String bookmark(Model model , String pageNum , String amount ) {
 		
 		//멤코드 조회
 		Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
@@ -62,7 +62,7 @@ public class ProjBookMarkController {
 		List<BookMarkVO> list =  this.bookmarkservice.bookMarkSelectAll(criteria);
 		log.info("list : {} " , list);
 		
-		int total = bookmarkservice.totalNum();
+		int total = bookmarkservice.totalNum(criteria);
 		PageVO pageVO = new PageVO(criteria, total);
 		
 		model.addAttribute("pageVO", pageVO);

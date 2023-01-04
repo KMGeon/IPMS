@@ -41,11 +41,14 @@ public class ProjectBookMarkServiceImpl implements ProjectBookMarkService {
 	}
 
 	@Override
-	public int totalNum() {
-		return this.bookMarkMapper.totalNum();
+	public int totalNum(Criteria criteria) {
+		return this.bookMarkMapper.totalNum(criteria);
 	}
-
-
+	
+	@Override
+	public List<BookMarkVO> selectBookMark(String memId){
+		return this.bookMarkMapper.selectBookMark(memId);
+	}
 
 
 }

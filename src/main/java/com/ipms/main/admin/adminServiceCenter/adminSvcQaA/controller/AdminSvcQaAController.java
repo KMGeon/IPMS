@@ -3,12 +3,15 @@ package com.ipms.main.admin.adminServiceCenter.adminSvcQaA.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ipms.commons.vo.Criteria;
 import com.ipms.commons.vo.PageVO;
@@ -73,8 +76,11 @@ public class AdminSvcQaAController {
 		return "main/admin/adminPopUp/adminSvcQaADetail";
 	}
 	
-	@PostMapping("/adminPopUp/adminSvcQaAReplyInsert")
-	public String adminSvcQaAReplyInsert(AdminSvcQaACommentVO adminSvcQaACommentVO) {
+	@ResponseBody
+	@PostMapping(value = "/adminPopUp/adminSvcQaAReplyInsert")
+	public int adminSvcQaAReplyInsert(@RequestBody AdminSvcQaACommentVO adminSvcQaACommentVO) {
+		
+		log.info("AdminSvcQaAController - adminSvcQaAReplyInsert 실행");
 		
 		if (adminSvcQaACommentVO != null) {
             log.info("AdminSvcQaAController - adminSvcQaAReplyInsert -> adminSvcQaACommentVO : {}", adminSvcQaACommentVO);
@@ -97,7 +103,7 @@ public class AdminSvcQaAController {
 			log.info("답변 상태 변경 불가!!!");
 		}
 		
-		return "redirect:/main/adminPopUp/adminSvcQaADetail?qnaNum=" + adminSvcQaACommentVO.getQnaNum();
+		return insertResult;
 	}
 	
 }

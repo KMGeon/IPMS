@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.proj.task.mapper.TaskMapper;
 import com.ipms.proj.task.service.TaskService;
+import com.ipms.proj.task.vo.TaskCmtVO;
 import com.ipms.proj.task.vo.TaskVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -165,6 +166,28 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public int hiworkDelBefor(TaskVO vo) {
 		return this.taskMapper.hiworkDelBefor(vo);
+	}
+
+	@Override
+	public int lowWorkDel(TaskVO vo) {
+		return this.taskMapper.lowWorkDel(vo); 
+	}
+
+	@Override
+	public List<TaskCmtVO> dashTaskCmt(TaskVO vo) {	
+		return this.taskMapper.dashTaskCmt(vo);
+	}
+
+	@Override
+	public int dashHighCmtInsert(TaskCmtVO vo) {
+		return this.taskMapper.dashHighCmtInsert(vo);
+		
+	}
+
+	@Override
+	public int dashlowCmtInsert(TaskCmtVO vo) {
+		return this.taskMapper.dashlowCmtInsert(vo);
+		
 	}
 
 }

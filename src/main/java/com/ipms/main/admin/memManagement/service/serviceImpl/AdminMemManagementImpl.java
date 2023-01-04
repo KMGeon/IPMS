@@ -24,9 +24,9 @@ public class AdminMemManagementImpl implements AdminMemManagementService {
 	}
 	
 	@Override
-	public int getTotal() {
+	public int getTotal(Criteria criteria) {
 		
-		return this.adminMemManagementMapper.getTotal();
+		return this.adminMemManagementMapper.getTotal(criteria);
 	}
 	
 	@Override

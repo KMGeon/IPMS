@@ -7,11 +7,15 @@ import java.util.List;
 
 @Mapper
 public interface ProjSmryCmtMapper {
-    List<ProjSmryCmtVO>getList();
+	
+    List<ProjSmryCmtVO> projCmtList(String projId);
+    
+    public int projCmtInsert(ProjSmryCmtVO projSmryCmtVO);
+    
     ProjSmryCmtVO read(String projSmryCmtNum);
+    
     public int insertReply(ProjSmryCmtVO projSmryCmtVO);
     public int replyInsert(ProjSmryCmtVO projSmryCmtVO);
     public int replySeqUpdate(ProjSmryCmtVO parent);
-
 
 }

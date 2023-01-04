@@ -15,4 +15,9 @@ public class TechStackServiceImpl implements TechStackService {
     public int addSkillStack(TechStackVO techStackVO) {
         return this.teckStackManageMapper.addSkillStack(techStackVO);
     }
+
+    @Override
+    public int clearSkillStack(String commonCodeValue) {
+        return this.teckStackManageMapper.clearSkillStack(commonCodeValue);
+    }
 }

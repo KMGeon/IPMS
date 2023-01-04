@@ -1,6 +1,10 @@
 package com.ipms.main;
 
 import com.ipms.main.alert.vo.AlrmVO;
+import com.ipms.main.mypage.ongoingProject.service.OnGoingProjectService;
+import com.ipms.main.mypage.projectbookmark.service.ProjectBookMarkService;
+import com.ipms.main.mypage.projectbookmark.vo.BookMarkVO;
+import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.proj.projMemManageMent.mapper.MemManageMapper;
 import com.ipms.security.domain.CustomUser;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,9 +26,25 @@ import java.util.List;
 public class MainController {
     @Autowired
     MemManageMapper memManageMapper;
-
+    
+	@Autowired
+	ProjectBookMarkService bookmarkservice;
+	
+	@Autowired
+	OnGoingProjectService onGoingProjectService;
+	
     @GetMapping("/page")
-    public String hello(Authentication auth) {
+    public String hello(Authentication auth,Model model) {
+    	if(auth != null) {
+    		auth =  SecurityContextHolder.getContext().getAuthentication();
+    		CustomUser user = (CustomUser) auth.getPrincipal();
+    		String memCode = user.getMember().getMemCode();
+    		
+    		List<BookMarkVO> bookMarkList= bookmarkservice.selectBookMark(memCode);
+    		List<ProjMemVO> projList = this.onGoingProjectService.goingProjects(memCode);
+    		model.addAttribute("bookMarkList",bookMarkList);    		
+    		model.addAttribute("projList",projList);    		
+    	}
         return "main/page";
     }
 

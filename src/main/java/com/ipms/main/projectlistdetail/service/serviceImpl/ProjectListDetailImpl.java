@@ -29,11 +29,6 @@ public class ProjectListDetailImpl implements ProjectListDetailService {
     }
 
     @Override
-    public List<ProjSmryCmtVO> getList() {
-        return this.projSmryCmtMapper.getList();
-    }
-
-    @Override
     public int joinProject(ProjVO projVO) {
         return this.projMapper.joinProject(projVO);
     }
@@ -42,4 +37,17 @@ public class ProjectListDetailImpl implements ProjectListDetailService {
     public ProjSmryCmtVO read(String projSmryCmtNum) {
         return this.projSmryCmtMapper.read(projSmryCmtNum);
     }
+    
+    
+    
+
+	@Override
+	public List<ProjSmryCmtVO> projCmtList(String projId) {
+		return this.projSmryCmtMapper.projCmtList(projId);
+	}
+
+	@Override
+	public int projCmtInsert(ProjSmryCmtVO projSmryCmtVO) {
+		return this.projSmryCmtMapper.projCmtInsert(projSmryCmtVO);
+	}
 }

@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.main.mypage.portfolio.mapper.PortfolioMapper">
 	
+	<select id="portfolioTechStackSelect" parameterType="string" resultType="com.ipms.main.register.vo.TechStackVO">
+		SELECT MEM_CODE
+			, TECH_STACK_CODE
+		FROM TECH_STACK
+		WHERE MEM_CODE = #{memCode}
+	</select>
+	
 	<select id="completeProjSelect" parameterType="string" resultType="com.ipms.main.mypage.portfolio.vo.PortfolioVO">
 	<![CDATA[
 		SELECT P.PROJ_ID

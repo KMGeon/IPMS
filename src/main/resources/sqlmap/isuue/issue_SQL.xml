@@ -123,34 +123,6 @@
 	</select>
 	
 	<select id="IssueDetail" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="com.ipms.proj.issue.vo.IssueVO">	
-<!-- 		SELECT ISSUE_ID -->
-<!-- 			, TASK_ID -->
-<!-- 			, ( -->
-<!-- 				SELECT TASK_TITLE -->
-<!-- 				FROM TASK T , ISSUE I -->
-<!-- 				WHERE T.TASK_ID = I.TASK_ID -->
-<!-- 				AND I.ISSUE_ID = #{issueId} -->
-<!-- 			) as TASK_TITLE -->
-<!-- 			, ISSUE_TITLE -->
-<!-- 			, ISSUE_CTS -->
-<!-- 			, ISSUE_RGST_DATE -->
-<!-- 			, ISSUE_STUS_CODE -->
-<!-- 			, ITGRN_ATTACH_FILE_NUM -->
-<!-- 			, PROJ_ID -->
-<!-- 			, DELETE_YN -->
-<!--             , SAVE_FILE_NAME -->
-<!-- 			, FILE_NAME -->
-<!--             , FILE_TYPE -->
-<!--             , FILE_PATH -->
-<!--             , M.MEM_NAME AS WRITER -->
-<!-- 		FROM ISSUE I , INTG_ATTACH_FILE F , MEM M -->
-<!-- 		WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM -->
-<!--         AND M.MEM_CODE = I.WRITER -->
-<!--         AND ISSUE_ID =   -->
-<!-- 		AND PROJ_ID =  -->
-<!--                AND (F.ATTACH_FILE_SEQ IS NULL OR F.ATTACH_FILE_SEQ = 1) -->
-
-
 		SELECT ISSUE_ID
 			, TASK_ID
 			, (
@@ -175,8 +147,6 @@
 		WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM(+)
         AND ISSUE_ID =#{issueId}
 		AND PROJ_ID =#{projId}
-
-
 	</select>
 	
 	<select id="IssueUpdateDetail" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="com.ipms.proj.issue.vo.IssueVO">
@@ -246,5 +216,16 @@
 		WHERE MEM_EMAIL =#{memName}
 	</select>
 	
+	<update id="issueStatusCompl" parameterType="com.ipms.proj.issue.vo.IssueVO">
+		UPDATE ISSUE
+		SET ISSUE_STUS_CODE = #{issueStusCode}
+		WHERE ISSUE_ID = #{issueId}
+	</update>
+	
+	<update id="issueStatusNonCompl" parameterType="com.ipms.proj.issue.vo.IssueVO">
+		UPDATE ISSUE
+		SET ISSUE_STUS_CODE = #{issueStusCode}
+		WHERE ISSUE_ID = #{issueId}
+	</update>
 
 </mapper>

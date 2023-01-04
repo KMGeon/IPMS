@@ -1,27 +1,20 @@
 package com.ipms.main.login.controller;
 
-import com.ipms.main.login.service.LoginService;
+import com.ipms.security.domain.CustomUser;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.inject.Inject;
-
 @Slf4j
 @RequestMapping("/main")
 @Controller
 public class LoginController {
-    @Autowired
-    LoginService loginService;
-    @Inject
-    BCryptPasswordEncoder passEncoder;
-
 
     @GetMapping("/loginForm")
     public String loginForm() {
@@ -42,6 +35,10 @@ public class LoginController {
     public String asd() {
         return "main/login/loginMain";
     }
-
+    public static CustomUser getCustomUser() {
+        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        return user;
+    }
 
 }

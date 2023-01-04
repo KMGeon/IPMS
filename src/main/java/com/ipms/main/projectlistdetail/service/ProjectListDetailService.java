@@ -7,7 +7,11 @@ import com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO;
 import java.util.List;
 
 public interface ProjectListDetailService {
-    List<ProjSmryCmtVO> getList();
+	
+	List<ProjSmryCmtVO> projCmtList(String projId);
+	
+	public int projCmtInsert(ProjSmryCmtVO projSmryCmtVO);
+    
     public int joinProject(ProjVO projVO);
     ProjSmryCmtVO read(String projSmryCmtNum);
     public List<MemVO>getDetailLeaderInfo(String memCode);

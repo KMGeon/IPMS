@@ -3,9 +3,14 @@ package com.ipms.main.projectlistdetail.controller;
 import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.main.projectlistdetail.service.ProjectListDetailService;
+import com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO;
 import com.ipms.main.wholeProject.service.WholeProjectService;
+import com.ipms.proj.freeboard.vo.FreeboardCmtVO;
 import com.ipms.security.domain.CustomUser;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,25 +24,35 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/main")
 public class ProjectListDetailController {
-@Autowired
+	
+	@Autowired
 	MyPageMapper myPageMapper;
-@Autowired
+	@Autowired
 	WholeProjectService wholeProjectService;
-@Autowired
+	@Autowired
 	ProjectListDetailService projectListDetailService;
 
 	@PreAuthorize("isAuthenticated() and ( hasAnyRole('ROLE_MEMBER'))")
 	@RequestMapping(value = "/projectDetail/{projId}", method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	public String projectDetail(@PathVariable("projId") String projId, Model model) {
+		
 		ProjVO vo = new ProjVO();
+		
 		vo.setProjId(projId);
 		vo.setMemCode(getCustomUser());
+		
 		log.info("==========================="+this.projectListDetailService.projectsAlreadyApplied(vo));
 		model.addAttribute("detailList", this.wholeProjectService.detailPage(projId));//상세정보
 		model.addAttribute("getDetailLeaderInfo", this.projectListDetailService.getDetailLeaderInfo(getCustomUser()));//프로젝트 리더 정보
 		model.addAttribute("checkMyProject",this.wholeProjectService.checkMyProject(projId));//내가 만든 프로젝트 체크
 		model.addAttribute("projectsAlreadyApplied",this.projectListDetailService.projectsAlreadyApplied(vo));//내가 만든 프로젝트 체크
+		
+		// 댓글 리스트
+		List<ProjSmryCmtVO> dataCmt = this.projectListDetailService.projCmtList(projId);
+		log.info("cmt list: " + dataCmt.toString());
+				
+		model.addAttribute("dataCmt", dataCmt);
 
 		return "main/wholeProject/projectDetail";
 	}
@@ -57,5 +72,16 @@ public class ProjectListDetailController {
 		CustomUser user = (CustomUser) authentication.getPrincipal();
 		return user.getMember().getMemCode();
 	}
+	
+	@ResponseBody
+	@PostMapping("/{projId}/projCmtInsert")
+	public int projCmtInsert(@RequestBody ProjSmryCmtVO projSmryCmtVO) {
 
+		int result = this.projectListDetailService.projCmtInsert(projSmryCmtVO);
+		log.info("result: " + result);
+		
+		return result;
+	}
+	
+	
 }

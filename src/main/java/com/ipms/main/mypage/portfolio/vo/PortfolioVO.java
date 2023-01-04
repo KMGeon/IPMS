@@ -1,6 +1,9 @@
 package com.ipms.main.mypage.portfolio.vo;
 
 import java.util.Date;
+import java.util.List;
+
+import com.ipms.main.register.vo.TechStackVO;
 
 import lombok.Data;
 

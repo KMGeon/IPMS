@@ -49,6 +49,14 @@
 		AND QNA_NUM = #{qnaNum}
 	</select>
 	
+	<select id="svcQaACommentSelect" parameterType="string" resultType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaACommentVO">
+		SELECT QNA_NUM
+		    , QNA_ANSW_CTS
+		    , QNA_ANSW_WRITE_DATE
+		FROM QNA_ANSW
+		WHERE QNA_NUM = #{qnaNum}
+	</select>
+	
 	<insert id="svcQaAInsert" parameterType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
 		INSERT INTO QNA(QNA_NUM
 			, WRITER

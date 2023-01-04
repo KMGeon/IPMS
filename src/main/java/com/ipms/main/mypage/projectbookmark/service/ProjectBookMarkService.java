@@ -16,7 +16,9 @@ public interface ProjectBookMarkService {
 		
 		public int bookMarkDel(@RequestBody BookMarkVO vo);
 		
-		public int totalNum();
+		public int totalNum(Criteria criteria);
+
+		public List<BookMarkVO> selectBookMark(String memId);
 		
 	}
 

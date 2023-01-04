@@ -19,15 +19,13 @@ import java.util.List;
 public class MemServiceImpl implements MemService {
     @Autowired
     MemMapper memMapper;
-    @Autowired
-    MemService memService;
+
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
-    public String signUp(MemVO memVO , Authentication authentication , TechStackVO techStackVO) {
+    public String signUp(MemVO memVO, Authentication authentication, TechStackVO techStackVO) {
         int result = this.memMapper.registerMember(memVO);
         if (result == 1) {
             List<MemberAuth> list = memVO.getMemAuthList();
-            log.info("================list============="+list.toString());
             for (MemberAuth authVO : list) {
                 if (authVO.getMemAuth() != null) {
                     MemberAuth memberAuth = new MemberAuth();
@@ -37,12 +35,8 @@ public class MemServiceImpl implements MemService {
                 }
             }
             List<TechStackVO> techStackVOList = memVO.getTechStackVOList();
-            log.info("-----------------------"+techStackVOList);
-
             for (TechStackVO vo : techStackVOList) {
                 if (vo.getTechStackCode() != null) {
-                    log.info("-----------------------"+vo.getMemCode());
-                    log.info("-----------------------"+vo.getTechStackCode());
                     TechStackVO tech = new TechStackVO();
                     tech.setMemCode(memVO.getMemCode());
                     tech.setTechStackCode(vo.getTechStackCode());

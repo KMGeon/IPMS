@@ -40,7 +40,7 @@ public class ProjSettingController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/VerifyRecaptcha", method = RequestMethod.POST)
+    @RequestMapping(value = "/VerifyReCapcha", method = RequestMethod.POST)
     public int VerifyRecaptcha(HttpServletRequest request) {
 
         // 시크릿 키를 캡챠를 받아올수 있는 Class에 보내서 그곳에서 값을 출력한다

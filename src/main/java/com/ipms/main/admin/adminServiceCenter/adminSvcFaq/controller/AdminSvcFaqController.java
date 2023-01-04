@@ -71,6 +71,7 @@ public class AdminSvcFaqController {
 		model.addAttribute("keyword",keyword);
 		model.addAttribute("list",list);
 		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("page","faq");
 		return "main/admin/adminSvcNotice";
 	}
 	

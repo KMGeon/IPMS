@@ -10,7 +10,7 @@ public interface ProjManagementService {
 
 	public List<ProjManaVO> adminProjList(Criteria cri);
 	
-	public int getTotal();
+	public int getTotal(Criteria criteria);
 	
 	public ProjManaVO adminProjDetail(ProjManaVO projManaVO);
 	

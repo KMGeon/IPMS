@@ -3,6 +3,8 @@ package com.ipms.main.serviceCenter.svcQaA.service;
 import java.util.List;
 
 import com.ipms.commons.vo.Criteria;
+import com.ipms.main.admin.adminServiceCenter.adminSvcQaA.vo.AdminSvcQaACommentVO;
+import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaACommentVO;
 import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO;
 
 public interface SvcQaAService {
@@ -15,6 +17,9 @@ public interface SvcQaAService {
 	
 	// Q&A 디테일 페이지
 	public SvcQaAVO svcQaADetail(String qnaNum);
+	
+	// Q&A 답글 조회
+	public SvcQaACommentVO svcQaACommentSelect(String qnaNum);
 	
 	// Q&A 생성
 	public int svcQaAInsert(SvcQaAVO svcQaAVO);

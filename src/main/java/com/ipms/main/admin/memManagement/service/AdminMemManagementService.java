@@ -10,7 +10,7 @@ public interface AdminMemManagementService {
 
 	public List<AdminMemVO> adminMemList(Criteria cri);
 	
-	public int getTotal();
+	public int getTotal(Criteria criteria);
 	
 	public AdminMemVO adminMemDetail(AdminMemVO adminMemVO);
 	

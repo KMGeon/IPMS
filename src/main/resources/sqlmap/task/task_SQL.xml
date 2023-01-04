@@ -287,6 +287,91 @@
 	
 	</update>
 	
+	<update id="lowWorkDel" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE TASK
+		SET DELETE_YN = 'y'
+		WHERE TASK_ID = #{taskId}
+	</update>
+	
+	<select id="dashTaskCmt" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskCmtVO">
+		 SELECT 
+             LEVEL LEV
+	       , TASK_CMT_ID
+           , TASK_ID
+           , HIGH_CMT_ID
+           , TASK_CMT_CTS
+           , TASK_CMT_WRITE_DATE
+           , LOW_RGST_SEQ
+           , DELETE_YN
+           , WRITER
+	    FROM TASK_CMT I
+        WHERE I.TASK_ID = #{taskId}
+	    AND I.DELETE_YN = 'n'
+	    START WITH I.HIGH_CMT_ID IS NULL
+	    CONNECT BY PRIOR  I.TASK_CMT_ID = I.HIGH_CMT_ID
+        ORDER SIBLINGS BY I.TASK_CMT_WRITE_DATE
+	</select>
+	
+	<insert id="dashHighCmtInsert" parameterType="com.ipms.proj.task.vo.TaskCmtVO" >
+		<selectKey keyProperty="taskCmtId" order="BEFORE" resultType="com.ipms.proj.task.vo.TaskCmtVO">
+			SELECT  
+				NVL(MAX(TO_NUMBER(TASK_CMT_ID))+1,1) as TASK_CMT_ID
+        	FROM TASK_CMT
+		</selectKey>
+		INSERT INTO TASK_CMT(
+				TASK_CMT_ID
+				, TASK_ID
+				, HIGH_CMT_ID
+				, TASK_CMT_CTS
+				, TASK_CMT_WRITE_DATE
+				, LOW_RGST_SEQ
+				, DELETE_YN
+				, WRITER
+			)
+			VALUES(
+				#{taskCmtId}
+				,#{taskId}
+				,null
+				,#{taskCmtCts}
+				,sysdate
+				, (SELECT NVL(MAX(LOW_RGST_SEQ)+1,1)
+			      FROM TASK_CMT
+			      WHERE TASK_CMT_ID = #{taskCmtId})
+				,'n'
+				,#{writer}
+			)
+	</insert>
+	
+	<insert id="dashlowCmtInsert" parameterType="com.ipms.proj.taskcomment.vo.TaskCommentVO">
+		<selectKey keyProperty="issueCmtId" order="BEFORE" resultType="com.ipms.proj.task.vo.TaskCmtVO">
+			SELECT  
+				NVL(MAX(TO_NUMBER(TASK_CMT_ID))+1,1) as TASK_CMT_ID
+        	FROM TASK_CMT
+		</selectKey>
+			INSERT INTO ISSUE_CMT(
+				  ISSUE_CMT_ID
+				, ISSUE_ID
+				, HIGH_CMT_ID
+				, ISSUE_CMT_CTS
+				, ISSUE_CMT_WRITE_DATE
+				, LOW_RGST_WHTH
+				, DELETE_YN
+				, WRITER
+			)
+			VALUES(
+				#{issueCmtId}
+				,#{issueId}
+				,#{highCmtId}
+				,#{issueCmtCts}
+				,sysdate
+				, ( SELECT NVL(MAX(LOW_RGST_WHTH)+1,1)
+			      FROM ISSUE_CMT
+			      WHERE HIGH_CMT_ID = #{highCmtId} )
+				,'n'
+				,#{writer}
+			)
+	</insert>
+	
 </mapper>
 
 

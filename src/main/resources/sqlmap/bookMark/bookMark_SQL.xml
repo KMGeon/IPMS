@@ -64,6 +64,9 @@
 	<select id="totalNum" resultType="int">
 			select COUNT(PROJ_ID)
         	from MARK
+        	WHERE MEM_CODE = #{memCode}
+        	AND DELETE_YN = 'n'
+        	
 	</select>
 	
 	<update id="bookMarkDel" parameterType="com.ipms.main.mypage.projectbookmark.vo.BookMarkVO">
@@ -72,4 +75,19 @@
 			WHERE PROJ_ID = #{projId}
 	</update>
 	
+	<select id="selectBookMark" parameterType="string" resultType="com.ipms.main.mypage.projectbookmark.vo.BookMarkVO">    
+		SELECT
+		    m.proj_id,
+		    m.mem_code,
+		    m.delete_yn,
+		    p.PROJ_NAME,
+		    p.PROJ_IMG_ROUTE,
+		    p.PROJ_STRT_DATE,
+		    p.PROJ_END_DATE
+		FROM
+		    mark m,proj p
+		WHERE m.PROJ_ID = p.PROJ_ID
+		AND m.MEM_CODE = #{memId}
+		AND m.DELETE_YN = 'n'
+	</select>
 </mapper>

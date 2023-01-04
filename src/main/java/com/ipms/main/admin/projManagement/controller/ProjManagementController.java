@@ -64,7 +64,7 @@ public class ProjManagementController {
 		
 		log.info("ProjManaVO: " + ProjManaVO);
 
-		int total = projManagementService.getTotal();
+		int total = projManagementService.getTotal(criteria);
 		
 		ProjManaPageVO projManaPageVO = new ProjManaPageVO(criteria, total);
 		

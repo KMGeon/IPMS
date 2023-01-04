@@ -27,19 +27,19 @@ public class registerMemController {
     @RequestMapping(value = "/signUpForm", method = RequestMethod.GET)
     public String signUpFormGet(Model model) {
         List<CommonCodeVO> codeVOS = this.memService.techStack();
-        model.addAttribute("list",codeVOS);
+        model.addAttribute("list", codeVOS);
         return "main/login/signUpForm";
     }
 
 
     @RequestMapping(value = "/signUpForm", method = RequestMethod.POST)
     public String signUpForm(@ModelAttribute MemVO memVO
-                                            , Authentication authentication
-                                            , @ModelAttribute TechStackVO techStackVO) {
+            , Authentication authentication
+            , @ModelAttribute TechStackVO techStackVO) {
 //        rawPw=memVO.getMemPasswd();
 //        encodePw = bcryptPasswordEncoder.encode(rawPw);
 //        memVO.setMemPasswd(encodePw);
-        return this.memService.signUp(memVO , authentication,techStackVO);
+        return this.memService.signUp(memVO, authentication, techStackVO);
     }
 
     @PostMapping("/memRegisterCheck")
@@ -54,9 +54,9 @@ public class registerMemController {
 
         if (this.memService.UpdatePwd(memVO) == 1) {
             return "main/page";
-        } else {
-            return "redirect:/main/loginForm";
         }
+        return "redirect:/main/loginForm";
+
     }
 
 

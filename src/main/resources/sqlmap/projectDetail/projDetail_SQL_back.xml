@@ -2,20 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.main.projectlistdetail.mapper.ProjSmryCmtMapper">
-
-	<select id="projCmtList" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
-		SELECT PROJ_SMRY_CMT_NUM
-			, PROJ_ID
-			, MEM_CODE
-			, PROJ_SMRY_CMT_CTS
-			, REPLY_GROUP
-			, REPLY_LEVEL
-			, PROJ_SMRY_CMT_WRITE_DATE
-			, REPLY_SEQ
-			, HIGH_CMT_ID
-		FROM PROJ_SMRY_CMT
-		WHERE PROJ_ID = #{projId}
-	</select>
+    <select id="getList" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+        select *
+        from proj_smry_cmt
+        order by reply_group desc, reply_seq asc
+    </select>
+    <select id="read" parameterType="string" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+        select * from proj_smry_cmt where mem_code=#{memCode}
+    </select>
 
 <insert id="insertReply" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
     <selectKey order="BEFORE" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO"

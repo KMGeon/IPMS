@@ -85,6 +85,10 @@ public class IssueController {
 		
 		mav.addObject("vo", vo);
 		mav.addObject("pageVO", pageVO);
+		mav.addObject("comple", comple);
+		mav.addObject("noncomple", noncomple);
+		mav.addObject("keyword", keyword);
+		
 //		mav.addObject("vo", vo);
 		mav.setViewName("proj/issueboard/issueBoard");
 		
@@ -230,6 +234,30 @@ public class IssueController {
 		obj.put("vo", returnvo);
 		
 		return obj ;
+	}
+	
+	@ResponseBody
+	@PostMapping("/issueStatusCompl")
+	public int issueStatusCompl(@RequestBody IssueVO vo) {
+		log.info("issueStatusUpdate VO  : {} ",vo.toString());
+		int result = this.issueservice.issueStatusCompl(vo);
+		
+		log.info("issueStatusUpdate result  : {} ",result);
+		
+		
+		return result;
+	}
+
+	@ResponseBody
+	@PostMapping("/issueStatusnonCompl")
+	public int issueStatusNonCompl(@RequestBody IssueVO vo ) {
+		log.info("issueStatusUpdate VO  : {} ",vo.toString());
+		int result = this.issueservice.issueStatusCompl(vo);
+		
+		log.info("issueStatusUpdate result  : {} ",result);
+		
+		
+		return result;
 	}
 	
 	public String getFolder() {

@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class ProjSmryCmtVO {
-    private String projSmryCmtNum;//프로젝트 개요 댓글 번호
+    private int projSmryCmtNum;//프로젝트 개요 댓글 번호
     private String projId;
     private String memCode;
     private String projSmryCmtCts;//댓글 내용
@@ -14,4 +14,6 @@ public class ProjSmryCmtVO {
     private String replyGroup;
     private String replyLevel;
     private String replySeq;
+
+    private String highCmtId;
 }

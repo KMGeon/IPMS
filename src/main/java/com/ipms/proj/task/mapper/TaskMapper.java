@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.core.Authentication;
 
 import com.ipms.main.login.vo.MemVO;
+import com.ipms.proj.task.vo.TaskCmtVO;
 import com.ipms.proj.task.vo.TaskVO;
 
 public interface TaskMapper {
@@ -40,4 +41,13 @@ public interface TaskMapper {
 	public List<TaskVO> nullHighTaskId(TaskVO vo);
 	
 	public int hiworkDelBefor(TaskVO vo);
+	
+	public int lowWorkDel(TaskVO vo);
+	
+	public List<TaskCmtVO> dashTaskCmt(TaskVO vo);
+	
+	public int dashHighCmtInsert(TaskCmtVO vo);
+	
+	public int dashlowCmtInsert(TaskCmtVO vo);
+	
 }

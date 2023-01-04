@@ -9,11 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ipms.main.login.controller.LoginController.getCustomUser;
 
 @RequestMapping("/main")
 @Slf4j
@@ -34,18 +35,17 @@ public class InviteAndApplyController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/projectsApplied")
     public List<ProjMemVO>projectsApplied(){
-        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-        CustomUser user = (CustomUser) authentication.getPrincipal();
+        CustomUser user = getCustomUser();
         List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(user.getMember().getMemCode());
         return projectsApplied;
     }
+
     //신청한 회원
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/memberWhoApplied")
     public List<ProjMemVO>memberWhoApplied(){
-        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-        CustomUser user = (CustomUser) authentication.getPrincipal();
+        CustomUser user = getCustomUser();
         List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(user.getMember().getMemCode());
         return memberWhoApplied;
     }
@@ -54,8 +54,7 @@ public class InviteAndApplyController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/invitationWaitingList")
     public List<InvitationVO>invitationWaitingList(String projId){
-        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-        CustomUser user = (CustomUser) authentication.getPrincipal();
+        CustomUser user = getCustomUser();
         List<InvitationVO> invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(user.getMember().getMemCode());
         return invitationWaitingList;
     }
@@ -82,8 +81,7 @@ public class InviteAndApplyController {
     @PostMapping(value = "/acceptInvitation")
     @ResponseStatus(HttpStatus.CREATED)
     public int acceptInvitation( @ModelAttribute ProjMemVO projMemVO ,@RequestParam(name = "projId") String projId) {
-        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-        CustomUser user = (CustomUser) authentication.getPrincipal();
+        CustomUser user = getCustomUser();
         log.info("================="+projId);
         projMemVO.setMemCode(user.getMember().getMemCode());
         projMemVO.setProjId(projId);

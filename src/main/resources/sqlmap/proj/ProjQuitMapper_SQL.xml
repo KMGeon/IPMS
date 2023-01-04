@@ -5,10 +5,10 @@
     <!--프로젝트 하차 신청-->
     <update id="dropApplication" parameterType="com.ipms.main.newProject.vo.ProjVO">
         UPDATE PROJ_MEM
-        SET DROPSTATUS='N'
+        SET DROPSTATUS='Y'
         WHERE proj_id = #{projId}
           AND mem_code = #{memCode}
-          AND DROPSTATUS = '0'
+
     </update>
 
 

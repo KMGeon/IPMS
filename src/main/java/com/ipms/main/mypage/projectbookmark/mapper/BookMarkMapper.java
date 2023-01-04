@@ -17,5 +17,7 @@ public interface BookMarkMapper {
 		
 	public int bookMarkDel(BookMarkVO vo);
 	
-	public int totalNum();
+	public int totalNum(Criteria criteria);
+	
+	public List<BookMarkVO> selectBookMark(String memId);
 }

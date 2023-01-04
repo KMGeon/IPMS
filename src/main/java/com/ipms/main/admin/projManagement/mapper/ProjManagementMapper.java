@@ -10,7 +10,7 @@ public interface ProjManagementMapper {
 	
 	public List<ProjManaVO> adminProjList(Criteria cri); 	// 프로젝트 리스트
 	
-	public int getTotal();
+	public int getTotal(Criteria criteria);
 	
 	public ProjManaVO adminProjDetail(ProjManaVO projManaVO);
 	

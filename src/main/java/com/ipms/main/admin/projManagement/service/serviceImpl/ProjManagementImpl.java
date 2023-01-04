@@ -30,9 +30,9 @@ public class ProjManagementImpl implements ProjManagementService {
 	}
 
 	@Override
-	public int getTotal() {
+	public int getTotal(Criteria criteria) {
 		
-		return this.projManagementMapper.getTotal();
+		return this.projManagementMapper.getTotal(criteria);
 	}
 
 	@Override

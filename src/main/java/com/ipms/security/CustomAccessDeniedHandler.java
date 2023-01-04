@@ -16,9 +16,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler, Authentic
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        log.info("=========================================================================================");
-        log.info("==============실패해서 accessDeniedHandler왔음====================");
-        log.info("=========================================================================================");
         log.info("msg",e.getMessage());
         httpServletResponse.sendRedirect("/main/loginForm");
     }

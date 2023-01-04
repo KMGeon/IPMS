@@ -3,7 +3,10 @@ package com.ipms.proj.task.service;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.ipms.proj.task.vo.TaskCmtVO;
 import com.ipms.proj.task.vo.TaskVO;
 
 public interface TaskService {
@@ -33,5 +36,12 @@ public interface TaskService {
 	public String[] authCheck(TaskVO vo);
 	
 	public int hiworkDelBefor(TaskVO vo);
+	
+	public int lowWorkDel(TaskVO vo);
+	
+	public List<TaskCmtVO> dashTaskCmt(TaskVO vo);
+	
+	public int dashHighCmtInsert(@RequestBody TaskCmtVO vo);
 
+	public int dashlowCmtInsert(@RequestBody TaskCmtVO vo);
 }

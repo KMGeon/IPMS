@@ -23,7 +23,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         });
         log.warn("ROLE NAMES: " + roleNames);
         if (roleNames.contains("ROLE_ADMIN")) {
-            response.sendRedirect("/main/newProjectForm");
+            response.sendRedirect("/main/adminMemberManagement");
             return;
         }
 
@@ -33,7 +33,16 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
             return;
         }
 
-        response.sendRedirect("/main/loginForm");
+        if (roleNames.contains("ROLE_PROJECT")) {
+
+            response.sendRedirect("/main/page");
+            return;
+        }
+        if (roleNames.contains("ROLE_PROJECT_LEADER")) {
+
+            response.sendRedirect("/main/page");
+            return;
+        }
     }
 }
 

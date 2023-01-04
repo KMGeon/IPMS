@@ -23,8 +23,14 @@
 					 'TechStack',
 					 #{commonCodeValue},
 					'88',
-					 '123',
+					 #{commonCodeEplntn},
 					 'N'
 				 )
 	</insert>
+
+	<delete id="clearSkillStack" parameterType="string">
+		DELETE FROM common_code
+		WHERE
+			common_code_value = #{commonCodeValue}
+	</delete>
 </mapper>

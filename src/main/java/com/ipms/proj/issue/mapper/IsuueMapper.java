@@ -27,4 +27,8 @@ public interface IsuueMapper {
 	public String getMemCode(String userName);
 	
 	public String getUserName(String userEmail);
+	
+	public int issueStatusCompl(IssueVO vo);
+	
+	public int issueStatusNonCompl(IssueVO vo);
 }

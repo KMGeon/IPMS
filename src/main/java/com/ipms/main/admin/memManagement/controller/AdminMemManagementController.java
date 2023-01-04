@@ -59,7 +59,7 @@ public class AdminMemManagementController {
 		
 		log.info("adminMemListVO: " + adminMemListVO);
 		
-		int total = adminMemManagementService.getTotal();
+		int total = adminMemManagementService.getTotal(criteria);
 		
 		AdminMemPageVO adminMemPageVO = new AdminMemPageVO(criteria, total);
 		

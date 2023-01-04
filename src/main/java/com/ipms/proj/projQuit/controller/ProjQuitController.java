@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/proj")
 @Controller
 public class ProjQuitController {
-	@Autowired
-	ProjQuitService projQuitService;
+    @Autowired
+    ProjQuitService projQuitService;
 
-	@RequestMapping(value = "/{projId}/projQuit", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public String QuitPage(@PathVariable(name = "projId") String projId) {
-		return "proj/projQuit/projQuit";
-	}
+    @RequestMapping(value = "/{projId}/projQuit", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public String QuitPage(@PathVariable(name = "projId") String projId) {
+        return "proj/projQuit/projQuit";
+    }
 
-	@RequestMapping(value = "/projQuitProcess", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.OK)
-	public String projQuit(@ModelAttribute ProjVO projVO) {
-		int division = this.projQuitService.dropApplication(projVO);
-		if(division==1){
-			return  "main/page";
-		}
-		return "redirect:/main/loginForm";
-	}
+    @RequestMapping(value = "/projQuitProcess", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public String projQuit(@ModelAttribute ProjVO projVO) {
+        int division = this.projQuitService.dropApplication(projVO);
+        if (division == 1) {
+            return "main/page";
+        }
+        return "main/page";
+    }
 }

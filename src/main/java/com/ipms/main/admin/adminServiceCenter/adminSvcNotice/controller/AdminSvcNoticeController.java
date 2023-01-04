@@ -78,6 +78,7 @@ public class AdminSvcNoticeController {
 		model.addAttribute("keyword",keyword);
 		model.addAttribute("list",list);
 		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("page","notice");
 		return "main/admin/adminSvcNotice";
 	}
 	

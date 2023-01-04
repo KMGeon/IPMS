@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ipms.main.login.vo.MemVO;
 import com.ipms.proj.issue.service.IssueService;
+import com.ipms.proj.issue.vo.IssueCommentVO;
 import com.ipms.proj.task.service.TaskService;
+import com.ipms.proj.task.vo.TaskCmtVO;
 import com.ipms.proj.task.vo.TaskVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -138,7 +140,6 @@ public class TaskController {
 		log.info("Controller --> TaskVO : "+ vo.toString());
 		
 		
-		//서비스에서 하게되면 일을 2번해야됨
 		UserDetails userdetail = (UserDetails)authentication.getPrincipal();
 		String userEmail = userdetail.getUsername(); // 유저이메일 가져오자
 		String userCode = this.issueService.getMemCode(userEmail); // 유저이메일로 멤버 코드를 가져오자 
@@ -234,6 +235,56 @@ public class TaskController {
 		
 		return result;
 	}
+	
+	@ResponseBody
+	@PostMapping("/lowWorkDel")
+	public int lowWorkDel(@RequestBody TaskVO vo) {
+		log.info("TaskController --> lowWorkDelVO --> {}" , vo.toString());
+		int result = this.taskservice.lowWorkDel(vo);
+		
+		return result;
+	}
+	
+	//대시보드 리스트 -> 일감상세 페이지
+	@GetMapping("/dashWorkDetail")
+	public String dashBoardTask( TaskVO vo , Model model) { // 워크 디테일 페이지
+		
+		log.error("★  TaskController ==> WorkDetaildata ==> vo.tostring()" + vo.toString());
+		log.error("★  TaskController ==> WorkDetaildata ==> model" + model.toString());
+		TaskVO reciveVO = this.taskservice.WorkDetail(vo);
+		log.error("★  receive ==> TaskController ==> WorkDetaildata" + reciveVO.toString());
+		
+		List<TaskCmtVO> cmtList = this.taskservice.dashTaskCmt(vo);
+		log.info("CmtList : {} " , cmtList.toString());
+		
+		model.addAttribute("list",reciveVO);
+		model.addAttribute("cmtList",cmtList);
+		
+		return "proj/dashboard/dashWorkDetail";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/dashHighCmtInsert" , method = RequestMethod.POST )
+	public String dashHighCmtInsert(@RequestBody TaskCmtVO vo) {
+		log.info(" Controller(dashHighCmtInsert) -> TaskVO:{}" , vo.toString());
+		int result = this.taskservice.dashHighCmtInsert(vo);
+		log.info("result : {} " , result);
+		
+		return result+"";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/dashlowCmtInsert" , method = RequestMethod.POST )
+	public String dashlowCmtInsert(@RequestBody TaskCmtVO vo) {
+		log.info(" Controller(dashlowCmtInsert) -> TaskVO:{}" , vo.toString());
+		int result = this.taskservice.dashlowCmtInsert(vo);
+		log.info("result : {} " , result);
+		
+		return result+"";
+	}
+	
+	
+	
 	
 	
 
