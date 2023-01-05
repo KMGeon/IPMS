@@ -1,8 +1,11 @@
 package com.ipms.main.admin.memManagement.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.ipms.main.newProject.vo.ProjVO;
 
 import lombok.Data;
 
@@ -21,4 +24,5 @@ public class AdminMemVO {
 	private String memWhdrlYn;	 // 회원 탈퇴 여부
 	private String memProjQuit;	 // 회원 프로젝트 중도 하차 횟수
 	
+	private List<ProjVO> projVOList;
 }

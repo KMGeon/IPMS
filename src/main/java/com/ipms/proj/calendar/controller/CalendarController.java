@@ -77,7 +77,7 @@ public class CalendarController {
 	@ResponseBody
 	@PostMapping("/{projId}/calList2")
 	public List<TaskVO> fullPost2(Authentication authentication, @PathVariable String projId){
-		log.info("일감 리스트!");
+		log.info("나의 일감 리스트!");
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		String userName = userDetails.getUsername();
@@ -94,6 +94,22 @@ public class CalendarController {
 		log.info("*******task list: " + listT.toString());
 		
 		return listT;
+	}
+	
+	@ResponseBody
+	@PostMapping("/{projId}/calList3")
+	public List<TaskVO> fullPost3(Authentication authentication, @PathVariable String projId){
+		log.info("모든 상위 일감 리스트!");
+
+		CalendarVO calendarVO = new CalendarVO();
+
+		calendarVO.setProjId(projId);
+		
+		List<TaskVO> listT2 = calendarservice.selectT2(calendarVO);			// 일감 리스트
+		
+		log.info("*******task list: " + listT2.toString());
+		
+		return listT2;
 	}
 	
 	@ResponseBody

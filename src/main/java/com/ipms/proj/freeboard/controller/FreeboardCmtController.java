@@ -31,7 +31,7 @@ public class FreeboardCmtController {
 	
 	// 댓글 등록
 	@ResponseBody
-	@PostMapping("/insertFreeCmt")
+	@PostMapping("/{projId}/insertFreeCmt")
 	public int insertFreeCmt(@RequestBody FreeboardCmtVO freeboardCmtVO) {
 		//insert Cmt: FreeboardCmtVO(projBdCmtId=0, projBdId=1, projBdCmtCts=ㅁㄴㅇㄹㄴ, writer=null, writerCmt=M003, projBdCmtWriteDate=null, highCmtId=null, lowRgstSeq=0, deleteYn=null)
 		
@@ -47,7 +47,7 @@ public class FreeboardCmtController {
 	
 	// 댓글 수정
 	@ResponseBody
-	@PostMapping("/updateFreeCmt")
+	@PostMapping("/{projId}/updateFreeCmt")
 	public int updateFreeCmt(@RequestBody FreeboardCmtVO freeboardCmtVO) {
 		//freeboardCmtVO : FreeboardCmtVO(projBdCmtId=7, projBdId=0, projBdCmtCts=ㅇㅇㅇㄴㄴ, writer=null, writerCmt=null, projBdCmtWriteDate=null, highCmtId=null, lowRgstSeq=0, deleteYn=null)
 		log.info("freeboardCmtVO : " + freeboardCmtVO.toString());
@@ -60,7 +60,7 @@ public class FreeboardCmtController {
 	
 	// 댓글 삭제
 	@ResponseBody
-	@PostMapping("/deleteFreeCmt")
+	@PostMapping("/{projId}/deleteFreeCmt")
 	public int deleteFreeCmt(@RequestBody FreeboardCmtVO freeboardCmtVO) {
 		
 		int result = this.freeboardCmtService.deleteFreeCmt(freeboardCmtVO);

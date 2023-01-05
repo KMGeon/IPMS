@@ -24,10 +24,12 @@
     <update id="modifyProjectSettings"  parameterType="com.ipms.main.newProject.vo.ProjVO">
         UPDATE PROJ
         SET  proj_name = #{projName}
-          , proj_img_route = #{projImgRoute}
           , proj_opn_whth = #{projOpnWhth}
           , proj_end_date =  #{projEndDate}
           ,PROJ_SMRY = #{projSmry}
+          <if test ="projImgRoute != null">
+          	, proj_img_route = #{projImgRoute}
+          </if>
         WHERE  PROJ_ID=#{projId}
     </update>
 

@@ -19,6 +19,7 @@
 		AND WRITER = #{writer}
 	</select>
 	
+	<!-- 내 일감 -->
 	<select id="selectT" parameterType="com.ipms.proj.calendar.vo.CalendarVO" resultType="com.ipms.proj.task.vo.TaskVO">
 		SELECT TASK_ID, PROJ_ID, MEM_CODE, HIGH_TASK_ID, TASK_TITLE, TASK_CTS
 				, TASK_STRT_DATE, TASK_END_DATE, TASK_STUS_CODE, TASK_PGRES, LOW_RGST_SEQ
@@ -26,6 +27,20 @@
 		FROM TASK
 		WHERE PROJ_ID = #{projId}
 		AND MEM_CODE = #{writer}
+		AND DELETE_YN = 'n' 
+		AND APROV_WHTH = 'y'
+		AND HIGH_TASK_ID IS NOT NULL
+		AND TASK_PGRES &lt; 100
+	</select>
+	
+	<!-- 모든 사람이 쓴 상위 일감 -->
+	<select id="selectT2" parameterType="com.ipms.proj.calendar.vo.CalendarVO" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT TASK_ID, PROJ_ID, MEM_CODE, HIGH_TASK_ID, TASK_TITLE, TASK_CTS
+				, TASK_STRT_DATE, TASK_END_DATE, TASK_STUS_CODE, TASK_PGRES, LOW_RGST_SEQ
+				, APROV_WHTH, TASK_REPRE, DELETE_YN, REFER_CTS
+		FROM TASK
+		WHERE PROJ_ID = #{projId}
+		AND HIGH_TASK_ID IS null
 		AND DELETE_YN = 'n' 
 		AND APROV_WHTH = 'y'
 		AND TASK_PGRES &lt; 100

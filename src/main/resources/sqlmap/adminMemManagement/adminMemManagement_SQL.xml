@@ -63,7 +63,7 @@
 	</select>
 	
 	<select id="adminMemDetail" resultType="com.ipms.main.admin.memManagement.vo.AdminMemVO" resultMap="adMemMap">
-		SELECT MEM_EMAIL, MEM_CODE, MEM_NAME, MEM_PHONE_NUMBER, MEM_SGNUP_DATE
+		SELECT MEM_EMAIL, MEM_CODE, MEM_NAME, MEM_PHONE_NUMBER, MEM_SGNUP_DATE, MEM_IMG_ROUTE
 		FROM MEM
 		WHERE MEM_CODE = #{memCode}
 	</select>

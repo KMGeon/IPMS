@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -42,6 +44,8 @@ public class IssueController {
 	@Autowired
 	IssueService issueservice;
 	
+	@Autowired
+	ServletContext servletContext;
 	
 	@GetMapping("/{projId}/issueboard")
 	public ModelAndView issueboard(
@@ -110,6 +114,7 @@ public class IssueController {
 		
 		mav.addObject("list",list);
 		mav.addObject("issueCd",list.getIssueId());
+		mav.addObject("projId",projId);
 		mav.setViewName("proj/issueboard/issueDetail");
 		
 		return mav;
@@ -132,7 +137,6 @@ public class IssueController {
 		return "proj/issueboard/issueUpdate";
 	}
 	
-	String uploadFolder = "C:\\eGovFrameDev-3.10.0-64bit\\finalproject\\ipms\\src\\main\\webapp\\resources";
 	
 	@ResponseBody
 	@PostMapping("/{projId}/issueDataInsert")
@@ -151,8 +155,9 @@ public class IssueController {
 		log.info("memCode : " + memCode);
 		
 		// 인설트 할때 유저이름 넣어줘야됨
-		
 		vo.setWriter(memCode);
+
+		String uploadFolder = servletContext.getRealPath("/") + "\\resources\\uploadIs";
 		
 		File uploadPath = new File(uploadFolder,getFolder());
 		if(uploadPath.exists() == false) {
@@ -237,7 +242,7 @@ public class IssueController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/issueStatusCompl")
+	@PostMapping("/{projId}/issueStatusCompl")
 	public int issueStatusCompl(@RequestBody IssueVO vo) {
 		log.info("issueStatusUpdate VO  : {} ",vo.toString());
 		int result = this.issueservice.issueStatusCompl(vo);
@@ -249,7 +254,7 @@ public class IssueController {
 	}
 
 	@ResponseBody
-	@PostMapping("/issueStatusnonCompl")
+	@PostMapping("/{projId}/issueStatusnonCompl")
 	public int issueStatusNonCompl(@RequestBody IssueVO vo ) {
 		log.info("issueStatusUpdate VO  : {} ",vo.toString());
 		int result = this.issueservice.issueStatusCompl(vo);

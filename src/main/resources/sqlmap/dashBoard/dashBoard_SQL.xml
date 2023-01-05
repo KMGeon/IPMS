@@ -93,11 +93,11 @@
 	SELECT
 	    erd_num,
 	    proj_id,
-	    writer,
+	    (SELECT mem_name FROM mem WHERE MEM_CODE = e.writer) writer,
 	    erd_title,
 	    delete_yn
 	FROM
-	    erd_proj
+	    erd_proj e
 	WHERE
 		proj_id = #{projId}
 	AND

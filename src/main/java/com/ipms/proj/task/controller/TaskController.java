@@ -169,7 +169,7 @@ public class TaskController {
 		
 		//상위 삭제 로직
 	@ResponseBody
-	@PostMapping("/workDetail")
+	@PostMapping("/{projId}/workDetail")
 	public TaskVO work(@RequestBody TaskVO vo) { // 워크 디테일 페이지
 		log.error("★ receive ==> TaskController ==> WorkDetaildata ==> vo.tostring()" + vo.toString());
 		TaskVO reciveVO = this.taskservice.WorkDetail(vo);
@@ -180,7 +180,7 @@ public class TaskController {
 	
 	
 	@ResponseBody
-	@PostMapping("/taskApproval")
+	@PostMapping("/{projId}/taskApproval")
 	public int taskApproval(@RequestBody TaskVO vo) { // 일감 승인
 		log.error("★ receive ==> TaskController ==> taskapproval ==> vo.tostring()" + vo.toString());
 		int result = this.taskservice.taskApproval(vo);
@@ -190,7 +190,7 @@ public class TaskController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/referCts")
+	@PostMapping("/{projId}/referCts")
 	public int referCts(@RequestBody TaskVO vo) { // 일감 반려
 		log.error("★ receive ==> TaskController ==> referCts ==> vo.tostring()" + vo.toString());
 		int result = this.taskservice.referCts(vo);
@@ -201,7 +201,7 @@ public class TaskController {
 	
 	
 	@ResponseBody
-	@PostMapping("/taskCtsUpdate")
+	@PostMapping("/{projId}/taskCtsUpdate")
 	public int taskCtsUpdate(@RequestBody TaskVO vo) { // 일감 반려
 		
 		
@@ -213,7 +213,7 @@ public class TaskController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/taskPgresUpdate")
+	@PostMapping("/{projId}/taskPgresUpdate")
 	public int taskPgresUpdate(@RequestBody TaskVO vo) { // 일감 반려
 		
 		
@@ -226,7 +226,7 @@ public class TaskController {
 	
 	
 	@ResponseBody
-	@PostMapping("/highTaskCtsUpdate")
+	@PostMapping("/{projId}/highTaskCtsUpdate")
 	public int highTaskCtsUpdate(@RequestBody TaskVO vo) { // 일감 반려
 		
 		log.error("★ receive ==> TaskController ==> highTaskCtsUpdate ==> vo.tostring()" + vo.toString());
@@ -246,7 +246,7 @@ public class TaskController {
 	}
 	
 	//대시보드 리스트 -> 일감상세 페이지
-	@GetMapping("/dashWorkDetail")
+	@GetMapping("/{projId}/dashWorkDetail")
 	public String dashBoardTask( TaskVO vo , Model model) { // 워크 디테일 페이지
 		
 		log.error("★  TaskController ==> WorkDetaildata ==> vo.tostring()" + vo.toString());
@@ -264,7 +264,7 @@ public class TaskController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/dashHighCmtInsert" , method = RequestMethod.POST )
+	@RequestMapping(value = "/{projId}/dashHighCmtInsert" , method = RequestMethod.POST )
 	public String dashHighCmtInsert(@RequestBody TaskCmtVO vo) {
 		log.info(" Controller(dashHighCmtInsert) -> TaskVO:{}" , vo.toString());
 		int result = this.taskservice.dashHighCmtInsert(vo);
@@ -274,7 +274,7 @@ public class TaskController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/dashlowCmtInsert" , method = RequestMethod.POST )
+	@RequestMapping(value = "/{projId}/dashlowCmtInsert" , method = RequestMethod.POST )
 	public String dashlowCmtInsert(@RequestBody TaskCmtVO vo) {
 		log.info(" Controller(dashlowCmtInsert) -> TaskVO:{}" , vo.toString());
 		int result = this.taskservice.dashlowCmtInsert(vo);

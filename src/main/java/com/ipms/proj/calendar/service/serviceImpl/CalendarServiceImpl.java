@@ -49,4 +49,10 @@ public class CalendarServiceImpl implements CalendarService {
 		return this.calendarMapper.selectT(calendarVO);
 	}
 
+	@Override
+	public List<TaskVO> selectT2(CalendarVO calendarVO) {
+		
+		return this.calendarMapper.selectT2(calendarVO);
+	}
+
 }

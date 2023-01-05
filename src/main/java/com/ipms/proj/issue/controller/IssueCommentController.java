@@ -40,7 +40,7 @@ public class IssueCommentController { // 서비스에서 처리하자
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getAllCmtList" , method = RequestMethod.POST )
+	@PostMapping("/{projId}/getAllCmtList")
 	public List<IssueCommentVO> IssueCmtList(@RequestBody IssueCommentVO vo) {
 		log.info("Contoller(getAllCmtList) -> IssueId : {} " , vo.getIssueId());
 		

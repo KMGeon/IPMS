@@ -50,4 +50,19 @@ public class ProjectListDetailImpl implements ProjectListDetailService {
 	public int projCmtInsert(ProjSmryCmtVO projSmryCmtVO) {
 		return this.projSmryCmtMapper.projCmtInsert(projSmryCmtVO);
 	}
+
+	@Override
+	public int projCmtInsert2(ProjSmryCmtVO projSmryCmtVO) {
+		return this.projSmryCmtMapper.projCmtInsert2(projSmryCmtVO);
+	}
+
+	@Override
+	public int projCmtUpdate(ProjSmryCmtVO projSmryCmtVO) {
+		return this.projSmryCmtMapper.projCmtUpdate(projSmryCmtVO);
+	}
+
+	@Override
+	public int projCmtDel(ProjSmryCmtVO projSmryCmtVO) {
+		return this.projSmryCmtMapper.projCmtDel(projSmryCmtVO);
+	}
 }

@@ -56,9 +56,11 @@
 		                              WHERE  M.PROJ_ID = P.PROJ_ID
 		                              AND M.MEM_CODE = E.MEM_CODE
 		                              AND M.MEM_CODE = #{memCode}
-		                              AND DELETE_YN = 'n' ) A )
+		                              AND DELETE_YN = 'n' 
+		                              ORDER BY PROJ_CREATN_DATE DESC ) A )
 		       WHERE RN > (#{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
 		]]>
+		order by PROJ_CREATN_DATE asc
 	</select>
 	
 	<select id="totalNum" resultType="int">

@@ -14,6 +14,10 @@
                     <when test="type == 'C'.toString()">
                         proj_name like '%'||#{keyword}||'%'
                     </when>
+                    <when test="type == 'D'.toString()">
+                         PROJ_STRT_DATE BETWEEN TO_DATE(#{StrtDateKeyword}) and TO_DATE(#{EndDateKeyword})
+                    </when>
+
                 </choose>
             </trim>
         </foreach>
@@ -36,7 +40,7 @@
     <select id="getListPage" resultType="com.ipms.main.newProject.vo.ProjVO">
         <![CDATA[
   select
-    proj_id,
+    		   proj_id,
                mem_code,
                proj_name,
                proj_strt_date,
@@ -70,7 +74,7 @@
            AND proj_opn_whth='Y'
       )
   where rn > (#{pageNum} -1) * #{amount}
-  order by proj_id desc
+  order by proj_creatn_date asc
   ]]>
     </select>
 

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ipms.commons.ftp.vo.IntgAttachFileVO;
 import com.ipms.commons.vo.Criteria;
@@ -53,6 +57,9 @@ public class NoticeController {
 	
 	@Autowired
 	IssueService issueService;
+	
+	@Autowired 
+	private ServletContext servletContext;
 	
 	// 프로젝트 공지사항 리스트 출력(select) & 페이징 처리
 	@GetMapping("/{projId}/noticeBoard")
@@ -178,7 +185,7 @@ public class NoticeController {
 		log.info("update notice: " + noticeBoardVO.toString());
 
 		// 업로드 될 폴더 설정
-		String uploadFolder = "C:\\eGovFrameDev-3.10.0-64bit\\finalProject\\ipms\\src\\main\\webapp\\resources\\uploadNt";
+		String uploadFolder = servletContext.getRealPath("/") + "\\resources\\uploadNt";
 		// 연/월/일 폴더 생성
 		String uploadFolderPath = getFolder();
 		// 폴더 생성(계획)
@@ -322,11 +329,13 @@ public class NoticeController {
 	// 첨부파일 포함 insert
 	@PostMapping("/{projId}/noticeBoardInsertPost")
 	public String insertNt(@ModelAttribute NoticeBoardVO noticeBoardVO, @PathVariable String projId) throws IllegalStateException, IOException {
-
+		
+		log.info("NoticeController - insertNt -> 경로 구하기  : {}", servletContext.getRealPath("/"));
+		
 		log.info("notice insert -> noticeBoardVO: " + noticeBoardVO.toString());
 		
 		// 업로드 될 폴더 설정
-		String uploadFolder = "C:\\eGovFrameDev-3.10.0-64bit\\finalProject\\ipms\\src\\main\\webapp\\resources\\uploadNt";
+		String uploadFolder = servletContext.getRealPath("/") + "\\resources\\uploadNt";
 		// 연/월/일 폴더 생성
 		String uploadFolderPath = getFolder();
 		// 폴더 생성(계획)

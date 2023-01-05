@@ -1,5 +1,6 @@
 package com.ipms.main.admin.memManagement.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,10 +77,14 @@ public class AdminMemManagementController {
 	public String adminMemManaInfo(@ModelAttribute AdminMemVO adminMemVO, Model model) {
 		
 //		log.info("adminMemManaInformation---------------");
+		//AdminMemVO(memCode=M028, memEmail=null, memPasswd=null, memName=null, 
+		//memPhoneNumber=null, memSgnupDate=null, memImgRoute=null, memWhdrlYn=null, memProjQuit=null, projVOList=null)
+		log.info("adminMemVO : " + adminMemVO);
 		
 		AdminMemVO data = this.adminMemManagementService.adminMemDetail(adminMemVO);
-		log.info("adminMemDetail->adminMemVO: " + data.toString());
-		
+		log.info("adminMemDetail->adminMemVO: " + data);
+		Date date = new Date();
+		model.addAttribute("now",date);
 		model.addAttribute("data", data);
 		
 		return "main/admin/adminPopUp/adminMemManaInfo";

@@ -343,29 +343,29 @@
 	</insert>
 	
 	<insert id="dashlowCmtInsert" parameterType="com.ipms.proj.taskcomment.vo.TaskCommentVO">
-		<selectKey keyProperty="issueCmtId" order="BEFORE" resultType="com.ipms.proj.task.vo.TaskCmtVO">
+		<selectKey keyProperty="taskCmtId" order="BEFORE" resultType="com.ipms.proj.task.vo.TaskCmtVO">
 			SELECT  
 				NVL(MAX(TO_NUMBER(TASK_CMT_ID))+1,1) as TASK_CMT_ID
         	FROM TASK_CMT
 		</selectKey>
-			INSERT INTO ISSUE_CMT(
-				  ISSUE_CMT_ID
-				, ISSUE_ID
+			INSERT INTO TASK_CMT(
+				TASK_CMT_ID
+				, TASK_ID
 				, HIGH_CMT_ID
-				, ISSUE_CMT_CTS
-				, ISSUE_CMT_WRITE_DATE
-				, LOW_RGST_WHTH
+				, TASK_CMT_CTS
+				, TASK_CMT_WRITE_DATE
+				, LOW_RGST_SEQ
 				, DELETE_YN
 				, WRITER
 			)
 			VALUES(
-				#{issueCmtId}
-				,#{issueId}
+				#{taskCmtId}
+				,#{taskId}
 				,#{highCmtId}
-				,#{issueCmtCts}
+				,#{taskCmtCts}
 				,sysdate
-				, ( SELECT NVL(MAX(LOW_RGST_WHTH)+1,1)
-			      FROM ISSUE_CMT
+				, ( SELECT NVL(MAX(LOW_RGST_SEQ)+1,1)
+			      FROM TASK_CMT
 			      WHERE HIGH_CMT_ID = #{highCmtId} )
 				,'n'
 				,#{writer}

@@ -73,6 +73,7 @@ public class ProjectListDetailController {
 		return user.getMember().getMemCode();
 	}
 	
+	// 상위댓글 작성
 	@ResponseBody
 	@PostMapping("/{projId}/projCmtInsert")
 	public int projCmtInsert(@RequestBody ProjSmryCmtVO projSmryCmtVO) {
@@ -82,6 +83,42 @@ public class ProjectListDetailController {
 		
 		return result;
 	}
+	
+	// 하위댓글 작성
+	@ResponseBody
+	@PostMapping("/{projId}/projCmtInsert2")
+	public int projCmtInsert2(@RequestBody ProjSmryCmtVO projSmryCmtVO) {
+		
+		int result = this.projectListDetailService.projCmtInsert2(projSmryCmtVO);
+		log.info("result: " + result);
+		
+		return result;
+	}
+	
+	// 댓글 수정
+	@ResponseBody
+	@PostMapping("/{projId}/projCmtUpdate")
+	public int projCmtUpdate(@RequestBody ProjSmryCmtVO projSmryCmtVO) {
+		
+		log.info("projSmryCmtVO : " + projSmryCmtVO.toString());
+		
+		int result = this.projectListDetailService.projCmtUpdate(projSmryCmtVO);
+		log.info("result: " + result);
+		
+		return result;
+	}
+	
+	// 댓글 삭제
+	@ResponseBody
+	@PostMapping("/{projId}/projCmtDel")
+	public int projCmtDel(@RequestBody ProjSmryCmtVO projSmryCmtVO) {
+		
+		int result = this.projectListDetailService.projCmtDel(projSmryCmtVO);
+		log.info("result: " + result);
+		
+		return result;
+	}
+	
 	
 	
 }

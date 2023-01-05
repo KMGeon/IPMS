@@ -14,6 +14,8 @@ public class ProjSmryCmtVO {
     private String replyGroup;
     private String replyLevel;
     private String replySeq;
-
+    private String deleteYn;
     private String highCmtId;
+    
+    private String memEmail;
 }

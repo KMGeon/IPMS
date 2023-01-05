@@ -12,22 +12,25 @@ public class Criteria {
 
     private String memEmail;
     private String memName;
-    
+
     private String memCode;
     private String keyword;
     private String type;
     private String category;
     private Date searchDate;
     private String[] typeArr;
+    private  String StrtDateKeyword;
+    private  String EndDateKeyword;
     private String comple;
     private String noncomple;
-    
+
     private String aprov;
     private String projId; // issueboard - 박종환 추가
     private String projName;
-    
+
     private Date startDate;
     private Date endDate;
+
     public Criteria() {
         this(1, 8);
     }
@@ -38,7 +41,7 @@ public class Criteria {
     }
 
     public String[] getTypeArr() {
-        return type == null? new String[] {}: type.split("");
+        return type == null ? new String[]{} : type.split("");
     }
 
 }

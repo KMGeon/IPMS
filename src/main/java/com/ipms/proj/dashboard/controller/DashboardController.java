@@ -207,7 +207,6 @@ public class DashboardController {
 				index++;
 			}
 		}
-		log.info("----------------taskList: "+taskList.get(0).toString());
 		return taskList;
 	}
 	
