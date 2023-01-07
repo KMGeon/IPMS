@@ -25,7 +25,6 @@ public class WholeProjectController {
     MyPageMapper myPageMapper;
 
     @GetMapping(value = "/wholeProject")
-    @ResponseStatus(value = HttpStatus.OK)
     public String wholeProject(Model model , Criteria cri) {
         model.addAttribute("list",wholeProjectService.getListPage(cri));
         model.addAttribute("pageMaker",new PageVO(cri,this.wholeProjectService.getWholeProjectTotal()));

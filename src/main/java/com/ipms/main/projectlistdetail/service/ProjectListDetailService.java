@@ -16,6 +16,6 @@ public interface ProjectListDetailService {
     
     public int joinProject(ProjVO projVO);
     ProjSmryCmtVO read(String projSmryCmtNum);
-    public List<MemVO>getDetailLeaderInfo(String memCode);
+	public List<MemVO>getDetailLeaderInfo(String projId);
     public int projectsAlreadyApplied(ProjVO projVO);
 }

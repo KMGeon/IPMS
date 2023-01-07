@@ -19,8 +19,8 @@ public class ProjectListDetailImpl implements ProjectListDetailService {
     ProjMapper projMapper;
 
     @Override
-    public List<MemVO> getDetailLeaderInfo(String memCode) {
-        return this.projMapper.getDetailLeaderInfo(memCode);
+    public List<MemVO> getDetailLeaderInfo(String projId) {
+        return this.projMapper.getDetailLeaderInfo(projId);
     }
 
     @Override

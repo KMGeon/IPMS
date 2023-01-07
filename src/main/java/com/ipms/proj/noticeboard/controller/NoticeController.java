@@ -328,7 +328,7 @@ public class NoticeController {
 	
 	// 첨부파일 포함 insert
 	@PostMapping("/{projId}/noticeBoardInsertPost")
-	public String insertNt(@ModelAttribute NoticeBoardVO noticeBoardVO, @PathVariable String projId) throws IllegalStateException, IOException {
+	public String insertNt(@ModelAttribute NoticeBoardVO noticeBoardVO, @PathVariable String projId, HttpServletRequest req) throws IllegalStateException, IOException {
 		
 		log.info("NoticeController - insertNt -> 경로 구하기  : {}", servletContext.getRealPath("/"));
 		
@@ -336,6 +336,9 @@ public class NoticeController {
 		
 		// 업로드 될 폴더 설정
 		String uploadFolder = servletContext.getRealPath("/") + "\\resources\\uploadNt";
+		
+		log.info("경로를 구하는 용도  :  {}", req.getContextPath());
+		
 		// 연/월/일 폴더 생성
 		String uploadFolderPath = getFolder();
 		// 폴더 생성(계획)

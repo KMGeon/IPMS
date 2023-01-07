@@ -1,14 +1,10 @@
 package com.ipms.main.newProject.service;
 
-import com.ipms.commons.ftp.FtpUtil;
-import com.ipms.main.login.vo.MemVO;
-import com.ipms.main.login.vo.MemberAuth;
-import com.ipms.main.mypage.mapper.MyPageMapper;
-import com.ipms.main.newProject.mapper.ProjMapper;
-import com.ipms.main.newProject.vo.ProjMemVO;
-import com.ipms.main.newProject.vo.ProjVO;
-import com.ipms.proj.chat.mapper.ChatMapper;
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.util.List;
+import com.ipms.commons.ftp.FtpUtil;
+import com.ipms.main.login.vo.MemVO;
+import com.ipms.main.login.vo.MemberAuth;
+import com.ipms.main.mypage.mapper.MyPageMapper;
+import com.ipms.main.newProject.mapper.ProjMapper;
+import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.main.newProject.vo.ProjVO;
+import com.ipms.proj.chat.mapper.ChatMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -29,14 +33,16 @@ public class NewProjectService {
     MyPageMapper myPageMapper;
     @Autowired
     ChatMapper chatMapper;
-
+    @Autowired
+    ServletContext servletContext;
 
 
     @Transactional
     public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication, MultipartFile[] uploadFile ) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        String uploadFolder = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\\resources\\upload\\img";
+//        String uploadFolder = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\\resources\\upload\\img";
+        String uploadFolder = servletContext.getRealPath("/") + "\\resources\\upload\\img";
 
         for (MultipartFile multipartFile : uploadFile) {
             log.info("Upload File Name: " + multipartFile.getOriginalFilename());
@@ -71,15 +77,15 @@ public class NewProjectService {
                     this.projAuthInsert(memberAuth);
                 }
             }
-            
-            // 프로젝트 생성 시 프로젝트 폴더(문서함)생성 
+
+            // 프로젝트 생성 시 프로젝트 폴더(문서함)생성
             FtpUtil.createDirectory("/", projVO.getProjId());
             //프로젝트 생성시 채팅방 생성
             chatMapper.createChatRoom(projVO);
-            return "redirect:/main/wholeProject";
+            return "success";
 
         }
-        return "redirect:/main/page";
+        return "fail";
     }
 
     private int projInsert(ProjVO projVO) {

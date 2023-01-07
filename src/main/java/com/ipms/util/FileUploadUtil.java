@@ -10,6 +10,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ipms.commons.ftp.vo.IntgAttachFileVO;
@@ -19,11 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FileUploadUtil {
 	
-	private static String uploadFolder = "E:\\lastProj\\ipms\\src\\main\\webapp\\resources\\upload"; 
-	
 	//파일 업로드 실행
-	public static List<IntgAttachFileVO> fileUploadAction(MultipartFile[] multipartFiles,String tid,String userCode) {
+	public static List<IntgAttachFileVO> fileUploadAction(MultipartFile[] multipartFiles,String tid,String userCode, ServletContext servletContext) {
+		
 		log.info("파일 업로드를 수행합니다");
+		
+		String uploadFolder = servletContext.getRealPath("/") +"\\resources\\upload";
 		
 		List<IntgAttachFileVO> attachVOList = new ArrayList<IntgAttachFileVO>();
 		

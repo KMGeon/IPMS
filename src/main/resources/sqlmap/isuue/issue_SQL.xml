@@ -6,6 +6,7 @@
 		FROM TASK
 		WHERE HIGH_TASK_ID IS NOT NULL
 		AND PROJ_ID = #{projId}
+		AND DELETE_YN = 'n'
 	</select>
 	
 	<insert id="IssueDataInsert" parameterType="com.ipms.proj.issue.vo.IssueVO" >

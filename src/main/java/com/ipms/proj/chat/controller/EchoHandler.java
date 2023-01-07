@@ -98,9 +98,12 @@ public class EchoHandler extends TextWebSocketHandler{
 	@Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
+        
+        //현재 날짜를 가져다 메시지에 추가
         SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm");
         Date now = new Date();
         String nowTime1 = sdf1.format(now);
+        
         //모든 유저에게 메세지 출력
     	//메시지 발송
 		String msg = message.getPayload();
@@ -108,6 +111,7 @@ public class EchoHandler extends TextWebSocketHandler{
 		log.info("fileData: "+obj.toString());
 		Object fileData = obj.get("fileData");
 		String fileMsg = fileData.toString();
+		
 		//file이 없을때 전송
 		if(fileMsg.equals("noData;")) {
 		ChatVO chatVO = new ChatVO();

@@ -54,7 +54,7 @@ public class AdminMemManagementController {
 		}
 		
 		criteria.setKeyword("%"+keyword+"%");
-		criteria.setAmount(10);
+		criteria.setAmount(8);
 		log.info("-------------criteria="+criteria);
 		List<AdminMemVO> adminMemListVO = this.adminMemManagementService.adminMemList(criteria);
 		

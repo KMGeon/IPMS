@@ -69,7 +69,7 @@
 
     <insert id="sendInvitation" parameterType="com.ipms.proj.projMemManageMent.vo.InvitationVO">
         <selectKey order="BEFORE" keyProperty="inviteNum" resultType="string">
-            SELECT NVL(MAX(invite_num),0)+1 FROM INVITATION
+            SELECT NVL(MAX(TO_NUMBER(invite_num)),0)+1 FROM INVITATION
         </selectKey>
         INSERT INTO invitation (
         invite_num,

@@ -1,7 +1,6 @@
 package com.ipms.main.newProject.controller;
 
 import com.ipms.main.login.vo.MemVO;
-import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.service.NewProjectService;
 import com.ipms.main.newProject.vo.ProjVO;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +21,6 @@ public class NewProjectController {
 
     @Autowired
     NewProjectService newProjectService;
-    @Autowired
-    MyPageMapper myPageMapper;
 
     //프로젝트 생성
     @RequestMapping(value = "/newProjectForm", method = RequestMethod.GET)
@@ -36,9 +33,10 @@ public class NewProjectController {
      * 프로젝트 생성 -> 프로젝트 팀 구성 -> 프로젝트 멤버 생성
      */
     @RequestMapping(value = "/newProjectPost", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication, MultipartFile[] uploadFile) {
-        return this.newProjectService.projectCreate(projVO, memVO, authentication,uploadFile);
+        if(this.newProjectService.projectCreate(projVO, memVO, authentication,uploadFile) .equals("success")){
+            return "redirect:/main/wholeProject";
+        }return "main/page";
     }
 
 }

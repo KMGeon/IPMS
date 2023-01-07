@@ -8,11 +8,8 @@ import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.proj.projMemManageMent.vo.InvitationVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -27,6 +24,33 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     @Autowired
     InviteAndApplyService inviteAndApplyService;
 
+    @Transactional
+    public int approval(ProjMemVO projMemVO) {
+        if (this.myPageMapper.approvalJoiningProject(projMemVO) == 1) {
+            MemberAuth memberAuth = new MemberAuth();
+            memberAuth.setMemCode(projMemVO.getMemCode());
+            memberAuth.setProjId(projMemVO.getProjId());
+            memberAuth.setMemAuth("ROLE_PROJECT");
+            this.projMapper.projAuthInsert(memberAuth);
+            return 1;
+        }
+        return 0;
+    }
+
+    @Transactional
+    public int inviteAccept(ProjMemVO projMemVO) {
+        if (this.myPageMapper.invitationApproved(projMemVO) == 1) {
+            if (this.inviteAndApplyService.invitedMemberApproval(projMemVO) == 1) {
+                MemberAuth memberAuth = new MemberAuth();
+                memberAuth.setMemCode(projMemVO.getMemCode());
+                memberAuth.setProjId(projMemVO.getProjId());
+                memberAuth.setMemAuth("ROLE_PROJECT");
+                this.projMapper.projAuthInsert(memberAuth);
+                return 1;
+            }
+        }
+        return 0;
+    }
 
     @Override
     public List<InvitationVO> invitationWaitingList(String memCode) {
@@ -46,19 +70,6 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     @Override
     public int refusalInvitation(InvitationVO invitationVO) {
         return this.myPageMapper.refusalInvitation(invitationVO);
-    }
-
-    @Transactional
-    public int approval(ProjMemVO projMemVO) {
-        if (this.myPageMapper.approvalJoiningProject(projMemVO) == 1) {
-            MemberAuth memberAuth = new MemberAuth();
-            memberAuth.setMemCode(projMemVO.getMemCode());
-            memberAuth.setProjId(projMemVO.getProjId());
-            memberAuth.setMemAuth("ROLE_PROJECT");
-            this.projMapper.projAuthInsert(memberAuth);
-            return 1;
-        }
-        return 0;
     }
 
     @Override

@@ -21,6 +21,7 @@
 			, WORK_UPDATE_NUM
 		FROM TASK
 		WHERE PROJ_ID = #{projId}
+		AND DELETE_YN = 'n'
 		ORDER BY TASK_ID ASC
 	</select>
 

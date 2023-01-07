@@ -13,16 +13,22 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 @Service
 @Slf4j
 public class ProjSettingServiceImpl implements ProjSettingService {
     @Autowired
     ProjSettingMapper projSettingMapper;
+    
+    @Autowired
+    ServletContext servletContext; 
 
 
     @Transactional
     public  String projectCreate(@ModelAttribute ProjVO projVO, MultipartFile[] uploadFile) {
-        String uploadFolder = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\\resources\\upload\\img";
+//        String uploadFolder = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\\resources\\upload\\img";
+        String uploadFolder = servletContext.getRealPath("/") + "\\resources\\upload\\img";
         for (MultipartFile multipartFile : uploadFile) {
             log.info("Upload File Name: " + multipartFile.getOriginalFilename());
             log.info("Upload File Size: " + multipartFile.getSize());

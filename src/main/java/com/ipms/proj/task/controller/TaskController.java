@@ -237,7 +237,7 @@ public class TaskController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/lowWorkDel")
+	@PostMapping("/{projId}/lowWorkDel")
 	public int lowWorkDel(@RequestBody TaskVO vo) {
 		log.info("TaskController --> lowWorkDelVO --> {}" , vo.toString());
 		int result = this.taskservice.lowWorkDel(vo);

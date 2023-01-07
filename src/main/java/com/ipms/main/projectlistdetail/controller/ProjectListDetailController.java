@@ -5,12 +5,8 @@ import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.main.projectlistdetail.service.ProjectListDetailService;
 import com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO;
 import com.ipms.main.wholeProject.service.WholeProjectService;
-import com.ipms.proj.freeboard.vo.FreeboardCmtVO;
 import com.ipms.security.domain.CustomUser;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -44,7 +42,7 @@ public class ProjectListDetailController {
 		
 		log.info("==========================="+this.projectListDetailService.projectsAlreadyApplied(vo));
 		model.addAttribute("detailList", this.wholeProjectService.detailPage(projId));//상세정보
-		model.addAttribute("getDetailLeaderInfo", this.projectListDetailService.getDetailLeaderInfo(getCustomUser()));//프로젝트 리더 정보
+		model.addAttribute("getDetailLeaderInfo", this.projectListDetailService.getDetailLeaderInfo(projId));//프로젝트 리더 정보
 		model.addAttribute("checkMyProject",this.wholeProjectService.checkMyProject(projId));//내가 만든 프로젝트 체크
 		model.addAttribute("projectsAlreadyApplied",this.projectListDetailService.projectsAlreadyApplied(vo));//내가 만든 프로젝트 체크
 		

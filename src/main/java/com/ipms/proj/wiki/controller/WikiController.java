@@ -122,7 +122,7 @@ public class WikiController {
 		return "proj/wiki/wikiUpdate";
 	}
 	
-	@PostMapping("/wikiUpdate")
+	@PostMapping("/{projId}/wikiUpdate")
 	public String wikiUpdatePost(WikiVO wikiVO) {
 		int result = wikiService.updateWiki(wikiVO);
 		String projId = wikiVO.getProjId();

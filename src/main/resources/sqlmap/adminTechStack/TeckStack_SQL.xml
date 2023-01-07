@@ -22,7 +22,7 @@
 					 #{commonCode},
 					 'TechStack',
 					 #{commonCodeValue},
-					'88',
+					(SELECT NVL(MAX(TO_NUMBER(COMMON_CODE_SEQ)),0)+1 FROM common_code),
 					 #{commonCodeEplntn},
 					 'N'
 				 )

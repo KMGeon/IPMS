@@ -1,5 +1,9 @@
 package com.ipms.main.newProject.vo;
 
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.*;
 
 
@@ -15,7 +19,13 @@ public class ProjMemVO {
     private String projSmry;
     private String memEmail;
     private String projName;//프로젝트 이름
-    private  String memName;
-    private  String projImgRoute;
-
+    private String memName;
+    private String projImgRoute;
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date projStrtDate;   // 프로젝트 시작일
+    
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date projEndDate;    // 프로젝트 종료일
+    
 }

@@ -22,7 +22,7 @@ public interface ProjMapper {
     public int insertProjMem(ProjMemVO projMemVO);
     public int projAuthInsert(MemberAuth memberAuth);
     public int joinProject(ProjVO projVO);
-    public List<MemVO>getDetailLeaderInfo(String memCode);
+    public List<MemVO>getDetailLeaderInfo(String projId);
     public List<ProjVO>checkMyProject(String projId);
     public int projectsAlreadyApplied(ProjVO projVO);
 }

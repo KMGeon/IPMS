@@ -39,11 +39,9 @@ public class Criteria {
         this.pageNum = pageNum;
         this.amount = 8;
     }
-
     public String[] getTypeArr() {
         return type == null ? new String[]{} : type.split("");
     }
-
 }
 
 

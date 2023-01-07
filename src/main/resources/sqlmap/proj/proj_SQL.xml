@@ -74,7 +74,7 @@
            AND proj_opn_whth='Y'
       )
   where rn > (#{pageNum} -1) * #{amount}
-  order by proj_creatn_date asc
+  order by proj_creatn_date desc
   ]]>
     </select>
 
@@ -189,7 +189,7 @@
 
 
     <select id="getDetailLeaderInfo" parameterType="string" resultType="com.ipms.main.login.vo.MemVO">
-        select * from mem where mem_code=#{memCode}
+        select MEM_NAME from PROJ P , MEM M where proj_id = #{projId} AND M.MEM_CODE = P.MEM_CODE
     </select>
 </mapper>
 

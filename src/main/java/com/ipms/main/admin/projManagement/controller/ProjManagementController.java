@@ -58,7 +58,7 @@ public class ProjManagementController {
 		
 		criteria.setKeyword("%"+keyword+"%");
 		
-		criteria.setAmount(10);
+		criteria.setAmount(8);
 		
 		List<ProjManaVO> ProjManaVO = this.projManagementService.adminProjList(criteria);
 		

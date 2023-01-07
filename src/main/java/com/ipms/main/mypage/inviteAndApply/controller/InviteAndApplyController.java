@@ -1,7 +1,6 @@
 package com.ipms.main.mypage.inviteAndApply.controller;
 
 import com.ipms.main.mypage.inviteAndApply.service.InviteAndApplyService;
-import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.proj.projMemManageMent.vo.InvitationVO;
 import com.ipms.security.domain.CustomUser;
@@ -22,9 +21,6 @@ import static com.ipms.main.login.controller.LoginController.getCustomUser;
 public class InviteAndApplyController {
     @Autowired
     InviteAndApplyService inviteAndApplyService;
-    @Autowired
-    MyPageMapper myPageMapper;
-
     @GetMapping(value = "/inviteAndApply")
     @ResponseStatus(HttpStatus.OK)
     public String inviteOrApply() {
@@ -82,14 +78,9 @@ public class InviteAndApplyController {
     @ResponseStatus(HttpStatus.CREATED)
     public int acceptInvitation( @ModelAttribute ProjMemVO projMemVO ,@RequestParam(name = "projId") String projId) {
         CustomUser user = getCustomUser();
-        log.info("================="+projId);
         projMemVO.setMemCode(user.getMember().getMemCode());
         projMemVO.setProjId(projId);
-        if (this.inviteAndApplyService.invitationApproved(projMemVO) == 1) {
-            this.inviteAndApplyService.invitedMemberApproval(projMemVO);
-            return 1;
-        }
-        return 0;
+        return this.inviteAndApplyService.inviteAccept(projMemVO);
     }
 
     @ResponseBody

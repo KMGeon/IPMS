@@ -40,18 +40,19 @@ public class ProjMemManagementController {
         return "proj/memmanagement/projMemberManagement";
     }
 
-    @RequestMapping(value = "/dropMemListProcessing", method = RequestMethod.POST)
+    @RequestMapping(value = "/{projId}/dropMemListProcessing", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public int dropMemListProcessing(MemVO memVO) {
+    public int dropMemListProcessing(@PathVariable(name = "projId")String projId,MemVO memVO) {
         return this.projMemManageMentService.dropMemListProcessing(memVO);
     }
 
     @ResponseBody
-    @PostMapping(value = "/sendInvitation")
+    @PostMapping(value = "/{projId}/sendInvitation")
     @ResponseStatus(HttpStatus.CREATED)
-    public int sendInvitation(InvitationVO invitationVO  , AlrmVO alrmVO){
+    public int sendInvitation(@PathVariable(name = "projId") String projId,InvitationVO invitationVO  , AlrmVO alrmVO){
         int division=this.projMemManageMentService.sendInvitation(invitationVO);
+        log.info("============="+division);
         if(division==1){
             this.projMemManageMentService.insertAlrm(alrmVO);
             return 1;
@@ -60,9 +61,9 @@ public class ProjMemManagementController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/extractionParticipants" , method = RequestMethod.POST)
+    @RequestMapping(value = "/{projId}/extractionParticipants" , method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public int extractionParticipants(ProjMemVO projMemVO){
+    public int extractionParticipants(@PathVariable(name = "projId") String projId,ProjMemVO projMemVO){
         return this.projMemManageMentService.extractionParticipants(projMemVO);
     }
 }

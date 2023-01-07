@@ -51,7 +51,7 @@ public class ErdController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/erdInsert")
+	@PostMapping("/{projId}/erdInsert")
 	public String erdInsertPost(@RequestBody ErdVO erdVO) {
 		log.info("erdVO: "+erdVO.toString());
 		int result = erdService.insertErd(erdVO);
@@ -74,7 +74,7 @@ public class ErdController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/erdUpdate")
+	@PostMapping("/{projId}/erdUpdate")
 	public String erdUpdate(@RequestBody ErdVO erdVO) {
 		int result = erdService.erdUpdate(erdVO);
 		String upadteResult = "";
@@ -87,7 +87,7 @@ public class ErdController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/erdDelete")
+	@PostMapping("/{projId}/erdDelete")
 	public String erdDelete(@RequestBody ErdVO erdVO) {
 		int result = erdService.erdDelete(erdVO);
 		String upadteResult = "";
