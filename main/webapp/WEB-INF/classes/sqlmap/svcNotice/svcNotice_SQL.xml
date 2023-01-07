@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.admin.adminServiceCenter.adminNoticeInsert.mapper.SvcNoticeInsertMapper">
+	<insert id="insertSiteNotice" parameterType="com.ipms.main.serviceCenter.svcNotice.vo.SvcNoticeVO">
+		<selectKey order="BEFORE" keyProperty="siteNtNum" resultType="int">
+			SELECT nvl(max(site_nt_num),0)+1 from site_nt
+		</selectKey>
+		INSERT INTO site_nt (
+		    site_nt_num,
+		    site_nt_title,
+		    site_nt_cts,
+		    site_nt_write_date,
+		    nt_ctg_code
+		) VALUES (
+		    #{siteNtNum},
+		    #{siteNtTitle},
+		    #{siteNtCts},
+		    SYSDATE,
+		    #{ntCtgCode}
+		)
+	
+	</insert>
+
+</mapper>

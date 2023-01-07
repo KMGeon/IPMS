@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace : xml파일은 여러개일 수 있음.
+이를 구별하기 위한 식별 용도로 사용 -->
+<mapper namespace="com.ipms.main.serviceCenter.svcQaA.mapper.SvcQaAMapper">
+
+	<select id="svcQaASelect" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
+		<![CDATA[
+		SELECT Q.QNA_NUM
+			    ,  M.MEM_NAME AS WRITER
+			    , Q.QNA_TITLE
+			    , Q.QNA_WRITE_DATE
+			    , Q.QNA_STATUS
+            FROM ( SELECT ROWNUM RN
+                    , A.QNA_NUM
+					, A.WRITER
+					, A.QNA_TITLE
+					, A.QNA_WRITE_DATE
+					, A.QNA_STATUS
+                FROM( SELECT QNA_NUM
+							, WRITER
+							, QNA_TITLE
+							, QNA_WRITE_DATE
+							, QNA_STATUS
+                        FROM QNA
+                        WHERE DELETE_YN = 'n'
+                        ORDER BY QNA_WRITE_DATE DESC ) A ) Q, MEM M
+			WHERE Q.WRITER = M.MEM_CODE
+            AND RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+        ]]>
+	</select>
+	
+	<select id="total" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT COUNT(QNA_NUM)
+		FROM QNA
+	</select>
+
+	<select id="svcQaADetail" parameterType="string" resultType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
+		SELECT Q.QNA_NUM
+			,  M.MEM_NAME AS WRITER
+			, Q.QNA_TITLE
+			, Q.QNA_CTS
+			, Q.QNA_WRITE_DATE
+		 	, Q.QNA_STATUS
+		 	, Q.WRITER as MEMCODE
+		FROM QNA Q, MEM M
+		WHERE Q.WRITER = M.MEM_CODE
+		AND QNA_NUM = #{qnaNum}
+	</select>
+	
+	<select id="svcQaACommentSelect" parameterType="string" resultType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaACommentVO">
+		SELECT QNA_NUM
+		    , QNA_ANSW_CTS
+		    , QNA_ANSW_WRITE_DATE
+		FROM QNA_ANSW
+		WHERE QNA_NUM = #{qnaNum}
+	</select>
+	
+	<insert id="svcQaAInsert" parameterType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
+		INSERT INTO QNA(QNA_NUM
+			, WRITER
+			, QNA_TITLE
+			, QNA_CTS
+			, QNA_WRITE_DATE) 
+		VALUES(#{qnaNum}
+			, #{writer}
+			, #{qnaTitle}
+			, #{qnaCts}
+			, SYSDATE)
+	</insert>
+	
+	<update id="svcQaAUpdate" parameterType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
+		UPDATE QNA 
+		SET	QNA_TITLE = #{qnaTitle}
+			, QNA_CTS = #{qnaCts}
+		WHERE QNA_NUM = #{qnaNum}
+	</update>
+	
+	<update id="svcQaADelete" parameterType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
+		UPDATE QNA 
+		SET	DELETE_YN = 'y'
+		WHERE QNA_NUM = #{qnaNum}
+	</update>
+	
+</mapper>
+

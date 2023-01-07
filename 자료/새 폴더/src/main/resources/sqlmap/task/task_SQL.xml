@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.task.mapper.TaskMapper">
+	<select id="userNameSelect" parameterType="com.ipms.main.login.vo.MemVO" resultType="string">
+	SELECT MEM_CODE
+	FROM MEM
+	WHERE MEM_EMAIL = #{memEmail}
+	</select>
+	
+	
+	<select id="HighWorkList" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskVO">
+	 <!-- 리더일경우 해당 프로젝트 모든 일감 셀렉트 --> 
+		SELECT
+		    TASK_ID, 
+		    PROJ_ID, 
+		    MEM_CODE, 
+		    TASK_TITLE, 
+		    TASK_CTS, 
+		    TASK_STRT_DATE, 
+		    TASK_END_DATE, 
+		    TASK_STUS_CODE, 
+		    TASK_PGRES, 
+		    HIGH_TASK_ID, 
+		    LOW_RGST_SEQ,
+			APROV_WHTH, 
+			TASK_REPRE, 
+			DELETE_YN, 
+			REFER_CTS,
+			WORK_UPDATE_NUM
+		FROM TASK
+		WHERE PROJ_ID = #{projId}
+		AND DELETE_YN = 'n'
+		 START WITH HIGH_TASK_ID IS NULL
+		CONNECT BY PRIOR TASK_ID = HIGH_TASK_ID
+		ORDER SIBLINGS BY TASK_ID ASC
+    </select>
+    
+	<select id="memberTaskList" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskVO">
+	 <!-- 팀원일 경우 본인  멤코드 , 프로젝트id에 맞는 일감 셀렉트 --> 
+		SELECT
+		    TASK_ID, 
+		    PROJ_ID, 
+		    MEM_CODE, 
+		    TASK_TITLE, 
+		    TASK_CTS, 
+		    TASK_STRT_DATE, 
+		    TASK_END_DATE, 
+		    TASK_STUS_CODE, 
+		    TASK_PGRES, 
+		    HIGH_TASK_ID, 
+		    LOW_RGST_SEQ,
+			APROV_WHTH, 
+			TASK_REPRE, 
+			DELETE_YN, 
+			REFER_CTS,
+			WORK_UPDATE_NUM
+		FROM TASK
+		WHERE PROJ_ID = #{projId} 
+		AND MEM_CODE = #{memCode} 
+		AND DELETE_YN = 'n'
+		 START WITH HIGH_TASK_ID IS NULL
+		CONNECT BY PRIOR TASK_ID = HIGH_TASK_ID
+		ORDER SIBLINGS BY TASK_ID ASC
+    </select>
+    	
+    <select id="nullHighTaskId" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskVO" >
+    	SELECT 
+    		 TASK_ID, 
+		    PROJ_ID, 
+		    MEM_CODE, 
+		    TASK_TITLE, 
+		    TASK_CTS, 
+		    TASK_STRT_DATE, 
+		    TASK_END_DATE, 
+		    TASK_STUS_CODE, 
+		    TASK_PGRES, 
+		    HIGH_TASK_ID, 
+		    LOW_RGST_SEQ,
+			APROV_WHTH, 
+			TASK_REPRE, 
+			DELETE_YN, 
+			REFER_CTS,
+			WORK_UPDATE_NUM
+		FROM 
+			TASK
+        WHERE 
+        	HIGH_TASK_ID IS NULL
+        AND
+        	PROJ_ID = #{projId}
+        AND 
+        	DELETE_YN = 'n'
+    </select>
+    
+    
+	<select id="HighNum" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskVO" >
+	
+		 SELECT  NVL(MAX(LOW_RGST_SEQ),1) AS LOW_RGST_SEQ ,MAX(TASK_ID+1) AS TASK_ID
+	    FROM    TASK
+	</select>
+	
+	<insert id="HighWorkInsert" parameterType="com.ipms.proj.task.vo.TaskVO">
+		 <!-- 상위일감 추가 -->
+		INSERT INTO TASK(
+			      TASK_ID
+			    , PROJ_ID
+			    , MEM_CODE
+			    , TASK_TITLE
+			    , TASK_CTS
+			    , TASK_STRT_DATE
+			    , TASK_END_DATE
+			    , TASK_STUS_CODE
+			    , TASK_PGRES
+			    , HIGH_TASK_ID
+			    , LOW_RGST_SEQ
+			    , APROV_WHTH
+			    , TASK_REPRE
+			    , DELETE_YN
+		    	)
+	    VALUES(
+		    	 #{taskId}
+			    ,#{projId}
+			    ,#{memCode}
+			    ,#{taskTitle}
+			    ,#{taskCts}
+			    ,#{taskStrtDate}
+			    ,#{taskEndDate}
+			    ,#{taskStusCode}
+			    ,0
+			    ,null
+			    ,#{lowRgstSeq}
+			    ,'y'
+			    ,'이문주'
+			    ,'n')
+	
+	
+	</insert>
+	
+	<insert id="lowWorkInsert" parameterType="com.ipms.proj.task.vo.TaskVO">
+		 <!-- 하위 일감 인설트 --> 
+		INSERT INTO TASK(
+			      TASK_ID
+			    , PROJ_ID
+			    , MEM_CODE
+			    , TASK_TITLE
+			    , TASK_CTS
+			    , TASK_STRT_DATE
+			    , TASK_END_DATE
+			    , TASK_STUS_CODE
+			    , TASK_PGRES
+			    , HIGH_TASK_ID
+			    , LOW_RGST_SEQ
+			    , APROV_WHTH
+			    , TASK_REPRE
+			    , DELETE_YN
+		    	)
+	    VALUES(
+		    	 #{taskId}
+			    ,#{projId}
+			    ,#{memCode}
+			    ,#{taskTitle}
+			    ,#{taskCts}
+			    ,#{taskStrtDate}
+			    ,#{taskEndDate}
+			    ,#{taskStusCode}
+			    ,0
+			    ,#{highTaskId}
+			    ,#{lowRgstSeq}
+			    ,'n'
+			    ,'이문주'
+			    ,'n')
+	</insert>
+	
+	<select id="HighWorkNum" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT NVL(MAX(TASK_ID+1),1) AS TASK_ID
+		FROM TASK
+	</select>
+	
+	<!-- 일감 디테일 데이터 가져오기 -->
+	<select id="WorkDetail" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskVO">
+		
+		SELECT 
+			  TASK_ID
+			, PROJ_ID
+			, (
+				SELECT M.MEM_NAME
+				FROM MEM M , TASK T
+				WHERE T.MEM_CODE = M.MEM_CODE
+				AND T.TASK_ID = #{taskId}
+			) as memCode
+			, HIGH_TASK_ID
+			, TASK_TITLE
+			, TASK_CTS
+			, TASK_STRT_DATE
+			, TASK_END_DATE
+			, TASK_STUS_CODE
+			, TASK_PGRES
+			, LOW_RGST_SEQ
+			, APROV_WHTH
+			, TASK_REPRE
+			, DELETE_YN
+			, REFER_CTS
+			, WORK_UPDATE_NUM
+		FROM TASK
+		WHERE TASK_ID = #{taskId}
+	
+	</select>
+	
+	<update id="taskApproval" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE TASK
+        SET APROV_WHTH = 'y' , REFER_CTS = null , WORK_UPDATE_NUM = 0
+        WHERE TASK_ID = #{taskId}
+	</update>
+	
+	<update id="referCts" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE TASK
+        SET REFER_CTS = #{referCts}
+        WHERE TASK_ID = #{taskId}
+	</update>
+	
+	<update id="taskCtsUpdate" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE 
+			TASK
+		SET 
+			TASK_CTS = #{taskCts} 
+		  , WORK_UPDATE_NUM = WORK_UPDATE_NUM + 1
+		  , TASK_TITLE = #{taskTitle}
+		  , TASK_STRT_DATE = #{taskStrtDate}
+		  , TASK_END_DATE = #{taskEndDate}
+		  , TASK_STUS_CODE = #{taskStusCode}
+		WHERE TASK_ID = #{taskId} 
+	
+	</update>
+	
+	<update id="taskPgresUpdate" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE TASK
+		SET TASK_PGRES = #{taskPgres}
+		WHERE TASK_ID = #{taskId}
+	</update>
+	
+	<update id="highTaskCtsUpdate" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE 
+			TASK
+		SET 
+			TASK_TITLE =#{taskTitle}
+		WHERE 
+			TASK_ID = #{taskId}
+		
+	
+	</update>
+	
+	
+	<select id="authCheck" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="string">
+		 SELECT  MEM_AUTH
+        FROM MEMBER_AUTH
+        WHERE MEM_CODE = #{memCode}
+        AND PROJ_ID = #{projId}
+	</select>
+	
+	
+	<update id="hiworkDelBefor" parameterType="com.ipms.proj.task.vo.TaskVO" >
+
+		UPDATE TASK SET
+            DELETE_YN = 'y'
+		  WHERE TASK_ID IN(
+	  SELECT 
+        TASK_ID
+	  FROM (
+	    SELECT
+	      TASK_ID,
+	      HIGH_TASK_ID
+          ,PROJ_ID
+          ,MEM_CODE
+	      ,LPAD(' ', LEVEL, ' ')||TASK_TITLE AS ROOTNAME 
+	      ,CONNECT_BY_ROOT  HIGH_TASK_ID AS ROOT_NAME
+	    FROM
+	      TASK  
+	   WHERE (TASK_ID =#{taskId} OR HIGH_TASK_ID =#{highTaskId})
+<!--         AND MEM_CODE = #{memCode} -->
+        AND PROJ_ID = #{projId} 
+        
+       START WITH
+	      HIGH_TASK_ID IS NULL
+       CONNECT BY PRIOR
+	      TASK_ID = HIGH_TASK_ID
+      ) 
+    )
+	
+	</update>
+	
+	<update id="lowWorkDel" parameterType="com.ipms.proj.task.vo.TaskVO">
+		UPDATE TASK
+		SET DELETE_YN = 'y'
+		WHERE TASK_ID = #{taskId}
+	</update>
+	
+	<select id="dashTaskCmt" parameterType="com.ipms.proj.task.vo.TaskVO" resultType="com.ipms.proj.task.vo.TaskCmtVO">
+		 SELECT 
+             LEVEL LEV
+	       , TASK_CMT_ID
+           , TASK_ID
+           , HIGH_CMT_ID
+           , TASK_CMT_CTS
+           , TASK_CMT_WRITE_DATE
+           , LOW_RGST_SEQ
+           , DELETE_YN
+           , WRITER
+	    FROM TASK_CMT I
+        WHERE I.TASK_ID = #{taskId}
+	    AND I.DELETE_YN = 'n'
+	    START WITH I.HIGH_CMT_ID IS NULL
+	    CONNECT BY PRIOR  I.TASK_CMT_ID = I.HIGH_CMT_ID
+        ORDER SIBLINGS BY I.TASK_CMT_WRITE_DATE
+	</select>
+	
+	<insert id="dashHighCmtInsert" parameterType="com.ipms.proj.task.vo.TaskCmtVO" >
+		<selectKey keyProperty="taskCmtId" order="BEFORE" resultType="com.ipms.proj.task.vo.TaskCmtVO">
+			SELECT  
+				NVL(MAX(TO_NUMBER(TASK_CMT_ID))+1,1) as TASK_CMT_ID
+        	FROM TASK_CMT
+		</selectKey>
+		INSERT INTO TASK_CMT(
+				TASK_CMT_ID
+				, TASK_ID
+				, HIGH_CMT_ID
+				, TASK_CMT_CTS
+				, TASK_CMT_WRITE_DATE
+				, LOW_RGST_SEQ
+				, DELETE_YN
+				, WRITER
+			)
+			VALUES(
+				#{taskCmtId}
+				,#{taskId}
+				,null
+				,#{taskCmtCts}
+				,sysdate
+				, (SELECT NVL(MAX(LOW_RGST_SEQ)+1,1)
+			      FROM TASK_CMT
+			      WHERE TASK_CMT_ID = #{taskCmtId})
+				,'n'
+				,#{writer}
+			)
+	</insert>
+	
+	<insert id="dashlowCmtInsert" parameterType="com.ipms.proj.taskcomment.vo.TaskCommentVO">
+		<selectKey keyProperty="taskCmtId" order="BEFORE" resultType="com.ipms.proj.task.vo.TaskCmtVO">
+			SELECT  
+				NVL(MAX(TO_NUMBER(TASK_CMT_ID))+1,1) as TASK_CMT_ID
+        	FROM TASK_CMT
+		</selectKey>
+			INSERT INTO TASK_CMT(
+				TASK_CMT_ID
+				, TASK_ID
+				, HIGH_CMT_ID
+				, TASK_CMT_CTS
+				, TASK_CMT_WRITE_DATE
+				, LOW_RGST_SEQ
+				, DELETE_YN
+				, WRITER
+			)
+			VALUES(
+				#{taskCmtId}
+				,#{taskId}
+				,#{highCmtId}
+				,#{taskCmtCts}
+				,sysdate
+				, ( SELECT NVL(MAX(LOW_RGST_SEQ)+1,1)
+			      FROM TASK_CMT
+			      WHERE HIGH_CMT_ID = #{highCmtId} )
+				,'n'
+				,#{writer}
+			)
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

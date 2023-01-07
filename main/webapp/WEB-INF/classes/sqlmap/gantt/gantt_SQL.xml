@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.gantt.mapper.GanttMapper">
+	
+	<select id="ganttSelect" parameterType="string" resultType="com.ipms.proj.gantt.vo.GanttVO">
+		SELECT TASK_ID
+			, PROJ_ID
+			, MEM_CODE
+			, HIGH_TASK_ID
+			, TASK_TITLE
+			, TASK_CTS
+			, TASK_STRT_DATE
+			, TASK_END_DATE
+			, TASK_STUS_CODE
+			, TASK_PGRES
+			, LOW_RGST_SEQ
+			, APROV_WHTH
+			, TASK_REPRE
+			, DELETE_YN
+			, REFER_CTS
+			, WORK_UPDATE_NUM
+		FROM TASK
+		WHERE PROJ_ID = #{projId}
+		AND DELETE_YN = 'n'
+		ORDER BY TASK_ID ASC
+	</select>
+
+</mapper>

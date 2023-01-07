@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.wiki.mapper.WikiMapper">
+
+	<resultMap type="com.ipms.proj.wiki.vo.WikiVO" id="wikiVO">
+	
+		<result property="projId" column="PROJ_ID" />
+		<result property="wikiId" column="WIKI_ID" />
+		<result property="memCode" column="MEM_NUM" />
+		<result property="wikiTitle" column="WIKI_TITLE" />
+		<result property="wikiCts" column="WIKI_CTS" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="highWikiId" column="HIGH_WIKI_ID" />
+		<result property="lowRgstSeq" column="LOW_RGST_SEQ" />
+		<result property="wikiWriteDate" column="WIKI_WRITE_DATE" />
+		<result property="deleteWhth" column="DELETE_WHTH" />
+
+	</resultMap>
+	
+	<insert id="insertWiki" parameterType="com.ipms.proj.wiki.vo.WikiVO">
+	
+		<selectKey keyProperty="wikiId" order="BEFORE" resultType="string"> 
+		SELECT NVL(MAX(WIKI_ID+1),1)
+		FROM wiki
+		</selectKey>
+		
+		INSERT INTO wiki (
+		   proj_id,
+		    wiki_id,
+		   mem_code,
+		    wiki_title,
+		    wiki_cts,
+		    <if test="highWikiId != null">
+		    high_wiki_id,
+		    </if>
+		   
+		    wiki_write_date
+		
+		) VALUES (
+		  #{projId},
+		    #{wikiId},
+		    #{memCode},
+		    #{wikiTitle},
+		    #{wikiCts},
+		    <if test="highWikiId != null">
+		    #{highWikiId},
+		    </if>
+		    sysdate
+		)
+	</insert>
+	
+	<select id="selectHighWikiId" resultMap="wikiVO" parameterType="string">
+		select 
+			WIKI_ID,
+			WIKI_TITLE
+		from 
+			wiki 
+		where 
+			proj_id = #{projId}
+		and
+			DELETE_YN = 'n'
+	</select>
+	
+	<select id="selectWiki" resultMap="wikiVO" parameterType="com.ipms.proj.wiki.vo.WikiVO">
+	
+		<!-- chr(38)||'nbsp;' -->
+		SELECT replace(LPAD(' ', 4*(LEVEL-1)),' ',chr(38)||'nbsp;')||replace(LPAD(' ', 1*(LEVEL-1)),' ','-') || WIKI_TITLE wiki_title,
+		LPAD('-', 2*(LEVEL-1)) levell,
+        WIKI_ID, 
+        HIGH_WIKI_ID
+		FROM wiki
+		WHERE DELETE_YN = 'n'
+		
+		AND PROJ_ID = #{projId}
+		
+		<if test="wikiId == null">
+		START WITH HIGH_WIKI_ID IS NULL
+		</if>
+		<if test="wikiId != null">
+		START WITH WIKI_ID = #{wikiId}
+		</if> 
+		CONNECT BY PRIOR WIKI_ID = HIGH_WIKI_ID
+		
+		order siblings by WIKI_ID desc
+		
+	</select>
+	
+	<select id="selectWikiDetail" parameterType="string" resultMap="wikiVO">
+		SELECT
+		    proj_id,
+		    wiki_id,
+		    mem_code,
+		    wiki_title,
+		    wiki_cts,
+		    high_wiki_id,
+		    
+		    wiki_write_date,
+		    DELETE_YN
+		FROM
+		    wiki 
+		where
+			wiki_id = #{wikiId}
+	</select>
+	
+	<update id="updateWiki" parameterType="com.ipms.proj.wiki.vo.WikiVO">
+		UPDATE wiki
+		SET
+		   wiki_title = #{wikiTitle},
+		   wiki_cts   =#{wikiCts}
+
+		WHERE
+			wiki_id = #{wikiId}
+
+	</update>
+	
+	<update id="deleteWiki" parameterType="string">
+	
+		update wiki set
+            DELETE_YN = 'y'
+		  WHERE WIKI_ID IN(
+	  SELECT
+	    WIKI_ID
+	  FROM (
+	    SELECT
+	      WIKI_ID,
+	      HIGH_WIKI_ID,
+	      LPAD(' ', LEVEL, ' ')||WIKI_TITLE,
+	      CONNECT_BY_ROOT WIKI_ID AS rid
+	    FROM
+	      WIKI
+	    START WITH
+	      wiki_Id = #{wikiId}
+	    CONNECT BY
+	      PRIOR WIKI_ID = HIGH_WIKI_ID
+	  ) WHERE
+	    rid = #{wikiId} 
+		)
+	</update>
+</mapper>

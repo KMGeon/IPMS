@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace : xml파일은 여러개일 수 있음.
+이를 구별하기 위한 식별 용도로 사용 -->
+<mapper namespace="com.ipms.main.login.mapper.MemMapper">
+    <!-- 로그인-->
+    <select id="loginMem" parameterType="com.ipms.main.login.vo.MemVO" resultType="int">
+        SELECT count(*)
+        FROM mem
+        WHERE mem_email = #{memEmail}
+          AND mem_passwd = #{memPasswd}
+    </select>
+
+    <!--이메일 중복체크 -->
+    <select id="registerCheck" resultType="int" parameterType="com.ipms.main.login.vo.MemVO">
+        SELECT count(*)
+        FROM mem
+        WHERE mem_email = #{memEmail}
+    </select>
+
+    <!--회원가입-->
+    <insert id="registerMember" parameterType="com.ipms.main.login.vo.MemVO">
+        <selectKey order="BEFORE" keyProperty="memCode" resultType="String">
+            SELECT NVL(SUBSTR(MAX(MEM_CODE),1,1)|| TRIM(TO_CHAR(SUBSTR(MAX(MEM_CODE),2) + 1,'000')),'M001')
+            FROM MEM
+        </selectKey>
+        INSERT INTO mem (
+        MEM_CODE,
+        MEM_EMAIL,
+        mem_passwd,
+        mem_name,
+        mem_phone_number,
+        mem_sgnup_date,
+        mem_img_route,
+        mem_whdrl_yn
+        ) VALUES (
+        #{memCode}
+        ,#{memEmail}
+        ,#{memPasswd}
+        ,#{memName}
+        ,#{memPhoneNumber}
+        ,sysdate
+        ,'/'
+        ,'0'
+        )
+    </insert>
+
+    <resultMap type="com.ipms.main.login.vo.MemVO" id="memberMap">
+        <result property="memCode" column="MEM_CODE"/>
+        <result property="memEmail" column="MEM_EMAIL"/>
+        <result property="memPasswd" column="MEM_PASSWD"/>
+        <result property="memName" column="MEM_NAME"/>
+        <result property="memPhoneNumber" column="MEM_PHONE_NUMBER"/>
+        <result property="memWhdrlWhth" column="MEM_WHDRL_YN"/>
+        <result property="memImgRoute" column="mem_img_route"/>
+        <result property="memSgnupDate" column="MEM_SGNUP_DATE"/>
+        <collection property="memAuthList" resultMap="authMap">
+        </collection>
+
+    </resultMap>
+    <resultMap type="com.ipms.main.login.vo.MemberAuth" id="authMap">
+        <result property="memCode" column="MEM_CODE"/>
+        <result property="projId" column="PROJ_ID"/>
+        <result property="memAuth" column="MEM_AUTH"/>
+    </resultMap>
+
+
+    <!-- 회원로그인확인 -->
+    <select id="read" parameterType="string" resultMap="memberMap">
+        SELECT A.mem_code
+             , A.mem_email
+             , A.mem_passwd
+             , A.mem_name
+             , A.mem_phone_number
+             , A.mem_sgnup_date
+             , A.mem_img_route
+             , A.mem_whdrl_yn
+             , B.mem_auth
+        FROM mem A
+                 LEFT OUTER JOIN MEMBER_AUTH B
+                                 ON (A.mem_code = B.mem_code)
+        WHERE A.mem_code = (select mem_code from mem where mem_email = #{memEmail})
+    </select>
+
+    <!--비밀번호 업데이트 -->
+    <update id="UpdatePwd" parameterType="com.ipms.main.login.vo.MemVO">
+        UPDATE mem
+        SET mem_passwd=#{memPasswd}
+        WHERE mem_email = #{memEmail}
+    </update>
+
+    <!--권한 추가 -->
+    <insert id="authInsert" parameterType="com.ipms.main.login.vo.MemberAuth">
+        INSERT INTO member_auth(mem_code, proj_id, mem_auth)
+        values (#{memCode}, 'P001', #{memAuth})
+    </insert>
+
+
+    <!--공통코드  뽑기 -->
+    <select id="techStack" resultType="com.ipms.main.register.vo.CommonCodeVO">
+        select common_code_value
+        from common_code
+    </select>
+
+    <insert id="insertTechStack" parameterType="com.ipms.main.register.vo.TechStackVO">
+        INSERT INTO tech_stack (mem_code,
+                                tech_stack_code)
+        VALUES (#{memCode},
+                #{techStackCode})
+    </insert>
+
+    <select id="allGetMemCode" resultType="com.ipms.main.login.vo.MemVO">
+        select mem_code from mem
+    </select>
+
+
+
+</mapper>
+

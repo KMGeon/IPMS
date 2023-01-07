@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.mypage.portfolio.mapper.PortfolioMapper">
+	
+	<select id="portfolioTechStackSelect" parameterType="string" resultType="com.ipms.main.register.vo.TechStackVO">
+		SELECT MEM_CODE
+			, TECH_STACK_CODE
+		FROM TECH_STACK
+		WHERE MEM_CODE = #{memCode}
+	</select>
+	
+	<select id="completeProjSelect" parameterType="string" resultType="com.ipms.main.mypage.portfolio.vo.PortfolioVO">
+	<![CDATA[
+		SELECT P.PROJ_ID
+		    , P.MEM_CODE
+		    , P.PROJ_NAME
+		    , P.PROJ_STRT_DATE
+		    , P.PROJ_END_DATE
+		    , P.PROJ_SMRY
+		    , P.PROJ_OPN_WHTH
+		    , P.PROJ_CREATN_DATE
+		    , P.PROJ_IMG_ROUTE
+		    , P.DELETE_WHTH
+		    , M.MEM_AUTH
+		FROM PROJ P, MEMBER_AUTH M
+		WHERE P.PROJ_ID = M.PROJ_ID 
+		AND P.MEM_CODE = #{memCode}
+		AND P.PROJ_END_DATE < SYSDATE
+		AND M.MEM_AUTH != 'ROLE_ADMIN'
+		AND M.MEM_AUTH != 'ROLE_MEMBER'
+		ORDER BY P.PROJ_END_DATE DESC
+	 ]]>
+	</select>
+	
+	<select id="proceedingProjSelect" parameterType="string" resultType="com.ipms.main.mypage.portfolio.vo.PortfolioVO">
+	<![CDATA[
+		SELECT P.PROJ_ID
+		    , P.MEM_CODE
+		    , P.PROJ_NAME
+		    , P.PROJ_STRT_DATE
+		    , P.PROJ_END_DATE
+		    , P.PROJ_SMRY
+		    , P.PROJ_OPN_WHTH
+		    , P.PROJ_CREATN_DATE
+		    , P.PROJ_IMG_ROUTE
+		    , P.DELETE_WHTH
+		    , M.MEM_AUTH
+		FROM PROJ P, MEMBER_AUTH M
+		WHERE P.PROJ_ID = M.PROJ_ID 
+		AND P.MEM_CODE = #{memCode}
+		AND P.PROJ_END_DATE > SYSDATE
+		AND M.MEM_AUTH != 'ROLE_ADMIN'
+		AND M.MEM_AUTH != 'ROLE_MEMBER'
+		ORDER BY P.PROJ_END_DATE DESC
+	]]>
+	</select>
+	
+</mapper>

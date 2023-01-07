@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.admin.adminServiceCenter.adminSvcFaq.mapper.AdminSvcFaqMapper">
+	<select id="selectFaq" resultType="com.ipms.main.serviceCenter.svcNotice.vo.SvcNoticeVO" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT SITE_NT_NUM, SITE_NT_TITLE, SITE_NT_WRITE_DATE
+	FROM (
+	    SELECT ROWNUM RN, A.SITE_NT_NUM, A.SITE_NT_TITLE, A.SITE_NT_WRITE_DATE
+	    FROM(
+        SELECT SITE_NT_NUM, SITE_NT_TITLE, SITE_NT_WRITE_DATE
+        FROM SITE_NT
+        WHERE NT_CTG_CODE = 'faq'
+        <if test="keyword != null and keyword != ''">
+        <if test="category.equals('title')">
+            AND SITE_NT_TITLE LIKE #{keyword}
+        </if>
+        <if test="category.equals('cts')">
+            AND SITE_NT_CTS LIKE #{keyword}
+        </if>
+        </if>
+        <if test="searchDate != null">
+        	AND SITE_NT_WRITE_DATE = #{searchDate}
+        </if>
+      	  	AND DELETE_YN = 'n'
+       		ORDER BY SITE_NT_WRITE_DATE DESC
+  		  ) A
+		)
+		WHERE RN <![CDATA[>]]> ( #{pageNum} - 1 ) * #{amount} AND RN <![CDATA[<=]]> #{pageNum} * #{amount}
+    
+	</select>
+	
+	<select id="total" resultType="int" parameterType="com.ipms.main.serviceCenter.svcNotice.vo.SvcNoticeVO">
+		SELECT 
+			COUNT(SITE_NT_NUM)
+		FROM 
+			SITE_NT
+		WHERE
+			NT_CTG_CODE = 'faq'
+		AND
+			DELETE_YN = 'n'
+		<if test="keyword != null and keyword != ''">
+        <if test="category.equals('title')">
+            AND SITE_NT_TITLE LIKE #{keyword}
+        </if>
+        <if test="category.equals('cts')">
+            AND SITE_NT_CTS LIKE #{keyword}
+        </if>
+        </if>
+         <if test="searchDate != null">
+        	AND SITE_NT_WRITE_DATE = #{searchDate}
+        </if>
+	</select>
+</mapper>

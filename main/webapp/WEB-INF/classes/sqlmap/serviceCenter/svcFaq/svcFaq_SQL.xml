@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.serviceCenter.svcFaq.mapper.SvcFaqMapper">
+
+	<resultMap type="com.ipms.main.serviceCenter.svcNotice.vo.SvcNoticeVO" id="svcNoticeVO">
+		<result property="siteNtNum" column="SITE_NT_NUM" />
+		<result property="siteNtTitle" column="SITE_NT_TITLE" />
+		<result property="siteNtCts" column="SITE_NT_CTS" />
+		<result property="siteNtWriteDate" column="SITE_NT_WRITE_DATE" />
+		<result property="ntCtgCode" column="NT_CTG_CODE" />
+		<result property="deleteYn" column="DELETE_YN" />
+	</resultMap>
+	
+
+	<select id="selectFaq" resultMap="svcNoticeVO">
+	SELECT
+	    site_nt_num,
+	    site_nt_title,
+	    site_nt_cts,
+	    site_nt_write_date,
+	    nt_ctg_code,
+	    delete_yn
+	FROM
+	    site_nt
+	WHERE
+	    DELETE_YN = 'n'
+	AND 
+		nt_ctg_code ='faq'
+	</select>
+
+</mapper>

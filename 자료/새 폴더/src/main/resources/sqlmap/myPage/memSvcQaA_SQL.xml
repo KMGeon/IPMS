@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.mypage.memSvcQaA.mapper.MemSvcQaAMapper">
+	
+	<select id="memSvcQaASelect" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.main.mypage.memSvcQaA.vo.MemSvcQaAVO">
+		<![CDATA[
+		SELECT Q.QNA_NUM
+			    ,  M.MEM_NAME AS WRITER
+			    , Q.QNA_TITLE
+			    , Q.QNA_WRITE_DATE
+			    , Q.QNA_STATUS
+            FROM ( SELECT ROWNUM RN
+                    , A.QNA_NUM
+					, A.WRITER
+					, A.QNA_TITLE
+					, A.QNA_WRITE_DATE
+					, A.QNA_STATUS
+                FROM( SELECT QNA_NUM
+							, WRITER
+							, QNA_TITLE
+							, QNA_WRITE_DATE
+							, QNA_STATUS
+                        FROM QNA
+                        WHERE WRITER = #{memCode}
+                        AND DELETE_YN = 'n'
+                        ORDER BY QNA_WRITE_DATE DESC ) A ) Q, MEM M
+			WHERE Q.WRITER = M.MEM_CODE
+            AND RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+        ]]>
+	
+	</select>
+	
+	<select id="memTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT COUNT(QNA_NUM)
+		FROM QNA
+		WHERE WRITER = #{memCode}
+	</select>
+	
+</mapper>

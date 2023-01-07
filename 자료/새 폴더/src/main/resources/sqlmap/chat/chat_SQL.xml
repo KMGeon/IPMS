@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.chat.mapper.ChatMapper">
+
+	<resultMap type="com.ipms.proj.chat.vo.ChatVO" id="chatVO">
+		<result property="chatNum" column="CHAT_NUM" />
+		<result property="chatRoomId" column="CHAT_ROOM_ID" />
+		<result property="chatCts" column="CHAT_CTS" />
+		<result property="chatDate" column="CHAT_DATE" />
+		<result property="writer" column="WRITER" />
+		<result property="deleteYn" column="DELETE_YN" />
+	</resultMap>
+	
+	<insert id="createChatRoom" parameterType="com.ipms.main.newProject.vo.ProjVO">
+		INSERT INTO chat_room (
+		    chat_room_id,
+		    mem_code,
+		    proj_id
+		) VALUES (
+		    #{projId},
+		    #{memCode},
+		    #{projId}
+		)
+	
+	</insert>
+
+	<insert id="insertChat" parameterType="com.ipms.proj.chat.vo.ChatVO">
+		<selectKey keyProperty="chatNum" order="BEFORE" resultType="int">
+			SELECT NVL(MAX(CHAT_NUM),0)+1 FROM CHAT 
+		</selectKey>
+	
+		INSERT INTO CHAT(		
+			CHAT_NUM,
+			CHAT_ROOM_ID,
+			CHAT_CTS,
+			CHAT_DATE,
+			ITGRN_ATTACH_FILE_NUM,
+			WRITER
+			)
+			VALUES(
+			#{chatNum},
+			#{chatRoomId},
+			#{chatCts},
+			SYSDATE,
+			#{itgrnAttachFileNum},
+			#{writer}
+			)
+			
+	</insert>
+		
+		
+	<select id="selectChat" parameterType="com.ipms.proj.chat.vo.ChatVO" resultMap="chatVO">
+		SELECT 
+	        C.CHAT_NUM,
+	        C.CHAT_CTS,
+	        C.CHAT_DATE,
+	        C.ITGRN_ATTACH_FILE_NUM,
+	        C.WRITER,
+	        (Select mem_Name from mem M where C.writer = m.MEM_CODE) as WRITER_NAME,
+	        I.SAVE_FILE_NAME,
+	        I.FILE_NAME
+		FROM
+			CHAT C, INTG_ATTACH_FILE I
+		WHERE 
+            C.ITGRN_ATTACH_FILE_NUM = i.INTG_ATTACH_FILE_NUM(+)
+        AND
+			C.CHAT_ROOM_ID = #{chatRoomId}
+		ORDER BY 
+			CHAT_DATE ASC
+	</select>
+	
+	
+	<insert id="insertAttach" parameterType="com.ipms.commons.ftp.vo.IntgAttachFileVO">
+		
+		INSERT INTO intg_attach_file (
+		    intg_attach_file_num,
+		    attach_file_seq,
+		    file_path,
+		    file_name,
+		    save_file_name,
+		    file_size,
+		    rgst_date,
+		    rgst_id,
+		    file_type
+		) VALUES (
+		    #{intgAttachFileNum},
+		    #{attachFileSeq},
+		    #{filePath},
+		    #{fileName},
+		    #{saveFileName},
+		    #{fileSize},
+		    SYSDATE,
+		    #{rgstId},
+		    #{fileType}	    
+		)
+	
+	</insert>	
+	
+	<select id="selectChatNum" resultType="int">
+		SELECT 
+			NVL(MAX(INTG_ATTACH_FILE_NUM),0)+1  
+		FROM 
+			INTG_ATTACH_FILE
+	</select>
+	
+	
+</mapper>

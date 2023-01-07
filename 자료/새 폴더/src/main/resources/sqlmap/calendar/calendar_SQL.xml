@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.calendar.mapper.CalendarMapper">
+
+	<select id="selectSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO" resultType="com.ipms.proj.calendar.vo.CalendarVO">
+		SELECT INDV_SCHD_NUM
+			, WRITER
+			, PROJ_ID
+			, INDV_SCHD_TITLE
+			, INDV_SCHD_CTS
+			, INDV_SCHD_STRT_DATE
+			, INDV_SCHD_END_DATE
+			, INDV_SCHD_WRITE_DATE
+			, DELETE_YN
+		FROM INDV_SCHD
+		WHERE DELETE_YN = 'n'
+		AND PROJ_ID = #{projId}
+		AND WRITER = #{writer}
+	</select>
+	
+	<!-- 내 일감 -->
+	<select id="selectT" parameterType="com.ipms.proj.calendar.vo.CalendarVO" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT TASK_ID, PROJ_ID, MEM_CODE, HIGH_TASK_ID, TASK_TITLE, TASK_CTS
+				, TASK_STRT_DATE, TASK_END_DATE, TASK_STUS_CODE, TASK_PGRES, LOW_RGST_SEQ
+				, APROV_WHTH, TASK_REPRE, DELETE_YN, REFER_CTS
+		FROM TASK
+		WHERE PROJ_ID = #{projId}
+		AND MEM_CODE = #{writer}
+		AND DELETE_YN = 'n' 
+		AND APROV_WHTH = 'y'
+		AND HIGH_TASK_ID IS NOT NULL
+		AND TASK_PGRES &lt; 100
+	</select>
+	
+	<!-- 모든 사람이 쓴 상위 일감 -->
+	<select id="selectT2" parameterType="com.ipms.proj.calendar.vo.CalendarVO" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT TASK_ID, PROJ_ID, MEM_CODE, HIGH_TASK_ID, TASK_TITLE, TASK_CTS
+				, TASK_STRT_DATE, TASK_END_DATE, TASK_STUS_CODE, TASK_PGRES, LOW_RGST_SEQ
+				, APROV_WHTH, TASK_REPRE, DELETE_YN, REFER_CTS
+		FROM TASK
+		WHERE PROJ_ID = #{projId}
+		AND HIGH_TASK_ID IS null
+		AND DELETE_YN = 'n' 
+		AND APROV_WHTH = 'y'
+		AND TASK_PGRES &lt; 100
+	</select>
+	
+	<insert id="insertSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">
+		<!-- 번호 자동 증가 처리) 데이터가 없으면 0, 있으면 최대값 +1 -->
+		<selectKey order="BEFORE" resultType="integer" keyProperty="indvSchdNum">
+			SELECT NVL(MAX(INDV_SCHD_NUM),0)+1 FROM INDV_SCHD
+		</selectKey>
+	
+		INSERT INTO INDV_SCHD(INDV_SCHD_NUM,WRITER,PROJ_ID,INDV_SCHD_TITLE,INDV_SCHD_CTS,INDV_SCHD_STRT_DATE,INDV_SCHD_END_DATE,INDV_SCHD_WRITE_DATE,DELETE_YN)
+				VALUES(#{indvSchdNum},#{writer},#{projId},#{indvSchdTitle},#{indvSchdCts},#{indvSchdStrtDate},#{indvSchdEndDate},sysdate,'n')
+	</insert>
+	
+	<update id="deleteSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">
+		UPDATE INDV_SCHD
+		SET DELETE_YN = 'y'
+		WHERE INDV_SCHD_NUM = #{indvSchdNum} 
+		AND WRITER = #{writer}
+		AND PROJ_ID = #{projId}
+	</update>
+	
+	<update id="updateSchd" parameterType="com.ipms.proj.calendar.vo.CalendarVO">
+		UPDATE INDV_SCHD
+		SET 
+			INDV_SCHD_TITLE=#{indvSchdTitle},
+			INDV_SCHD_CTS=#{indvSchdCts},
+			INDV_SCHD_STRT_DATE=#{indvSchdStrtDate},
+			INDV_SCHD_END_DATE=#{indvSchdEndDate}
+		WHERE INDV_SCHD_NUM = #{indvSchdNum} 
+		AND WRITER = #{writer}
+		AND PROJ_ID = #{projId}
+	</update>
+	
+	
+</mapper>

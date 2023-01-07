@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ipms.main.admin.projManagement.mapper.ProjManagementMapper">
+
+	<resultMap type="com.ipms.main.admin.projManagement.vo.ProjManaVO" id="adProjMap">
+		<result property="projId" column="PROJ_ID" />
+		<result property="memCode" column="MEM_CODE" />
+		<result property="projName" column="PROJ_NAME" />
+		<result property="projStrtDate" column="PROJ_STRT_DATE" />
+		<result property="projEndDate" column="PROJ_END_DATE" />
+		<result property="projSmry" column="PROJ_SMRY" jdbcType="CLOB" javaType="java.lang.String"/>
+		<result property="projOpnWhth" column="PROJ_OPN_WHTH" />
+		<result property="projCreatnDate" column="PROJ_CREATN_DATE" />
+		<result property="projImgRoute" column="PROJ_IMG_ROUTE" />
+		<result property="deleteWhth" column="DELETE_WHTH" />
+		<result property="prtptAprovCode" column="PRTPT_APROV_CODE" />
+		<result property="referCts" column="REFER_CTS" />
+		<result property="dropStatus" column="DROPSTATUS" />
+		<result property="invttnot" column="INVTTNOT" />
+	</resultMap>
+	
+
+	<select id="adminProjList" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
+		SELECT PROJ_ID
+               , MEM_CODE
+               , PROJ_NAME
+            , PROJ_STRT_DATE
+               , PROJ_END_DATE
+                , PROJ_SMRY
+                , PROJ_OPN_WHTH
+                    , PROJ_CREATN_DATE
+                    , PROJ_IMG_ROUTE
+                    , DELETE_WHTH
+            FROM ( SELECT ROWNUM RN
+                    , A.PROJ_ID
+                    , A.MEM_CODE
+                    , A.PROJ_NAME
+                    , A.PROJ_STRT_DATE
+                    , A.PROJ_END_DATE
+                    , A.PROJ_SMRY
+                    , A.PROJ_OPN_WHTH
+                    , A.PROJ_CREATN_DATE
+                    , A.PROJ_IMG_ROUTE
+                    , A.DELETE_WHTH
+                FROM( SELECT PROJ_ID
+                    , (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS MEM_CODE
+                    , PROJ_NAME
+                    , PROJ_STRT_DATE
+                    , PROJ_END_DATE
+                    , PROJ_SMRY
+                    , PROJ_OPN_WHTH
+                    , PROJ_CREATN_DATE
+                    , PROJ_IMG_ROUTE
+                    , DELETE_WHTH
+                    FROM PROJ P
+                    <if test="keyword != null and keyword != ''">
+                    	<if test="category.equals('projName')">
+                    		WHERE PROJ_NAME LIKE #{keyword}
+                    	</if>
+                    	<if test="category.equals('memCode')">
+                    		WHERE MEM_CODE IN (SELECT MEM_CODE FROM MEM WHERE MEM_NAME LIKE #{keyword})
+                    	</if>
+                    </if>
+                    ORDER BY PROJ_CREATN_DATE DESC) A )
+					<![CDATA[
+                    WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+                    ]]>
+	</select>
+	
+	<select id="getTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT COUNT(PROJ_ID)
+		FROM PROJ
+		<if test="keyword != null and keyword != ''">
+			<if test="category.equals('projName')">
+				WHERE PROJ_NAME LIKE #{keyword}
+			</if>
+			<if test="category.equals('memCode')">
+				WHERE MEM_CODE LIKE #{keyword}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 프로젝트 상세 정보 -->
+	<select id="adminProjDetail" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO" resultMap="adProjMap">
+		SELECT PROJ_ID
+			, (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS MEM_CODE
+			, PROJ_NAME
+			, PROJ_STRT_DATE
+			, PROJ_END_DATE
+			, PROJ_SMRY
+			, PROJ_OPN_WHTH
+			, PROJ_CREATN_DATE
+			, PROJ_IMG_ROUTE
+			, DELETE_WHTH
+		FROM PROJ P
+		WHERE PROJ_ID = #{projId}
+	</select>
+
+	<!-- MEM_CODE 뽑아오기 위함 -->
+	<select id="adminProjDetail2" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO" resultMap="adProjMap">
+		SELECT PROJ_ID
+			, MEM_CODE
+			, PROJ_NAME
+			, PROJ_STRT_DATE
+			, PROJ_END_DATE
+			, PROJ_SMRY
+			, PROJ_OPN_WHTH
+			, PROJ_CREATN_DATE
+			, PROJ_IMG_ROUTE
+			, DELETE_WHTH
+		FROM PROJ P
+		WHERE PROJ_ID = #{projId}
+	</select>
+	
+	<!-- 해당 프로젝트에 참여중인 회원 리스트 뽑아오기 -->
+	<select id="adminProjMem" parameterType="com.ipms.main.admin.projManagement.vo.ProjManaVO" resultType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
+		SELECT (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS writer,
+                P.MEM_CODE as MEM_CODE
+		FROM PROJ_MEM P
+		WHERE PROJ_ID = #{projId}
+		AND PRTPT_APROV_CODE = 'Y'
+		AND DROPSTATUS = 'N'
+	</select>
+	
+	<!-- 체크박스 삭제 -->
+	<update id="ckDelProj" parameterType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
+		UPDATE PROJ
+		SET DELETE_WHTH = 'y'
+		WHERE PROJ_ID = #{projId}
+	</update>
+	
+	<!-- 체크박스 복구 -->
+	<update id="ckRestoreProj" parameterType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
+		UPDATE PROJ
+		SET DELETE_WHTH = 'n'
+		WHERE PROJ_ID = #{projId}
+	</update>
+	
+</mapper>

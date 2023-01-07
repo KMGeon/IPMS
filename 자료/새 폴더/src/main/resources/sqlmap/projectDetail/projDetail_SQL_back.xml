@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.projectlistdetail.mapper.ProjSmryCmtMapper">
+    <select id="getList" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+        select *
+        from proj_smry_cmt
+        order by reply_group desc, reply_seq asc
+    </select>
+    <select id="read" parameterType="string" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+        select * from proj_smry_cmt where mem_code=#{memCode}
+    </select>
+
+<insert id="insertReply" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+    <selectKey order="BEFORE" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO"
+               keyProperty="projSmryCmtNum,replyGroup">
+        SELECT NVL(MAX(proj_smry_cmt_num),0)+1 as proj_smry_cmt_num,
+        NVL(MAX(reply_group),0)+1 as reply_group
+        FROM proj_smry_cmt
+    </selectKey>
+    INSERT INTO proj_smry_cmt (
+    proj_smry_cmt_num,
+    proj_id,
+    mem_code,
+    proj_smry_cmt_cts,
+    proj_smry_cmt_write_date,
+    reply_group,
+    reply_level,
+    reply_seq
+    )
+    VALUES (#{projSmryCmtNum},
+    #{projId},
+    #{memCode},
+    #{projSmryCmtCts},
+    sysdate,
+    #{replyGroup},
+    '0',
+    '0'
+    )
+</insert>
+
+    <insert id="replyInsert" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+        <selectKey order="BEFORE" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO"
+                   keyProperty="projSmryCmtNum">
+            SELECT NVL(MAX(proj_smry_cmt_num),0)+1
+            FROM proj_smry_cmt
+        </selectKey>
+        INSERT INTO proj_smry_cmt (
+        proj_smry_cmt_num,
+        proj_id,
+        mem_code,
+        proj_smry_cmt_cts,
+        proj_smry_cmt_write_date,
+        reply_group,
+        reply_level,
+        reply_seq
+        )
+        VALUES (#{projSmryCmtNum},
+        #{projId},
+        #{memCode},
+        #{projSmryCmtCts},
+        sysdate,
+        #{replyGroup},
+        #{replyLevel},
+        #{replySeq}
+        )
+    </insert>
+
+    <update id="replySeqUpdate"  parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+        update proj_smry_cmt
+        set reply_seq=reply_seq + 1
+        where reply_group = #{replyGroup}
+          and reply_seq > #{replySeq}
+    </update>
+
+
+</mapper>
+
+
+
+
+
+
+

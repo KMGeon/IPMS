@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.projMemManageMent.mapper.MemManageMapper">
+    <!-- 해당 프로젝트 인원 조회-->
+    <select id="projectPersonnelInquiry" parameterType="com.ipms.main.newProject.vo.ProjVO"
+            resultType="com.ipms.main.newProject.vo.ProjVO">
+        <![CDATA[
+        select P.mem_code,P.proj_id,M.MEM_NAME
+        from PROJ_MEM P , MEM M
+        where P.proj_id = #{projId}
+          AND P.MEM_CODE = M.MEM_CODE
+          AND P.MEM_CODE <> #{memCode}
+
+        ]]>
+    </select>
+
+
+    <!--    하차 지원 인원-->
+    <select id="dropSupportPersonnel" parameterType="com.ipms.main.newProject.vo.ProjVO"
+            resultType="com.ipms.main.newProject.vo.ProjVO">
+        <![CDATA[
+        select P.MEM_CODE, P.PROJ_ID , M.MEM_NAME
+        from proj_mem P , MEM M
+        where P.dropstatus = 'Y'
+          AND P.MEM_CODE <> #{memCode}
+          AND P.MEM_CODE = M.MEM_CODE
+          AND P.PROJ_ID = #{projId}
+        ]]>
+    </select>
+
+    <select id="projectInvitationList" parameterType="com.ipms.main.newProject.vo.ProjVO"
+            resultType="com.ipms.main.newProject.vo.ProjVO">
+        <![CDATA[
+        SELECT M.MEM_NAME, M.MEM_CODE, T.TECH_STACK_CODE
+        FROM MEM M,
+             TECH_STACK T
+        WHERE M.MEM_CODE = T.MEM_CODE(+)
+          AND M.MEM_CODE IN (SELECT MEM_CODE
+                             FROM MEM
+                             WHERE MEM_CODE <> #{memCode}
+            MINUS
+        SELECT MEM_CODE
+        FROM PROJ_MEM
+        WHERE proj_id = #{projId}
+            MINUS
+
+        select mem_code
+        from INVITATION
+        where invttnot = '1'
+          AND PROJ_ID = #{projId})
+        ]]>
+    </select>
+
+    <!--    &lt;!&ndash; 하차 멤버 리스트 처리&ndash;&gt;-->
+    <!--    &lt;!&ndash; 하차 멤버 리스트 처리&ndash;&gt;-->
+    <!--    &lt;!&ndash; 하차 멤버 리스트 처리&ndash;&gt;-->
+    <!--    &lt;!&ndash; 하차 멤버 리스트 처리&ndash;&gt;-->
+    <!--    &lt;!&ndash; 하차 멤버 리스트 처리&ndash;&gt;-->
+    <!--    &lt;!&ndash; 하차 멤버 리스트 처리&ndash;&gt;-->
+    <!--    &lt;!&ndash; 하차 멤버 리스트 처리&ndash;&gt;-->
+    <!--    &lt;!&ndash; 하차 멤버 리스트 처리&ndash;&gt;-->
+    <update id="dropMemListProcessing" parameterType="com.ipms.main.login.vo.MemVO">
+        DELETE
+        FROM proj_mem
+        WHERE proj_id = #{projId}
+          AND MEM_CODE = #{memCode}
+    </update>
+
+    <insert id="sendInvitation" parameterType="com.ipms.proj.projMemManageMent.vo.InvitationVO">
+        <selectKey order="BEFORE" keyProperty="inviteNum" resultType="string">
+            SELECT NVL(MAX(TO_NUMBER(invite_num)),0)+1 FROM INVITATION
+        </selectKey>
+        INSERT INTO invitation (
+        invite_num,
+        mem_code,
+        proj_id,
+        invttnot
+        ) VALUES (
+        #{inviteNum},
+        #{memCode},
+        #{projId},
+        '1'
+        )
+    </insert>
+    <select id="unapprovedInvitationList" parameterType="string"
+            resultType="com.ipms.proj.projMemManageMent.vo.InvitationVO">
+        SELECT invite_num,
+               mem_code,
+               proj_id,
+               invttnot
+        FROM invitation
+        where proj_id = #{projId}
+          and INVTTNOT = '1'
+    </select>
+
+    <!-- 프로젝트 참여 인원 추방-->
+    <delete id="extractionParticipants" parameterType="com.ipms.main.newProject.vo.ProjMemVO">
+        DELETE
+        FROM proj_mem
+        WHERE proj_id = #{projId}
+          AND MEM_CODE = #{memCode}
+    </delete>
+
+
+    <insert id="insertAlrm" parameterType="com.ipms.main.alert.vo.AlrmVO">
+        <selectKey order="BEFORE" resultType="string" keyProperty="alrmId">
+            SELECT NVL(SUBSTR(MAX(alrm_id),1,1)|| TRIM(TO_CHAR(SUBSTR(MAX(alrm_id),2) + 1,'000')),'A001')
+            FROM alrm
+        </selectKey>
+        INSERT INTO alrm (alrm_id,
+        mem_code,
+        alrm_cts,
+        alrm_time,
+        alrm_dvsion_code)
+        VALUES (#{alrmId},
+        #{memCode},
+        #{alrmCts},
+        sysdate,
+        '1')
+    </insert>
+    <select id="getAlrmList" parameterType="string" resultType="com.ipms.main.alert.vo.AlrmVO">
+        SELECT alrm_id,
+               mem_code,
+               alrm_cts,
+               alrm_time,
+               alrm_dvsion_code
+        FROM alrm
+        where mem_code = #{memCode}
+    </select>
+
+
+    <delete id="deleteAlrm" parameterType="com.ipms.main.alert.vo.AlrmVO">
+        DELETE
+        FROM alrm
+        WHERE alrm_id = #{alrmId}
+    </delete>
+
+    <select id="countAlrm" parameterType="com.ipms.main.alert.vo.AlrmVO" resultType="int">
+        select count(*)
+        from alrm
+        where mem_code = #{memCode}
+    </select>
+</mapper>

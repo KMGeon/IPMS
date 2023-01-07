@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ipms.main.admin.memManagement.mapper.AdminMemManagementMapper">
+	
+	<resultMap type="com.ipms.main.admin.memManagement.vo.AdminMemVO" id="adMemMap">
+		<result property="memCode" column="MEM_CODE" />
+		<result property="memEmail" column="MEM_EMAIL" />
+		<result property="memPasswd" column="MEM_PASSWD" />
+		<result property="memName" column="MEM_NAME" />
+		<result property="memPhoneNumber" column="MEM_PHONE_NUMBER" />
+		<result property="memSgnupDate" column="MEM_SGNUP_DATE" />
+		<result property="memImgRoute" column="MEM_IMG_ROUTE" />
+		<result property="memWhdrlYn" column="MEM_WHDRL_YN" />
+		<result property="memProjQuit" column="MEM_PROJ_QUIT" />
+	</resultMap>
+	
+	<select id="adminMemList" resultType="com.ipms.main.admin.memManagement.vo.AdminMemVO" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT MEM_CODE
+        		, MEM_EMAIL
+        		, MEM_PASSWD
+            	, MEM_NAME
+        		, MEM_PHONE_NUMBER
+        		, MEM_SGNUP_DATE
+        		, MEM_IMG_ROUTE
+        		, MEM_WHDRL_YN
+        		, (SELECT COUNT(P.DROPSTATUS)FROM PROJ_MEM P WHERE P.DROPSTATUS = 'Y' AND B.MEM_CODE = P.MEM_CODE) AS MEM_PROJ_QUIT
+            FROM ( SELECT ROWNUM RN
+                    , MEM_CODE
+        			, MEM_EMAIL
+        			, MEM_PASSWD
+            		, MEM_NAME
+        			, MEM_PHONE_NUMBER
+        			, MEM_SGNUP_DATE
+        			, MEM_IMG_ROUTE
+        			, MEM_WHDRL_YN
+        			, MEM_PROJ_QUIT
+                FROM(SELECT MEM_CODE
+	        			, MEM_EMAIL
+	        			, MEM_PASSWD
+	            		, MEM_NAME
+	        			, MEM_PHONE_NUMBER
+	        			, MEM_SGNUP_DATE
+	        			, MEM_IMG_ROUTE
+	        			, MEM_WHDRL_YN
+	        			, MEM_PROJ_QUIT 
+	                      FROM MEM
+	                    <if test="keyword != null || keyword != ''">
+							<if test="category.equals('memEmail')">
+								WHERE MEM_EMAIL LIKE #{keyword}
+							</if>
+							<if test="category.equals('memName')">
+								WHERE MEM_NAME LIKE #{keyword}
+							</if>
+							<if test="category.equals('memCode')">
+								WHERE MEM_CODE LIKE #{keyword}
+							</if>
+						</if>                    
+	                      ) A ) B
+					<![CDATA[
+                     WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+         ]]>
+	</select>
+	
+	<select id="adminMemDetail" resultType="com.ipms.main.admin.memManagement.vo.AdminMemVO" resultMap="adMemMap">
+		SELECT MEM_EMAIL, MEM_CODE, MEM_NAME, MEM_PHONE_NUMBER, MEM_SGNUP_DATE, MEM_IMG_ROUTE
+		FROM MEM
+		WHERE MEM_CODE = #{memCode}
+	</select>
+	
+	<select id="getTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT COUNT(MEM_EMAIL)
+		FROM MEM
+		<if test="keyword != null and keyword != ''">
+			<if test="category.equals('memEmail')">
+				WHERE MEM_EMAIL LIKE #{keyword}
+			</if>
+			<if test="category.equals('memName')">
+				WHERE MEM_NAME LIKE #{keyword}
+			</if>
+			<if test="category.equals('memCode')">
+				WHERE MEM_CODE LIKE #{keyword}
+			</if>
+		</if> 
+	</select>
+	
+	<!-- 체크박스 삭제 -->
+	<update id="ckDelMem" parameterType="com.ipms.main.admin.memManagement.vo.AdminMemVO">
+		UPDATE MEM
+		SET MEM_WHDRL_YN = 'y'
+		WHERE MEM_EMAIL = #{memEmail}
+	</update>
+	
+</mapper>

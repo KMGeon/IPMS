@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.projectlistdetail.mapper.ProjSmryCmtMapper">
+
+	<select id="projCmtList" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+		SELECT 
+		      LEVEL LEV
+		    , P.PROJ_SMRY_CMT_NUM
+		    , P.HIGH_CMT_ID
+		    , P.REPLY_LEVEL
+		    , P.PROJ_ID
+		    , P.PROJ_SMRY_CMT_CTS
+		    , P.PROJ_SMRY_CMT_WRITE_DATE
+		    , M.MEM_NAME AS MEM_CODE
+		    , M.MEM_EMAIL
+		FROM PROJ_SMRY_CMT P , MEM M
+		WHERE P.PROJ_ID = #{projId}
+			AND P.DELETE_YN = 'n'
+			AND M.MEM_CODE = P.MEM_CODE 
+		START WITH P.HIGH_CMT_ID IS NULL
+		CONNECT BY PRIOR P.PROJ_SMRY_CMT_NUM = P.HIGH_CMT_ID
+		ORDER SIBLINGS BY P.PROJ_SMRY_CMT_WRITE_DATE
+	</select>
+	
+	<!-- 상위 댓글 작성 -->
+	<insert id="projCmtInsert" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+		<selectKey order="BEFORE" keyProperty="projSmryCmtNum" resultType="int">
+			SELECT NVL(MAX(PROJ_SMRY_CMT_NUM),0)+1 FROM PROJ_SMRY_CMT
+		</selectKey>
+		
+		INSERT INTO PROJ_SMRY_CMT
+					(PROJ_SMRY_CMT_NUM
+					, PROJ_ID
+					, MEM_CODE
+					, PROJ_SMRY_CMT_CTS
+					, REPLY_LEVEL
+					, PROJ_SMRY_CMT_WRITE_DATE
+					, HIGH_CMT_ID
+					, DELETE_YN)
+				VALUES(#{projSmryCmtNum}
+					, #{projId}
+					, #{memCode}
+					, #{projSmryCmtCts}
+					, (SELECT NVL(MAX(REPLY_LEVEL),0)+1
+					    FROM PROJ_SMRY_CMT
+					    WHERE PROJ_SMRY_CMT_NUM = #{projSmryCmtNum})
+					, SYSDATE
+					, null
+					, 'n')
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="projCmtUpdate" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+		UPDATE PROJ_SMRY_CMT
+		SET PROJ_SMRY_CMT_CTS = #{projSmryCmtCts}
+			, PROJ_SMRY_CMT_WRITE_DATE = SYSDATE
+		WHERE PROJ_SMRY_CMT_NUM = #{projSmryCmtNum}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<update id="projCmtDel" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO" >
+		UPDATE PROJ_SMRY_CMT
+		SET DELETE_YN = 'y'
+		WHERE PROJ_SMRY_CMT_NUM = #{projSmryCmtNum}
+	</update>
+	
+	
+	<!-- 하위 댓글 작성 -->
+	<insert id="projCmtInsert2" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+		<selectKey order="BEFORE" keyProperty="projSmryCmtNum" resultType="int">
+			SELECT NVL(MAX(PROJ_SMRY_CMT_NUM),0)+1 FROM PROJ_SMRY_CMT
+		</selectKey>
+		
+		INSERT INTO PROJ_SMRY_CMT
+					(PROJ_SMRY_CMT_NUM
+					, PROJ_ID
+					, MEM_CODE
+					, PROJ_SMRY_CMT_CTS
+					, REPLY_LEVEL
+					, PROJ_SMRY_CMT_WRITE_DATE
+					, HIGH_CMT_ID
+					, DELETE_YN)
+				VALUES(#{projSmryCmtNum}
+					, #{projId}
+					, #{memCode}
+					, #{projSmryCmtCts}
+					, (SELECT NVL(MAX(REPLY_LEVEL),0)+1
+					    FROM PROJ_SMRY_CMT
+					    WHERE PROJ_SMRY_CMT_NUM = #{projSmryCmtNum})
+					, SYSDATE
+					, #{highCmtId}
+					, 'n')
+	</insert>
+	
+
+<insert id="insertReply" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+    <selectKey order="BEFORE" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO"
+               keyProperty="projSmryCmtNum,replyGroup">
+        SELECT NVL(MAX(proj_smry_cmt_num),0)+1 as proj_smry_cmt_num,
+        NVL(MAX(reply_group),0)+1 as reply_group
+        FROM proj_smry_cmt
+    </selectKey>
+    INSERT INTO proj_smry_cmt (
+    proj_smry_cmt_num,
+    proj_id,
+    mem_code,
+    proj_smry_cmt_cts,
+    proj_smry_cmt_write_date,
+    reply_group,
+    reply_level,
+    reply_seq
+    )
+    VALUES (#{projSmryCmtNum},
+    #{projId},
+    #{memCode},
+    #{projSmryCmtCts},
+    sysdate,
+    #{replyGroup},
+    '0',
+    '0'
+    )
+</insert>
+
+    <insert id="replyInsert" parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+        <selectKey order="BEFORE" resultType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO"
+                   keyProperty="projSmryCmtNum">
+            SELECT NVL(MAX(proj_smry_cmt_num),0)+1
+            FROM proj_smry_cmt
+        </selectKey>
+        INSERT INTO proj_smry_cmt (
+        proj_smry_cmt_num,
+        proj_id,
+        mem_code,
+        proj_smry_cmt_cts,
+        proj_smry_cmt_write_date,
+        reply_group,
+        reply_level,
+        reply_seq
+        )
+        VALUES (#{projSmryCmtNum},
+        #{projId},
+        #{memCode},
+        #{projSmryCmtCts},
+        sysdate,
+        #{replyGroup},
+        #{replyLevel},
+        #{replySeq}
+        )
+    </insert>
+
+    <update id="replySeqUpdate"  parameterType="com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO">
+        update proj_smry_cmt
+        set reply_seq=reply_seq + 1
+        where reply_group = #{replyGroup}
+          and reply_seq > #{replySeq}
+    </update>
+
+
+</mapper>
+
+
+
+
+
+
+

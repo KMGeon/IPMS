@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.noticeboard.mapper.NoticeBoardMapper">
+	
+	<select id="selectProjNt" parameterType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
+		SELECT
+	   		proj_nt_num,
+		    proj_id,
+		    mem_code,
+		    proj_nt_title,
+		    itgrn_attach_file_num,
+		    delete_yn,
+		    proj_nt_write_date
+		FROM
+	    	proj_nt
+		WHERE
+			proj_id = #{projId}
+	</select>
+
+	
+</mapper>

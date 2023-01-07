@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.projSetting.mapper.ProjSettingMapper">
+
+<select id="listProjectSettings" parameterType="string" resultType="com.ipms.main.newProject.vo.ProjVO">
+    SELECT
+        proj_id,
+        mem_code,
+        proj_name,
+        proj_strt_date,
+        proj_end_date,
+        proj_smry,
+        proj_opn_whth,
+        proj_creatn_date,
+        proj_img_route,
+        delete_whth
+    FROM
+        proj
+    where proj_id=#{projId}
+</select>
+
+    <!-- 프로젝트 수정-->
+    <update id="modifyProjectSettings"  parameterType="com.ipms.main.newProject.vo.ProjVO">
+        UPDATE PROJ
+        SET  proj_name = #{projName}
+          , proj_opn_whth = #{projOpnWhth}
+          , proj_end_date =  #{projEndDate}
+          ,PROJ_SMRY = #{projSmry}
+          <if test ="projImgRoute != null">
+          	, proj_img_route = #{projImgRoute}
+          </if>
+        WHERE  PROJ_ID=#{projId}
+    </update>
+
+    <!--프로젝트 탈퇴 -->
+    <update id="withdrawalProject" parameterType="string">
+        update proj
+        set delete_whth ='y'
+        WHERE  PROJ_ID=#{projId}
+    </update>
+
+
+</mapper>
+
+
+
+
+
+
+

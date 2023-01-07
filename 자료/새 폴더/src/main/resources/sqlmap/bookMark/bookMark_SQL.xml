@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.mypage.projectbookmark.mapper.BookMarkMapper">
+	
+	<!-- 북마크 추가[인설트]  -->
+	<insert id="bookMarkInsert" parameterType="com.ipms.main.mypage.projectbookmark.vo.BookMarkVO">
+		INSERT INTO MARK(
+			  PROJ_ID
+			, MEM_CODE
+			, DELETE_YN
+		)
+		VALUES(
+			 #{projId}
+			,#{memCode}
+			,'n'
+		)
+	</insert>
+		
+	<select id="bookMarkSelectAll" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.main.mypage.projectbookmark.vo.BookMarkVO">
+		<![CDATA[
+		 SELECT 
+		          MEM_NAME
+		          , PROJ_ID
+		          , PROJ_NAME
+		          , PROJ_STRT_DATE
+		          , PROJ_END_DATE
+		          , PROJ_SMRY
+		          , PROJ_OPN_WHTH
+		          , PROJ_CREATN_DATE
+		          , PROJ_IMG_ROUTE
+		          , DELETE_WHTH
+		   FROM ( 
+		          SELECT ROWNUM RN
+		                 ,MEM_NAME
+		                 , PROJ_ID
+		                 , PROJ_NAME
+		                 , PROJ_STRT_DATE
+		                 , PROJ_END_DATE
+		                 , PROJ_SMRY
+		                 , PROJ_OPN_WHTH
+		                 , PROJ_CREATN_DATE
+		                 , PROJ_IMG_ROUTE
+		                 , DELETE_WHTH
+		                          FROM( SELECT
+		                                  E.MEM_NAME
+		                                 , P.PROJ_ID
+		                                 , P.PROJ_NAME
+		                                 , P.PROJ_STRT_DATE
+		                                 , P.PROJ_END_DATE
+		                                 , P.PROJ_SMRY
+		                                 , P.PROJ_OPN_WHTH
+		                                 , P.PROJ_CREATN_DATE
+		                                 , P.PROJ_IMG_ROUTE
+		                                 , P.DELETE_WHTH
+		                              FROM MARK M , PROJ P , MEM E
+		                              WHERE  M.PROJ_ID = P.PROJ_ID
+		                              AND M.MEM_CODE = E.MEM_CODE
+		                              AND M.MEM_CODE = #{memCode}
+		                              AND DELETE_YN = 'n' 
+		                              ORDER BY PROJ_CREATN_DATE DESC ) A )
+		       WHERE RN > (#{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+		]]>
+		order by PROJ_CREATN_DATE asc
+	</select>
+	
+	<select id="totalNum" resultType="int">
+			select COUNT(PROJ_ID)
+        	from MARK
+        	WHERE MEM_CODE = #{memCode}
+        	AND DELETE_YN = 'n'
+        	
+	</select>
+	
+	<update id="bookMarkDel" parameterType="com.ipms.main.mypage.projectbookmark.vo.BookMarkVO">
+			UPDATE MARK 
+			SET DELETE_YN = 'y'
+			WHERE PROJ_ID = #{projId}
+	</update>
+	
+	<select id="selectBookMark" parameterType="string" resultType="com.ipms.main.mypage.projectbookmark.vo.BookMarkVO">    
+		SELECT
+		    m.proj_id,
+		    m.mem_code,
+		    m.delete_yn,
+		    p.PROJ_NAME,
+		    p.PROJ_IMG_ROUTE,
+		    p.PROJ_STRT_DATE,
+		    p.PROJ_END_DATE
+		FROM
+		    mark m,proj p
+		WHERE m.PROJ_ID = p.PROJ_ID
+		AND m.MEM_CODE = #{memId}
+		AND m.DELETE_YN = 'n'
+	</select>
+</mapper>

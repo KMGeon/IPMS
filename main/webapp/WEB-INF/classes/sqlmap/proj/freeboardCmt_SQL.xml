@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.freeboard.mapper.FreeboardCmtMapper">
+
+	<!-- 댓글 리스트 -->
+	<select id="freeCmtList" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO" resultType="com.ipms.proj.freeboard.vo.FreeboardCmtVO">
+		SELECT PROJ_BD_CMT_ID
+		, PROJ_BD_ID
+		, PROJ_BD_CMT_CTS
+		, (SELECT M.MEM_NAME FROM MEM M WHERE P.WRITER = M.MEM_CODE) AS WRITER
+		, (SELECT M.MEM_CODE FROM MEM M WHERE P.WRITER = M.MEM_CODE) AS MEM_CODE
+		, PROJ_BD_CMT_WRITE_DATE
+		, HIGH_CMT_ID
+		, LOW_RGST_SEQ
+		, DELETE_YN
+		FROM PROJ_BD_CMT P
+		WHERE PROJ_BD_ID = #{projBdId} AND DELETE_YN = 'n'
+		ORDER BY PROJ_BD_CMT_ID ASC
+	</select>
+	
+	<insert id="insertFreeCmt" parameterType="com.ipms.proj.freeboard.vo.FreeboardCmtVO">
+		<selectKey order="BEFORE" keyProperty="projBdCmtId" resultType="int">
+			SELECT NVL(MAX(PROJ_BD_CMT_ID),0)+1 FROM PROJ_BD_CMT
+		</selectKey>
+
+		INSERT INTO PROJ_BD_CMT(PROJ_BD_CMT_ID, PROJ_BD_ID, PROJ_BD_CMT_CTS, WRITER, PROJ_BD_CMT_WRITE_DATE, HIGH_CMT_ID, LOW_RGST_SEQ, DELETE_YN)
+		VALUES(#{projBdCmtId},#{projBdId},#{projBdCmtCts},#{writer},sysdate,NULL,#{lowRgstSeq},'n')
+	</insert>
+	
+	<!-- freeboardCmtVO : FreeboardCmtVO(projBdCmtId=7, projBdId=0, projBdCmtCts=ㅇㅇㅇㄴㄴ, writer=null, writerCmt=null, projBdCmtWriteDate=null, highCmtId=null, lowRgstSeq=0, deleteYn=null) -->
+	<update id="updateFreeCmt" parameterType="com.ipms.proj.freeboard.vo.FreeboardCmtVO">
+		UPDATE PROJ_BD_CMT
+		SET PROJ_BD_CMT_CTS = #{projBdCmtCts}, PROJ_BD_CMT_WRITE_DATE = sysdate
+		WHERE PROJ_BD_CMT_ID = #{projBdCmtId}
+	</update>
+	
+	<update id="deleteFreeCmt" parameterType="com.ipms.proj.freeboard.vo.FreeboardCmtVO">
+		UPDATE PROJ_BD_CMT
+		SET DELETE_YN = 'y'
+		WHERE PROJ_BD_CMT_ID = #{projBdCmtId}
+	</update>
+
+</mapper>
