@@ -5,12 +5,12 @@
 
 
 ##  <img height="25px" src="" /> 팀 소개
-### FE
+### 팀원소
 
 <table>
   <tr>
     <td>
-         <img src="https://user-images.githubusercontent.com/103854287/211192307-50420d69-41c6-49a4-b449-739ad5e00bfd.png" width="100px" />
+         <img src="https://user-images.githubusercontent.com/103854287/211192552-7b260141-1715-498c-8438-454420eb1e63.jpg" width="100px" />
     </td>
      <td>
          <img src="https://user-images.githubusercontent.com/103854287/211192470-8aa1b1b8-0547-4da4-b674-3e08778bdf98.png" width="100px" />
