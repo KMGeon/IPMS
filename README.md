@@ -46,5 +46,5 @@
 
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 기술 스택
 
-<img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java8&logoColor=white">
+<img src="https://img.shields.io/badge/JAVA8-007396?style=for-the-badge&logo=java&logoColor=white">
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
