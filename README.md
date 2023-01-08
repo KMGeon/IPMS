@@ -35,9 +35,10 @@
     <td><b>김효정</b></td>
   </tr>
   <tr>
-    <td><b>Front-End</b></td>
-    <td><b>Front-End</b></td>
-    <td><b>Front-End</b></td>
-    <td><b>Front-End</b></td>
+    <td><b>팀원</b></td>
+    <td><b>팀장</b></td>
+    <td><b>팀원</b></td>
+    <td><b>팀원</b></td>
+    <td><b>팀원</b></td>
   </tr>
 </table>
