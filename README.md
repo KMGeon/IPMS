@@ -53,7 +53,7 @@
 <img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
 <img src="https://img.shields.io/badge/websocket-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
 <br>
-  <img src="https://img.shields.io/badge/websocket-#F7DF1E?style=for-the-badge&logo=spring&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-#F7DF1E?style=for-the-badge&logo=spring&logoColor=white">
   <img src="https://img.shields.io/badge/websocket-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
 <br>
 <img src="https://img.shields.io/badge/oracle 8.0-red?style=for-the-badge&logo=oracle&logoColor=white">
