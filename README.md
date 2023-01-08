@@ -1,4 +1,4 @@
-# 개발 취준생을 위한 팀 프로젝트 전문 PMS(프로젝트 관리 시스템), [IPMS]
+# 개발 취준생을 위한 팀 프로젝트 전문 PMS(프로젝트 관리 시스템)[IPMS]
 ![image](https://user-images.githubusercontent.com/103854287/211191903-47865893-8988-432f-b4b7-525b8673ebc6.jpg)
 
 --- 
