@@ -50,9 +50,9 @@
 
 <div align=left>
 <img src="https://img.shields.io/badge/JAVA 8-007396?style=for-the-badge&logo=java&logoColor=white">
+  <img src="https://img.shields.io/badge/mybatis-007396?style=for-the-badge&logo=mybatis&logoColor=white">
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
 <img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
-<img src="https://img.shields.io/badge/mybatis-181717?style=for-the-badge&logo=svn&logoColor=white">
 <img src="https://img.shields.io/badge/websocket-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
 <br>
   <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
