@@ -1,4 +1,4 @@
-# <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" />  개발 취준생을 위한 팀 프로젝트 PMS
+# <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" />  개발 취준생을 위한 팀  PMS
 ![image](https://user-images.githubusercontent.com/103854287/211191903-47865893-8988-432f-b4b7-525b8673ebc6.jpg)
 
 --- 
@@ -63,3 +63,8 @@
 <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 <img src="https://img.shields.io/badge/svn-181717?style=for-the-badge&logo=svn&logoColor=white">
 </div>
+
+
+---
+
+##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 프로젝트 소개
