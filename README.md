@@ -55,7 +55,7 @@
 <img src="https://img.shields.io/badge/maven 7.5-02303A?style=for-the-badge&logo=maven&logoColor=white">
 
 <br>
-<img src="https://img.shields.io/badge/oracle 8.0-4479A1?style=for-the-badge&logo=oracle&logoColor=white">
+<img src="https://img.shields.io/badge/oracle 8.0-red?style=for-the-badge&logo=oracle&logoColor=white">
 <br>
 
 <img src="https://img.shields.io/badge/svn-181717?style=for-the-badge&logo=svn&logoColor=white">
