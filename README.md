@@ -73,6 +73,6 @@
 <br>
 
 - **주제 선정** : 22.11.23 ~ 22.11.25  
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ㅏ**산출물 작성** : 22.11.25 ~ 22.11.30
-     <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ㅏㅡ**프로젝트 구현** : 22.11.30 ~ 22.12.30
-       <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ㄴ**테스트** : 22.12.30 ~ 23.01.05
+**산출물 작성** : 22.11.25 ~ 22.11.30
+**프로젝트 구현** : 22.11.30 ~ 22.12.30
+**테스트** : 22.12.30 ~ 23.01.05
