@@ -100,7 +100,7 @@
 - **ORM** : Mybatis
 
 ## 📌 주요 기능
-#### 로그인 & 회원가입 - <a href="https://github.com/chaehyuenwoo/SpringBoot-Project-MEGABOX/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C(Login)" >상세보기 - WIKI 이동</a>
+#### 로그인 & 회원가입 - <a href="https://github.com/KMGeon/IPMS.wiki.git" >상세보기 - WIKI 이동</a>
 - ㅁㄴㅇ
 #### 시큐리티 - <a href="https://github.com/chaehyuenwoo/SpringBoot-Project-MEGABOX/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C(Member)" >상세보기 - WIKI 이동</a>
 - 시큐리티 적용
