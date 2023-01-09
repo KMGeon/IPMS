@@ -90,7 +90,7 @@
 <img src="https://user-images.githubusercontent.com/103854287/211195345-cd24db8c-1c88-40bc-a350-0ab5047da43a.png">
   
 
-##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> ⚙️ 개발 환경
+##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 개발 환경
 
 - `Java 8`
 - `JDK 1.8.0`
