@@ -104,6 +104,6 @@
 - ㅁㄴㅇ
 #### 시큐리티 - <a href="https://github.com/chaehyuenwoo/SpringBoot-Project-MEGABOX/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C(Member)" >상세보기 - WIKI 이동</a>
 - 시큐리티 적용
-- 자동 로그인
-- 비밀번호 
+  - 자동 로그인
+    - 비밀번호 
 
