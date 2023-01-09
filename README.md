@@ -94,7 +94,7 @@
 
 - `Java 8`
 - `JDK 1.8.0`
-- **IDE** : STS 3.9
+- **IDE** : Intellij
 - **Framework** : Springboot(2.x)
 - **Database** : Oracle DB(11xe)
 - **ORM** : Mybatis
