@@ -85,14 +85,27 @@
 **프로젝트 구현** : 22.11.30 ~ 22.12.30<BR>
 **테스트** : 22.12.30 ~ 23.01.05
 
-  <br>
+
+
+##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 개발 환경
+
+- `Java 8`
+- `JDK 1.8.0`
+- **IDE** : Intellij
+- **Framework** : Springboot(2.x)
+- **Database** : Oracle DB(11xe)
+- **ORM** : Mybatis
+
 
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> ERD
 <img src="https://user-images.githubusercontent.com/103854287/211195345-cd24db8c-1c88-40bc-a350-0ab5047da43a.png">
   
-  
-    <br>
 
-##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" />ㅁㄴㅇ
+## <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 주요 기능
+#### 로그인 & 회원가입 - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%A1%9C%EA%B7%B8%EC%9D%B8-&-%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85" >더 보기</a>
+- ㅁㄴㅇ
+#### 시큐리티 - <a href="https://github.com/chaehyuenwoo/SpringBoot-Project-MEGABOX/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C(Member)" >상세보기 - WIKI 이동</a>
+- 시큐리티 적용
+  - 자동 로그인
+    - 비밀번호 
 
-> 
