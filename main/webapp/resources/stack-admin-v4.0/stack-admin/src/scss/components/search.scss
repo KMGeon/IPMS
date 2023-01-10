@@ -1,0 +1,185 @@
+/*=========================================================================================
+	File Name: search.scss
+	Description: Search  functionality.
+	----------------------------------------------------------------------------------------
+	Item Name: Stack - Responsive Admin Theme
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
+
+.navbar-container {
+
+	a.nav-link-search {
+		float: left;
+	}
+
+	.search-input {
+		position: relative;
+		float: left;
+		width: 0;
+
+		.input {
+			width: 0;
+			border: none;
+			background: none;
+			// transition: all 0.2s ease-out;
+			line-height: 16px;
+			padding: 1.4rem 2.7rem;
+		}
+
+		&.open {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			width: 100%;
+			z-index: 1001;
+			margin-top: 0px;
+			box-shadow: 6px 12px 18px 0 rgba(25, 42, 70, 0.13);
+
+			.search-input-close,
+			.search-input-icon {
+				display: block;
+			}
+
+			input {
+				width: 100%;
+				outline: none;
+				background: none;
+				padding-top: 1.45rem;
+			}
+		}
+
+
+		.search-list {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			background: $white;
+			width: 60rem;
+			margin-top: 0.5rem;
+			padding-left: 0;
+			border-radius: $border-radius;
+			display: none;
+
+			&.show {
+				display: block;
+				width: 98%;
+				left: 1%;
+			}
+
+			li {
+				a {
+					padding: 1.2rem 1rem;
+					color: $body-color;
+
+					span[class*="bx bx-"] {
+						font-size: 1.25rem;
+					}
+				}
+
+				&:first-child {
+					border-top-left-radius: $border-radius;
+					border-top-right-radius: $border-radius;
+				}
+
+				&:last-child {
+					border-bottom-left-radius: $border-radius;
+					border-bottom-right-radius: $border-radius;
+				}
+
+				&:hover,
+				&.current_item {
+					background-color: #f2f4f4;
+				}
+			}
+		}
+
+		.search-input-close {
+			z-index: 1001;
+			display: none;
+			position: absolute;
+			right: 1rem;
+			top: 40%;
+			cursor: pointer;
+			color: $white;
+		}
+	}
+}
+
+.navbar-light,
+.navbar-semi-dark {
+	.search-input {
+		.input {
+			color: #404E67;
+			display: none;
+		}
+
+		&.open {
+			.input {
+				color: #404E67;
+				border-bottom: 1px solid #e0e2e8;
+				// background-image: linear-gradient(to right, #fff 0%, #fff 100%);
+				background-color: $white;
+				display: block;
+			}
+			.search-input-close {
+				color: $gray-900;
+			}
+		}
+	}
+}
+
+.navbar-dark,
+.navbar-semi-light {
+	.search-input {
+		.input {
+			color: #404E67;
+		}
+
+		&.open {
+			.input {
+				color: #404E67;
+				// background-image: linear-gradient(to right, #404E67 0%, #6F85AD 100%);
+				background-color: $white;
+
+				&::placeholder {
+					color: #404E67;
+				}
+			}
+			.search-input-close {
+				color: #404E67;
+			}
+		}
+	}
+}
+
+
+
+@include media-breakpoint-down(sm) {
+	#navbar-mobile {
+		.search-input.open {
+			.input {
+				color: $white;
+			}
+		}
+	}
+}
+
+// @include media-breakpoint-down(md) {
+// 	#navbar-mobile{
+// 		.search-input.open{
+// 			.input{
+// 				width: 180px;
+// 				color: #404e67;
+// 				border-bottom: 1px solid #404e67;
+// 				overflow: hidden;
+// 				position: relative;
+// 				background: #fff;
+// 				z-index: 1;
+// 				padding: 8px 10px;
+// 				top: -13px;
+// 			}
+// 		}
+// 	}
+// }
