@@ -102,7 +102,7 @@
   
 
 ## <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 주요 기능
-#### 로그인 & 회원가입 & 비밀번호 찾기 - <a href="https://github.com/KMGeon/IPMS.wiki.git" >더 보기</a>
+#### 로그인 & 회원가입 & 비밀번호 찾기 - <a href="[https://github.com/KMGeon/IPMS.wiki.git](https://github.com/KMGeon/IPMS.wiki.git)" >더 보기</a>
 - 로그인
   - 시큐리티를 이용한 자동 로그인(Remember-me)
   - 시큐리티를 이용한 로그인
