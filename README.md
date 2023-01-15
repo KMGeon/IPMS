@@ -108,7 +108,8 @@
   - 시큐리티를 이용한 로그인
  
  - 회원가입
-  - 회원가입
+  - 중복체크
+  - 글자수 체크
   - select2 multiple이용한 기술스텍 선택
   
 #### 시큐리티 - <a href="https://github.com/chaehyuenwoo/SpringBoot-Project-MEGABOX/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C(Member)" >상세보기 - WIKI 이동</a>
