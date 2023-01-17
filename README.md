@@ -117,6 +117,15 @@
   - stomp 이메일 전송 
   
   
+#### 프로젝트 생성 - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%A1%9C%EA%B7%B8%EC%9D%B8&%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85" >더 보기</a>
+- 프로젝트 생성
+  - 프로젝트 생성
+  - 프로젝트 생성 -> 권한 부여(ROLE_PROJECT_LEADER)
+  - FTP서버 생성
+  - 프로젝트 채팅방 생성
+  - 대표 이미지 업로드
+  
+  
 #### 시큐리티 - <a href="https://github.com/chaehyuenwoo/SpringBoot-Project-MEGABOX/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C(Member)" >상세보기 - WIKI 이동</a>
 - 시큐리티 적용
   - 자동 로그인
