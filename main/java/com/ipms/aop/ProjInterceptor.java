@@ -25,7 +25,6 @@ import com.ipms.security.domain.CustomUser;
            <beans:bean id="commonInterceptor" class="com.ipms.aop.ProjInterceptor"/>
        </interceptor>
 	</interceptors>
- * @author 이준혁
  *
  */
 public class ProjInterceptor extends HandlerInterceptorAdapter{
