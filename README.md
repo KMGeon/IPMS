@@ -102,7 +102,7 @@
   
 
 ## <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 주요 기능
-### 로그인 & 회원가입 & 비밀번호 찾기 - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%A1%9C%EA%B7%B8%EC%9D%B8&%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85" >더 보기</a>
+### 🐸로그인 & 회원가입 & 비밀번호 찾기 - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%A1%9C%EA%B7%B8%EC%9D%B8&%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85" >더 보기</a>
 - 로그인
   - 시큐리티를 이용한 자동 로그인(Remember-me)
   - 시큐리티를 이용한 로그인
@@ -118,7 +118,7 @@
   
   <br>
   
-### 프로젝트 생성 - <a href="https://github.com/KMGeon/IPMS/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%83%9D%EC%84%B1" >더 보기</a>
+### 🐸프로젝트 생성 - <a href="https://github.com/KMGeon/IPMS/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%83%9D%EC%84%B1" >더 보기</a>
 - 프로젝트 생성
 - 프로젝트 생성 -> 권한 부여(ROLE_PROJECT_LEADER)
 - FTP서버 생성
@@ -127,12 +127,12 @@
   
   <BR>
   
-### 시큐리티 - <a href="https://github.com/KMGeon/IPMS/wiki/%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-&-%EA%B6%8C%ED%95%9C-%EC%B2%B4%ED%81%AC" >더 보기</a>
+### 🐸시큐리티 - <a href="https://github.com/KMGeon/IPMS/wiki/%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-&-%EA%B6%8C%ED%95%9C-%EC%B2%B4%ED%81%AC" >더 보기</a>
 - 시큐리티 적용
 
    <BR>
      
-### 디테일 페이지 - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%94%94%ED%85%8C%EC%9D%BC-%ED%8E%98%EC%9D%B4%EC%A7%80" >더 보기</a>
+### 🐸디테일 페이지 - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%94%94%ED%85%8C%EC%9D%BC-%ED%8E%98%EC%9D%B4%EC%A7%80" >더 보기</a>
 
 - 프로젝트 디테일
   - 자신의 프로젝트 , 이미 신청을 보낸 프로젝트에 따른 가입하기 버튼 유무
