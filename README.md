@@ -130,3 +130,16 @@
 ### 시큐리티 - <a href="https://github.com/KMGeon/IPMS/wiki/%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-&-%EA%B6%8C%ED%95%9C-%EC%B2%B4%ED%81%AC" >더 보기</a>
 - 시큐리티 적용
 
+   <BR>
+     
+### 전체 프로젝트 & 디테일 페이지 - <a href="https://github.com/KMGeon/IPMS/wiki/%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-&-%EA%B6%8C%ED%95%9C-%EC%B2%B4%ED%81%AC" >더 보기</a>
+- 전체 프로젝트
+  - 프로젝트 이름 , 아이디 , 날짜에 대한 검색
+  - 페이지 처리 , 검색에 따른 페이징 처리
+  - Default 최신순으로 정렬
+
+- 프로젝트 디테일
+  - 자신의 프로젝트 , 이미 신청을 보낸 프로젝트에 따른 가입하기 버튼 유무
+  - 프로젝트 가입신청
+  - 댓글
+ 
