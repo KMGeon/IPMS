@@ -101,7 +101,7 @@
 <img src="https://user-images.githubusercontent.com/103854287/211195345-cd24db8c-1c88-40bc-a350-0ab5047da43a.png">
   
 
-## <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 내가 구현한  
+## <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 내가 구현한 기능 
 ### 🐸로그인 & 회원가입 & 비밀번호 찾기 - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%A1%9C%EA%B7%B8%EC%9D%B8&%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85" >더 보기</a>
 - 로그인
   - 시큐리티를 이용한 자동 로그인(Remember-me)
