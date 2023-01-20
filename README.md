@@ -132,6 +132,12 @@
 
    <BR>
      
+### 🐸전체 프로젝트 - <a href="https://github.com/KMGeon/IPMS/wiki/%EC%A0%84%EC%B2%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8" >더 보기</a>
+
+- 공개 프로젝트 
+- 페이징 처리(PageIndex)
+- 검색 (프로젝트 이름 , 아이디 , 날짜)
+ 
 ### 🐸디테일 페이지 - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%94%94%ED%85%8C%EC%9D%BC-%ED%8E%98%EC%9D%B4%EC%A7%80" >더 보기</a>
 
 - 프로젝트 디테일
