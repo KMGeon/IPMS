@@ -17,8 +17,8 @@ public interface InviteAndApplyService {
     public int approval(ProjMemVO projMemVO);
 
     public int inviteAccept(ProjMemVO projMemVO);
-    List<InvitationVO> invitationWaitingList(String memCode);
 
+    List<InvitationVO> invitationWaitingList(String memCode);
 
     int invitationApproved(ProjMemVO projMemVO);//초대 승인1
 

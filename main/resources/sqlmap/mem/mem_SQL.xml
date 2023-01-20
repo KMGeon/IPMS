@@ -57,7 +57,6 @@
         <result property="memSgnupDate" column="MEM_SGNUP_DATE"/>
         <collection property="memAuthList" resultMap="authMap">
         </collection>
-
     </resultMap>
     <resultMap type="com.ipms.main.login.vo.MemberAuth" id="authMap">
         <result property="memCode" column="MEM_CODE"/>
@@ -111,10 +110,8 @@
     </insert>
 
     <select id="allGetMemCode" resultType="com.ipms.main.login.vo.MemVO">
-        select mem_code from mem
+        select mem_code
+        from mem
     </select>
-
-
-
 </mapper>
 

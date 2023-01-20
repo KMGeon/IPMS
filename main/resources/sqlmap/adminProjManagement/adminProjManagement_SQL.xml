@@ -68,6 +68,7 @@
                     ]]>
 	</select>
 	
+	
 	<select id="getTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
 		SELECT COUNT(PROJ_ID)
 		FROM PROJ

@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface MemService {
-    public String signUp(MemVO memVO , Authentication authentication , TechStackVO techStackVO);
+    public String signUp(MemVO memVO, Authentication authentication, TechStackVO techStackVO);
 
     public int registerCheck(String memEmail);
 

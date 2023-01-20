@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PwAuthController {
 
-	@GetMapping("/pwAuth")
-	public String pwAuth() {
-		return "main/mypage/pwAuth";
-	}
+    @GetMapping("/pwAuth")
+    public String pwAuth() {
+        return "main/mypage/pwAuth";
+    }
 }

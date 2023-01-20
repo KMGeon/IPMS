@@ -273,7 +273,13 @@ public class NoticeController {
 	
 	@ResponseBody
 	@PostMapping("/{projId}/noticeBoardDelete")
-	public int deleteNt(@RequestBody NoticeBoardVO noticeBoardVO, @PathVariable String projId) {
+	public int deleteNt(@RequestBody NoticeBoardVO noticeBoardVO, @PathVariable String projId, Authentication authentication) {
+		
+		UserDetails userdetail = (UserDetails)authentication.getPrincipal();
+		String userEmail = userdetail.getUsername();
+		String userCode = this.issueService.getMemCode(userEmail); // memcode가져오기
+		
+		noticeBoardVO.setMemCode(userCode);
 		
 		int result = this.noticeService.deleteNt(noticeBoardVO);
 		log.info("result", result);
@@ -435,35 +441,6 @@ public class NoticeController {
 		//2022폴더 > 08폴더 > 03폴더
 		return str.replace("-", File.separator);
 	}
-	
 
-//	@ResponseBody
-//	@GetMapping("/download")
-//	public ResponseEntity<Resource> download(@RequestParam String fileName) {
-//		
-//		log.info("fileName : " + fileName);
-//		
-//		//resource : 다운로드 받을 파일(자원)
-//		Resource resource = new FileSystemResource(
-//				"C:\\eclipse-jee-2020-06-R-win32-x86_64\\workspace\\TspringProj\\src\\main\\webapp\\resources\\upload"
-//				+fileName
-//				);
-//		
-//		//cd862ebd-10a2-4220-bbbb-5bbf8ffdadd7_phone01.jpg
-//		String resourceName = resource.getFilename();
-//		
-//		//header : 인코딩 정보, 파일명 정보
-//		HttpHeaders headers = new HttpHeaders();
-//		
-//		try {
-//			headers.add("Content-Disposition", "attachment;filename="+
-//					new String(resourceName.getBytes("UTF-8"),"ISO-8859-1"));
-//		} catch (UnsupportedEncodingException e) {
-//			log.info(e.getMessage());
-//		}
-//		
-//		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
-//	}
-//	
 	
 }

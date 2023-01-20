@@ -37,7 +37,7 @@ public class TechStackController {
         return this.techStackService.addSkillStack(techStackVO);
     }
 
-   @ResponseBody
+    @ResponseBody
     @PostMapping(value = "/clearSkillStack")
     public int clearSkillStack(String commonCodeValue) {
         return this.techStackService.clearSkillStack(commonCodeValue);

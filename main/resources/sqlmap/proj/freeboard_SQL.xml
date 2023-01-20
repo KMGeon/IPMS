@@ -3,16 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.proj.freeboard.mapper.FreeboardMapper">
 
-	<resultMap type="com.ipms.proj.freeboard.vo.FreeboardVO" id="freeboardMap">
-		<result property="projBdId" column="PROJ_BD_ID" />
-		<result property="writer" column="WRITER" />
-		<result property="projId" column="PROJ_ID" />
-		<result property="projBdTitle" column="PROJ_BD_TITLE" />
-		<result property="projBdCts" column="PROJ_BD_CTS" jdbcType="CLOB" javaType="java.lang.String" />
-		<result property="projBdWriteDate" column="PROJ_BD_WRITE_DATE" />
-		<result property="itgrnAttachFileNum" column="ITGRN_ATTACH_FILE_NUM" />
-		<result property="deleteYn" column="DELETE_YN" />
-	</resultMap>
+<!-- 	<resultMap type="com.ipms.proj.freeboard.vo.FreeboardVO" id="freeboardMap"> -->
+<!-- 		<result property="projBdId" column="PROJ_BD_ID" /> -->
+<!-- 		<result property="writer" column="WRITER" /> -->
+<!-- 		<result property="projId" column="PROJ_ID" /> -->
+<!-- 		<result property="projBdTitle" column="PROJ_BD_TITLE" /> -->
+<!-- 		<result property="projBdCts" column="PROJ_BD_CTS" jdbcType="CLOB" javaType="java.lang.String" /> -->
+<!-- 		<result property="projBdWriteDate" column="PROJ_BD_WRITE_DATE" /> -->
+<!-- 		<result property="itgrnAttachFileNum" column="ITGRN_ATTACH_FILE_NUM" /> -->
+<!-- 		<result property="deleteYn" column="DELETE_YN" /> -->
+<!-- 	</resultMap> -->
 	
 <!-- 	<select id="selectFree" resultType="com.ipms.proj.freeboard.vo.FreeboardVO"> -->
 	
@@ -81,7 +81,7 @@
         </if>
 	</select>
 
-	<select id="detailFree" resultType="com.ipms.proj.freeboard.vo.FreeboardVO" resultMap="freeboardMap">
+	<select id="detailFree" resultType="com.ipms.proj.freeboard.vo.FreeboardVO" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO">
 		SELECT PROJ_BD_ID
 			, (SELECT M.MEM_NAME FROM MEM M WHERE P.WRITER = M.MEM_CODE) AS WRITER
 			, PROJ_ID
@@ -134,7 +134,7 @@
         AND PROJ_ID = #{projId}
 	</select>
 	
-	<select id="detailFree2" resultType="com.ipms.proj.freeboard.vo.FreeboardVO" resultMap="freeboardMap">
+	<select id="detailFree2" resultType="com.ipms.proj.freeboard.vo.FreeboardVO" parameterType="com.ipms.proj.freeboard.vo.FreeboardVO">
 		SELECT PROJ_BD_ID
 			, WRITER
 			, PROJ_ID

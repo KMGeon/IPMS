@@ -92,7 +92,7 @@ public class DocsController {
 	
 	// 트리와 view 조회
 	@ResponseBody
-	@GetMapping("/{projId}/docTest")
+	@GetMapping("/{projId}/docsSelect")
 	public List<FtpVO> docsTests(@RequestParam String path) {
 		
 		List<FtpVO> docsList = null;
@@ -103,7 +103,7 @@ public class DocsController {
 	
 	// 폴더 생성
 	@ResponseBody
-	@PostMapping("/{projId}/dirDocTest")
+	@PostMapping("/{projId}/dirDoc")
 	public boolean makeDirTests(String path, String dirName) {
 		
 		String nowPath = "";
@@ -126,7 +126,7 @@ public class DocsController {
 	
 	// 다중 파일 업로드
 	@ResponseBody
-	@PostMapping("/{projId}/uploadFileTest")
+	@PostMapping("/{projId}/uploadFile")
 	public boolean uploadFile(MultipartFile[] docsFile, String path) {
 		
 		String savePath = "";

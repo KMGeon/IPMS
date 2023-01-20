@@ -20,26 +20,20 @@ import java.util.List;
 public class registerMemController {
     @Autowired
     MemService memService;
-    @Autowired
-    private BCryptPasswordEncoder bcryptPasswordEncoder;
+    public static final String VIEW_REDIRECT_OK = "success";
 
-    //회원가입
-    @RequestMapping(value = "/signUpForm", method = RequestMethod.GET)
+    @GetMapping(value = "/signUpForm")
     public String signUpFormGet(Model model) {
         List<CommonCodeVO> codeVOS = this.memService.techStack();
         model.addAttribute("list", codeVOS);
         return "main/login/signUpForm";
     }
 
-
-    @RequestMapping(value = "/signUpForm", method = RequestMethod.POST)
-    public String signUpForm(@ModelAttribute MemVO memVO
-            , Authentication authentication
-            , @ModelAttribute TechStackVO techStackVO) {
-//        rawPw=memVO.getMemPasswd();
-//        encodePw = bcryptPasswordEncoder.encode(rawPw);
-//        memVO.setMemPasswd(encodePw);
-        return this.memService.signUp(memVO, authentication, techStackVO);
+    @PostMapping(value = "/signUpForm")
+    public String signUpForm(@ModelAttribute MemVO memVO, Authentication authentication, @ModelAttribute TechStackVO techStackVO) {
+        String signUp = this.memService.signUp(memVO, authentication, techStackVO);
+        if (signUp.equals(VIEW_REDIRECT_OK)) return "main/page";
+        else return "redirect:/main/signUpForm";
     }
 
     @PostMapping("/memRegisterCheck")
@@ -47,7 +41,6 @@ public class registerMemController {
     public int registerCheck(@RequestParam String memEmail) {
         return this.memService.registerCheck(memEmail);
     }
-
 
     @PostMapping(value = "/UpdatePwd")
     public String UpdatePwd(@ModelAttribute MemVO memVO) {
@@ -58,6 +51,5 @@ public class registerMemController {
         return "redirect:/main/loginForm";
 
     }
-
 
 }

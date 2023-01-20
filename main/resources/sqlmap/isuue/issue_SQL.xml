@@ -42,7 +42,7 @@
 	
 	
 	<select id="MaxFileNumSelect" resultType="int">
-		SELECT MAX(INTG_ATTACH_FILE_NUM)+1 
+		SELECT NVL(MAX(INTG_ATTACH_FILE_NUM)+1,1) 
 		FROM INTG_ATTACH_FILE
 	</select>
 
@@ -198,7 +198,7 @@
 			   ,#{fileSize}
 			   ,#{fileSizeName}
 			   ,sysdate
-			   ,'나다'
+			   ,#{rgstId}
 			   ,'n'
 			   ,#{fileType}
 		   )

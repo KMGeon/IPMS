@@ -20,32 +20,38 @@ public class MemServiceImpl implements MemService {
     @Autowired
     MemMapper memMapper;
 
-
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public String signUp(MemVO memVO, Authentication authentication, TechStackVO techStackVO) {
-        int result = this.memMapper.registerMember(memVO);
-        if (result == 1) {
+        if (this.memMapper.registerMember(memVO) == 1) {
             List<MemberAuth> list = memVO.getMemAuthList();
-            for (MemberAuth authVO : list) {
-                if (authVO.getMemAuth() != null) {
-                    MemberAuth memberAuth = new MemberAuth();
-                    memberAuth.setMemCode(memVO.getMemCode());
-                    memberAuth.setMemAuth(authVO.getMemAuth());
-                    this.memMapper.authInsert(memberAuth);
-                }
-            }
+            getMembership(memVO, list);//회원권한을 얻다 ROLE_MEMBER
             List<TechStackVO> techStackVOList = memVO.getTechStackVOList();
-            for (TechStackVO vo : techStackVOList) {
-                if (vo.getTechStackCode() != null) {
-                    TechStackVO tech = new TechStackVO();
-                    tech.setMemCode(memVO.getMemCode());
-                    tech.setTechStackCode(vo.getTechStackCode());
-                    this.memMapper.insertTechStack(tech);
-                }
-            }
-            return "main/page";
+            getMemberTechStack(memVO, techStackVOList); // 공통코드로 관리하는 기술스텍
+            return "success";
         }
-        return "redirect:/main/page";
+        return "fail";
+    }
+
+    private void getMemberTechStack(MemVO memVO, List<TechStackVO> techStackVOList) {
+        for (TechStackVO vo : techStackVOList) {
+            if (vo.getTechStackCode() != null) {
+                TechStackVO tech = new TechStackVO();
+                tech.setMemCode(memVO.getMemCode());
+                tech.setTechStackCode(vo.getTechStackCode());
+                this.memMapper.insertTechStack(tech);
+            }
+        }
+    }
+
+    private void getMembership(MemVO memVO, List<MemberAuth> list) {
+        for (MemberAuth authVO : list) {
+            if (authVO.getMemAuth() != null) {
+                MemberAuth memberAuth = new MemberAuth();
+                memberAuth.setMemCode(memVO.getMemCode());
+                memberAuth.setMemAuth(authVO.getMemAuth());
+                this.memMapper.authInsert(memberAuth);
+            }
+        }
     }
 
 

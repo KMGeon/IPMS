@@ -16,13 +16,14 @@ public interface ProjMapper {
     public List<ProjVO>getListPage( );
     public List<ProjVO>getListPage(Criteria criteria);
     public int getWholeProjectTotal();
+    public int getWholeProjectTotal(Criteria criteria);
     public List<ProjVO>getProjId(String memEmail);
     public List<ProjVO> detailPage(String projId);
     public int projInsert(ProjVO projVO);
     public int insertProjMem(ProjMemVO projMemVO);
     public int projAuthInsert(MemberAuth memberAuth);
     public int joinProject(ProjVO projVO);
-    public List<MemVO>getDetailLeaderInfo(String projId);
+    public List<MemVO>getDetailLeaderInfo(String memCode);
     public List<ProjVO>checkMyProject(String projId);
     public int projectsAlreadyApplied(ProjVO projVO);
 }

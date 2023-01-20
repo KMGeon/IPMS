@@ -21,27 +21,12 @@ import java.util.List;
 public class WholeProjectImpl implements WholeProjectService {
     @Autowired
     ProjMapper projMapper;
-    @Inject
+    @Autowired
     WholeProjectService wholeProjectService;
-@Autowired
+    @Autowired
     MyPageMapper myPageMapper;
     @Transactional
-    public String goToProjectDetails(String projId, Model model, Authentication authentication, HttpServletResponse response) throws IOException {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        List<ProjVO> projVOList = this.wholeProjectService.getProjId(userDetails.getUsername());
-        for (ProjVO proj : projVOList) {
-            if (proj.getProjId().equals(projId)) {
-                List<ProjVO> detailList = this.wholeProjectService.detailPage(projId);
-                model.addAttribute("detailList", detailList);
-                return "main/wholeProject/projectDetail";
-            }
-        }
-        response.sendRedirect("/main/page");
-        return "main/page";
-    }
-
-    @Transactional
-    public int joinProjectProcess(ProjVO projVO, Authentication authentication){
+    public int joinProjectProcess(ProjVO projVO, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String memCode = myPageMapper.getMemCode(userDetails.getUsername());
         ProjVO vo = new ProjVO();
@@ -50,18 +35,20 @@ public class WholeProjectImpl implements WholeProjectService {
         return this.wholeProjectService.joinProject(vo);
     }
 
-
     @Override
     public int joinProject(ProjVO projVO) {
         return this.projMapper.joinProject(projVO);
     }
 
 
-
-
     @Override
     public int getWholeProjectTotal() {
         return this.projMapper.getWholeProjectTotal();
+    }
+
+    @Override
+    public int getWholeProjectTotal(Criteria criteria) {
+        return this.projMapper.getWholeProjectTotal(criteria);
     }
 
     @Override
@@ -85,7 +72,6 @@ public class WholeProjectImpl implements WholeProjectService {
     public List<ProjVO> checkMyProject(String projId) {
         return this.projMapper.checkMyProject(projId);
     }
-
 
 
 }

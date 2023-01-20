@@ -33,7 +33,7 @@ $(function(){
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
-                  alert("실패다");
+                  alert("실패");
                     console.log(errorThrown,textStatus);
               }
             });
@@ -87,7 +87,7 @@ function fn_replyAdd(param){
       },
       success : function(result) {
         location.reload();
-        // alert("하위댓글 인설트 성공");
+        // alert("댓글을 등록하였습니다.");
     },
     error: function (jqXHR, textStatus, errorThrown)
     {
@@ -124,7 +124,7 @@ function fn_lowCmtdelete(param){
     },
     error: function (jqXHR, textStatus, errorThrown)
     {
-        alert("하위댓글 삭제 실패");
+        alert("댓글 삭제 실패");
           console.log(errorThrown,textStatus);
     }
   });
@@ -161,7 +161,7 @@ function fn_delete(param){
           },
           error: function (jqXHR, textStatus, errorThrown)
           {
-            alert("실패다");
+            alert("실패");
               console.log(errorThrown,textStatus);
           }
       });
@@ -212,7 +212,7 @@ function fn_update(param){
   },
   error: function (jqXHR, textStatus, errorThrown)
   {
-      alert("실패다");
+      alert("실패");
         console.log(errorThrown,textStatus);
   }
 });
@@ -255,7 +255,7 @@ $("#comple").on("click",function(){ // 해결
       },
       error: function (jqXHR, textStatus, errorThrown)
     {
-      alert("실패다");
+      alert("실패");
           console.log(errorThrown,textStatus);
         }
       });
