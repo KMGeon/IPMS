@@ -136,23 +136,34 @@ public class DashboardController {
 		criteria.setAmount(15);
 		log.info("aprov-------------------"+criteria.getAprov());
 		List<TaskVO> taskList = dashBoardService.selectTaskList(criteria);
-		if(taskList.size() == 0) {
-		for (TaskVO taskVO : taskList) {
-			int index = 0;
-			if(taskVO.getHighTaskId() == null) {
-				String taskId = taskVO.getTaskId(); 
-				int prges = 0;
-				int taskSeq = 0;
-				for (TaskVO taskVO2 : taskList) {
-					if(taskId.equals(taskVO2.getHighTaskId())) {
-						prges += taskVO2.getTaskPgres();
-						taskSeq++;
+		if(taskList.size() != 0) {
+			for (TaskVO taskVO : taskList) {
+				int index = 0;
+				if(taskVO.getHighTaskId() == null) {
+					String taskId = taskVO.getTaskId(); 
+					int prges = 0;
+					int taskSeq = 0;
+					
+					for (TaskVO taskVO2 : taskList) {
+						log.info("taskId: {}, highTaskId: {}",taskId,taskVO2.getHighTaskId());
+						if(taskId.equals(taskVO2.getHighTaskId())) {
+							prges += taskVO2.getTaskPgres();
+							taskSeq++;
+							log.info("preges : {}", prges);
+							log.info("listSize : {}",taskSeq);
+						}
 					}
-				}
-				int resultPgres = (prges / taskSeq);
-				taskVO.setTaskPgres(resultPgres);
-				taskList.set(index, taskVO);
-				index++;
+					int resultPgres = 0;
+					if(taskSeq != 0) {
+						resultPgres = (prges / taskSeq);		
+						taskVO.setTaskPgres(resultPgres);
+						taskList.set(index, taskVO);
+					}else {
+						taskVO.setTaskPgres(0);
+						taskList.set(index, taskVO);
+					}
+					log.info("resultPgres : {}", resultPgres);
+					index++;
 				}
 			}
 		}
@@ -189,21 +200,33 @@ public class DashboardController {
 		Map<String, Object> map = new HashedMap();
 		map.put("projId", projId);
 		List<TaskVO> taskList = dashBoardService.selectTask(map);
+		
 		for (TaskVO taskVO : taskList) {
 			int index = 0;
 			if(taskVO.getHighTaskId() == null) {
 				String taskId = taskVO.getTaskId(); 
 				int prges = 0;
 				int taskSeq = 0;
+				
 				for (TaskVO taskVO2 : taskList) {
+					log.info("taskId: {}, highTaskId: {}",taskId,taskVO2.getHighTaskId());
 					if(taskId.equals(taskVO2.getHighTaskId())) {
 						prges += taskVO2.getTaskPgres();
 						taskSeq++;
+						log.info("preges : {}", prges);
+						log.info("listSize : {}",taskSeq);
 					}
 				}
-				int resultPgres = (prges / taskSeq);
-				taskVO.setTaskPgres(resultPgres);
-				taskList.set(index, taskVO);
+				int resultPgres = 0;
+				if(taskSeq != 0) {
+					resultPgres = (prges / taskSeq);		
+					taskVO.setTaskPgres(resultPgres);
+					taskList.set(index, taskVO);
+				}else {
+					taskVO.setTaskPgres(0);
+					taskList.set(index, taskVO);
+				}
+				log.info("resultPgres : {}", resultPgres);
 				index++;
 			}
 		}

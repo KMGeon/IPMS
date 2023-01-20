@@ -38,54 +38,60 @@ public class NewProjectService {
 
 
     @Transactional
-    public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication, MultipartFile[] uploadFile ) {
+    public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication, MultipartFile[] uploadFile) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-//        String uploadFolder = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\\resources\\upload\\img";
-        String uploadFolder = servletContext.getRealPath("/") + "\\resources\\upload\\img";
-
-        for (MultipartFile multipartFile : uploadFile) {
-            log.info("Upload File Name: " + multipartFile.getOriginalFilename());
-            log.info("Upload File Size: " + multipartFile.getSize());
-
-            File saveFile = new File(uploadFolder, multipartFile.getOriginalFilename());
-            projVO.setProjImgRoute(multipartFile.getOriginalFilename());
-
-            try {
-                multipartFile.transferTo(saveFile);
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            } // end catch
-        } // end for
-        //프로젝트 생성
+        String uploadFolder = "C:\\eGovFrame-4.0.0\\workspace.edu\\ipms\\src\\main\\webapp\\resources\\upload\\img";
+        uploadProjectMainImage(projVO, uploadFile, uploadFolder);
         if (this.projInsert(projVO) == 1) {
-
-            //프로젝트 생성  -> 프로젝트 멤버 생성
-            ProjMemVO vo = new ProjMemVO();
-            vo.setProjId(projVO.getProjId());
-            vo.setMemCode(myPageMapper.getMemCode(userDetails.getUsername()));
-            this.insertProjMem(vo);
-
-            //권한부여 ROLE_MEMBER , ROLE_PROJECT_LEADER
-            List<MemberAuth> memberAuthList = memVO.getMemAuthList();
-            for (MemberAuth authVO : memberAuthList) {
-                if (authVO.getMemAuth() != null) {
-                    MemberAuth memberAuth = new MemberAuth();
-                    memberAuth.setMemCode(myPageMapper.getMemCode(userDetails.getUsername()));
-                    memberAuth.setProjId(projVO.getProjId());
-                    memberAuth.setMemAuth(authVO.getMemAuth());
-                    this.projAuthInsert(memberAuth);
-                }
-            }
-
-            // 프로젝트 생성 시 프로젝트 폴더(문서함)생성
-            FtpUtil.createDirectory("/", projVO.getProjId());
-            //프로젝트 생성시 채팅방 생성
-            chatMapper.createChatRoom(projVO);
+            createProject(projVO, userDetails);//프로젝트 생성  -> 프로젝트 멤버 생성
+            getMemberShip(projVO, memVO, userDetails);//권한부여 ROLE_MEMBER , ROLE_PROJECT_LEADER
+            FtpUtil.createDirectory("/", projVO.getProjId());// 프로젝트 생성 시 프로젝트 폴더(문서함)생성
+            chatMapper.createChatRoom(projVO);//프로젝트 생성시 채팅방 생성
             return "success";
-
         }
         return "fail";
+    }
+
+    private void createProject(ProjVO projVO, UserDetails userDetails) {
+        ProjMemVO vo = new ProjMemVO();
+        vo.setProjId(projVO.getProjId());
+        vo.setMemCode(myPageMapper.getMemCode(userDetails.getUsername()));
+        this.insertProjMem(vo);
+    }
+
+    private void getMemberShip(ProjVO projVO, MemVO memVO, UserDetails userDetails) {
+        List<MemberAuth> memberAuthList = memVO.getMemAuthList();
+        for (MemberAuth authVO : memberAuthList) {
+            if (authVO.getMemAuth() != null) {
+                setProjectPermissions(projVO, userDetails, authVO);
+            }
+        }
+    }
+
+    private void setProjectPermissions(ProjVO projVO, UserDetails userDetails, MemberAuth authVO) {
+        MemberAuth memberAuth = new MemberAuth();
+        memberAuth.setMemCode(myPageMapper.getMemCode(userDetails.getUsername()));
+        memberAuth.setProjId(projVO.getProjId());
+        memberAuth.setMemAuth(authVO.getMemAuth());
+        this.projAuthInsert(memberAuth);
+    }
+
+    private static void uploadProjectMainImage(ProjVO projVO, MultipartFile[] uploadFile, String uploadFolder) {
+        for (MultipartFile multipartFile : uploadFile) {
+            if (multipartFile.isEmpty()) {//파일이 없을 때
+                projVO.setProjImgRoute("IPMSlogo2.png");
+
+            } else {//파일이 있을 때 실행
+                File saveFile = new File(uploadFolder, multipartFile.getOriginalFilename());
+                projVO.setProjImgRoute(multipartFile.getOriginalFilename());
+
+                try {
+                    multipartFile.transferTo(saveFile);
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                } // end catch
+            }
+        }
     }
 
     private int projInsert(ProjVO projVO) {

@@ -25,9 +25,9 @@ public class WholeProjectController {
     MyPageMapper myPageMapper;
 
     @GetMapping(value = "/wholeProject")
-    public String wholeProject(Model model , Criteria cri) {
-        model.addAttribute("list",wholeProjectService.getListPage(cri));
-        model.addAttribute("pageMaker",new PageVO(cri,this.wholeProjectService.getWholeProjectTotal()));
+    public String wholeProject(Model model, Criteria cri) {
+        model.addAttribute("list", wholeProjectService.getListPage(cri));
+        model.addAttribute("pageMaker", new PageVO(cri, this.wholeProjectService.getWholeProjectTotal(cri)));
         return "main/wholeProject/wholeProject";
     }
 

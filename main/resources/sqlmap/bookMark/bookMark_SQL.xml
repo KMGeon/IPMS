@@ -60,7 +60,7 @@
 		                              ORDER BY PROJ_CREATN_DATE DESC ) A )
 		       WHERE RN > (#{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
 		]]>
-		order by PROJ_CREATN_DATE asc
+		order by PROJ_CREATN_DATE desc
 	</select>
 	
 	<select id="totalNum" resultType="int">
@@ -91,5 +91,6 @@
 		WHERE m.PROJ_ID = p.PROJ_ID
 		AND m.MEM_CODE = #{memId}
 		AND m.DELETE_YN = 'n'
+		order by PROJ_CREATN_DATE desc
 	</select>
 </mapper>

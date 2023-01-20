@@ -28,7 +28,7 @@
           AND P.PROJ_ID = #{projId}
         ]]>
     </select>
-
+	<!-- 초대 가능 인원 -->
     <select id="projectInvitationList" parameterType="com.ipms.main.newProject.vo.ProjVO"
             resultType="com.ipms.main.newProject.vo.ProjVO">
         <![CDATA[
@@ -49,6 +49,7 @@
         from INVITATION
         where invttnot = '1'
           AND PROJ_ID = #{projId})
+          
         ]]>
     </select>
 
@@ -86,12 +87,13 @@
     <select id="unapprovedInvitationList" parameterType="string"
             resultType="com.ipms.proj.projMemManageMent.vo.InvitationVO">
         SELECT invite_num,
-               mem_code,
+               (SELECT mem_name from mem m where m.mem_Code = i.mem_Code) as memCode,
                proj_id,
                invttnot
-        FROM invitation
+        FROM invitation i
         where proj_id = #{projId}
           and INVTTNOT = '1'
+          order by I.INVITE_NUM desc
     </select>
 
     <!-- 프로젝트 참여 인원 추방-->

@@ -75,12 +75,15 @@
                       ,(SELECT P.PROJ_IMG_ROUTE FROM PROJ P WHERE P.PROJ_ID = A.PROJ_ID) as proj_img_route
                       , P.PROJ_STRT_DATE
                       , p.PROJ_END_DATE
+                      , P.PROJ_OPN_WHTH
+                      , P.PROJ_CREATN_DATE
         FROM PROJ_MEM A ,  PROJ P
         WHERE A.MEM_CODE = #{memCode}
           AND A.prtpt_aprov_code = 'Y'
           AND A.DROPSTATUS = 'N'
           and a.proj_id = p.proj_id
           AND P.DELETE_WHTH='n'
+          ORDER BY P.PROJ_CREATN_DATE DESC
     </select>
 
 

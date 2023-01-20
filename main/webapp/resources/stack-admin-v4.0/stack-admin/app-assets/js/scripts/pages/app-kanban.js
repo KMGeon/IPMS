@@ -19,7 +19,7 @@ var modalCts = "";
 $(document).on("click", ".kanban-title-board", function (e) {
   dispNone(); // 모든 속성 readonly and display none;
   
-  alert("상위일감 정보 조회");
+  // alert("상위일감 정보 조회");
 
   $("#mbmodifybtn").css("display", "none");
   $("#taskPgresdiv").css("display", "none");
@@ -677,7 +677,7 @@ $("#taskPgres").on("change", function () {
 
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      alert("실패다");
+      alert("실패");
       console.log(errorThrown, textStatus);
     }
   });
@@ -703,13 +703,13 @@ $("#cpnbtn").on("click", function () {
         $(".kanban-overlay").removeClass("show");
         $(".kanban-sidebar").removeClass("show");
         if (result == 1 || result == '1') {
-          alert("승인완료");
+          alert("승인 완료");
         }
         location.reload();
 
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        alert("실패다");
+        alert("실패");
         console.log(errorThrown, textStatus);
       }
     });
@@ -733,7 +733,7 @@ $("#mbmodifybtn").on("click", function () {
   console.log(" taskCts : " , taskCts);
 
   if(modalCts == $("#taskCts").val()){
-    alert("내용수정하세요");
+    // alert("내용수정하세요");
     return;
   }
 
@@ -760,7 +760,7 @@ $("#mbmodifybtn").on("click", function () {
       xhr.setRequestHeader(header, token);
     },
     success: function (result) {
-      alert("업데이트 성공");
+      alert("수정 성공");
 
 
       $("div[data-eid=" + insertData.taskId + "]").find('span').text('반려(확인요망) → 수정완료').css("color", "deepskyblue");
@@ -776,7 +776,7 @@ $("#mbmodifybtn").on("click", function () {
 
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      alert("실패다");
+      alert("실패");
       console.log(errorThrown, textStatus);
     }
   });
@@ -824,7 +824,7 @@ $("#sendData").on("click", function (event) {
       location.reload();
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      alert("실패다");
+      alert("실패");
       console.log(errorThrown, textStatus);
     }
   });
@@ -960,7 +960,7 @@ function highWorkdel(e) {
       },
       success: function (data) {
         if (data == -1) {
-          alert("권한없음 , 리더에게 문의하세요");
+          alert("권한이 없습니다. 프로젝트 리더에게 문의하세요.");
         }
 
         location.reload();

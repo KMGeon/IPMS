@@ -1,6 +1,7 @@
 package com.ipms.main.login.controller;
 
 import com.ipms.security.domain.CustomUser;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -23,8 +24,7 @@ public class LoginController {
 
 
     // 비밀번호 찾기
-    @RequestMapping(value = "/fgtPwd", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/fgtPwd")
     public String ForgotPwd() {
         return "main/ForgotPassword/fgtPwd";
     }
@@ -35,8 +35,9 @@ public class LoginController {
     public String asd() {
         return "main/login/loginMain";
     }
+
     public static CustomUser getCustomUser() {
-        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUser user = (CustomUser) authentication.getPrincipal();
         return user;
     }

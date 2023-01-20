@@ -63,7 +63,7 @@
 			, QNA_TITLE
 			, QNA_CTS
 			, QNA_WRITE_DATE) 
-		VALUES(#{qnaNum}
+		VALUES(QNA_NUM_SEQ.NEXTVAL
 			, #{writer}
 			, #{qnaTitle}
 			, #{qnaCts}

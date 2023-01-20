@@ -16,10 +16,8 @@
     <bean id="bcryptPasswordEncoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
-
     <security:http>
         <security:intercept-url pattern="/main/newProjectForm" access="hasRole('ROLE_MEMBER')"/>
-        <security:intercept-url pattern="/proj/*" access="hasRole('ROLE_MEMBER')"/>
         <security:intercept-url pattern="/main/*" access="permitAll()"/>
         <security:form-login login-page="/main/loginForm"
                              username-parameter="memEmail"
@@ -29,10 +27,7 @@
                              authentication-success-handler-ref="customLoginSuccess"/>
         <security:access-denied-handler ref="customAccessDenied"/>
         <security:remember-me data-source-ref="dataSource" token-validity-seconds="604800"/>
-        <security:logout logout-url="/customLogout" invalidate-session="true" delete-cookies="remember-me,JSESSIONID" />
-        <security:session-management>
-            <security:concurrency-control max-sessions="1" expired-url="/main/page"></security:concurrency-control>
-        </security:session-management>
+        <security:logout logout-url="/customLogout" invalidate-session="true" delete-cookies="remember-me,JSESSION_ID" />
     </security:http>
 
     <security:authentication-manager>

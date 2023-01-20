@@ -43,8 +43,8 @@ public class ProjSettingServiceImpl implements ProjSettingService {
         }
         log.info("=======================================", projVO);
         if(this.projSettingMapper.modifyProjectSettings(projVO)==1){
-            return "main/page";
-        }return "main/page";
+            return "redirect:/main/page";
+        }return "redirect:/main/page";
     }
 
     @Override

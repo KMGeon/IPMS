@@ -28,7 +28,7 @@ $(function(){
 	  },
 	  error: function (jqXHR, textStatus, errorThrown)
 	  {
-	      alert("실패다");
+	      alert("실패");
 	        console.log(errorThrown,textStatus);
 	  }
 	});
@@ -59,7 +59,7 @@ $(function(){
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
-                  alert("실패다");
+                  alert("실패");
                     console.log(errorThrown,textStatus);
               }
             });
@@ -171,7 +171,7 @@ $(function(){
   },
   error: function (jqXHR, textStatus, errorThrown)
   {
-      alert("실패다");
+      alert("실패");
         console.log(errorThrown,textStatus);
   }
   });
@@ -254,7 +254,7 @@ function fn_lowCmtdelete(param){
     },
     error: function (jqXHR, textStatus, errorThrown)
     {
-        alert("하위댓글 삭제 실패");
+        alert("댓글 삭제 실패");
           console.log(errorThrown,textStatus);
     }
   });
@@ -291,7 +291,7 @@ function fn_delete(param){
           },
           error: function (jqXHR, textStatus, errorThrown)
           {
-            alert("실패다");
+            alert("실패");
               console.log(errorThrown,textStatus);
           }
       });
@@ -342,7 +342,7 @@ function fn_update(param){
   },
   error: function (jqXHR, textStatus, errorThrown)
   {
-      alert("실패다");
+      alert("실패");
         console.log(errorThrown,textStatus);
   }
 });
@@ -385,7 +385,7 @@ $("#comple").on("click",function(){ // 해결
       },
       error: function (jqXHR, textStatus, errorThrown)
     {
-      alert("실패다");
+      alert("실패");
           console.log(errorThrown,textStatus);
         }
       });
@@ -419,7 +419,7 @@ $("#noncomple").on("click",function(){ // 미해결
     },
     error: function (jqXHR, textStatus, errorThrown)
     {
-        alert("실패다");
+        alert("실패");
           console.log(errorThrown,textStatus);
     }
   });

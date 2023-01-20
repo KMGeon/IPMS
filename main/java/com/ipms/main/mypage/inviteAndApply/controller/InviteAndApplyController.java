@@ -21,42 +21,42 @@ import static com.ipms.main.login.controller.LoginController.getCustomUser;
 public class InviteAndApplyController {
     @Autowired
     InviteAndApplyService inviteAndApplyService;
+
     @GetMapping(value = "/inviteAndApply")
     @ResponseStatus(HttpStatus.OK)
     public String inviteOrApply() {
         return "main/mypage/inviteAndApply";
     }
+
     //신청한 프로젝트
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/projectsApplied")
-    public List<ProjMemVO>projectsApplied(){
+    public List<ProjMemVO> projectsApplied() {
         CustomUser user = getCustomUser();
-        List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(user.getMember().getMemCode());
-        return projectsApplied;
+        return this.inviteAndApplyService.projectsApplied(user.getMember().getMemCode());
     }
 
     //신청한 회원
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/memberWhoApplied")
-    public List<ProjMemVO>memberWhoApplied(){
+    public List<ProjMemVO> memberWhoApplied() {
         CustomUser user = getCustomUser();
-        List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(user.getMember().getMemCode());
-        return memberWhoApplied;
+        return this.inviteAndApplyService.memberWhoApplied(user.getMember().getMemCode());
     }
+
     //초대된 프로젝트
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/invitationWaitingList")
-    public List<InvitationVO>invitationWaitingList(String projId){
+    public List<InvitationVO> invitationWaitingList(String projId) {
         CustomUser user = getCustomUser();
-        List<InvitationVO> invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(user.getMember().getMemCode());
-        return invitationWaitingList;
+        return this.inviteAndApplyService.invitationWaitingList(user.getMember().getMemCode());
     }
-    
 
-// 신청한 회원-프로젝트 승인(신청한 회원)
+
+    // 신청한 회원-프로젝트 승인(신청한 회원)
     @ResponseBody
     @PostMapping(value = "/approveProject")
     @ResponseStatus(HttpStatus.CREATED)
@@ -76,7 +76,7 @@ public class InviteAndApplyController {
     @ResponseBody
     @PostMapping(value = "/acceptInvitation")
     @ResponseStatus(HttpStatus.CREATED)
-    public int acceptInvitation( @ModelAttribute ProjMemVO projMemVO ,@RequestParam(name = "projId") String projId) {
+    public int acceptInvitation(@ModelAttribute ProjMemVO projMemVO, @RequestParam(name = "projId") String projId) {
         CustomUser user = getCustomUser();
         projMemVO.setMemCode(user.getMember().getMemCode());
         projMemVO.setProjId(projId);

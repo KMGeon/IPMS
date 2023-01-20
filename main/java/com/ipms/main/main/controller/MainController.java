@@ -26,49 +26,18 @@ import java.util.List;
 @RequestMapping(value = "/main")
 public class MainController {
     @Autowired
-    MemManageMapper memManageMapper;
-
+    MainService mainService;
     @Autowired
     ProjectBookMarkService bookmarkservice;
-
     @Autowired
     OnGoingProjectService onGoingProjectService;
-    @Autowired
-    MainService mainService;
+
+    public static final String OK = "1";
+    public static final String No = "0";
 
     @GetMapping("/page")
     public String hello(Authentication auth, Model model) {
-        if (auth != null) {
-            auth = SecurityContextHolder.getContext().getAuthentication();
-            CustomUser user = (CustomUser) auth.getPrincipal();
-            String memCode = user.getMember().getMemCode();
-
-            List<BookMarkVO> bookMarkList = bookmarkservice.selectBookMark(memCode);
-            List<ProjMemVO> projList = this.onGoingProjectService.goingProjects(memCode);
-            model.addAttribute("bookMarkList", bookMarkList);
-            model.addAttribute("projList", projList);
-        }
         return "main/page";
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "test";
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/boardList", method = RequestMethod.GET)
-    public List<AlrmVO> boardList1() throws Exception {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUser user = null;
-        try {
-            user = (CustomUser) authentication.getPrincipal();
-            List<AlrmVO> list = this.memManageMapper.getAlrmList(user.getMember().getMemCode());
-            return list;
-        } catch (Exception ex) {
-            log.info("erw" + ex.getMessage());
-            throw new Exception(ex.getMessage());
-        }
     }
 
     @ResponseBody
@@ -82,14 +51,6 @@ public class MainController {
     @ResponseBody
     @RequestMapping(value = "/deleteAlrm", method = RequestMethod.POST)
     public int deleteAlrm(AlrmVO alrmVO) {
-        return this.memManageMapper.deleteAlrm(alrmVO);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/countAlrm", method = RequestMethod.POST)
-    public int countAlrm(AlrmVO alrmVO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUser user = (CustomUser) authentication.getPrincipal();
-        return this.memManageMapper.countAlrm(user.getMember().getMemCode());
+        return this.mainService.deleteAlrm(alrmVO);
     }
 }

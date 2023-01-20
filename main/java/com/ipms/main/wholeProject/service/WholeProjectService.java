@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface WholeProjectService {
     public int getWholeProjectTotal();
+
+    public int getWholeProjectTotal(Criteria criteria);
     public List<ProjVO>getListPage(Criteria criteria);
     public List<ProjVO>getProjId(String memEmail);
     public List<ProjVO> detailPage(String projId);

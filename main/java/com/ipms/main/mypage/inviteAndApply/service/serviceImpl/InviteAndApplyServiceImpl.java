@@ -27,11 +27,7 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     @Transactional
     public int approval(ProjMemVO projMemVO) {
         if (this.myPageMapper.approvalJoiningProject(projMemVO) == 1) {
-            MemberAuth memberAuth = new MemberAuth();
-            memberAuth.setMemCode(projMemVO.getMemCode());
-            memberAuth.setProjId(projMemVO.getProjId());
-            memberAuth.setMemAuth("ROLE_PROJECT");
-            this.projMapper.projAuthInsert(memberAuth);
+            getProjectAuth(projMemVO);
             return 1;
         }
         return 0;
@@ -41,15 +37,19 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     public int inviteAccept(ProjMemVO projMemVO) {
         if (this.myPageMapper.invitationApproved(projMemVO) == 1) {
             if (this.inviteAndApplyService.invitedMemberApproval(projMemVO) == 1) {
-                MemberAuth memberAuth = new MemberAuth();
-                memberAuth.setMemCode(projMemVO.getMemCode());
-                memberAuth.setProjId(projMemVO.getProjId());
-                memberAuth.setMemAuth("ROLE_PROJECT");
-                this.projMapper.projAuthInsert(memberAuth);
+                getProjectAuth(projMemVO);
                 return 1;
             }
         }
         return 0;
+    }
+
+    private void getProjectAuth(ProjMemVO projMemVO) {//Role_project 권한 생성
+        MemberAuth memberAuth = new MemberAuth();
+        memberAuth.setMemCode(projMemVO.getMemCode());
+        memberAuth.setProjId(projMemVO.getProjId());
+        memberAuth.setMemAuth("ROLE_PROJECT");
+        this.projMapper.projAuthInsert(memberAuth);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ipms.main.mypage.ongoingProject.controller;
 
+import com.ipms.main.mypage.inviteAndApply.service.InviteAndApplyService;
 import com.ipms.main.mypage.ongoingProject.service.OnGoingProjectService;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.security.domain.CustomUser;
@@ -21,17 +22,19 @@ import java.util.List;
 @Slf4j
 public class OngoingProjectController {
 
-	@Autowired
-	OnGoingProjectService onGoingProjectService;
+    @Autowired
+    OnGoingProjectService onGoingProjectService;
+    @Autowired
+    InviteAndApplyService inviteAndApplyService;
 
-	@GetMapping("/ongoing")
-	@ResponseStatus(HttpStatus.CREATED)
-	public String ongoing(Model model) {
-		Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-		CustomUser user = (CustomUser) authentication.getPrincipal();
-		List<ProjMemVO> list = this.onGoingProjectService.goingProjects(user.getMember().getMemCode());
-		model.addAttribute("list", list);
-		return "main/mypage/ongoingProject";
-	}
+    @GetMapping("/ongoing")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String ongoing(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        List<ProjMemVO> list = this.onGoingProjectService.goingProjects(user.getMember().getMemCode());
+        model.addAttribute("list", list);
+        return "main/mypage/ongoingProject";
+    }
 
 }
