@@ -7,9 +7,6 @@
 			SELECT NVL(SUBSTR(MAX(COMMON_CODE),1,1)|| TRIM(TO_CHAR(SUBSTR(MAX(COMMON_CODE),3) + 1,'000')),'T001')
 			FROM common_code
 		</selectKey>
-<!--		<selectKey order="BEFORE" resultType="integer" keyProperty="commonCodeSeq">-->
-<!--			SELECT NVL(MAX(common_code_seq),0)+1 FROM common_code-->
-<!--		</selectKey>-->
 
 		INSERT INTO common_code (
 			common_code,

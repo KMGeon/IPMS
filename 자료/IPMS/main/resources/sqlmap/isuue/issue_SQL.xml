@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.issue.mapper.IsuueMapper">
+	<select id="taskListSelect" parameterType="string" resultType="com.ipms.proj.issue.vo.IssueVO">
+		SELECT TASK_ID , TASK_TITLE
+		FROM TASK
+		WHERE HIGH_TASK_ID IS NOT NULL
+		AND PROJ_ID = #{projId}
+		AND DELETE_YN = 'n'
+	</select>
+	
+	<insert id="IssueDataInsert" parameterType="com.ipms.proj.issue.vo.IssueVO" >
+		<selectKey keyProperty="issueId" order="BEFORE" resultType="string">
+			select  NVL(MAX(TO_NUMBER(ISSUE_ID))+1,1) as ISSUE_ID
+        	from ISSUE
+		</selectKey>
+		
+		INSERT INTO ISSUE(
+			  ISSUE_ID
+			, TASK_ID
+			, ISSUE_TITLE
+			, ISSUE_CTS
+			, ISSUE_RGST_DATE
+			, ISSUE_STUS_CODE
+			, ITGRN_ATTACH_FILE_NUM
+			, DELETE_YN
+			, WRITER
+			, PROJ_ID)
+		VALUES(
+			 #{issueId}
+			,#{taskId}
+			,#{issueTitle}
+			,#{issueCts}
+			,sysdate
+			,'미해결'
+			,#{itgrnAttachFileNum}
+			,'n'
+			, #{writer}
+			, #{projId}
+			)
+	</insert>
+	
+	
+	<select id="MaxFileNumSelect" resultType="int">
+		SELECT NVL(MAX(INTG_ATTACH_FILE_NUM)+1,1) 
+		FROM INTG_ATTACH_FILE
+	</select>
+
+	<select id="IssueListSelect" resultType="com.ipms.proj.issue.vo.IssueVO">
+		SELECT 
+		 ISSUE_ID
+		, TASK_ID
+		, ISSUE_TITLE
+		, ISSUE_CTS
+		, TO_CHAR(TO_DATE(ISSUE_RGST_DATE,'YY-MM-DD'),'YYYY-MM-DD') AS ISSUE_RGST_DATE
+		, ISSUE_STUS_CODE
+		, ITGRN_ATTACH_FILE_NUM
+		, DELETE_YN
+		, (SELECT MEM_NAME FROM MEM WHERE WRITER = MEM_CODE) AS WRITER
+		FROM ISSUE
+		ORDER BY TO_NUMBER(ISSUE_ID) ASC
+	
+	</select>
+	
+	
+	<select id="issuePage" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.proj.issue.vo.IssueVO" >
+		<![CDATA[
+			SELECT 
+              ISSUE_ID
+              , TASK_ID
+              , ISSUE_TITLE
+              , ISSUE_CTS
+              , ISSUE_RGST_DATE
+              , ISSUE_STUS_CODE
+              , ITGRN_ATTACH_FILE_NUM
+              , DELETE_YN
+              , (SELECT MEM_NAME FROM MEM WHERE WRITER = MEM_CODE) AS WRITER
+              , PROJ_ID
+            FROM ( SELECT ROWNUM RN
+                      , ISSUE_ID
+                      , TASK_ID
+                      , ISSUE_TITLE
+                      , ISSUE_CTS
+                      , ISSUE_RGST_DATE
+                      , ISSUE_STUS_CODE
+                      , ITGRN_ATTACH_FILE_NUM
+                      , DELETE_YN
+                      , WRITER
+                      , PROJ_ID
+                FROM( SELECT ISSUE_ID
+	                      , TASK_ID
+	                      , ISSUE_TITLE
+	                      , ISSUE_CTS
+	                      , ISSUE_RGST_DATE
+	                      , ISSUE_STUS_CODE
+	                      , ITGRN_ATTACH_FILE_NUM
+	                      , DELETE_YN
+	                      , WRITER
+                          , PROJ_ID
+                FROM ISSUE
+                WHERE 1=1
+	            ]]>
+ 	            	<if test='keyword != ""'> AND ISSUE_TITLE LIKE '%'||#{keyword}||'%'</if>
+ 	            	<if test='comple.equals("comple")'>AND ISSUE_STUS_CODE LIKE '해결'</if>
+ 	            	<if test='noncomple.equals("noncomple")'>AND ISSUE_STUS_CODE LIKE '미해결'</if>
+	            <![CDATA[
+                AND PROJ_ID = #{projId}
+               	ORDER BY  TO_NUMBER(ISSUE_ID) DESC 
+					) A )
+	            WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+	            
+            ]]>
+		
+	</select>
+	
+	<select id="totalNum" parameterType="com.ipms.commons.vo.Criteria" resultType="int">
+		SELECT COUNT(ISSUE_ID)
+		FROM ISSUE
+		WHERE PROJ_ID = #{projId}
+           	  <if test='keyword != ""'> AND ISSUE_TITLE LIKE '%'||#{keyword}||'%'</if>
+ 	           <if test='comple.equals("comple")'>AND ISSUE_STUS_CODE LIKE '해결'</if>
+ 	           <if test='noncomple.equals("noncomple")'>AND ISSUE_STUS_CODE LIKE '미해결'</if>
+		
+	</select>
+	
+	<select id="IssueDetail" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="com.ipms.proj.issue.vo.IssueVO">	
+		SELECT ISSUE_ID
+			, TASK_ID
+			, (
+				SELECT TASK_TITLE
+				FROM TASK T , ISSUE I
+				WHERE T.TASK_ID = I.TASK_ID
+				AND I.ISSUE_ID = #{issueId}
+			) as TASK_TITLE
+             , (SELECT MEM_NAME FROM MEM WHERE  I.WRITER = MEM_CODE) AS WRITER
+			, ISSUE_TITLE
+			, ISSUE_CTS
+			, ISSUE_RGST_DATE
+			, ISSUE_STUS_CODE
+			, ITGRN_ATTACH_FILE_NUM
+			, PROJ_ID
+			, DELETE_YN
+            , SAVE_FILE_NAME
+			, FILE_NAME
+            , FILE_TYPE
+            , FILE_PATH
+		FROM ISSUE I , INTG_ATTACH_FILE F
+		WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM(+)
+        AND ISSUE_ID =#{issueId}
+		AND PROJ_ID =#{projId}
+	</select>
+	
+	<select id="IssueUpdateDetail" parameterType="com.ipms.proj.issue.vo.IssueVO" resultType="com.ipms.proj.issue.vo.IssueVO">
+		SELECT ISSUE_ID
+			, TASK_ID
+			, ISSUE_TITLE
+			, ISSUE_CTS
+			, ISSUE_RGST_DATE
+			, ISSUE_STUS_CODE
+			, ITGRN_ATTACH_FILE_NUM
+			, DELETE_YN, WRITER
+                    , (
+	                      SELECT  SAVE_FILE_NAME
+	                      FROM INTG_ATTACH_FILE
+	                      WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM
+ 	                      AND ATTACH_FILE_SEQ = 1
+                      ) AS FILE_PATH
+                    , (
+                      SELECT  FILE_NAME
+                      FROM INTG_ATTACH_FILE
+                      WHERE ITGRN_ATTACH_FILE_NUM = INTG_ATTACH_FILE_NUM
+                       AND ATTACH_FILE_SEQ = 1
+                      ) AS FILE_NAME
+		FROM ISSUE
+		WHERE ISSUE_ID =  #{issueId})
+		AND PROJ_ID = #{projId}
+	</select>
+	
+	<insert id="uploadFileInsert" parameterType="com.ipms.commons.ftp.vo.IntgAttachFileVO" >
+		INSERT INTO INTG_ATTACH_FILE(
+              INTG_ATTACH_FILE_NUM
+            , ATTACH_FILE_SEQ
+            , FILE_PATH
+            , FILE_NAME
+            , SAVE_FILE_NAME
+            , FILE_SIZE
+            , FILE_SIZE_NAME
+            , RGST_DATE
+            , RGST_ID
+            , FILE_DELETE_YN
+            , FILE_TYPE) 
+     VALUES(	
+           	   #{intgAttachFileNum}
+               ,#{attachFileSeq}
+			   ,#{filePath}
+			   ,#{fileName}
+			   ,#{saveFileName}
+			   ,#{fileSize}
+			   ,#{fileSizeName}
+			   ,sysdate
+			   ,#{rgstId}
+			   ,'n'
+			   ,#{fileType}
+		   )
+	
+	</insert>
+	
+	<select id="getMemCode" parameterType="string" resultType="string">
+		SELECT MEM_CODE
+		FROM MEM
+		WHERE MEM_EMAIL =#{userName} 
+	</select>
+	
+	<select id="getUserName" parameterType="string" resultType="string">
+		SELECT MEM_NAME
+		FROM MEM
+		WHERE MEM_EMAIL =#{memName}
+	</select>
+	
+	<update id="issueStatusCompl" parameterType="com.ipms.proj.issue.vo.IssueVO">
+		UPDATE ISSUE
+		SET ISSUE_STUS_CODE = #{issueStusCode}
+		WHERE ISSUE_ID = #{issueId}
+	</update>
+	
+	<update id="issueStatusNonCompl" parameterType="com.ipms.proj.issue.vo.IssueVO">
+		UPDATE ISSUE
+		SET ISSUE_STUS_CODE = #{issueStusCode}
+		WHERE ISSUE_ID = #{issueId}
+	</update>
+
+</mapper>

@@ -8,19 +8,17 @@ import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.proj.projMemManageMent.mapper.MemManageMapper;
 import com.ipms.proj.projMemManageMent.service.ProjMemManageMentService;
 import com.ipms.proj.projMemManageMent.vo.InvitationVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProjMemManageMentServiceImpl implements ProjMemManageMentService {
-    @Autowired
-    MemManageMapper memManageMapper;
-    @Autowired
-    ProjMemManageMentService projMemManageMentService;
-    @Autowired
-    MyPageMapper myPageMapper;
+
+    private final MemManageMapper memManageMapper;
 
     @Override
     public List<ProjVO> dropSupportPersonnel(ProjVO projVO) {

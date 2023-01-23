@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.taskcomment.mapper.TaskCommentMapper">
+	<insert id="taskHighCmtInsert" parameterType="com.ipms.proj.taskcomment.vo.TaskCommentVO">
+		INSERT INTO TASK_CMT(
+           TASK_CMT_ID
+           , TASK_ID
+           , HIGH_CMT_ID
+           , TASK_CMT_CTS
+           , TASK_CMT_WRITE_DATE
+           , LOW_RGST_SEQ
+           , DELETE_YN
+           , WRITER)
+    	VALUES
+    		('1',#{taskId},null,#{taskCmtCts},sysdate,null,'n','박종환')
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

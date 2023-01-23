@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.admin.adminServiceCenter.adminSvcNotice.mapper.AdminSvcNoticeMapper">
+
+	<resultMap type="com.ipms.main.serviceCenter.svcNotice.vo.SvcNoticeVO" id="svcNoticeVO">
+		<result property="siteNtNum" column="SITE_NT_NUM" />
+		<result property="siteNtTitle" column="SITE_NT_TITLE" />
+		<result property="siteNtCts" column="SITE_NT_CTS" />
+		<result property="siteNtWriteDate" column="SITE_NT_WRITE_DATE" />
+		<result property="ntCtgCode" column="NT_CTG_CODE" />
+		<result property="deleteYn" column="DELETE_YN" />
+	</resultMap>
+
+	<select id="selectNotice" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.main.serviceCenter.svcNotice.vo.SvcNoticeVO">
+		
+	SELECT SITE_NT_NUM, SITE_NT_TITLE, SITE_NT_WRITE_DATE
+	FROM (
+	    SELECT ROWNUM RN, A.SITE_NT_NUM, A.SITE_NT_TITLE, A.SITE_NT_WRITE_DATE
+	    FROM(
+        SELECT SITE_NT_NUM, SITE_NT_TITLE, SITE_NT_WRITE_DATE
+        FROM SITE_NT
+        WHERE NT_CTG_CODE = 'notice'
+        <if test="keyword != null and keyword != ''">
+        <if test="category.equals('title')">
+            AND SITE_NT_TITLE LIKE #{keyword}
+        </if>
+        <if test="category.equals('cts')">
+            AND SITE_NT_CTS LIKE #{keyword}
+        </if>
+        </if>
+        <if test="searchDate != null">
+        	AND SITE_NT_WRITE_DATE = #{searchDate}
+        </if>
+      	  	AND DELETE_YN = 'n'
+       		ORDER BY SITE_NT_WRITE_DATE DESC
+  		  ) A
+		)
+		WHERE RN <![CDATA[>]]> ( #{pageNum} - 1 ) * #{amount} AND RN <![CDATA[<=]]> #{pageNum} * #{amount}
+    
+	</select>
+
+	<select id="total" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT 
+			COUNT(SITE_NT_NUM)
+		FROM 
+			SITE_NT
+		WHERE
+			NT_CTG_CODE = 'notice'
+		AND
+			DELETE_YN = 'n'
+		<if test="keyword != null and keyword != ''">
+        <if test="category.equals('title')">
+            AND SITE_NT_TITLE LIKE #{keyword}
+        </if>
+        <if test="category.equals('cts')">
+            AND SITE_NT_CTS LIKE #{keyword}
+        </if>
+        </if>
+         <if test="searchDate != null">
+        	AND SITE_NT_WRITE_DATE = #{searchDate}
+        </if>
+	</select>
+	
+	<select id="SiteNoticeDetail" parameterType="int" resultMap="svcNoticeVO">
+		SELECT 
+			SITE_NT_NUM,
+			SITE_NT_TITLE,
+			SITE_NT_CTS,
+			SITE_NT_WRITE_DATE
+		FROM 
+			SITE_NT
+		WHERE 
+			SITE_NT_NUM = #{siteNtNum}
+	</select>
+	
+	<update id="siteNoticeUpdate" parameterType="com.ipms.main.serviceCenter.svcNotice.vo.SvcNoticeVO">
+		UPDATE 
+			site_nt
+	    SET
+	      SITE_NT_TITLE = #{siteNtTitle},
+	      SITE_NT_CTS  = #{siteNtCts}
+		WHERE
+		    site_nt_num = #{siteNtNum}
+	</update>
+	
+	<update id="siteNoticeDelete" parameterType="com.ipms.main.serviceCenter.svcNotice.vo.SvcNoticeVO">
+		UPDATE 
+			site_nt
+	    SET
+	      DELETE_YN = 'y'
+		WHERE
+		    site_nt_num = #{siteNtNum}
+	</update>
+	
+	<update id="siteNoticeDeleteList" parameterType="java.util.List"> 
+	   <foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
+	    UPDATE 	
+	    	site_nt
+	    SET		
+	    	 DELETE_YN = 'y'
+	    WHERE
+	     	site_nt_num = #{item.siteNtNum}
+	  </foreach> 
+	</update>
+</mapper>

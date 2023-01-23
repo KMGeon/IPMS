@@ -4,6 +4,7 @@ import com.ipms.main.admin.techStackManagement.service.TechStackService;
 import com.ipms.main.admin.techStackManagement.vo.TechStackVO;
 import com.ipms.main.register.service.MemService;
 import com.ipms.main.register.vo.CommonCodeVO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,13 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Slf4j
-@RequestMapping("/main")
 @Controller
+@RequiredArgsConstructor
+@RequestMapping("/main")
 public class TechStackController {
-    @Autowired
-    MemService memService;
-    @Autowired
-    TechStackService techStackService;
+
+    private final MemService memService;
+    private final TechStackService techStackService;
 
     @GetMapping(value = "/techStackManager")
     public String techStackManager(Model model) {
@@ -42,6 +43,4 @@ public class TechStackController {
     public int clearSkillStack(String commonCodeValue) {
         return this.techStackService.clearSkillStack(commonCodeValue);
     }
-
-
 }

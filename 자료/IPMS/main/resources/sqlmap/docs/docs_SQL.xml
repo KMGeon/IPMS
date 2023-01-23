@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace : xml파일은 여러개일 수 있음.
+이를 구별하기 위한 식별 용도로 사용 -->
+<mapper namespace="com.ipms.proj.docs.mapper.DocsMapper">
+
+	<!-- 문서함 조회 -->
+	<select id="selectDocs" parameterType="com.ipms.proj.docs.vo.DocsVO" resultType="com.ipms.proj.docs.vo.DocsVO">
+		SELECT FOLD_ID
+			, PROJ_ID
+			, MEM_CODE
+			, FOLD_NAME
+			, HIGH_FOLD_ID
+			, DELETE_YN
+		FROM OUTPUT_FOLD
+		WHERE PROJ_ID = #{projId}
+		ORDER BY FOLD_ID ASC
+	</select>
+	
+	<!-- 폴더 생성 -->
+	<insert id="insertFolder" parameterType="com.ipms.proj.docs.vo.DocsVO">
+		INSERT INTO OUTPUT_FOLD(FOLD_ID
+			, PROJ_ID
+			, MEM_CODE
+			, FOLD_NAME) 
+		VALUES(OUTPUT_FOLD_SEQ.NEXTVAL
+			, '5'
+			, '3'
+			,#{foldName})
+	
+	</insert>
+	
+	
+</mapper>
+

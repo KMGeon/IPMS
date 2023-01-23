@@ -4,6 +4,7 @@ import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.register.service.MemService;
 import com.ipms.main.register.vo.CommonCodeVO;
 import com.ipms.main.register.vo.TechStackVO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,13 +15,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/main")
 public class registerMemController {
-    @Autowired
-    MemService memService;
+
+    private MemService memService;
     public static final String VIEW_REDIRECT_OK = "success";
+
+    @Autowired
+    public registerMemController(MemService memService) {
+        this.memService = memService;
+    }
 
     @GetMapping(value = "/signUpForm")
     public String signUpFormGet(Model model) {

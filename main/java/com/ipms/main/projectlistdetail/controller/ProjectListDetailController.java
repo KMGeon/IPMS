@@ -6,6 +6,7 @@ import com.ipms.main.projectlistdetail.service.ProjectListDetailService;
 import com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO;
 import com.ipms.main.wholeProject.service.WholeProjectService;
 import com.ipms.security.domain.CustomUser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,12 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping("/main")
+@RequiredArgsConstructor
 public class ProjectListDetailController {
-    @Autowired
-    WholeProjectService wholeProjectService;
-    @Autowired
-    ProjectListDetailService projectListDetailService;
+
+    private final WholeProjectService wholeProjectService;
+
+    private final ProjectListDetailService projectListDetailService;
 
     @GetMapping(value = "/projectDetail/{projId}")
     public String projectDetail(@PathVariable("projId") String projId, Model model) {

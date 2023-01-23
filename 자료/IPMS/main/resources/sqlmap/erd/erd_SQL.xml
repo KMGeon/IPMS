@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.erd.mapper.ErdMapper">
+
+	<resultMap type="com.ipms.proj.erd.vo.ErdVO" id="erdVO">
+		<result property="projId" column="proj_id" />
+		<result property="writer" column="mem_code" />
+		<result property="erdNum" column="erd_Num" />
+		<result property="erdTitle" column="erd_title" />
+		<result property="erdProjData" column="erd_proj_data" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="deleteWhth" column="delete_yn" />
+	</resultMap>
+
+	<insert id="insertErd" parameterType="com.ipms.proj.erd.vo.ErdVO">
+		<selectKey keyProperty="erdNum" order="BEFORE" resultType="int">
+			select nvl(max(erd_Num),0)+1 from erd_proj
+		</selectKey>
+	
+		INSERT INTO erd_proj ( 
+			proj_id,
+			writer,
+		    erd_Num,
+		    erd_title,
+		    erd_proj_data
+		) VALUES (
+			#{projId},
+			#{writer},
+		    #{erdNum},
+		    #{erdTitle},
+		    #{erdProjData}
+		)
+	
+	</insert>
+	
+	<select id="selectVer" parameterType="com.ipms.proj.erd.vo.ErdVO" resultMap="erdVO">
+	SELECT
+		erd_Num,
+		erd_title
+	FROM
+		erd_proj
+	where 
+		DELETE_YN = 'n'	
+	and 
+		proj_id = #{projId}
+	</select>
+	
+	<select id="selectErd" parameterType="com.ipms.proj.erd.vo.ErdVO" resultMap="erdVO">
+		select 
+		    erd_title,
+		    erd_proj_data
+		from 
+			erd_proj
+		where 
+		<if test="erdNum == 0">
+			erd_Num = (select max(erd_Num) from erd_proj where DELETE_YN = 'n' and proj_id = #{projId})
+		</if>
+		<if test="erdNum != 0">
+			erd_num = #{erdNum}
+		</if>
+		and DELETE_YN = 'n'	
+	</select>
+	
+	<update id="erdUpdate" parameterType="com.ipms.proj.erd.vo.ErdVO">
+		UPDATE erd_proj
+	    SET
+	        erd_title = #{erdTitle},
+	        erd_proj_data = #{erdProjData}
+		WHERE
+		    erd_Num =#{erdNum}
+
+	</update>
+	
+	<update id="erdDelete" parameterType="com.ipms.proj.erd.vo.ErdVO">
+		UPDATE erd_proj
+    	SET
+        	DELETE_YN = 'y'
+		WHERE
+			erd_num =#{erdNum}
+	</update>
+</mapper>

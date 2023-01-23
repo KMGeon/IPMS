@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.dashboard.mapper.DashBoardMapper">
+	
+	<select id="selectTask" parameterType="hashmap" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT
+		    task_id,
+		    proj_id,
+		    (SELECT m.mem_name FROM mem m WHERE t.mem_code = m.mem_code) as memCode,
+		    high_task_id,
+		    task_title,
+		    task_strt_date,
+		    task_end_date,
+		    task_stus_code,
+		    task_pgres,
+		    low_rgst_seq,
+		    aprov_whth,
+		    task_repre,
+		    delete_yn,
+		    refer_cts,
+		    work_update_num
+		FROM
+    		task t
+		WHERE
+			proj_id = #{projId}
+		AND
+			delete_yn ='n'
+	</select>
+	
+	<select id="selectIssue" parameterType="hashmap" resultType="com.ipms.proj.issue.vo.IssueVO">
+		 SELECT
+		    issue_id,
+		    task_id,
+		    issue_title,
+		    issue_rgst_date,
+		    issue_stus_code,
+		    itgrn_attach_file_num,
+		    delete_yn,
+		    (SELECT m.mem_name FROM mem m WHERE i.writer = m.mem_code) as writer
+		FROM
+		    issue i
+		WHERE
+			proj_id = #{projId}
+		AND
+			delete_yn ='n'
+	</select>
+	
+	<select id="selectProjNotice" parameterType="hashmap" resultType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
+		SELECT
+		    p.proj_nt_num,
+		    p.proj_id,
+		    (SELECT m.mem_name FROM mem m WHERE p.MEM_CODE = m.mem_code) as memCode,
+		    p.proj_nt_title,
+		    p.itgrn_attach_file_num,
+		    p.delete_yn,
+		    p.proj_nt_write_date
+		FROM
+		    proj_nt p
+		WHERE
+			p.proj_id = #{projId}
+		AND
+			p.delete_yn ='n'
+	</select>
+	
+	<select id="selectProjBoard" parameterType="hashmap" resultType="com.ipms.proj.freeboard.vo.FreeboardVO">
+		SELECT
+		    proj_bd_id,
+		    (SELECT m.mem_name FROM mem m WHERE p.writer = mem_code) as writer,
+		    proj_id,
+		    proj_bd_title,
+		    proj_bd_write_date,
+		    itgrn_attach_file_num,
+		    delete_yn
+		FROM
+		    proj_bd p
+		WHERE
+			proj_id = #{projId}
+		AND
+			p.delete_yn ='n'
+	</select>
+	
+	<select id="selectPgres" parameterType="hashmap" resultType="map">
+		SELECT 
+		    COUNT(TASK_ID) as task,
+		    SUM(TASK_PGRES) as pgres
+		FROM 
+			TASK
+		WHERE 
+			PROJ_ID = #{projId}
+	</select>
+	
+	<select id="selectErd" parameterType="hashmap" resultType="com.ipms.proj.erd.vo.ErdVO">
+	SELECT
+	    erd_num,
+	    proj_id,
+	    (SELECT mem_name FROM mem WHERE MEM_CODE = e.writer) writer,
+	    erd_title,
+	    delete_yn
+	FROM
+	    erd_proj e
+	WHERE
+		proj_id = #{projId}
+	AND
+		delete_yn ='n'
+	</select>
+	
+	<select id="selectWiki" parameterType="hashmap" resultType="com.ipms.proj.wiki.vo.WikiVO">
+	SELECT
+	    wiki_id,
+	    proj_id,
+	     (SELECT mem_name FROM mem WHERE w.MEM_CODE = mem_code) as memCode,
+	    high_wiki_id,
+	    wiki_title,
+	    wiki_write_date,
+	    delete_yn
+	FROM
+	    wiki w
+	WHERE
+		proj_id = #{projId}
+	AND
+		delete_yn ='n'
+	</select>
+	
+	<select id="selectProj" parameterType="hashmap" resultType="com.ipms.main.newProject.vo.ProjVO">
+		SELECT
+		    proj_id,
+		    proj_name,
+		    proj_strt_date,
+		    proj_end_date,
+		    proj_opn_whth,
+		    proj_creatn_date,
+		    proj_img_route,
+		    delete_whth
+		FROM
+		    proj
+		WHERE 
+		    proj_id = #{projId}
+	</select>
+	
+	<select id="selectTaskList" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.proj.task.vo.TaskVO">
+		SELECT 
+			TASK_ID, 
+			PROJ_ID, 
+			MEM_CODE, 
+			HIGH_TASK_ID, 
+			TASK_TITLE, 
+			TASK_STRT_DATE, 
+			TASK_END_DATE, 
+			TASK_STUS_CODE, 
+			TASK_PGRES, 
+			LOW_RGST_SEQ, 
+			APROV_WHTH, 
+			(SELECT M.MEM_NAME FROM MEM M WHERE M.MEM_CODE = B.MEM_CODE) as TASK_REPRE, 
+			DELETE_YN, 
+			REFER_CTS, 
+			WORK_UPDATE_NUM
+		FROM (
+	    SELECT ROWNUM RN, 
+	    		TASK_ID, 
+	    		A.PROJ_ID, 
+	    		A.MEM_CODE, 
+	    		A.HIGH_TASK_ID, 
+	    		A.TASK_TITLE,  
+	    		A.TASK_STRT_DATE, 
+	    		A.TASK_END_DATE, 
+	    		A.TASK_STUS_CODE, 
+	    		A.TASK_PGRES, 
+	    		A.LOW_RGST_SEQ, 
+	    		A.APROV_WHTH, 
+	    		A.TASK_REPRE, 
+	    		A.DELETE_YN, 
+	    		A.REFER_CTS, 
+	    		A.WORK_UPDATE_NUM
+	    FROM(
+        SELECT 
+            B.TASK_ID, 
+            B.PROJ_ID, 
+            B.MEM_CODE, 
+            B.HIGH_TASK_ID, 
+            B.TASK_TITLE, 
+            B.TASK_STRT_DATE, 
+            B.TASK_END_DATE, 
+            B.TASK_STUS_CODE, 
+            B.TASK_PGRES, 
+            B.LOW_RGST_SEQ, 
+            B.APROV_WHTH,
+            B.TASK_REPRE, 
+            B.DELETE_YN, 
+            B.REFER_CTS, 
+            B.WORK_UPDATE_NUM
+        FROM TASK B
+        WHERE B.PROJ_ID = #{projId}
+        <if test="keyword != null">
+      		AND B.TASK_TITLE like #{keyword} 
+        </if>
+        <if test="startDate != null">
+        	AND B.TASK_STRT_DATE = #{startDate}
+        </if>
+        <if test="endDate != null">
+        	AND B.TASK_END_DATE = #{endDate}
+        </if>
+        <if test="memCode != null">
+        	AND B.MEM_CODE = #{memCode}
+        </if>
+        <if test='aprov == "y"'>
+        	AND APROV_WHTH = 'y' 
+        </if>
+        <if test='aprov == "n"'>
+        	AND APROV_WHTH = 'n' 
+        </if>
+       
+      	  	AND B.DELETE_YN = 'n'
+       		ORDER BY B.TASK_STRT_DATE DESC
+  		  ) A
+		) B
+		WHERE RN <![CDATA[>]]> ( #{pageNum} - 1 ) * #{amount} AND RN <![CDATA[<=]]> #{pageNum} * #{amount}
+		
+	</select>
+	
+	<select id="total" parameterType="com.ipms.commons.vo.Criteria" resultType="int">
+		SELECT 
+			COUNT(TASK_ID)
+		FROM 
+			TASK
+		WHERE
+			PROJ_ID = #{projId}
+		<if test="keyword != null">
+      		AND TASK_TITLE like #{keyword} 
+        </if>
+        <if test="startDate != null">
+        	AND TASK_STRT_DATE = #{startDate}
+        </if>
+        <if test="endDate != null">
+        	AND TASK_END_DATE = #{endDate}
+        </if>
+        <if test="memCode != null">
+        	AND MEM_CODE = #{memCode}
+        </if>
+        <if test="aprov.equals('y')">
+        	AND APROV_WHTH = 'y' 
+        </if>
+        <if test="aprov.equals('n')">
+        	AND APROV_WHTH = 'n' 
+        </if>
+		AND
+			DELETE_YN = 'n'
+	</select>
+	
+	<select id="selectTaskMiddle" parameterType="string" resultType="int">
+	<!-- 진행중인 일감 -->
+		SELECT COUNT(TASK_ID) 
+		FROM
+		    TASK
+		WHERE
+		    TASK_PGRES between 1 and 99
+		AND 
+		    APROV_WHTH = 'y'
+		AND 
+			PROJ_ID = #{projId}
+	</select>
+	
+	<select id="selectTaskFinish" parameterType="string" resultType="int">
+	<!-- 완료된 일감 -->
+		SELECT COUNT(TASK_ID) 
+		FROM
+		    TASK
+		WHERE
+		    TASK_PGRES = 100
+		AND 
+		    APROV_WHTH = 'y'
+		AND 
+			PROJ_ID = #{projId}
+	</select>
+	
+	<select id="selectTaskAprove" parameterType="string" resultType="int">
+		<!-- 승인된 일감 -->
+		SELECT COUNT(TASK_ID) 
+		FROM
+		    TASK
+		WHERE 
+		    APROV_WHTH = 'y'
+		AND 
+			PROJ_ID = #{projId}
+	</select>
+	
+	<select id="selectTaskNot" parameterType="string" resultType="int">
+		<!-- 미승인 일감 -->
+		SELECT COUNT(TASK_ID) 
+		FROM
+		    TASK
+		WHERE 
+		    APROV_WHTH = 'n'
+		AND 
+			PROJ_ID = #{projId}
+	</select>
+</mapper>

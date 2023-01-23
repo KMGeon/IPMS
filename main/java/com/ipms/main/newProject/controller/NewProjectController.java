@@ -3,9 +3,9 @@ package com.ipms.main.newProject.controller;
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.newProject.service.NewProjectService;
 import com.ipms.main.newProject.vo.ProjVO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 import static com.ipms.main.register.controller.registerMemController.VIEW_REDIRECT_OK;
 
 @Slf4j
-@RequestMapping(value = "/main")
 @Controller
+@RequestMapping(value = "/main")
+@RequiredArgsConstructor
 public class NewProjectController {
-    @Autowired
-    NewProjectService newProjectService;
+
+    private final NewProjectService newProjectService;
 
     //프로젝트 생성
     @GetMapping(value = "/newProjectForm")

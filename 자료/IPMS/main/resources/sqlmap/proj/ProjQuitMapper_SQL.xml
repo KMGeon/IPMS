@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.projQuit.mapper.ProjQuitMapper">
+    <!--프로젝트 하차 신청-->
+    <update id="dropApplication" parameterType="com.ipms.main.newProject.vo.ProjVO">
+        UPDATE PROJ_MEM
+        SET DROPSTATUS='Y'
+        WHERE proj_id = #{projId}
+          AND mem_code = #{memCode}
+
+    </update>
+
+
+</mapper>

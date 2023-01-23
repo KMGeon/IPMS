@@ -9,6 +9,7 @@ import com.ipms.proj.dashboard.service.DashboardService;
 import com.ipms.proj.projMemManageMent.service.ProjMemManageMentService;
 import com.ipms.proj.projMemManageMent.vo.InvitationVO;
 import com.ipms.security.domain.CustomUser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -23,14 +24,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
 @Slf4j
+@Controller
+@RequiredArgsConstructor
 @RequestMapping("/proj")
 public class ProjMemManagementController {
-    @Autowired
-    ProjMemManageMentService projMemManageMentService;
-    @Autowired
-    DashboardService dashBoardService;
+
+    private final ProjMemManageMentService projMemManageMentService;
+
+    private final DashboardService dashBoardService;
 
     @GetMapping("/{projId}/memManagement")
     public String projmemManagement(@PathVariable(name = "projId") String projId, Model model) {

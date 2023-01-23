@@ -4,6 +4,7 @@ import com.ipms.main.mypage.inviteAndApply.service.InviteAndApplyService;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.proj.projMemManageMent.vo.InvitationVO;
 import com.ipms.security.domain.CustomUser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,12 @@ import java.util.List;
 
 import static com.ipms.main.login.controller.LoginController.getCustomUser;
 
-@RequestMapping("/main")
 @Slf4j
 @Controller
+@RequestMapping("/main")
+@RequiredArgsConstructor
 public class InviteAndApplyController {
-    @Autowired
-    InviteAndApplyService inviteAndApplyService;
+    private final InviteAndApplyService inviteAndApplyService;
 
     @GetMapping(value = "/inviteAndApply")
     @ResponseStatus(HttpStatus.OK)

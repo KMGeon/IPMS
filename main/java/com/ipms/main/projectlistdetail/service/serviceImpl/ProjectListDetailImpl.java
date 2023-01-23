@@ -6,17 +6,19 @@ import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.main.projectlistdetail.mapper.ProjSmryCmtMapper;
 import com.ipms.main.projectlistdetail.service.ProjectListDetailService;
 import com.ipms.main.projectlistdetail.vo.ProjSmryCmtVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectListDetailImpl implements ProjectListDetailService {
-    @Autowired
-    ProjSmryCmtMapper projSmryCmtMapper;
-    @Autowired
-    ProjMapper projMapper;
+
+    private final ProjSmryCmtMapper projSmryCmtMapper;
+
+    private final ProjMapper projMapper;
 
     @Override
     public List<MemVO> getDetailLeaderInfo(String projId) {

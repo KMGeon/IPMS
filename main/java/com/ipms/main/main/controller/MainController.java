@@ -8,6 +8,7 @@ import com.ipms.main.mypage.projectbookmark.vo.BookMarkVO;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.proj.projMemManageMent.mapper.MemManageMapper;
 import com.ipms.security.domain.CustomUser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,14 +24,11 @@ import java.util.List;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/main")
 public class MainController {
-    @Autowired
-    MainService mainService;
-    @Autowired
-    ProjectBookMarkService bookmarkservice;
-    @Autowired
-    OnGoingProjectService onGoingProjectService;
+
+    private final MainService mainService;
 
     public static final String OK = "1";
     public static final String No = "0";
@@ -38,6 +36,21 @@ public class MainController {
     @GetMapping("/page")
     public String hello(Authentication auth, Model model) {
         return "main/page";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/boardList", method = RequestMethod.GET)
+    public List<AlrmVO> boardList1() throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUser user = null;
+        try {
+            user = (CustomUser) authentication.getPrincipal();
+            List<AlrmVO> list = this.mainService.getAlrmList(user.getMember().getMemCode());
+            return list;
+        } catch (Exception ex) {
+            log.info("erw" + ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
     }
 
     @ResponseBody

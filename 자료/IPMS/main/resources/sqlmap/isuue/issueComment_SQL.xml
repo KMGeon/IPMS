@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.issue.mapper.IssueCommentMapper">
+	<insert id="HighCmtInsert" parameterType="com.ipms.proj.issue.vo.IssueCommentVO" >
+		
+		<selectKey keyProperty="issueCmtId" order="BEFORE" resultType="com.ipms.proj.issue.vo.IssueCommentVO">
+			SELECT  
+				NVL(MAX(TO_NUMBER(ISSUE_CMT_ID))+1,1) as ISSUE_CMT_ID
+        	FROM ISSUE_CMT
+		</selectKey>
+		INSERT INTO ISSUE_CMT(
+				  ISSUE_CMT_ID
+				, ISSUE_ID
+				, HIGH_CMT_ID
+				, ISSUE_CMT_CTS
+				, ISSUE_CMT_WRITE_DATE
+				, LOW_RGST_WHTH
+				, DELETE_YN
+				, WRITER
+			)
+			VALUES(
+				#{issueCmtId}
+				,#{issueId}
+				,null
+				,#{issueCmtCts}
+				,sysdate
+				, (SELECT NVL(MAX(LOW_RGST_WHTH)+1,1)
+			      FROM ISSUE_CMT
+			      WHERE ISSUE_CMT_ID = #{issueCmtId})
+				,'n'
+				,#{writer}
+			)
+		
+	</insert>
+	
+	<select id="getMemname" parameterType="string" resultType="string">
+		SELECT MEM_NAME
+		FROM MEM
+		WHERE MEM_EMAIL = #{memEmail}
+		
+	</select>
+	
+	<select id="getAllCmtList" parameterType="com.ipms.proj.issue.vo.IssueCommentVO" resultType="com.ipms.proj.issue.vo.IssueCommentVO" >
+		SELECT 
+	          LEVEL LEV
+	        , I.ISSUE_CMT_ID
+	        , I.ISSUE_ID
+	        , I.HIGH_CMT_ID
+	        , I.ISSUE_CMT_CTS
+	        , I.ISSUE_CMT_WRITE_DATE
+	        , I.LOW_RGST_WHTH
+	        , I.DELETE_YN
+	        , M.MEM_NAME AS WRITER
+	    FROM ISSUE_CMT I , MEM M
+	    WHERE M.MEM_CODE = I.WRITER 
+        AND I.ISSUE_ID = #{issueId}
+	    AND I.DELETE_YN = 'n'
+	    START WITH I.HIGH_CMT_ID IS NULL
+	    CONNECT BY PRIOR  I.ISSUE_CMT_ID = I.HIGH_CMT_ID
+        ORDER SIBLINGS BY I.ISSUE_CMT_WRITE_DATE
+	</select>
+	
+	<insert id="lowCmtInsert" parameterType="com.ipms.proj.issue.vo.IssueCommentVO">
+		<selectKey keyProperty="issueCmtId" order="BEFORE" resultType="com.ipms.proj.issue.vo.IssueCommentVO">
+			SELECT  
+				NVL(MAX(TO_NUMBER(ISSUE_CMT_ID))+1,1) as ISSUE_CMT_ID
+        	FROM ISSUE_CMT
+		</selectKey>
+			INSERT INTO ISSUE_CMT(
+				  ISSUE_CMT_ID
+				, ISSUE_ID
+				, HIGH_CMT_ID
+				, ISSUE_CMT_CTS
+				, ISSUE_CMT_WRITE_DATE
+				, LOW_RGST_WHTH
+				, DELETE_YN
+				, WRITER
+			)
+			VALUES(
+				#{issueCmtId}
+				,#{issueId}
+				,#{highCmtId}
+				,#{issueCmtCts}
+				,sysdate
+				, ( SELECT NVL(MAX(LOW_RGST_WHTH)+1,1)
+			      FROM ISSUE_CMT
+			      WHERE HIGH_CMT_ID = #{highCmtId} )
+				,'n'
+				,#{writer}
+			)
+	</insert>
+	
+	<update id="replymodify" parameterType="com.ipms.proj.issue.vo.IssueCommentVO">
+		UPDATE ISSUE_CMT
+		SET ISSUE_CMT_CTS = #{issueCmtCts} , ISSUE_CMT_WRITE_DATE = sysdate
+		WHERE ISSUE_ID = #{issueId}
+		AND ISSUE_CMT_ID =#{issueCmtId}
+	</update>
+	
+	<update id="lowCmtDel" parameterType="com.ipms.proj.issue.vo.IssueCommentVO" >
+		UPDATE ISSUE_CMT
+		SET DELETE_YN = 'y'
+		WHERE ISSUE_ID = #{issueId}
+		AND ISSUE_CMT_ID = #{issueCmtId}
+	</update>
+	
+	<update id="highCmtDel" parameterType="com.ipms.proj.issue.vo.IssueCommentVO">
+			UPDATE ISSUE_CMT SET
+		        DELETE_YN = 'y'
+		          WHERE ISSUE_CMT_ID IN(
+		                SELECT 
+		                    ISSUE_CMT_ID
+		                FROM(
+		                    SELECT
+			                     ISSUE_CMT_ID
+			                     , ISSUE_ID
+			                     , HIGH_CMT_ID
+			                     , ISSUE_CMT_CTS
+			                     , ISSUE_CMT_WRITE_DATE
+			                     , LOW_RGST_WHTH
+			                     , DELETE_YN
+			                     , WRITER
+			                      ,LPAD(' ', LEVEL, ' ')||ISSUE_CMT_CTS AS ROOTNAME 
+			                      ,CONNECT_BY_ROOT  HIGH_CMT_ID AS ROOT_NAME
+		                    FROM
+		                      	ISSUE_CMT  
+		                    WHERE (ISSUE_CMT_ID =#{issueCmtId} OR HIGH_CMT_ID =#{highCmtId})
+		                    AND ISSUE_ID = #{issueId}
+		                    START WITH
+		                      	HIGH_CMT_ID IS NULL
+		                    CONNECT BY PRIOR
+		                      	ISSUE_CMT_ID = HIGH_CMT_ID
+				         )
+				    )
+	
+	
+	
+	
+	</update>
+</mapper>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.proj.noticeboard.mapper.NoticeBoardMapper">
+	
+	<!-- 공지사항 리스트(페이징 처리) -->
+	<select id="getNtPage" parameterType="com.ipms.commons.vo.Criteria" resultType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
+		
+		SELECT PROJ_NT_NUM
+			, MEM_CODE
+			, PROJ_NT_TITLE
+			, PROJ_NT_WRITE_DATE
+            FROM ( SELECT ROWNUM RN
+                    , A.PROJ_NT_NUM
+					, A.MEM_CODE
+					, A.PROJ_NT_TITLE
+					, A.PROJ_NT_WRITE_DATE
+                FROM( SELECT PROJ_NT_NUM
+							, (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS MEM_CODE
+							, PROJ_NT_TITLE
+							, PROJ_NT_WRITE_DATE
+                        FROM PROJ_NT P
+                        WHERE DELETE_YN = 'n'
+                        AND PROJ_ID = #{projId}
+                        <if test="keyword != null and keyword != ''">
+							<if test="category.equals('projNtTitle')">
+								AND PROJ_NT_TITLE LIKE #{keyword}
+							</if>
+							<if test="category.equals('projNtCts')">
+								AND PROJ_NT_CTS LIKE #{keyword}
+							</if>
+						</if>      
+                        ORDER BY PROJ_NT_NUM DESC) A )
+         <![CDATA[
+            WHERE RN > ( #{pageNum} - 1 ) * #{amount} AND RN <= #{pageNum} * #{amount}
+		]]>
+	</select>
+	
+	<!-- 게시글 총 개수 -->
+	<select id="getTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
+		SELECT COUNT(PROJ_NT_NUM)
+		FROM PROJ_NT
+		WHERE DELETE_YN = 'n'
+        AND PROJ_ID = #{projId}
+        <if test="keyword != null and keyword != ''">
+			<if test="category.equals('projNtTitle')">
+				AND PROJ_NT_TITLE LIKE #{keyword}
+			</if>
+			<if test="category.equals('projNtCts')">
+				AND PROJ_NT_CTS LIKE #{keyword}
+			</if>
+		</if> 
+	</select>
+	
+	<resultMap type="com.ipms.proj.noticeboard.vo.NoticeBoardVO" id="ntMap">
+		<result property="projNtNum" column="PROJ_NT_NUM" />
+		<result property="projId" column="PROJ_ID" />
+		<result property="memCode" column="MEM_CODE" />
+		<result property="projNtTitle" column="PROJ_NT_TITLE" />
+		<result property="projNtCts" column="PROJ_NT_CTS" jdbcType="CLOB" javaType="java.lang.String" />
+		<result property="deleteYn" column="DELETE_YN" />
+		<result property="projNtWriteDate" column="PROJ_NT_WRITE_DATE" />
+		<result property="itgrnAttachFileNum" column="ITGRN_ATTACH_FILE_NUM" />
+		<collection property="intgAttachFileVOList" resultMap="intgAttachFileMap"></collection>
+	</resultMap>
+	
+	<resultMap type="com.ipms.commons.ftp.vo.IntgAttachFileVO" id="intgAttachFileMap">
+		<result property="intgAttachFileNum" column="INTG_ATTACH_FILE_NUM" />
+		<result property="fileName" column="FILE_NAME" />
+		<result property="saveFileName" column="SAVE_FILE_NAME" />
+	</resultMap>
+	<select id="detailNt" resultType="com.ipms.proj.noticeboard.vo.NoticeBoardVO" resultMap="ntMap">
+<!-- 		SELECT P.PROJ_NT_NUM -->
+<!-- 		    , P.PROJ_ID -->
+<!-- 		    , (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS MEM_CODE -->
+<!-- 		    , P.PROJ_NT_TITLE -->
+<!-- 		    , P.PROJ_NT_CTS -->
+<!-- 		    , P.ITGRN_ATTACH_FILE_NUM -->
+<!-- 		    , P.DELETE_YN -->
+<!-- 		    , P.PROJ_NT_WRITE_DATE -->
+<!-- 		FROM PROJ_NT P -->
+<!-- 		WHERE P.PROJ_NT_NUM = #{projNtNum} -->
+			SELECT P.PROJ_NT_NUM
+			    , P.PROJ_ID
+			    , (SELECT M.MEM_NAME FROM MEM M WHERE P.MEM_CODE = M.MEM_CODE) AS MEM_CODE
+			    , P.PROJ_NT_TITLE
+			    , P.PROJ_NT_CTS
+			    , P.DELETE_YN
+			    , P.PROJ_NT_WRITE_DATE
+			    , P.ITGRN_ATTACH_FILE_NUM
+			    , A.INTG_ATTACH_FILE_NUM
+			    , A.FILE_NAME
+			    , A.SAVE_FILE_NAME
+			FROM PROJ_NT P LEFT OUTER JOIN INTG_ATTACH_FILE A
+			ON(P.ITGRN_ATTACH_FILE_NUM = A.INTG_ATTACH_FILE_NUM)
+			WHERE P.PROJ_NT_NUM = #{projNtNum}
+	</select>
+	
+	<insert id="insertNt" parameterType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
+		
+		<selectKey order="BEFORE" keyProperty="projNtNum" resultType="int">
+			SELECT NVL(MAX(PROJ_NT_NUM),0)+1 FROM PROJ_NT
+		</selectKey>
+		
+		INSERT INTO PROJ_NT(PROJ_NT_NUM, PROJ_ID, MEM_CODE, PROJ_NT_TITLE, PROJ_NT_CTS, ITGRN_ATTACH_FILE_NUM, DELETE_YN, PROJ_NT_WRITE_DATE)
+		VALUES(#{projNtNum},#{projId},#{memCode},#{projNtTitle},#{projNtCts},#{itgrnAttachFileNum},'n',sysdate)
+	</insert>
+	
+	<!-- INTG_ATTACH_FILE 테이블의 MAX(INTG_ATTACH_FILE_NUM)+1 컬럼 값 가져오기 -->
+	<select id="getIntgAttachFileNum" resultType="int">
+		SELECT NVL(MAX(INTG_ATTACH_FILE_NUM),0)+1 FROM INTG_ATTACH_FILE
+	</select>
+	
+	<insert id="insertFile" parameterType="java.util.List">
+	    <foreach collection="list" index="index" item="vo" open="INSERT ALL " close="SELECT * FROM SYS.DUAL" separator=" ">
+	 		INTO INTG_ATTACH_FILE VALUES(#{vo.intgAttachFileNum}, #{index}+1, #{vo.filePath}, #{vo.fileName}
+	 			, #{vo.saveFileName}, #{vo.fileSize}, #{vo.fileSizeName}, sysdate, #{vo.rgstId}, 'n', #{vo.fileType})
+  	 	</foreach>
+	</insert>
+
+	<update id="updateNt" parameterType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
+		UPDATE PROJ_NT
+		SET	PROJ_NT_TITLE = #{projNtTitle}, PROJ_NT_CTS = #{projNtCts}
+		<if test="itgrnAttachFileNum != null">
+		,ITGRN_ATTACH_FILE_NUM = #{itgrnAttachFileNum}
+		</if>
+		 , PROJ_NT_WRITE_DATE = sysdate
+		WHERE PROJ_ID = #{projId}
+		AND MEM_CODE = #{memCode}
+		AND PROJ_NT_NUM = #{projNtNum}
+	</update>
+	
+	<update id="deleteNt" parameterType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
+		UPDATE PROJ_NT
+		SET DELETE_YN = 'y'
+		WHERE PROJ_ID = #{projId}
+		AND MEM_CODE = #{memCode}
+		AND PROJ_NT_NUM = #{projNtNum}
+	</update>
+	
+	<update id="ckDelNt" parameterType="com.ipms.proj.noticeboard.vo.NoticeBoardVO">
+		UPDATE PROJ_NT
+		SET DELETE_YN = 'y'
+		WHERE PROJ_ID = #{projId}
+		AND MEM_CODE = #{memCode}
+		AND PROJ_NT_NUM = #{projNtNum}
+	</update>
+	
+	<!-- 로그인한 회원이 리더인지 아닌지 판별 -->
+	<select id="authCheck" parameterType="com.ipms.proj.noticeboard.vo.NoticeBoardVO" resultType="string">
+		SELECT MEM_AUTH
+        FROM MEMBER_AUTH
+        WHERE MEM_CODE = #{memCode}
+        AND PROJ_ID = #{projId}
+	</select>
+	
+	<!-- 작성자와 로그인한 사람의 mem_code 비교를 위한 쿼리 -->
+	<select id="detailNt2" resultType="com.ipms.proj.noticeboard.vo.NoticeBoardVO" resultMap="ntMap">
+		SELECT P.PROJ_NT_NUM
+		    , P.PROJ_ID
+		    , P.MEM_CODE
+		    , P.PROJ_NT_TITLE
+		    , P.PROJ_NT_CTS
+		    , P.DELETE_YN
+		    , P.PROJ_NT_WRITE_DATE
+		    , P.ITGRN_ATTACH_FILE_NUM
+		    , A.INTG_ATTACH_FILE_NUM
+		    , A.FILE_NAME
+		FROM PROJ_NT P LEFT OUTER JOIN INTG_ATTACH_FILE A
+		ON(P.ITGRN_ATTACH_FILE_NUM = A.INTG_ATTACH_FILE_NUM)
+		WHERE P.PROJ_NT_NUM = #{projNtNum}
+	</select>
+	
+</mapper>

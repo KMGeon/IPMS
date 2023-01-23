@@ -3,6 +3,7 @@ package com.ipms.proj.projSetting.controller;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.proj.projSetting.reCaptcha.VerifyReCapcha;
 import com.ipms.proj.projSetting.service.ProjSettingService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,12 +13,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.ipms.main.register.controller.registerMemController.VIEW_REDIRECT_OK;
+
 @Slf4j
-@RequestMapping("/proj")
 @Controller
+@RequiredArgsConstructor
+@RequestMapping("/proj")
 public class ProjSettingController {
-    @Autowired
-    ProjSettingService projSettingService;
+
+    private final ProjSettingService projSettingService;
 
     @GetMapping("/{projId}/settingManagement")
     public String setProj(@PathVariable String projId, Model model) {
@@ -27,14 +31,17 @@ public class ProjSettingController {
 
     //프로젝트 수정하기
     @PostMapping(value = "{projId}/modifyProjectSettings")
-    public String modifyProjectSettings(@PathVariable String projId,@ModelAttribute ProjVO projVO, MultipartFile[] uploadFile) {
-        return this.projSettingService.projectCreate(projVO, uploadFile);
+    public String modifyProjectSettings(@PathVariable String projId, @ModelAttribute ProjVO projVO, MultipartFile[] uploadFile) {
+        if (this.projSettingService.projectCreate(projVO, uploadFile) == VIEW_REDIRECT_OK) {
+            return "redirect:/main/page";
+        }
+        return "redirect:/main/newProject";
     }
 
     //프로젝트 탈퇴하기
     @ResponseBody
     @GetMapping(value = "{projId}/withdrawalProject")
-    public int withdrawalProject(@PathVariable String projId){
+    public int withdrawalProject(@PathVariable String projId) {
         return this.projSettingService.withdrawalProject(projId);
     }
 

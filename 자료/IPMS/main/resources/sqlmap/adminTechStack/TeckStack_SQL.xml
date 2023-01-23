@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipms.main.admin.techStackManagement.mapper.TeckStackManageMapper">
+
+	<insert id="addSkillStack" parameterType="com.ipms.main.admin.techStackManagement.vo.TechStackVO">
+		<selectKey order="BEFORE" keyProperty="commonCode" resultType="String">
+			SELECT NVL(SUBSTR(MAX(COMMON_CODE),1,1)|| TRIM(TO_CHAR(SUBSTR(MAX(COMMON_CODE),3) + 1,'000')),'T001')
+			FROM common_code
+		</selectKey>
+<!--		<selectKey order="BEFORE" resultType="integer" keyProperty="commonCodeSeq">-->
+<!--			SELECT NVL(MAX(common_code_seq),0)+1 FROM common_code-->
+<!--		</selectKey>-->
+
+		INSERT INTO common_code (
+			common_code,
+			common_code_group,
+			common_code_value,
+			common_code_seq,
+			common_code_eplntn,
+			use_whth
+		) VALUES (
+					 #{commonCode},
+					 'TechStack',
+					 #{commonCodeValue},
+					(SELECT NVL(MAX(TO_NUMBER(COMMON_CODE_SEQ)),0)+1 FROM common_code),
+					 #{commonCodeEplntn},
+					 'N'
+				 )
+	</insert>
+
+	<delete id="clearSkillStack" parameterType="string">
+		DELETE FROM common_code
+		WHERE
+			common_code_value = #{commonCodeValue}
+	</delete>
+</mapper>

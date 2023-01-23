@@ -4,6 +4,7 @@ import com.ipms.main.mypage.inviteAndApply.service.InviteAndApplyService;
 import com.ipms.main.mypage.ongoingProject.service.OnGoingProjectService;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.security.domain.CustomUser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/main")
 @Slf4j
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/main")
 public class OngoingProjectController {
 
-    @Autowired
-    OnGoingProjectService onGoingProjectService;
-    @Autowired
-    InviteAndApplyService inviteAndApplyService;
+    private final OnGoingProjectService onGoingProjectService;
 
     @GetMapping("/ongoing")
     @ResponseStatus(HttpStatus.CREATED)

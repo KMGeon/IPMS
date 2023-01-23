@@ -3,6 +3,7 @@ package com.ipms.proj.projSetting.service.serviceImpl;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.proj.projSetting.mapper.ProjSettingMapper;
 import com.ipms.proj.projSetting.service.ProjSettingService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,20 +16,23 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class ProjSettingServiceImpl implements ProjSettingService {
-    @Autowired
-    ProjSettingMapper projSettingMapper;
-    
-    @Autowired
-    ServletContext servletContext; 
 
+    private final ProjSettingMapper projSettingMapper;
 
     @Transactional
     public  String projectCreate(@ModelAttribute ProjVO projVO, MultipartFile[] uploadFile) {
-//        String uploadFolder = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\\resources\\upload\\img";
-        String uploadFolder = servletContext.getRealPath("/") + "\\resources\\upload\\img";
+        String uploadFolder = "E:\\IdeaProjects\\ipms\\src\\main\\webapp\\resources\\upload\\img";
+        uploadImgFile(projVO, uploadFile, uploadFolder);
+        if(this.projSettingMapper.modifyProjectSettings(projVO)==1){
+            return "success";
+        }return "fail";
+    }
+
+    private static void uploadImgFile(ProjVO projVO, MultipartFile[] uploadFile, String uploadFolder) {
         for (MultipartFile multipartFile : uploadFile) {
             log.info("Upload File Name: " + multipartFile.getOriginalFilename());
             log.info("Upload File Size: " + multipartFile.getSize());
@@ -41,10 +45,6 @@ public class ProjSettingServiceImpl implements ProjSettingService {
                 log.error(e.getMessage());
             }
         }
-        log.info("=======================================", projVO);
-        if(this.projSettingMapper.modifyProjectSettings(projVO)==1){
-            return "redirect:/main/page";
-        }return "redirect:/main/page";
     }
 
     @Override

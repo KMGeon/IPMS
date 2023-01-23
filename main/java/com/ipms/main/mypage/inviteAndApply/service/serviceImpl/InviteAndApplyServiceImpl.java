@@ -6,8 +6,8 @@ import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.mapper.ProjMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.proj.projMemManageMent.vo.InvitationVO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +15,13 @@ import java.util.List;
 
 @Slf4j
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class InviteAndApplyServiceImpl implements InviteAndApplyService {
-    @Autowired
-    MyPageMapper myPageMapper;
-    @Autowired
-    ProjMapper projMapper;
-    @Autowired
-    InviteAndApplyService inviteAndApplyService;
+
+    private final MyPageMapper myPageMapper;
+
+    private final ProjMapper projMapper;
+
 
     @Transactional
     public int approval(ProjMemVO projMemVO) {
@@ -36,7 +35,7 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
     @Transactional
     public int inviteAccept(ProjMemVO projMemVO) {
         if (this.myPageMapper.invitationApproved(projMemVO) == 1) {
-            if (this.inviteAndApplyService.invitedMemberApproval(projMemVO) == 1) {
+            if (this.invitedMemberApproval(projMemVO) == 1) {
                 getProjectAuth(projMemVO);
                 return 1;
             }
@@ -57,10 +56,6 @@ public class InviteAndApplyServiceImpl implements InviteAndApplyService {
         return this.myPageMapper.invitationWaitingList(memCode);
     }
 
-    @Override
-    public int invitationApproved(ProjMemVO projMemVO) {
-        return this.myPageMapper.invitationApproved(projMemVO);
-    }
 
     @Override
     public int invitedMemberApproval(ProjMemVO projMemVO) {

@@ -6,6 +6,7 @@ import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.login.mapper.MemMapper;
 import com.ipms.main.register.vo.CommonCodeVO;
 import com.ipms.main.register.vo.TechStackVO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,11 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class MemServiceImpl implements MemService {
-    @Autowired
-    MemMapper memMapper;
+
+    private final MemMapper memMapper;
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public String signUp(MemVO memVO, Authentication authentication, TechStackVO techStackVO) {
@@ -85,6 +87,5 @@ public class MemServiceImpl implements MemService {
     public List<CommonCodeVO> techStack() {
         return this.memMapper.techStack();
     }
-
 
 }
