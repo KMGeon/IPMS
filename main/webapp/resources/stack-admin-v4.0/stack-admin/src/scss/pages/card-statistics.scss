@@ -1,0 +1,264 @@
+// Core variables and mixins
+@import "../bootstrap/functions";
+@import "../bootstrap/mixins";
+@import "../bootstrap-extended/mixins";
+
+// Load variable overrides
+@import "../core/variables/variables";
+@import "../bootstrap/variables";
+
+// Overrides user variable
+@import "../core/variables/components-variables";
+
+/* Grouped card statistics */
+/*------------------------*/
+
+.grouped-multiple-statistics-card {
+  // styles for icons
+  .card-icon {
+    .customize-icon {
+      background-color: $body-bg;
+    }
+  }
+
+  // heading text
+  .heading-text {
+    font-size: 1.9rem;
+    letter-spacing: 2px;
+  }
+
+  //sub heading text
+  .sub-heading {
+    color: $gray-100;
+  }
+
+  //increase and decrese indicator text at the right top corner in each column
+  .inc-dec-percentage {
+    small {
+      color: $gray-100;
+      white-space: nowrap;
+    }
+  }
+}
+
+/* Tracking and total sales chart */
+/*-------------------------------*/
+
+.tracking-stats-chart {
+  // header title
+  .body-header-title {
+    letter-spacing: 2px;
+  }
+
+  // header subtitle
+  .body-header-subtitle span {
+    color: $gray-100 !important;
+  }
+
+  // card's head tabs
+  .card-tabs {
+    // card-tabs inner link
+    .nav-link {
+      line-height: $line-height-xs;
+
+      &.active {
+        color: $primary;
+        border-bottom: 2px solid $gray-200;
+        border-radius: 0;
+        background-color: transparent;
+      }
+    }
+  }
+
+  // tracking tab's header area
+  .top-content {
+    // border-bottom: 1px solid $border-light-card-stats;
+    i {
+      font-size: 2.8rem;
+    }
+  }
+
+  // tracking items list
+  .tracking-list {
+    li {
+      border: none !important;
+
+      // each tracking-task inside an li
+      .tracking-task {
+        @include text-truncate;
+      }
+    }
+  }
+}
+
+// apexcharts-tooltip cusomization
+.apexcharts-tooltip {
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .apexcharts-tooltip-series-group:last-child {
+    padding-bottom: 0;
+  }
+}
+
+/* Sales statistics donut chart */
+/*-----------------------------*/
+
+// sales statistics chart data styles at the bottom of chart
+.statistics-chart-data {
+  width: 60%;
+
+  // bullet and each data
+  .collection {
+    white-space: nowrap;
+  }
+}
+
+/* Information time tracking chart */
+/*--------------------------------*/
+// information time tracking title
+.info-time-tracking-title {
+  .icon-settings {
+    font-size: 1.3rem;
+  }
+}
+
+//information time tracking chart content
+.info-time-tracking-content {
+  // leading paragraph in general task loading part
+  .leading-para {
+    color: $gray-200;
+  }
+}
+
+/* Latest update card */
+/*-------------------*/
+.latest-update-tracking {
+  // items related latest updates
+  .latest-updated-item {
+    white-space: nowrap;
+    line-height: $line-height-sm;
+
+    // list item icon
+    .list-group-item-icon {
+      font-size: 1.3rem;
+    }
+
+    .update-profit,
+    .latest-update-item-name {
+      color: $gray-300;
+    }
+  }
+}
+
+
+/* Media query for min-width: 1200px to max-width: 1500px */
+/*-------------------------------------------------------*/
+
+@media (min-width: 1200px) and (max-width: 1500px) {
+  .card-icon {
+    margin-right: 1.5rem !important;
+    i {
+      font-size: 2rem !important;
+    }
+  }
+
+  .stats-amount {
+    margin-right: 1.6rem !important;
+    h3 {
+      font-size: 1.5rem !important;
+      white-space: nowrap;
+    }
+    .sub-heading {
+      white-space: nowrap;
+      margin-bottom: 0rem !important;
+    }
+  }
+
+  .inc-dec-percentage {
+    small {
+      white-space: nowrap;
+    }
+  }
+}
+
+/* Media query for max-width: 1200px */
+/*-----------------------------------*/
+
+@media (max-width: 1200px) {
+  .grouped-multiple-statistics-card {
+    .col-lg-6:nth-child(2) {
+      border: 0px solid !important;
+    }
+  }
+}
+
+/* Media query for max-width: 768px */
+/*----------------------------------*/
+
+@media (max-width: 768px) {
+  .grouped-multiple-statistics-card {
+    .col-lg-6:nth-child(1) {
+      border: 0px solid !important;
+    }
+    .col-lg-6:nth-child(3) {
+      border: 0px solid !important;
+    }
+  }
+}
+
+/* Media query for 1400px and up */
+/*-------------------------------*/
+
+@media (min-width: 1400px) {
+  .latest-update-tracking {
+    .card {
+      max-height: 239px !important;
+      overflow: hidden;
+
+      .latest-update-heading {
+        height: 4.3rem;
+      }
+      .latest-update-tracking-list {
+        height: 181px !important;
+      }
+    }
+  }
+
+  .info-time-tracking {
+    max-height: 239px !important;
+  }
+}
+
+/* Media query for IE 11 */
+/*-----------------------*/
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  /* IE10+ CSS styles go here */
+
+  // info and time tracking content style in IE  
+  .info-time-tracking-content {
+    #general_task_radial_bar_chart {
+      margin-top: 2rem;
+    }
+
+    // stats and task content style in IE
+    .stats-content,
+    .task-content {
+      .leading-para {
+        word-break: break-all !important;
+        width: 100%;
+      }
+    }
+    
+    .task-content {
+      flex-basis: 500px;
+    }
+
+    .stats-content {
+      flex-basis: 200px;
+    }
+  }
+}

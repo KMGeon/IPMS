@@ -1,0 +1,78 @@
+.collapse-icon{
+  .card-header{
+    position: relative;
+  }
+  [data-toggle="collapse"]{
+    &:after{
+      position: absolute;
+      top: 48%;
+      right: 20px;
+      margin-top: -8px;
+      font-family: 'feather';
+      content: "\e897";
+      transition: all 300ms linear 0s;
+    }
+    &:before{
+      position: absolute;
+      top: 48%;
+      right: 20px;
+      margin-top: -8px;
+      font-family: 'feather';
+      content: "\e8b1";
+      transition: all 300ms linear 0s;
+    }
+  }
+  &.left{
+    a{
+      padding-left: 28px;
+    }
+    [data-toggle="collapse"] {
+      &:before, &:after{
+        left: 20px;
+        right: auto;
+      }
+    }
+  }
+  [aria-expanded="true"]{
+    &:before{
+      opacity: 0;
+    }
+  }
+  [aria-expanded="false"]{
+    &:after{
+      opacity: 0;
+    }
+  }
+  &.accordion-icon-rotate{
+    [aria-expanded="true"]{
+      &:before{
+        transform: rotate(180deg);
+      }
+    }
+    [aria-expanded="false"]{
+      &:after{
+        transform: rotate(-180deg);
+      }
+    }
+  }
+}
+
+// Mega Menu Accordion Section
+
+.header-navbar{
+  .navbar-container{
+    .mega-dropdown-menu{
+      .collapse-icon{
+        [data-toggle="collapse"]{
+          &:after{
+            margin-top: -14px;
+          }
+          &:before{
+            margin-top: -14px;
+          }
+        }
+      }
+    }
+  }
+}
+  
