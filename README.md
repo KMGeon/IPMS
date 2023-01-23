@@ -164,6 +164,13 @@
 - 자신의 프로젝트에 참가요청
 - 다른 프로젝트에서 초대된 내역
 
+
+ <BR>
+### 🐸참여 프로젝트 - <a href="https://github.com/KMGeon/IPMS/wiki/%EC%B0%B8%EC%97%AC%ED%95%98%EA%B3%A0-%EC%9E%88%EB%8A%94-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8" >더 보기</a>
+
+- 참여하고 있는 프로젝트
+
+
    <BR>
 ### 🐸프로젝트 멤버관리 & 하차 - <a href="https://github.com/KMGeon/IPMS/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%A4%EB%B2%84%EA%B4%80%EB%A6%AC-&-%ED%95%98%EC%B0%A8)" >더 보기</a>
 
