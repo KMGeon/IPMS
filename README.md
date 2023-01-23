@@ -166,7 +166,8 @@
 
 
  <BR>
-### 🐸프로젝트 ㅁㄴㅇㄴㅁㅇ  - <a href="https://github.com/KMGeon/IPMS/wiki/%EC%B0%B8%EC%97%AC%ED%95%98%EA%B3%A0-%EC%9E%88%EB%8A%94-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8" >더 보기</a>
+### 🐸프로젝트(참여) - <a href="https://github.com/KMGeon/IPMS/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EC%A0%95%EA%B4%80%EB%A6%AC" >더 보기</a>
+
 
 - 참여하고 있는 프로젝트
 
