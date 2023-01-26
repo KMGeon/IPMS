@@ -97,7 +97,7 @@
 
 
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> ERD
-<img src="https://user-images.githubusercontent.com/103854287/211195345-cd24db8c-1c88-40bc-a350-0ab5047da43a.png">
+<img src="https://user-images.githubusercontent.com/103854287/214754811-5340e816-b8ac-4b87-9428-497a181632d6.png">
   
 
 ## <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 내가 구현한 기능 
