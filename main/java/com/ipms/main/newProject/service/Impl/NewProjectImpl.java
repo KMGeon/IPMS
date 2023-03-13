@@ -32,10 +32,13 @@ public class NewProjectImpl implements NewProjectService {
 
     private final MyPageMapper myPageMapper;
 
+    @Autowired
+    ServletContext servletContext;
+
     @Transactional
     public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication, MultipartFile[] uploadFile) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String uploadFolder = "C:\\eGovFrame-4.0.0\\workspace.edu\\ipms\\src\\main\\webapp\\resources\\upload\\img";
+        String uploadFolder = servletContext.getRealPath("/") + "\\resources\\upload\\img";
         uploadProjectMainImage(projVO, uploadFile, uploadFolder);
         if (this.projInsert(projVO) == 1) {
             createProject(projVO, userDetails);//프로젝트 생성  -> 프로젝트 멤버 생성
