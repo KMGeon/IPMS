@@ -134,7 +134,14 @@ ipms
 - 프로젝트 채팅방 생성
 - 대표 이미지 업로드
   
+     <BR>
+### 🐸마이페이지(신청,신청한,초대된 프로젝트) - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80(%EC%8B%A0%EC%B2%AD,%EC%8B%A0%EC%B2%AD%ED%95%9C,%EC%B4%88%EB%8C%80%EB%90%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8)" >더 보기</a>
+
+- 신청한 프로젝트
+- 자신의 프로젝트에 참가요청
+- 다른 프로젝트에서 초대된 내역
   <BR>
+  
   
 ### 🐸시큐리티 - <a href="https://github.com/KMGeon/IPMS/wiki/%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-&-%EA%B6%8C%ED%95%9C-%EC%B2%B4%ED%81%AC" >더 보기</a>
 - 시큐리티 적용
@@ -165,14 +172,6 @@ ipms
 - Click -> 마이페이지
 - Click -> 마이페이지 -> 알람삭제
      
-
-   <BR>
-### 🐸마이페이지(신청,신청한,초대된 프로젝트) - <a href="https://github.com/KMGeon/IPMS/wiki/%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80(%EC%8B%A0%EC%B2%AD,%EC%8B%A0%EC%B2%AD%ED%95%9C,%EC%B4%88%EB%8C%80%EB%90%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8)" >더 보기</a>
-
-- 신청한 프로젝트
-- 자신의 프로젝트에 참가요청
-- 다른 프로젝트에서 초대된 내역
-
 
  <BR>
    
