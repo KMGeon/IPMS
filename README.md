@@ -68,6 +68,26 @@
 
 
 <br>
+##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 프로젝트 구조
+```bash
+ipms
+├── Interceptor
+│   └── URL 접근 방지
+├── commons 
+│   └── FTP , pageHandler
+├── exceptions 
+├── main 
+│   ├── 게시판 CRUD,로그인,메일,알람,마이페이지,프로젝트
+│   └── admin
+│         └── member,proj,techStack 관리
+├── proj 
+│   └── 게시판(CRUD),채팅,간트 차트,캘린더,이슈,프로젝트 관리,위키
+├── security
+└── util
+    └── 파일
+```
+
+<br>
 
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 프로젝트 소개
 - **소개** <br>
