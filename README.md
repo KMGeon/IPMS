@@ -69,30 +69,32 @@
 ![image](https://user-images.githubusercontent.com/103854287/224674416-5c17da66-1256-40be-9f2b-93a3199f992e.png)
 
 <br>
+  
 # Project Sturucture
+(구현한 부분 볼드)
 
 ```bash
 ipms
-├── Interceptor
-│   └── URL 접근 방지
+├── **Interceptor**
+│   └── **URL 접근 방지**
 │ 
 ├── commons 
-│   └── FTP , pageHandler
+│   └── FTP , **pageHandler**
 │ 
-├── exceptions 
+├── **exceptions** 
 │ 
-├── main 
-│   ├── 게시판 CRUD,로그인,메일,알람,마이페이지,프로젝트
+├── **main** 
+│   ├── **게시판 CRUD,로그인,메일,알람,마이페이지,프로젝트**
 │   └── admin
-│         └── member,proj,techStack 관리
+│         └── member,proj,**techStack** 관리
 │ 
 ├── proj 
-│   └── 게시판(CRUD),채팅,간트 차트,캘린더,이슈,프로젝트 관리,위키
+│   └── 게시판(CRUD),채팅,간트 차트,캘린더,이슈,**프로젝트 관리**,위키
 │ 
-├── security
+├── **security**
 │ 
 └── util
-    └── 파일
+    └── **파일**
 ```
 
 <br>
