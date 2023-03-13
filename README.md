@@ -51,8 +51,6 @@
 <img src="https://img.shields.io/badge/JAVA 8-007396?style=for-the-badge&logo=java&logoColor=white">
   <img src="https://img.shields.io/badge/mybatis-007396?style=for-the-badge&logo=mybatis&logoColor=white">
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
-<img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
-<img src="https://img.shields.io/badge/websocket-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
 <br>
   <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
   <img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white">
@@ -62,7 +60,6 @@
 <br>
 <img src="https://img.shields.io/badge/bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white">
 <img src="https://img.shields.io/badge/IntelliJ IDEA-00A98F?style=for-the-badge&logo=IntelliJ IDEA&logoColor=white">
-<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 <img src="https://img.shields.io/badge/svn-181717?style=for-the-badge&logo=svn&logoColor=white">
 </div>
 
@@ -110,14 +107,6 @@ IPMS는 다음과 같은 기능을 제공하여 사이드 프로젝트의 A-Z를
 **산출물 작성** : 22.11.25 ~ 22.11.30<BR>
 **프로젝트 구현** : 22.11.30 ~ 22.12.30<BR>
 **테스트** : 22.12.30 ~ 23.01.05
-
-
-
-##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 개발 환경
-
-- **BackEnd** : Java8 , Spring Framework4 , Oracle DB(11xe) , Mybatis
-- **Front** : JavaScript , JQuery , Bootstrap4
-- **IDE** : Intellij
 
 
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> ERD
