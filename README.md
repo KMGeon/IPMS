@@ -44,6 +44,30 @@
 
 <br>
 
+##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 프로젝트 소개
+- **소개** <br>
+**IPMS는 다음과 같은 기능을 제공하여 사이드 프로젝트의 A-Z를 한 사이트에서 수행 가능하게 만들어주는 서비스입니다.**
+``` bash
+프로젝트
+├── 모집
+├── 관리
+├── ERD작성
+├── FTP 파일 관리
+├── 간트 차트(일감)
+└── 캘린더
+```
+
+<br>
+
+**주제 선정** : 22.11.23 ~ 22.11.25  
+**산출물 작성** : 22.11.25 ~ 22.11.30<BR>
+**프로젝트 구현** : 22.11.30 ~ 22.12.30<BR>
+**테스트** : 22.12.30 ~ 23.01.05
+
+
+##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> ERD
+![image](https://user-images.githubusercontent.com/103854287/224674416-5c17da66-1256-40be-9f2b-93a3199f992e.png)
+  
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 기술 스택
 
 
@@ -86,30 +110,6 @@ ipms
 ```
 
 <br>
-
-##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 프로젝트 소개
-- **소개** <br>
-IPMS는 다음과 같은 기능을 제공하여 사이드 프로젝트의 A-Z를 한 사이트에서 수행 가능하게 만들어주는 서비스입니다.
-``` bash
-프로젝트
-├── 모집
-├── 관리
-├── ERD작성
-├── FTP 파일 관리
-├── 간트 차트(일감)
-└── 캘린더
-```
-
-<br>
-
-**주제 선정** : 22.11.23 ~ 22.11.25  
-**산출물 작성** : 22.11.25 ~ 22.11.30<BR>
-**프로젝트 구현** : 22.11.30 ~ 22.12.30<BR>
-**테스트** : 22.12.30 ~ 23.01.05
-
-
-##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> ERD
-![image](https://user-images.githubusercontent.com/103854287/224674416-5c17da66-1256-40be-9f2b-93a3199f992e.png)
   
 
 ## <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 내가 구현한 기능 
