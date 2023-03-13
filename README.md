@@ -115,12 +115,9 @@ IPMS는 다음과 같은 기능을 제공하여 사이드 프로젝트의 A-Z를
 
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 개발 환경
 
-- `Java 8`
-- `JDK 1.8.0`
+- **BackEnd** : Java8 , Spring Framework4 , Oracle DB(11xe) , Mybatis
+- **Front** : JavaScript , JQuery , Bootstrap4
 - **IDE** : Intellij
-- **Framework** : Spring Framework
-- **Database** : Oracle DB(11xe)
-- **ORM** : Mybatis
 
 
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> ERD
