@@ -46,7 +46,7 @@
 
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 프로젝트 소개
 - **소개** <br>
-**IPMS는 다음과 같은 기능을 제공하여 사이드 프로젝트의 A-Z를 한 사이트에서 수행 가능하게 만들어주는 서비스입니다.**
+**IPMS는 다음과 같은 기능을 제공하여 사이드 프로젝트의 A-Z를 한 사이트에서 수행 가능하게 만들어주는 서비스**
 ``` bash
 프로젝트
 ├── 모집
