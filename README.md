@@ -70,35 +70,6 @@
 
 <br>
   
-##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 프로젝트 구조
-
-
-```bash
-ipms
-├── Interceptor
-│   └── URL 접근 방지
-│ 
-├── commons 
-│   └── FTP, pageHandler
-│ 
-├── exceptions
-│ 
-├── main 
-│   ├── 게시판 CRUD, 로그인, 메일,알람, 마이페이지, 프로젝트
-│   └── admin
-│         └── member, proj, techStack 관리
-│ 
-├── proj 
-│   └── 게시판(CRUD), 채팅, 간트 차트, 캘린더, 이슈, 프로젝트 관리, 위키
-│ 
-├── security
-│ 
-└── util
-    └── 파일
-```
-
-<br>
-  
 ##  <img height="25px" src="https://user-images.githubusercontent.com/103854287/211192759-c54c51aa-f092-49a0-b2dd-e6388f4ae2b0.png" width="50px" /> 기술 스택
 
 - Frontend : HTML, CSS, JS(ES5), JQuery
@@ -107,6 +78,32 @@ ipms
 - IDE & Collaboration : IntelliJ, Notion, SVN
 
 <br>
+
+## 📺 View
+
+### 1. 프로젝트 조회
+![image](https://github.com/KMGeon/IPMS/assets/103854287/58e90163-fe51-48f6-846b-892cb707b507)
+
+### 2. 프로젝트 관리
+![image](https://github.com/KMGeon/IPMS/assets/103854287/5a002688-0f57-4cc5-ad7d-f53df806df18)
+![image](https://github.com/KMGeon/IPMS/assets/103854287/a4394eb3-796a-4476-b074-2cf862e666ad)
+
+### 3. 간트 차트
+![image](https://github.com/KMGeon/IPMS/assets/103854287/47568a10-57ab-4c58-a508-aee6a6740722)
+![image](https://github.com/KMGeon/IPMS/assets/103854287/c97a007f-c1db-4110-a37a-70271258c83c)
+
+
+### 4. 일정 관리 - 캘린더
+![image](https://github.com/KMGeon/IPMS/assets/103854287/499cdf2e-8919-488e-8bac-6aa2d0e9014a)
+
+### 5. 웹 ERD
+![image](https://github.com/KMGeon/IPMS/assets/103854287/40fb3839-b075-4a54-86e8-bdbcc1fd9c28)
+
+### 6. FTP 파일
+![image](https://github.com/KMGeon/IPMS/assets/103854287/74f47a87-7a46-4dad-90d3-a79054a7576e)
+
+
+
 
   
 
